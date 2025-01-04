@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@0,100;0,300;400;500;700;0,900;&display=swap');
+
+.opacity {
+    &-enter-active,
+    &-leave-active {
+        transition: all .3s ease-in-out;
+    }
+
+    &-enter-from,
+    &-leave-to {
+        opacity: 0;
+    }
+
+    &-enter-to,
+    &-leave-from {
+        opacity: 1;
+    }
+}

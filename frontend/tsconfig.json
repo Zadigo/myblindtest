@@ -1,0 +1,24 @@
+{
+  /* Set by us */
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "baseUrl": "./",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "src": [
+        "src/*"
+      ]
+    },
+    "allowJs": true,
+    "skipLibCheck": true
+  },
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
+}
