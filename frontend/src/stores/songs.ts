@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import type { Answer, CacheSession, Song } from "../types";
-import defaults from '../data/defaults.json'
+import { defaults } from '../data/defaults'
 
 export const useSongs = defineStore('songs', () => {
     const cache = ref<CacheSession>(defaults.cache)
