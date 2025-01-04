@@ -15,6 +15,14 @@ export const songTypes = [
     'Rock'
 ]
 
+export const addNewSongData = {
+    name: '',
+    genre: '',
+    artist: '',
+    youtube: '',
+    year: 0
+}
+
 export const defaults: { cache: CacheSession } = {
     cache: {
         songs: [],

@@ -32,16 +32,9 @@ import { toast } from 'vue-sonner';
 import { useLocalStorage } from '@vueuse/core';
 
 import CreateBlock from '@/components/CreateBlock.vue';
+import { addNewSongData } from '@/data/defaults';
 
-const blocks = ref<CreateData[]>([
-  {
-    name: '',
-    genre: '',
-    artist: '',
-    youtube: '',
-    year: 0
-  }
-])
+const blocks = ref<CreateData[]>([ addNewSongData ])
 
 const { client } = useAxiosClient()
 
@@ -59,15 +52,7 @@ const genres = useLocalStorage<string[]>('genres', null, {
 async function handleSave () {
   try {
     client.post('/songs/create', blocks.value)
-    blocks.value = [
-      {
-        name: '',
-        genre: '',
-        artist: '',
-        youtube: '',
-        year: 0
-      }
-    ]
+    blocks.value = [ addNewSongData ]
   } catch {
     toast.error('Could not create songs')
   }
@@ -87,13 +72,7 @@ async function handleGetGenres () {
 }
 
 function handleAddBlock () {
-  blocks.value.push({
-    name: '',
-    genre: '',
-    artist: '',
-    youtube: '',
-    year: 0
-  })
+  blocks.value.push(addNewSongData)
 }
 
 provide('genres', genres)
