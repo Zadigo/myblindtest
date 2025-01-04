@@ -9,6 +9,11 @@
         <v-text-field v-model="songsStore.cache.settings.pointValue" type="number" min="1" variant="solo-filled" placeholder="Point value" flat />
         <v-switch v-model="songsStore.cache.settings.matchDifficulty" label="Ponder for song difficulty" />
       </div>
+
+      <div v-if="songsStore.cache" class="card-body">
+        <v-select v-model="songsStore.cache.settings.difficultyLevel" :items="difficultyLevels" variant="solo-filled" placeholder="Blind test difficulty" flat />
+        <v-select v-model="songsStore.cache.settings.songType" :items="songTypes" variant="solo-filled" placeholder="Blind test difficulty" flat />
+      </div>
     </div>
 
     <v-dialog v-model="showChooseColor" style="width:500px;">
@@ -37,6 +42,7 @@ import { storeToRefs } from 'pinia';
 import { ref, watch } from 'vue';
 import type { Harmony } from 'vue-color-wheel';
 import { VueColorWheel } from 'vue-color-wheel';
+import { difficultyLevels, songTypes } from '@/data/defaults'
 
 import TeamBlock from '@/components/TeamBlock.vue';
 

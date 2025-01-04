@@ -1,4 +1,4 @@
-interface DataSet {
+export interface DataSet {
     label: string
     data: number[]
     backgroundColor?: string[]

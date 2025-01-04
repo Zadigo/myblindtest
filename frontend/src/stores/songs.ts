@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
+import { defaults } from '../data/defaults';
 import type { Answer, CacheSession, Song } from "../types";
-import { defaults } from '../data/defaults'
 
 export const useSongs = defineStore('songs', () => {
     const cache = ref<CacheSession>(defaults.cache)
@@ -15,7 +15,6 @@ export const useSongs = defineStore('songs', () => {
     const scoringTimeline = ref<number[]>([])
 
     const isStarted = ref(false)
-
 
     const firstTeamScore = computed(() => {
         if (cache.value) {
@@ -33,14 +32,18 @@ export const useSongs = defineStore('songs', () => {
         }
     })
 
+    // Returns the currect song on which the 
+    // players will be trying to guess
     const currentSong = computed(() => {
         if (cache.value) {
             return cache.value.songs[cache.value.songs.length - 1]
         } else {
             return null
         }
-    })    
+    })
 
+    // The timeline allows us to track the progression for
+    // correct and incorrect answers globally for all teams
     function updateScoringTimeline (action: 'add' | 'sub') {
         const lastScore = scoringTimeline.value[scoringTimeline.value.length]
 

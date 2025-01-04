@@ -1,9 +1,19 @@
 <template>
   <section class="my-5">
-    <div class="col-sm-12 col-md-8">
-      <div class="card shadow-sm">
-        <div class="card-body">
-          <BarChart :chart-data="genreChartData" :options="genreChartOptions" height="300px" />
+    <div class="row">
+      <div class="col-sm-12 col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <BarChart :chart-data="genreChartData" :options="genreChartOptions" height="300px" />
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-12 col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <TimelineChart :chart-data="timelineData" :options="timelineOptions" height="300px" />
+          </div>
         </div>
       </div>
     </div>
@@ -12,8 +22,10 @@
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
-import BarChart from '@/components/charts/BarChart.vue'
 import type { ChartData, ChartOptions } from 'chart.js'
+
+import BarChart from '@/components/charts/BarChart.vue'
+import TimelineChart from '@/components/charts/TimelineChart.vue'
 
 // Sample data - replace with your actual data
 const songs = ref([
@@ -61,6 +73,28 @@ const genreChartOptions = computed<ChartOptions>(() => ({
     title: {
       display: true,
       text: 'Distribution of Songs by Genre'
+    }
+  }
+}))
+
+const timelineData = computed<ChartData>(() => {
+  return {
+    labels: [1, 2, 3, 4, 5, 6, 7],
+    datasets: [
+      {
+        label: 'Evolution',
+        data: [100, 101, 102, 101, 100, 99, 98],
+        borderWidth: 1
+      }
+    ]
+  }
+})
+
+const timelineOptions = computed<ChartOptions>(() => ({
+  plugins: {
+    title: {
+      display: true,
+      text: 'Timeline evolution'
     }
   }
 }))
