@@ -5,12 +5,7 @@
         Blind test
       </RouterLink>
     </li>
-    <li class="nav-item">
-      <RouterLink :to="{ name: 'statistics' }" class="nav-link">
-        <FontAwesomeIcon class="me-2" icon="chart-simple" />
-        Statistics
-      </RouterLink>
-    </li>
+    
     <li class="nav-item">
       <RouterLink :to="{ name: 'settings' }" class="nav-link">
         <FontAwesomeIcon class="me-2" icon="cog" />

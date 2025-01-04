@@ -4,9 +4,10 @@
 
 <script lang="ts" setup>
 import { useSongs } from '@/stores/songs';
-import { useSessionStorage } from '@vueuse/core';
 import type { CacheSession } from '@/types';
+import { useSessionStorage } from '@vueuse/core';
 import { onBeforeMount } from 'vue';
+import defaults from '@/data/defaults.json'
 
 const sessionCache = useSessionStorage<CacheSession>('cache', null, {
   serializer: {
@@ -29,26 +30,7 @@ songsStore.$subscribe(({ storeId }) => {
 
 onBeforeMount(() => {
   if (!sessionCache.value) {
-    sessionCache.value = {
-        songs: [],
-        currentStep: 0,
-        teams: [
-            {
-                name: '',
-                score: 0,
-                players: []
-            },
-            {
-                name: '',
-                score: 0,
-                players: []
-            }
-        ],
-        settings: {
-            rounds: 1,
-            timeLimit: 0
-        }
-    }
+    sessionCache.value = defaults.cache
   }
 })
 </script>

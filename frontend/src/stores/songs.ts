@@ -1,28 +1,10 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import type { Answer, CacheSession, Song } from "../types";
+import defaults from '../data/defaults.json'
 
 export const useSongs = defineStore('songs', () => {
-    const cache = ref<CacheSession>({
-        songs: [],
-        currentStep: 0,
-        teams: [
-            {
-                name: '',
-                score: 0,
-                players: []
-            },
-            {
-                name: '',
-                score: 0,
-                players: []
-            }
-        ],
-        settings: {
-            rounds: 1,
-            timeLimit: 0
-        }
-    })
+    const cache = ref<CacheSession>(defaults.cache)
 
     const selectedSongs = ref<Song[]>([])
 

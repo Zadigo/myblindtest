@@ -19,7 +19,7 @@ export interface Team {
     name: string
     players: Player[]
     score: number
-    color: string
+    color: string | null
 }
 
 export interface CacheSession {
@@ -29,6 +29,10 @@ export interface CacheSession {
     settings: {
         rounds: number
         timeLimit: number
+        pointValue: number
+        matchDifficulty: boolean
+        difficultyLevel: 'All' | 'Easy' | 'Medium' | 'Difficult' | 'Expert'
+        songType: 'All' | 'Pop' | 'Electro' | 'Rock'
     }
 }
 

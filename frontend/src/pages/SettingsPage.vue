@@ -4,6 +4,13 @@
       <TeamBlock v-for="(team, i) in cache.teams" :key="i" :team="team" @select-color="handleColorSelection" />
     </div>
 
+    <div class="card shadow-sm mt-2">
+      <div class="card-body">
+        <v-text-field type="number" min="1" variant="solo-filled" placeholder="Point value" flat />
+        <v-switch label="Ponder for song difficulty" />
+      </div>
+    </div>
+
     <v-dialog v-model="showChooseColor" style="width:500px;">
       <v-card>
         <v-card-text>
