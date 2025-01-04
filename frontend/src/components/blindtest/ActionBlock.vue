@@ -4,11 +4,7 @@
       {{ teamName }}
     </p>
 
-    <div class="d-flex justify-content-center gap-2">
-      <!-- <button :disabled="!isStarted" type="button" class="btn btn-dark btn-rounded shadow-none" @click="handleNextSong(false)">
-        <FontAwesomeIcon icon="xmark" />
-      </button> -->
-      
+    <div class="d-flex justify-content-center gap-2">      
       <button :disabled="!isStarted" type="button" class="btn btn-dark btn-rounded shadow-none" @click="handleAnswer">
         <FontAwesomeIcon icon="check" />
       </button>
@@ -20,6 +16,7 @@
 import { useSongs } from '@/stores/songs';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
+import { toast } from 'vue-sonner';
 
 const emit = defineEmits({
   'next-song' (_data: number) {
@@ -56,27 +53,29 @@ const team = computed(() => {
 })
 
 const teamName = computed(() => {
-  if (cache.value) {
-    // const team = cache.value.teams[teamIndex.value]
-
-    if (team.value && team.value.name !== "") {
-      return team.value.name
-    }
+  if (team.value && team.value.name !== "") {
+    return team.value.name
+  } else {
+    return `Team n°${props.teamId}`
   }
-  return `Team n°${props.teamId}`
 })
 
 const elementColor = computed(() => {
-  if (cache.value) {
-    if (team.value) {
-      return team.value.color
-    }
+  if (team.value && team.value.color) {
+    return team.value.color
+  } else {
+    return 'rgba(33,150,243, 1)'
   }
-  return 'rgba(33,150,243, 1)'
 })
 
+// Adds a value to the current
+// team's score
 function handleScore () {
-  cache.value.teams[teamIndex.value].score += 1
+  if (team.value) {
+    team.value.score += cache.value.settings.pointValue
+  } else {
+    toast.error('No team was present or cache is empty')
+  }
 }
 
 function handleAnswer () {
