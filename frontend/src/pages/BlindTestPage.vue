@@ -18,6 +18,8 @@
           <div class="badge badge-success">
             {{ currentSong.genre }}
           </div>
+
+          <v-rating :length="currentSong.difficulty" />
         </div>
 
         <div v-else class="fw-light">

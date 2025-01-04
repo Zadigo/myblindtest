@@ -30,7 +30,7 @@ export interface CacheSession {
         rounds: number
         timeLimit: number
         pointValue: number
-        matchDifficulty: boolean
+        matchSongDifficulty: boolean
         difficultyLevel: 'All' | 'Easy' | 'Medium' | 'Difficult' | 'Expert'
         songType: 'All' | 'Pop' | 'Electro' | 'Rock'
     }

@@ -7,7 +7,7 @@
     <div class="card shadow-sm mt-2">
       <div v-if="songsStore.cache" class="card-body">
         <v-text-field v-model.number="songsStore.cache.settings.pointValue" type="number" min="1" variant="solo-filled" placeholder="Point value" flat />
-        <v-switch v-model="songsStore.cache.settings.matchDifficulty" label="Ponder for song difficulty" />
+        <v-switch v-model="songsStore.cache.settings.matchSongDifficulty" label="Match score to song difficulty" />
       </div>
 
       <div v-if="songsStore.cache" class="card-body">

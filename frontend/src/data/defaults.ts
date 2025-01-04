@@ -45,7 +45,7 @@ export const defaults: { cache: CacheSession } = {
             rounds: 1,
             timeLimit: 0,
             pointValue: 1,
-            matchDifficulty: false,
+            matchSongDifficulty: false,
             difficultyLevel: 'All' as 'All' | 'Easy' | 'Medium' | 'Difficult' | 'Expert',
             songType: 'All' as 'All' | 'Pop' | 'Electro' | 'Rock'
         }

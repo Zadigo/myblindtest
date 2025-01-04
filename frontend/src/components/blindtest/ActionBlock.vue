@@ -72,7 +72,17 @@ const elementColor = computed(() => {
 // team's score
 function handleScore () {
   if (team.value) {
-    team.value.score += cache.value.settings.pointValue
+    if (cache.value.settings.matchSongDifficulty) {
+      if (songsStore.currentSong) {
+        team.value.score += (
+          cache.value.settings.pointValue * songsStore.currentSong.difficulty
+        )
+      } else {
+        toast.error('Could not a use song difficulty without current song')
+      }
+    } else {
+      team.value.score += cache.value.settings.pointValue
+    }
   } else {
     toast.error('No team was present or cache is empty')
   }
