@@ -1,5 +1,6 @@
 import re
 from urllib.parse import urlunparse
+
 from django.db import models
 from songs import managers, validators
 from songs.choices import MusicGenre

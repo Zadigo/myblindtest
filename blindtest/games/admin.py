@@ -1,4 +1,4 @@
-from answers.models import SongStatistic
+from games.models import SongStatistic
 from django.contrib import admin
 
 
