@@ -21,11 +21,22 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
 import type { ChartData, ChartOptions } from 'chart.js'
+import { useHead } from 'unhead'
+import { computed, ref } from 'vue'
 
 import BarChart from '@/components/charts/BarChart.vue'
 import TimelineChart from '@/components/charts/TimelineChart.vue'
+
+useHead({
+  title: 'Statistics',
+  meta: [
+    {
+      name: 'description',
+      content: 'Write a description here'
+    }
+  ]
+})
 
 // Sample data - replace with your actual data
 const songs = ref([

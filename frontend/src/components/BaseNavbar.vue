@@ -12,12 +12,6 @@
       <div id="navbarNav" class="collapse navbar-collapse">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <RouterLink :to="{ name: 'blind_test' }" class="nav-link" aria-current="page">
-              Home
-            </RouterLink>
-          </li>
-
-          <li class="nav-item">
             <RouterLink :to="{ name: 'statistics' }" class="nav-link" aria-current="page">
               Statistics
             </RouterLink>

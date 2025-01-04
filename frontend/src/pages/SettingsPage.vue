@@ -35,16 +35,27 @@
 </template>
 
 <script setup lang="ts">
+import { difficultyLevels, songTypes } from '@/data/defaults';
 import { useSongs } from '@/stores/songs';
 import { Team } from '@/types';
 import { useDebounce } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
+import { useHead } from 'unhead';
 import { ref, watch } from 'vue';
 import type { Harmony } from 'vue-color-wheel';
 import { VueColorWheel } from 'vue-color-wheel';
-import { difficultyLevels, songTypes } from '@/data/defaults'
 
 import TeamBlock from '@/components/creation/TeamBlock.vue';
+
+useHead({
+  title: 'Blind test settings',
+  meta: [
+    {
+      name: 'description',
+      content: 'Write a description here'
+    }
+  ]
+})
 
 const songsStore = useSongs()
 const { cache } = storeToRefs(songsStore)

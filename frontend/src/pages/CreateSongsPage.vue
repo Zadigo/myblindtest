@@ -25,18 +25,29 @@
 </template>
 
 <script setup lang="ts">
+import { addNewSongData } from '@/data/defaults';
 import { useAxiosClient } from '@/plugins/client';
 import { CreateData } from '@/types';
+import { useLocalStorage } from '@vueuse/core';
+import { useHead } from 'unhead';
 import { onMounted, provide, ref } from 'vue';
 import { toast } from 'vue-sonner';
-import { useLocalStorage } from '@vueuse/core';
 
 import CreateBlock from '@/components/creation/CreateBlock.vue';
-import { addNewSongData } from '@/data/defaults';
 
-const blocks = ref<CreateData[]>([ addNewSongData ])
+useHead({
+  title: ' Create new song',
+  meta: [
+    {
+      name: 'description',
+      content: 'Write a description here'
+    }
+  ]
+})
 
 const { client } = useAxiosClient()
+
+const blocks = ref<CreateData[]>([ addNewSongData ])
 
 const genres = useLocalStorage<string[]>('genres', null, {
   serializer: {
