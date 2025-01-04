@@ -6,7 +6,7 @@
 
     <div class="card shadow-sm mt-2">
       <div v-if="songsStore.cache" class="card-body">
-        <v-text-field v-model="songsStore.cache.settings.pointValue" type="number" min="1" variant="solo-filled" placeholder="Point value" flat />
+        <v-text-field v-model.number="songsStore.cache.settings.pointValue" type="number" min="1" variant="solo-filled" placeholder="Point value" flat />
         <v-switch v-model="songsStore.cache.settings.matchDifficulty" label="Ponder for song difficulty" />
       </div>
 
@@ -44,7 +44,7 @@ import type { Harmony } from 'vue-color-wheel';
 import { VueColorWheel } from 'vue-color-wheel';
 import { difficultyLevels, songTypes } from '@/data/defaults'
 
-import TeamBlock from '@/components/TeamBlock.vue';
+import TeamBlock from '@/components/creation/TeamBlock.vue';
 
 const songsStore = useSongs()
 const { cache } = storeToRefs(songsStore)

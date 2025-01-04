@@ -31,7 +31,7 @@ import { onMounted, provide, ref } from 'vue';
 import { toast } from 'vue-sonner';
 import { useLocalStorage } from '@vueuse/core';
 
-import CreateBlock from '@/components/CreateBlock.vue';
+import CreateBlock from '@/components/creation/CreateBlock.vue';
 import { addNewSongData } from '@/data/defaults';
 
 const blocks = ref<CreateData[]>([ addNewSongData ])
