@@ -45,5 +45,6 @@ export interface CreateData {
 }
 
 export interface Answer {
+    teamId: number
     song: Song
 }

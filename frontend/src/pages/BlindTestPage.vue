@@ -27,14 +27,14 @@
         <hr class="my-4">
 
         <div class="d-flex justify-content-around gap-1">
-          <ActionBlock :team-id="1" @next-song="handleNextSong" />
-          <ActionBlock :team-id="2" @next-song="handleNextSong" />
+          <ActionBlock :team-id="1" @next-song="handleAnswer" />
+          <ActionBlock :team-id="2" @next-song="handleAnswer" />
         </div>
       </div>
 
       <div class="card-body">
         <div class="d-flex justify-content-center gap-2">
-          <button type="button" class="btn btn-dark btn-rounded shadow-none">
+          <button type="button" class="btn btn-dark btn-rounded shadow-none" @click="handleIncorrectAnswer">
             <FontAwesomeIcon icon="close" /> Wrong answer
           </button>
 
@@ -57,6 +57,7 @@
 
 <script lang="ts" setup>
 import ActionBlock from '@/components/blindtest/ActionBlock.vue';
+import { getBaseUrl } from '@/plugins/client';
 import { useSongs } from '@/stores/songs';
 import type { Song } from '@/types';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -73,10 +74,11 @@ useHead({
 })
 
 const songsStore = useSongs()
-const { selectedSongs, currentSong, correctAnswers, incorrectAnswers, isStarted } = storeToRefs(songsStore)
+const { selectedSongs, currentSong, correctAnswers, isStarted } = storeToRefs(songsStore)
 
-const ws = useWebSocket('ws://127.0.0.1:8000/ws/songs', {
+const ws = useWebSocket(getBaseUrl('/ws/songs', null, true), {
   immediate: false,
+  // autoReconnect: true,
   onConnected() {
     songsStore.isStarted = true
   },
@@ -136,31 +138,31 @@ function handleStop () {
   }
 }
 
-function handleNextSong (data: (number | boolean)[]) {
-  const teamId = data[0]
-  const correctAnswser = data[1]
+function handleNextSong () {
+  ws.send(sendMessage({ 
+    type: 'next.song', 
+    exclude: songsStore.cache.songs.map(x => x.id)
+  }))
+  
+  songsStore.cache.currentStep += 1
+}
 
-  console.log(teamId, correctAnswser)
+// Handle errors where both teams answered
+// incorrectly to the given song
+function handleIncorrectAnswer () {
+  handleNextSong()
+}
 
+function handleAnswer (teamId: number) {
   if (songsStore.cache) {
-    songsStore.cache.currentStep += 1
-
-    if (correctAnswser && currentSong.value) {
+    if (currentSong.value) {
       correctAnswers.value.push({
-        song: currentSong.value
-      })
-    } 
-    
-    if (!correctAnswser && currentSong.value) {
-      incorrectAnswers.value.push({
+        teamId: teamId,
         song: currentSong.value
       })
     }
 
-    ws.send(sendMessage({ 
-      type: 'next.song', 
-      exclude: songsStore.cache.songs.map(x => x.id)
-    }))
+    handleNextSong()
   }
 }
 </script>

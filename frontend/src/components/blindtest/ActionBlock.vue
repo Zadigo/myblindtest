@@ -9,7 +9,7 @@
         <FontAwesomeIcon icon="xmark" />
       </button> -->
       
-      <button :disabled="!isStarted" type="button" class="btn btn-dark btn-rounded shadow-none" @click="handleNextSong(true)">
+      <button :disabled="!isStarted" type="button" class="btn btn-dark btn-rounded shadow-none" @click="handleAnswer">
         <FontAwesomeIcon icon="check" />
       </button>
     </div>
@@ -22,7 +22,7 @@ import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 
 const emit = defineEmits({
-  'next-song' (_data: (number | boolean)[]) {
+  'next-song' (_data: number) {
     return true
   }
 })
@@ -79,8 +79,8 @@ function handleScore () {
   cache.value.teams[teamIndex.value].score += 1
 }
 
-function handleNextSong (state: boolean = false) {
+function handleAnswer () {
   handleScore()
-  emit('next-song', [ props.teamId, state ])
+  emit('next-song', props.teamId)
 }
 </script>

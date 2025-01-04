@@ -45,7 +45,7 @@ export default defineConfig(({ mode }) => {
           inline: ['vuetify']
         }
       }
-    },
+    }
   }
 })
 

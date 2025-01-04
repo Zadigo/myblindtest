@@ -2,18 +2,31 @@ import axios from 'axios'
 import type { App } from 'vue'
 
 
-function getBaseUrl (path: string, altDomain?: string, port: number = 8000) {
-    const isSecure = window.location.href.startsWith('https://')
-    const loc = isSecure ? 'https' : 'http'
-    const domain = import.meta.env.DEV ? '127.0.0.1' : altDomain || import.meta.env.VITE_BASE_DOMAIN
-    console.info(domain)
+function isSecure() {
+    return window.location.href.startsWith('https://')
+}
+
+export function getDomain (altDomain?: string | null) {
+    return import.meta.env.DEV ? '127.0.0.1' : altDomain || import.meta.env.VITE_BASE_DOMAIN   
+}
+
+export function getBaseUrl(path: string, altDomain?: string | null, websocket: boolean = false, port: number = 8000) {
+    let loc
+
+    if (websocket) {
+        loc = isSecure() ? 'wss' : 'ws'
+    } else {
+        loc = isSecure() ? 'https' : 'http'
+    }
+
+    const domain = getDomain(altDomain)
     return `${loc}://${domain}:${port}${path}`
 }
 
-export default function createClient (path?: string, altDomain?: string, port?: 8000) {
+export default function createClient(path?: string, altDomain?: string, port?: 8000) {
     const basePath = path || '/api/v1/'
-    const instance =  axios.create({
-        baseURL: getBaseUrl(basePath, altDomain, port),
+    const instance = axios.create({
+        baseURL: getBaseUrl(basePath, altDomain, false, port),
         headers: { "Content-Type": 'application/json' },
         timeout: 10000,
         withCredentials: true
@@ -40,13 +53,9 @@ export default function createClient (path?: string, altDomain?: string, port?: 
     return instance
 }
 
-const client = createClient()
+// const client = createClient()
 
-function installAxiosClient (app: App) {
-    app.config.globalProperties.$client = client
-}
-
-function useAxiosClient () {
+export function useAxiosClient() {
     const client = createClient()
 
     return {
@@ -54,8 +63,13 @@ function useAxiosClient () {
     }
 }
 
-export {
-    client, getBaseUrl,
-    installAxiosClient, useAxiosClient
+export function installAxiosClient(app: App) {
+    const { client } = useAxiosClient()
+    app.config.globalProperties.$client = client
 }
+
+// export {
+//     getBaseUrl,
+//     installAxiosClient, useAxiosClient
+// }
 
