@@ -9,6 +9,7 @@ import router from './routes'
 import installPlugins from './plugins'
 
 import './style.scss'
+import './assets/spinners.scss'
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 import 'bootstrap/dist/css/bootstrap.min.css'
