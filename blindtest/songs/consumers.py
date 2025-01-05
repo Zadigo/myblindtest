@@ -1,5 +1,7 @@
+import asyncio
+import datetime
 import random
-
+from django.utils import timezone
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from django.core import exceptions
@@ -77,6 +79,21 @@ class SongConsumer(AsyncJsonWebsocketConsumer):
 
         if not action:
             self.send_error()
+
+        # async def time_calculator():
+        #     while True:
+        #         d = timezone.now() + timezone.timedelta(seconds=1)
+        #         await asyncio.sleep(1)
+        #         await self.send_json({'type': 'get.date', 'date': d})
+
+        # async def receive_messages():
+        #     pass
+
+        # t1 = asyncio.create_task(time_calculator())
+        # t2 = asyncio.create_task(receive_messages())
+
+        # await t1
+        # await t2
 
         if action == 'start.game':
             self.difficulty = content.get('game_difficulty', 'All')
