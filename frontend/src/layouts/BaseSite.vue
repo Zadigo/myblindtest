@@ -1,9 +1,14 @@
 <template>
   <section class="site">
-    <BaseNavbar />
+    <BaseNavbar v-if="$route.name !== 'blind_test'" />
     <Toaster position="top-right" />
 
-    <RouterView />
+    <!-- Main -->
+    <RouterView v-slot="{ Component }">
+      <Transition name="opacity">
+        <component :is="Component" />
+      </Transition>
+    </RouterView>
   </section>
 </template>
 

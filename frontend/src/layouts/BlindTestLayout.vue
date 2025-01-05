@@ -33,12 +33,16 @@
 
 <script lang="ts" setup>
 import { useSongs } from '@/stores/songs';
+import { useMediaQuery } from '@vueuse/core';
 import { useHead } from 'unhead';
 import { computed, ref } from 'vue';
 
 useHead({
   title: 'Blind test'
 })
+
+const isLargeScreen = useMediaQuery('(min-width: 1024px)')
+console.log('isLargeScreen', isLargeScreen.value)
 
 const songsStore = useSongs()
 const showBlindtestSettings = ref(false)
@@ -93,6 +97,27 @@ const teamStyles = computed(() => {
     min-width: 420px;
     height: auto;
     left: 34%;
+  }
+
+  /* Laptops and small screens */
+  @media screen and (min-width: 769px) and (max-width: 1024px) {
+    .video {
+      left: 34%;
+    }
+  }
+
+  /* Large screens and Desktops */
+  @media screen and (min-width: 1025px) and (max-width: 1200px) {
+    .video {
+      left: 38%;
+    }
+  }
+
+  /* TV and Extra Large Screens */
+  @media screen and (min-width: 1201px) {
+    .video {
+      left: 34%;
+    }
   }
 }
 </style>

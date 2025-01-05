@@ -1,11 +1,13 @@
 <template>
-  <div ref="teamBlockEl" :style="blockStyles" class="d-flex flex-column align-items-center">
-    <div class="p-3 bg-dark text-light mb-1 rounded-3">
+  <div ref="teamBlockEl" :style="blockStyles" class="d-flex flex-column align-items-center position-relative">
+    <!-- Team Name -->
+    <div class="p-3 bg-dark text-light mb-3 rounded-3">
       <h1 class="h4 fw-bold m-0 d-flex align-items-center gap-2">
         {{ teamName }}
       </h1>
     </div>
     
+    <!-- Score -->
     <div ref="scoreBoxEl" class="score p-3 rounded-3 bg-dark text-light" style="width: 200px;">
       <h2 class="fs-1 w bold m-0">
         {{ teamScore }}
@@ -16,8 +18,7 @@
       </p>
     </div>
 
-    {{ consecutiveAnswers }}
-
+    <!-- Actions -->
     <div class="mt-5 d-flex align-items-center flex-column gap-2">
       <v-btn :disabled="!songsStore.isStarted" size="x-large" rounded @click="handleCorrectAnswer">
         <FontAwesomeIcon icon="check" class="me-2" /> Validate answer
@@ -27,6 +28,16 @@
         <FontAwesomeIcon icon="cog" />
       </v-btn>
     </div>
+
+    <!-- Consecutive Answers -->
+    <Transition class="animate__animated" enter-to-class="animate__zoomInLeft" leave-to-class="animate__fadeOutLeft">
+      <h1 v-if="hasConsecutiveAnswers" id="exceptional">
+        Exceptional x {{ consecutiveAnswers }}
+      </h1>
+    </Transition>
+
+    <!-- Fireworks -->
+    <BaseFireworks v-show="isStarted && hasConsecutiveAnswers" />
   </div>
 </template>
 
@@ -36,6 +47,8 @@ import { whenever } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import { toast } from 'vue-sonner';
+
+import BaseFireworks from '../BaseFireworks.vue';
 
 const emit = defineEmits({
   'next-song' (_data: number) {
@@ -62,7 +75,7 @@ const props = defineProps({
 })
 
 const songsStore = useSongs()
-const { cache, correctAnswers } = storeToRefs(songsStore)
+const { cache, correctAnswers, isStarted } = storeToRefs(songsStore)
 
 const teamBlockEl = ref<HTMLElement>()
 const scoreBoxEl = ref<HTMLElement>()
@@ -133,7 +146,7 @@ whenever(hasConsecutiveAnswers, () => {
 
 async function handleAnimation () {
   if (scoreBoxEl.value) {
-    const animationClasses = ['animate__animated', 'animate__heartBeat', 'animate__repeat-2'];
+    const animationClasses = ['animate__animated', 'animate__heartBeat', 'animate__repeat-1'];
     
     // First remove the classes if they exist
     scoreBoxEl.value.classList.remove(...animationClasses);
@@ -172,3 +185,10 @@ async function handleCorrectAnswer () {
   emit('next-song', props.teamId)
 }
 </script>
+
+<style lang="scss" scoped>
+h1#exceptional {
+  font-family: "Rowdies", "Roboto", sans-serif;
+  margin-top: 4rem;
+}
+</style>
