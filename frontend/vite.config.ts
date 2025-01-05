@@ -15,6 +15,11 @@ export default defineConfig(({ mode }) => {
 
   return {
     root,
+    server: {
+      proxy: {
+        
+      }
+    },
     resolve: {
       alias: [
         {

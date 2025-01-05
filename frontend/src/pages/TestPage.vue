@@ -72,8 +72,9 @@
           </div>
 
           <div class="card-body">
+            <PlayerItem video-id="Kv7ZooXyno8" />
             <!-- https://www.youtube.com/embed/0-EF60neguk -->
-            <iframe width="400" height="200" src="https://www.youtube.com/embed/0-EF60neguk" title="Sinéad O&#39;Connor - Nothing Compares 2 U (Official Music Video) [HD]" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" :onYouTubeIframeAPIReady="handleIframeLoaded" />
+            <!-- <iframe width="400" height="200" src="https://www.youtube.com/embed/0-EF60neguk" title="Sinéad O&#39;Connor - Nothing Compares 2 U (Official Music Video) [HD]" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" :onYouTubeIframeAPIReady="handleIframeLoaded" /> -->
             <div class="text-center">
               <span class="loader-7" />
             </div>
@@ -117,6 +118,7 @@
 </template>
 
 <script lang="ts" setup>
+import PlayerItem from '@/components/youtube/PlayerItem.vue';
 import 'animate.css';
 
 import { ref } from 'vue';
@@ -136,10 +138,6 @@ function handleAnswer () {
 
 function handleNextSong () {
   // Do something
-}
-
-function handleIframeLoaded () {
-  console.log('Iframe')
 }
 </script>
 
