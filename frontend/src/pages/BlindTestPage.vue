@@ -1,161 +1,49 @@
 <template>
-  <div class="col-sm-12 col-md-6">
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <h1 v-if="currentSong" class="h4">
-          {{ currentSong.name }}
-        </h1>
+  <BlindTestLayout>
+    <template #teamOne>
+      <TeamBlock :team-id="0" :margin-right="10" @next-song="handleCorrectAnswer" @team:settings="handleTeamSelection" />
+    </template>
+    
+    <template #teamTwo>
+      <TeamBlock :team-id="1" :margin-left="10" @next-song="handleCorrectAnswer" @team:settings="handleTeamSelection" />
+    </template>
 
-        <h1 v-else class="h4">
-          Loading...
-        </h1>
+    <template #video>
+      <VideoBlock ref="videoEl" @game:settings="showGameSettings=true" />
+    </template>
 
-        <div v-if="currentSong" class="fw-light d-flex gap-2 align-items-center">
-          <p class="m-0">
-            {{ currentSong.artist }}
-          </p>
-          
-          <div class="badge badge-success">
-            {{ currentSong.genre }}
-          </div>
-
-          <v-rating :length="currentSong.difficulty" />
-        </div>
-
-        <div v-else class="fw-light">
-          Loading...
-        </div>
-
-        <hr class="my-4">
-
-        <div class="d-flex justify-content-around gap-1">
-          <ActionBlock :team-id="1" @next-song="handleAnswer" />
-          <ActionBlock :team-id="2" @next-song="handleAnswer" />
-        </div>
-      </div>
-
-      <div class="card-body">
-        <div class="d-flex justify-content-center gap-2">
-          <button type="button" class="btn btn-dark btn-rounded shadow-none" @click="handleIncorrectAnswer">
-            <FontAwesomeIcon icon="close" /> Wrong answer
-          </button>
-
-          <button v-if="isStarted" type="button" class="btn btn-danger btn-rounded shadow-none" @click="handleStop">
-            <FontAwesomeIcon class="me-2" icon="stop" /> Stop
-          </button>
-
-          <button v-if="isStarted" type="button" class="btn btn-warning btn-rounded shadow-none" @click="handleStart">
-            <FontAwesomeIcon class="me-2" icon="refresh" /> Reconnect
-          </button>
-
-          <button v-else type="button" class="btn btn-dark btn-rounded shadow-none" @click="handleStart">
-            Start
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+    <template #default>
+      <GameSettings v-model="showGameSettings" />
+      <TeamSettings v-model="showTeamSettings" :team-id="selectedTeam" :update:team="handleUpdateTeam" />
+    </template>
+  </BlindTestLayout>
 </template>
 
 <script lang="ts" setup>
-import ActionBlock from '@/components/blindtest/ActionBlock.vue';
-import { getBaseUrl } from '@/plugins/client';
 import { useSongs } from '@/stores/songs';
-import type { Song } from '@/types';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { useWebSocket } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import { useHead } from 'unhead';
-import { provide } from 'vue';
-import { toast } from 'vue-sonner';
+import { ref } from 'vue';
 
-// import z from 'zod'
+import TeamBlock from '@/components/blindtest/TeamBlock.vue';
+import VideoBlock from '@/components/blindtest/VideoBlock.vue';
+import GameSettings from '@/components/modals/GameSettings.vue';
+import TeamSettings from '@/components/modals/TeamSettings.vue';
+import BlindTestLayout from '@/layouts/BlindTestLayout.vue';
 
 useHead({
   title: 'Blind test'
 })
 
 const songsStore = useSongs()
-const { selectedSongs, currentSong, correctAnswers, isStarted } = storeToRefs(songsStore)
+const { currentSong, correctAnswers } = storeToRefs(songsStore)
 
-const ws = useWebSocket(getBaseUrl('/ws/songs', null, true), {
-  immediate: false,
-  // autoReconnect: true,
-  onConnected() {
-    songsStore.isStarted = true
-  },
-  onMessage() {
-    const data = JSON.parse(ws.data.value)
+const showGameSettings = ref(false)
+const showTeamSettings = ref(false)
+const selectedTeam = ref<number>(0)
+const videoEl = ref<HTMLElement>()
 
-    if (data.type === 'get.song') {
-      if (songsStore.cache) {
-        songsStore.cache.songs.push(data.data as Song)
-      }
-    }
-    
-    if (data.type === 'next.song') {
-      if (songsStore.cache) {
-        const existingSong = songsStore.cache.songs.filter(x => x.id === data.data.id)
-
-        if (existingSong.length > 0) {
-          toast.error('Song already played')
-        } else {
-          songsStore.cache.songs.push(data.data as Song)
-        }
-      }
-    }
-  },
-  onDisconnected() {
-    songsStore.isStarted = false
-    toast.error('Disconnected from a asgi')
-  },
-  onError() {
-
-  }
-})
-
-provide('isStarted', songsStore.isStarted)
-
-function sendMessage (data: Record<string, string | number[] | boolean>) {
-  return JSON.stringify(data)
-}
-
-function handleStart () {
-  ws.open()
-  ws.send(sendMessage({ type: 'get.song' }))
-  toast.success('Started blind test')
-}
-
-function handleStop () {
-  ws.close()
-  toast.success('Stopped blind test')
-
-  if (songsStore.cache) {
-    selectedSongs.value = []
-    songsStore.cache.songs = []
-    songsStore.cache.teams.forEach(x => {
-      x.score = 0
-    })
-    songsStore.cache.currentStep = 0
-  }
-}
-
-function handleNextSong () {
-  ws.send(sendMessage({ 
-    type: 'next.song', 
-    exclude: songsStore.cache.songs.map(x => x.id)
-  }))
-  
-  songsStore.cache.currentStep += 1
-}
-
-// Handle errors where both teams answered
-// incorrectly to the given song
-function handleIncorrectAnswer () {
-  handleNextSong()
-}
-
-function handleAnswer (teamId: number) {
+function handleCorrectAnswer (teamId: number) {
   if (songsStore.cache) {
     if (currentSong.value) {
       correctAnswers.value.push({
@@ -164,7 +52,20 @@ function handleAnswer (teamId: number) {
       })
     }
 
-    handleNextSong()
+    if (videoEl.value) {
+      videoEl.value.handleNextSong()
+    }
+  }
+}
+
+function handleTeamSelection (teamId: number) {
+  selectedTeam.value = teamId
+  showTeamSettings.value = true
+}
+
+function handleUpdateTeam (value: string) {
+  if (songsStore.cache) {
+    songsStore.cache.teams[selectedTeam.value].name = value
   }
 }
 </script>

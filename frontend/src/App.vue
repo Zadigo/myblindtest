@@ -43,6 +43,8 @@ songsStore.$subscribe(({ storeId }) => {
 onBeforeMount(() => {
   if (!sessionCache.value) {
     sessionCache.value = defaults.cache
+  } else {
+    songsStore.cache = sessionCache.value
   }
 })
 </script>

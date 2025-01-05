@@ -1,0 +1,174 @@
+<template>
+  <div ref="teamBlockEl" :style="blockStyles" class="d-flex flex-column align-items-center">
+    <div class="p-3 bg-dark text-light mb-1 rounded-3">
+      <h1 class="h4 fw-bold m-0 d-flex align-items-center gap-2">
+        {{ teamName }}
+      </h1>
+    </div>
+    
+    <div ref="scoreBoxEl" class="score p-3 rounded-3 bg-dark text-light" style="width: 200px;">
+      <h2 class="fs-1 w bold m-0">
+        {{ teamScore }}
+      </h2>
+
+      <p class="m-0 fw-light text-lowercase">
+        Points
+      </p>
+    </div>
+
+    {{ consecutiveAnswers }}
+
+    <div class="mt-5 d-flex align-items-center flex-column gap-2">
+      <v-btn :disabled="!songsStore.isStarted" size="x-large" rounded @click="handleCorrectAnswer">
+        <FontAwesomeIcon icon="check" class="me-2" /> Validate answer
+      </v-btn>
+
+      <v-btn variant="tonal" color="dark" rounded @click="emit('team:settings', teamId)">
+        <FontAwesomeIcon icon="cog" />
+      </v-btn>
+    </div>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { useSongs } from '@/stores/songs';
+import { whenever } from '@vueuse/core';
+import { storeToRefs } from 'pinia';
+import { computed, ref } from 'vue';
+import { toast } from 'vue-sonner';
+
+const emit = defineEmits({
+  'next-song' (_data: number) {
+    return true
+  },
+  'team:settings' (_teamId: number) {
+    return true
+  }
+})
+
+const props = defineProps({
+  teamId: {
+    type: Number,
+    default: 1
+  },
+  marginRight: {
+    type: Number,
+    default: 0
+  },
+  marginLeft: {
+    type: Number,
+    default: 0
+  }
+})
+
+const songsStore = useSongs()
+const { cache, correctAnswers } = storeToRefs(songsStore)
+
+const teamBlockEl = ref<HTMLElement>()
+const scoreBoxEl = ref<HTMLElement>()
+const currentBonus = ref<number>(0)
+
+const team = computed(() => {
+  if (cache.value) {
+    return cache.value.teams[props.teamId]
+  } else {
+    return null
+  }
+})
+
+const teamName = computed(() => {
+  if (team.value && team.value.name !== "") {
+    return team.value.name
+  } else {
+    return ''
+  }
+})
+
+const teamScore = computed(() => {
+  if (team.value) {
+    return team.value.score
+  } else {
+    return 0
+  }
+})
+
+const blockStyles = computed(() => {
+  return `margin-left:${props.marginLeft}rem;margin-right:${props.marginRight}rem;`
+})
+
+// Checks when a team has given multiple consecutive
+// answers (at least 2)
+const MIN_CONSECUTIVE = 2; // or whatever number you want
+
+const consecutiveAnswers = computed(() => {
+  if (correctAnswers.value.length < MIN_CONSECUTIVE) {
+    return 0;
+  }
+
+  let count = 0;
+  
+  for (let i = correctAnswers.value.length - 1; i >= 0; i--) {
+    const answer = correctAnswers.value[i];
+    
+    if (answer.teamId === props.teamId) {
+      count++;
+    } else {
+      break;
+    }
+  }
+
+  return count >= MIN_CONSECUTIVE ? count : 0;
+});
+
+// Flag that explicitly returns if the team has
+// answered consecutive answers
+const hasConsecutiveAnswers = computed(() => {
+  return consecutiveAnswers.value > MIN_CONSECUTIVE
+})
+
+whenever(hasConsecutiveAnswers, () => {
+  // Do something
+  currentBonus.value = 0
+})
+
+async function handleAnimation () {
+  if (scoreBoxEl.value) {
+    const animationClasses = ['animate__animated', 'animate__heartBeat', 'animate__repeat-2'];
+    
+    // First remove the classes if they exist
+    scoreBoxEl.value.classList.remove(...animationClasses);
+    
+    // Force a reflow to restart the animation
+    void scoreBoxEl.value.offsetWidth;
+    
+    // Add the classes back
+    scoreBoxEl.value.classList.add(...animationClasses);
+  }
+}
+
+// Adds a value to the current
+// team's score
+async function handleScore () {
+  if (team.value) {
+    if (cache.value.settings.matchSongDifficulty) {
+      if (songsStore.currentSong) {
+        team.value.score += (
+          cache.value.settings.pointValue * songsStore.currentSong.difficulty
+        )
+      } else {
+        toast.error('Could not a use song difficulty without current song')
+      }
+    } else {
+      team.value.score += cache.value.settings.pointValue
+    }
+  } else {
+    toast.error('No team was present or cache is empty')
+  }
+}
+
+async function handleCorrectAnswer () {
+  await handleScore()
+  await handleAnimation()
+  emit('next-song', props.teamId)
+}
+</script>

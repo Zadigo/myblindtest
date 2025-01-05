@@ -1,78 +1,98 @@
 <template>
-  <section class="site">
-    <BaseNavbar />
-    <Toaster position="top-right" />
-
-    <section class="container my-5">
-      <div class="row">
-        <Transition name="opacity">
-          <div v-if="!isStarted" class="col-sm-12 col-md-12">
-            <div class="card shadow-sm mb-2">
-              <div class="card-body">
-                <BaseTabs />
-              </div>
-            </div>
-          </div>
-        </Transition>
-
-        <RouterView />
-
-        <div class="col-sm-12 col-md-6">
-          <div class="card shadow-sm mb-2">
-            <div class="card-body">
-              <div class="infos d-flex align-items-center gap-2">
-                <h3 v-if="cache" class="bg-secondary rounded-1 p-3 d-flex flex-column text-center">
-                  {{ cache.currentStep }}
-                  <span class="fw-light">song</span>
-                </h3>
-
-                <h3 class="bg-info rounded-1 p-3 d-flex flex-column text-center">
-                  {{ firstTeamScore }}
-                  <span class="fw-light">Team n°1</span>
-                </h3>
-
-                <h3 class="bg-info rounded-1 p-3 d-flex flex-column text-center">
-                  {{ secondTeamScore }}
-                  <span class="fw-light">Team n°2</span>
-                </h3>
-              </div>
-            </div>
-          </div>
-
-          <div class="card shadow-sm">
-            <div v-if="currentSong" class="card-body text-center">
-              <iframe :src="currentSong.youtube" width="480" height="315" title="YouTube video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; web-share" referrerpolicy="strict-origin-when-cross-origin" />
-            </div>
-          </div>
-        </div>
+  <div class="blind-test position-relative">
+    <div class="teams">
+      <div class="team bg-light">
+        <slot name="teamOne" />
       </div>
-    </section>
-  </section>
+      
+      <div :style="teamStyles" class="team">
+        <slot name="teamTwo" />
+      </div>
+
+      <!-- Video -->
+      <slot name="video" />
+    </div>
+
+    <slot />
+
+    <v-dialog v-model="showBlindtestSettings" persistent style="width:500px;">
+      <v-card>
+        <v-card-text>
+          Settings
+        </v-card-text>
+
+        <v-card-actions>
+          <v-btn variant="text" @click="showBlindtestSettings=false">
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { useHead } from 'unhead';
-import { Toaster } from 'vue-sonner';
-
-import BaseNavbar from '@/components/BaseNavbar.vue';
-import BaseTabs from '@/components/BaseTabs.vue';
 import { useSongs } from '@/stores/songs';
-import { storeToRefs } from 'pinia';
+import { useHead } from 'unhead';
+import { computed, ref } from 'vue';
 
 useHead({
   title: 'Blind test'
 })
 
 const songsStore = useSongs()
-const { cache, currentSong, firstTeamScore, secondTeamScore, isStarted } = storeToRefs(songsStore)
-</script>
+const showBlindtestSettings = ref(false)
 
-<style lang="scss" scoped>
-.infos h3 {
-  min-width: 100px;
+
+function formatStyle (value: string | null) {
+  if (value) {
+    return `background-color: ${value};`
+  } else {
+    return ''
+  }
 }
 
-.infos h3 span {
-  font-size: 0.8rem;
+const teamStyles = computed(() => {
+  if( songsStore.cache) {
+    if (songsStore.cache.teams[1].color) {
+      return formatStyle(songsStore.cache.teams[1].color)
+    }
+  }
+  return formatStyle('#48a9a6')
+})
+</script>
+
+<style lang="scss">
+%score {
+  width: 100px;
+  height: auto;
+  min-height: 10px;
+  text-align: center;
+}
+
+.blind-test {
+  .teams {
+    height: 100vh;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+
+    .team {
+      padding: 1rem;
+    }
+  
+    .score {
+      @extend %score;
+    }
+  }
+
+  .video {
+    position: absolute;
+    top: 10%;
+    min-width: 420px;
+    height: auto;
+    left: 34%;
+  }
 }
 </style>

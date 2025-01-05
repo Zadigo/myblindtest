@@ -8,8 +8,9 @@ const router = createRouter({
             component: async () => import('../layouts/BaseSite.vue'),
             children: [
                 {
-                    path: '',
-                    redirect: '/blind-test'
+                    path: 'blind-test',
+                    component: async () => import('../pages/BlindTestPage.vue'),
+                    name: 'blind_test'
                 },
                 {
                     path: '/create',
@@ -28,22 +29,6 @@ const router = createRouter({
             path: '/test',
             component: async () => import('../pages/TestPage.vue'),
             name: 'test'
-        },
-        {
-            path: '/blind-test',
-            component: async () => import('../layouts/BlindTestLayout.vue'),
-            children: [
-                {
-                    path: '',
-                    component: async () => import('../pages/BlindTestPage.vue'),
-                    name: 'blind_test'
-                },
-                {
-                    path: 'settings',
-                    component: async () => import('../pages/SettingsPage.vue'),
-                    name: 'settings'
-                }
-            ]
         }
     ]
 })

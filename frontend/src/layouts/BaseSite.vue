@@ -1,14 +1,14 @@
 <template>
   <section class="site">
     <BaseNavbar />
+    <Toaster position="top-right" />
 
-    <div class="container">
-      <RouterView />
-    </div>
+    <RouterView />
   </section>
 </template>
 
 <script setup lang="ts">
-import BaseNavbar from '@/components/BaseNavbar.vue';
+import { Toaster } from 'vue-sonner';
 
+import BaseNavbar from '@/components/BaseNavbar.vue';
 </script>
