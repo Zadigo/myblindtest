@@ -7,7 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
+nodemodules
 dist
 dist-ssr
 *.local
@@ -25,3 +25,8 @@ dist-ssr
 
 .env
 *.sqlite3
+
+__pycache__
+__pycache__/
+
+node_modules

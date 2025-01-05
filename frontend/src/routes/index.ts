@@ -22,13 +22,12 @@ const router = createRouter({
                     component: async () => import('../pages/StatisticsPage.vue'),
                     name: 'statistics'
                 },
+                {
+                    path: 'registration',
+                    component: async () => import('../pages/RegisterPlayerPage.vue'),
+                    name: 'registration'
+                }
             ]
-        },
-        {
-            // New design for the blind test page
-            path: '/test',
-            component: async () => import('../pages/TestPage.vue'),
-            name: 'test'
         }
     ]
 })

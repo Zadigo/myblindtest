@@ -1,3 +1,6 @@
+from urllib.parse import urlparse
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 import re
 from urllib.parse import urlunparse
 
@@ -94,3 +97,16 @@ class RapSong(Song):
     class Meta:
         ordering = ['artist']
         proxy = True
+
+
+# TODO: Instead of saving the whole url,
+# only save the video ID and then return
+# the constructured urls with ID
+# @receiver(post_save, sender=Song)
+# def get_youtube_id(instance, created, **kwargs):
+#     if created:
+#         if instance.youtube:
+#             instance = urlparse(instance.youtube)
+#             tokens = instance.youtube.split('/')
+#             instance.video_id = tokens[-1]
+#             instance.save()
