@@ -48,7 +48,7 @@
                 </div>
 
                 <div class="col-auto">
-                  <v-btn variant="tonal" color="dark" rounded @click="showTeamSettings=true">
+                  <v-btn variant="tonal" color="dark" rounded @click="showBlindtestSettings=true">
                     <FontAwesomeIcon icon="cog" />
                   </v-btn>
                 </div>
@@ -72,11 +72,10 @@
           </div>
 
           <div class="card-body">
-            <PlayerItem video-id="Kv7ZooXyno8" />
             <!-- https://www.youtube.com/embed/0-EF60neguk -->
             <!-- <iframe width="400" height="200" src="https://www.youtube.com/embed/0-EF60neguk" title="Sinéad O&#39;Connor - Nothing Compares 2 U (Official Music Video) [HD]" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" :onYouTubeIframeAPIReady="handleIframeLoaded" /> -->
             <div class="text-center">
-              <span class="loader-7" />
+              <span class="loader-12" />
             </div>
           </div>
 
@@ -114,15 +113,29 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="showBlindtestSettings" persistent style="width:500px;">
+      <v-card>
+        <v-card-text>
+          Settings
+        </v-card-text>
+
+        <v-card-actions>
+          <v-btn variant="text" @click="showBlindtestSettings=false">
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script lang="ts" setup>
-import PlayerItem from '@/components/youtube/PlayerItem.vue';
 import 'animate.css';
 
 import { ref } from 'vue';
 
+const showBlindtestSettings = ref(false)
 const showTeamSettings = ref(false)
 const scoreBoxEl = ref<HTMLElement>()
 
