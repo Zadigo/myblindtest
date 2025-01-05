@@ -43,6 +43,8 @@ const showTeamSettings = ref(false)
 const selectedTeam = ref<number>(0)
 const videoEl = ref<HTMLElement>()
 
+// Callback function that handles the correct
+// answser from a given team
 function handleCorrectAnswer (teamId: number) {
   if (songsStore.cache) {
     if (currentSong.value) {
@@ -58,11 +60,14 @@ function handleCorrectAnswer (teamId: number) {
   }
 }
 
+// Function that sets the team to edit
 function handleTeamSelection (teamId: number) {
   selectedTeam.value = teamId
   showTeamSettings.value = true
 }
 
+// Handles updating the details for a
+// given team
 function handleUpdateTeam (value: string) {
   if (songsStore.cache) {
     songsStore.cache.teams[selectedTeam.value].name = value
