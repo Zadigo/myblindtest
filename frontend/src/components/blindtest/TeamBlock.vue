@@ -1,7 +1,7 @@
 <template>
   <div ref="teamBlockEl" :style="blockStyles" class="d-flex flex-column align-items-center position-relative">
     <!-- Team Name -->
-    <div class="p-3 bg-dark text-light mb-3 rounded-3">
+    <div class="p-3 bg-dark text-light mt-4 mb-3 rounded-3">
       <h1 class="h4 fw-bold m-0 d-flex align-items-center gap-2">
         {{ teamName }}
       </h1>
@@ -159,8 +159,8 @@ async function handleAnimation () {
   }
 }
 
-// Adds a value to the current
-// team's score
+// Adds a value set by the admin to 
+// the current team's score
 async function handleScore () {
   if (team.value) {
     if (cache.value.settings.matchSongDifficulty) {

@@ -1,3 +1,7 @@
+export type DifficultyLevels = 'All' | 'Easy' | 'Medium' | 'Semi-Pro' | 'Difficult' | 'Expert'
+
+export type SongGenres = 'All' | 'Pop' | 'Electro' | 'Rock'
+
 export interface Song { 
     id: number
     name: string 
@@ -31,8 +35,8 @@ export interface CacheSession {
         timeLimit: number
         pointValue: number
         matchSongDifficulty: boolean
-        difficultyLevel: 'All' | 'Easy' | 'Medium' | 'Difficult' | 'Expert'
-        songType: 'All' | 'Pop' | 'Electro' | 'Rock'
+        difficultyLevel: DifficultyLevels
+        songType: SongGenres
     }
 }
 

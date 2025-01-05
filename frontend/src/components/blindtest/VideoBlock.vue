@@ -3,7 +3,7 @@
     <div v-if="showWheel" class="card">
       <FortuneWheel ref="wheel" v-model="selectedGenre" :middle-circle="true" :data="data" @click="spinWheel" @done="spinDone" />
     </div>
-
+    
     <div v-else class="card shadow-sm">
       <div class="card-header border-bottom-0">
         <div class="row">
@@ -76,7 +76,7 @@
 <script lang="ts" setup>
 import { getBaseUrl } from '@/plugins/client';
 import { useSongs } from '@/stores/songs';
-import type { Song } from '@/types';
+import type { DifficultyLevels, Song, SongGenres } from '@/types';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { useWebSocket } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
@@ -90,7 +90,8 @@ import { FortuneWheel } from 'vue3-fortune-wheel';
 interface WebsocketMessage {
   type: string,
   exclude?: number[]
-  genre?: string
+  game_difficulty?: DifficultyLevels
+  genre?: SongGenres
 }
 
 // import z from 'zod'
@@ -102,8 +103,9 @@ const emit = defineEmits({
 })
 
 const songsStore = useSongs()
-const { selectedSongs, isStarted, currentSong } = storeToRefs(songsStore)
+const { selectedSongs, isStarted, currentSong, cache } = storeToRefs(songsStore)
 
+const gameStarted = ref(false)
 const showWheel = ref(false)
 const selectedGenre = ref(0)
 const wheel = ref<InstanceType<typeof FortuneWheel> | null>(null)
@@ -117,20 +119,23 @@ const ws = useWebSocket(getBaseUrl('/ws/songs', null, true), {
   onMessage() {
     const data = JSON.parse(ws.data.value)
 
-    if (data.type === 'get.song') {
-      if (songsStore.cache) {
-        songsStore.cache.songs.push(data.data as Song)
-      }
+    if (data.type === 'start.game') {
+      gameStarted.value = true
     }
-    
-    if (data.type === 'next.song') {
+
+    if (data.type === 'connection.token') {
+      // Do something
+    }
+
+    if (data.type === 'get.song') {
+      console.log(data)
       if (songsStore.cache) {
-        const existingSong = songsStore.cache.songs.filter(x => x.id === data.data.id)
+        const existingSong = songsStore.cache.songs.filter(x => x.id === data.song.id)
 
         if (existingSong.length > 0) {
           toast.error('Song already played')
         } else {
-          songsStore.cache.songs.push(data.data as Song)
+          songsStore.cache.songs.push(data.song as Song)
         }
       }
     }
@@ -159,9 +164,11 @@ function sendMessage <T extends WebsocketMessage>(data: T) {
 // spinning has finished
 function spinDone (result: Data) {
   showWheel.value = false
-  ws.send(sendMessage({
-    type: 'next-song',
-    genre: result.value
+
+  ws.send(sendMessage<WebsocketMessage>({
+    type: 'get.song',
+    genre: result.value as SongGenres,
+    exclude: songsStore.cache.songs.map(x => x.id)
   }))
 }
 
@@ -169,7 +176,7 @@ function spinDone (result: Data) {
 // those that were already played
 function handleNextSong () {
   ws.send(sendMessage({ 
-    type: 'next.song', 
+    type: 'get.song', 
     exclude: songsStore.cache.songs.map(x => x.id)
   }))
   
@@ -179,8 +186,21 @@ function handleNextSong () {
 // Starts the game
 function handleStart () {
   ws.open()
-  ws.send(sendMessage({ type: 'get.song' }))
-  toast.success('Started blind test')
+
+  if (cache.value) {
+    ws.send(sendMessage({
+      type: 'start.game',
+      game_difficulty: cache.value.settings.difficultyLevel,
+      genre: cache.value.settings.songType
+    }))
+
+    toast.success('Started blind test')
+
+    ws.send(sendMessage({
+      type: 'get.song',
+      exclude: []
+    }))
+  }
 }
 
 // Stops the game
