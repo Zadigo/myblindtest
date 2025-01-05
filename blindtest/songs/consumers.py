@@ -1,10 +1,11 @@
 import asyncio
 import datetime
 import random
-from django.utils import timezone
+
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from django.core import exceptions
+from django.utils import timezone
 from songs.api import serializers
 from songs.models import Song
 from songs.utils import create_token
@@ -94,6 +95,9 @@ class SongConsumer(AsyncJsonWebsocketConsumer):
 
         # await t1
         # await t2
+
+        if action == 'player.connection':
+            pass
 
         if action == 'start.game':
             self.difficulty = content.get('game_difficulty', 'All')
