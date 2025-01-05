@@ -9,6 +9,7 @@ from django.utils import timezone
 from songs.api import serializers
 from songs.models import Song
 from songs.utils import create_token
+from django.core.cache import cache
 
 
 class SongConsumer(AsyncJsonWebsocketConsumer):
@@ -18,6 +19,12 @@ class SongConsumer(AsyncJsonWebsocketConsumer):
 
     @database_sync_to_async
     def get_songs(self, exclude=[]):
+        cached_qs = cache.get('songs')
+
+        if cached_qs is None:
+            qs = Song.objects.all()
+            cache.set('songs', timeout=3600)
+
         qs = Song.objects.all()
 
         accepted_values = [
@@ -37,8 +44,6 @@ class SongConsumer(AsyncJsonWebsocketConsumer):
 
         if exclude:
             qs = qs.exclude(id__in=exclude)
-
-        print(len(qs))
 
         return list(qs.values_list('id', flat=True))
 

@@ -47,7 +47,16 @@ useHead({
 
 const { client } = useAxiosClient()
 
-const blocks = ref<CreateData[]>([ addNewSongData ])
+const blocks = ref<CreateData[]>([
+  {
+    name: '',
+    genre: '',
+    artist: '',
+    youtube: '',
+    year: 0,
+    difficulty: 1
+  }
+])
 
 const genres = useLocalStorage<string[]>('genres', null, {
   serializer: {
@@ -63,12 +72,14 @@ const genres = useLocalStorage<string[]>('genres', null, {
 async function handleSave () {
   try {
     client.post('/songs/create', blocks.value)
-    blocks.value = [ addNewSongData ]
+    blocks.value = [{ ...addNewSongData }]
   } catch {
     toast.error('Could not create songs')
   }
 }
 
+// Get all the available genres from
+// the backend
 async function handleGetGenres () {
   try {
     if (genres.value) {
@@ -83,7 +94,7 @@ async function handleGetGenres () {
 }
 
 function handleAddBlock () {
-  blocks.value.push(addNewSongData)
+  blocks.value.push({ ...addNewSongData })
 }
 
 provide('genres', genres)

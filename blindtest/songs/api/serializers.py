@@ -1,3 +1,4 @@
+from songs import validators
 from rest_framework import fields, serializers
 from songs.models import Song
 
@@ -11,7 +12,10 @@ class SongSerializer(serializers.Serializer):
     year = fields.IntegerField(allow_null=True)
     video_id = fields.CharField(read_only=True)
     youtube_watch_link = fields.URLField(read_only=True)
-    difficulty = fields.IntegerField(read_only=True)
+    difficulty = fields.IntegerField(
+        default=1, 
+        validators=[validators.validate_difficulty]
+    )
     created_on = fields.DateField(read_only=True)
 
     def create(self, validated_data):

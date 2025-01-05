@@ -46,6 +46,7 @@ export interface CreateData {
     artist: string
     youtube: string
     year: string | number | null
+    difficulty: number
 }
 
 export interface Answer {

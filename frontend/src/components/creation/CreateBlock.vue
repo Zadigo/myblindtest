@@ -6,6 +6,8 @@
       <v-text-field v-model="requestData.year" :rules="[rules.year]" type=" text" placeholder="Year" variant="solo-filled" flat />
     </div>
 
+    <v-text-field v-model="requestData.difficulty" :rules="[rules.difficulty]" :min="1" :max="5" type="number" placeholder="Difficulty" variant="solo-filled" flat />
+
     <div class="d-flex gap-2">
       <v-text-field v-model="requestData.artist" :rules="[rules.required]" type="text" placeholder="Artist" variant="solo-filled" flat />
       <v-text-field v-model="requestData.youtube" :rules="[rules.required]" type="url" placeholder="YouTube" variant="solo-filled" flat />
@@ -30,7 +32,8 @@ const props = defineProps({
       genre: '',
       artist: '',
       youtube: '',
-      year: null
+      year: null,
+      difficulty: 1
     })
   },
   index: {
@@ -54,6 +57,9 @@ const rules = {
   youtubeUrl: (v: string) => {
     const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/;
     return youtubeRegex.test(v) || 'Please enter a valid YouTube URL';
+  },
+  difficulty: (v: number) => {
+    return v <= 5 || 'Difficulty should be between 1 and 5'
   },
   year: (v: number | null) => {
     if (!v) {

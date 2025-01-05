@@ -20,7 +20,8 @@ export const addNewSongData = {
     genre: '',
     artist: '',
     youtube: '',
-    year: 0
+    year: 0,
+    difficulty: 1
 }
 
 export const defaults: { cache: CacheSession } = {
