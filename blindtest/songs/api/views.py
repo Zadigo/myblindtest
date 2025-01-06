@@ -1,23 +1,22 @@
+from django.core.cache import cache
+from django.db import IntegrityError
 from rest_framework import generics, status
 from rest_framework.mixins import Response
 from songs.api import serializers
 from songs.choices import MusicGenre
 from songs.models import Song
-from django.db import IntegrityError
+
 
 class AllSongs(generics.ListAPIView):
     queryset = Song.objects.all()
     serializer_class = serializers.SongSerializer
-    permission_classes = []
 
-
-class RandomSong(generics.GenericAPIView):
-    queryset = Song.objects.all()
-    serializer_class = serializers.SongSerializer
-
-    def get(self, request, *args, **kwargs):
-        qs = super().get_queryset()
-        return Response(data=qs)
+    def get_queryset(self):
+        queryset = cache.get('songs')
+        if queryset is None:
+            queryset = super().get_queryset()
+            cache.set('songs', queryset, timeout=3600)
+        return queryset
 
 
 class CreateSongs(generics.GenericAPIView):

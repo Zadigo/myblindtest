@@ -10,11 +10,6 @@ urlpatterns = [
         name='create'
     ),
     re_path(
-        r'^random$',
-        views.RandomSong.as_view(),
-        name='songs'
-    ),
-    re_path(
         r'^genres$',
         views.SongGenres.as_view(),
         name='genres'

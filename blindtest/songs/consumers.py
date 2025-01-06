@@ -23,7 +23,7 @@ class SongConsumer(AsyncJsonWebsocketConsumer):
 
         if cached_qs is None:
             qs = Song.objects.all()
-            cache.set('songs', timeout=3600)
+            cache.set('songs', qs, timeout=3600)
 
         qs = Song.objects.all()
 
