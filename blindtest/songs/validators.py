@@ -15,11 +15,6 @@ def validate_year(value):
             raise ValidationError('Year is not valid')
 
 
-def validate_youtube(value):
-    validator = RegexValidator(r'youtube\.com\/embed\/')
-    validator(value)
-
-
 def validate_difficulty(value):
     if value < 1 or value > 5:
         raise ValidationError(
