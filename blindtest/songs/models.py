@@ -2,6 +2,9 @@ import re
 from urllib.parse import urlunparse
 
 from django.db import models
+from django.utils import timezone
+from django.utils.functional import cached_property
+from django.utils.translation import gettext_lazy as _
 from songs import managers, validators
 from songs.choices import MusicGenre
 
@@ -19,6 +22,19 @@ class Song(models.Model):
     )
     artist = models.CharField(
         max_length=100,
+        blank=True,
+        null=True
+    )
+    spotify_id = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        help_text=_(
+            "ID for the given artist "
+            "on Spotify"
+        )
+    )
+    spotify_avatar = models.URLField(
         blank=True,
         null=True
     )
@@ -78,10 +94,23 @@ class Song(models.Model):
             f'v={self.video_id}',
             None
         ))
-    
+
     @property
     def youtube(self):
         return f'https://www.youtube.com/embed/{self.youtube_id}'
+
+    @cached_property
+    def period(self):
+        if self.year == 0:
+            return self.year
+        current_year = timezone.now().year
+        return current_year - self.year
+
+    @cached_property
+    def decade(self):
+        if self.year == 0:
+            return 0
+        return int(self.year / 100)
 
 
 class PopSong(Song):

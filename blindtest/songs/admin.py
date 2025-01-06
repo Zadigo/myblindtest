@@ -10,7 +10,10 @@ class SongResource(ModelResource):
     
 @admin.register(Song)
 class SongAdmin(ImportExportModelAdmin):
-    list_display = ['name', 'artist', 'genre', 'difficulty']
+    list_display = [
+        'name', 'artist', 'genre',
+        'difficulty', 'period', 'decade'
+    ]
     search_fields = ['name', 'artist']
     resource_class = SongResource
     actions = [
