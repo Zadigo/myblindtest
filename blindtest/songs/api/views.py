@@ -16,6 +16,11 @@ class AllSongs(generics.ListAPIView):
         if queryset is None:
             queryset = super().get_queryset()
             cache.set('songs', queryset, timeout=3600)
+
+        search = self.request.GET.get('q')
+        if search is not None:
+            queryset = queryset.filter(artist__icontains=search)
+
         return queryset
 
 

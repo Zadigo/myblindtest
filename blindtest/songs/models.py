@@ -25,10 +25,10 @@ class Song(models.Model):
         blank=True,
         null=True
     )
-    youtube = models.URLField(
+    youtube_id = models.CharField(
+        max_length=150,
         blank=True,
-        null=True,
-        validators=[validators.validate_youtube]
+        null=True
     )
     year = models.PositiveIntegerField(
         default=0,
@@ -81,6 +81,10 @@ class Song(models.Model):
             f'v={self.video_id}',
             None
         ))
+    
+    @property
+    def youtube(self):
+        return f'https://www.youtube.com/embed/{self.youtube_id}'
 
 
 class PopSong(Song):

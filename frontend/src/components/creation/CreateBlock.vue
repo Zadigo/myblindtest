@@ -1,26 +1,41 @@
 <template>
   <div :data-id="index" class="card-body">
-    <div class="d-flex gap-2">
-      <v-text-field v-model="requestData.name" :rules="[rules.required]" type="text" placeholder="Name" variant="solo-filled" flat />
-      <v-combobox v-model="requestData.genre" :items="genres" :rules="[rules.required]" type="text" placeholder="Genre" variant="solo-filled" flat />
-      <v-text-field v-model="requestData.year" :rules="[rules.year]" type=" text" placeholder="Year" variant="solo-filled" flat />
+    <div class="row">
+      <div class="col-4">
+        <v-text-field v-model="requestData.name" :rules="[rules.required]" type="text" placeholder="Name" variant="solo-filled" clearable flat />
+      </div>
+      
+      <div class="col-4">
+        <v-combobox v-model="requestData.genre" :items="genres" :loading="searching" :rules="[rules.required]" type="text" variant="solo-filled" flat />        
+      </div>
+
+      <div class="col-4">
+        <v-text-field v-model="requestData.year" :rules="[rules.year]" type=" text" placeholder="Year" variant="solo-filled" flat />
+      </div>
+
+      <div class="col-8">
+        <v-text-field v-model="requestData.difficulty" :rules="[rules.difficulty]" :min="1" :max="5" type="number" placeholder="Difficulty" variant="solo-filled" flat />
+      </div>
+
+      <div class="col-6">
+        <v-text-field v-model="requestData.artist" :rules="[rules.required]" type="text" placeholder="Artist" hint="Press shift+Enter to split and infer genre" variant="solo-filled" clearable flat @keypress.shift.enter="handleSplit" />
+      </div>
+
+      <div class="col-6">
+        <v-text-field v-model="requestData.youtube_id" :rules="[rules.required]" type="text" placeholder="YouTube" variant="solo-filled" clearable flat />      
+      </div>
     </div>
 
-    <v-text-field v-model="requestData.difficulty" :rules="[rules.difficulty]" :min="1" :max="5" type="number" placeholder="Difficulty" variant="solo-filled" flat />
-
-    <div class="d-flex gap-2">
-      <v-text-field v-model="requestData.artist" :rules="[rules.required]" type="text" placeholder="Artist" variant="solo-filled" flat />
-      <v-text-field v-model="requestData.youtube" :rules="[rules.required]" type="url" placeholder="YouTube" variant="solo-filled" flat />
-    </div>
-
-    <v-text-field v-model="iframe" variant="solo-filled" placeholder="Iframe parser" flat @keypress.enter="handleParseIframe" />
+    <!-- <v-text-field v-model="iframe" variant="solo-filled" placeholder="Iframe parser" flat @keypress.enter="handleParseIframe" /> -->
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { CreateData } from '@/types';
-import { computed, inject, PropType, reactive, ref } from 'vue';
 import { useDayJs } from '@/plugins';
+import { useAxiosClient } from '@/plugins/client';
+import type { CreateData, Song } from '@/types';
+import { computed, inject, PropType, reactive, ref } from 'vue';
+import { toast } from 'vue-sonner';
 
 const { currentYear } = useDayJs()
 
@@ -31,7 +46,7 @@ const props = defineProps({
       name: '',
       genre: '',
       artist: '',
-      youtube: '',
+      youtube_id: '',
       year: null,
       difficulty: 1
     })
@@ -50,7 +65,7 @@ const fieldErrors = reactive({
   year: ''
 });
 
-const iframe = ref<string>('')
+// const iframe = ref<string>('')
 
 const rules = {
   required: (v: string) => !!v || 'This field is required',
@@ -92,8 +107,8 @@ function validateData(data: CreateData) {
   
   // YouTube URL validation
   if (!data.youtube) {
-    errors.youtube = 'YouTube URL is required';
-  } else if (!rules.youtubeUrl(data.youtube)) {
+    errors.youtube = 'YouTube video ID is required';
+  } else if (!rules.youtubeUrl(data.youtube_id)) {
     errors.youtube = 'Please enter a valid YouTube URL';
   }
   
@@ -125,15 +140,50 @@ const requestData = computed({
   }
 })
 
+const { client } = useAxiosClient()
+const searching = ref(false)
 const genres = inject<string[]>('genres')
 
-function handleParseIframe () {
-  const regex = /src="([^"]*)"/;
-  const match = iframe.value.match(regex);
+// Allows the user to automatically infer the
+// current genre of the song based on a pre-existing
+// songs from the same artist from the database
+async function handleSearchExistingArtist () {
+  try {
+    searching.value = true
+    const result = await client.get<Song[]>('/songs/', {
+      params: {
+        q: requestData.value.artist
+      }
+    })
 
-  if (match) {
-    requestData.value.youtube = match[1]
-    iframe.value = ''
+    const song = result.data[0]
+    if (song) {
+      requestData.value.genre = song.genre
+    }
+
+    searching.value = false
+  } catch {
+    toast.error('Could not perform search')
+    searching.value = false
   }
 }
+
+async function handleSplit () {
+  if (requestData.value.artist.includes('-') && requestData.value.artist !== "") {
+    const tokens = requestData.value.artist.split('-')
+    requestData.value.artist = tokens[0].trim()
+    requestData.value.name = tokens[1].trim()
+    await handleSearchExistingArtist()
+  }
+}
+
+// function handleParseIframe () {
+//   const regex = /src="([^"]*)"/;
+//   const match = iframe.value.match(regex);
+
+//   if (match) {
+//     requestData.value.youtube_id = match[1]
+//     iframe.value = ''
+//   }
+// }
 </script>

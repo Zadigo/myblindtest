@@ -6,6 +6,7 @@ from import_export.resources import ModelResource
 from songs.models import PopSong, RapSong, Song
 from songs.utils import clean_embed_url
 
+
 class SongResource(ModelResource):
     class Meta:
         model = Song
@@ -19,7 +20,8 @@ class SongAdmin(ImportExportModelAdmin):
     actions = [
         'set_difficulty_medium',
         'set_difficulty_difficult',
-        'clean_urls'
+        'clean_urls',
+        'get_url_id'
     ]
 
     def set_difficulty_medium(self, request, queryset):
@@ -29,6 +31,12 @@ class SongAdmin(ImportExportModelAdmin):
     def set_difficulty_difficult(self, request, queryset):
         queryset.update(difficulty=5)
         messages.success(request, f'Updated {len(queryset)} songs')
+
+    def get_url_id(self, request, queryset):
+        for item in queryset:
+            tokens = item.youtube.split('/')
+            item.youtube_id = tokens[-1]
+            item.save()
 
     def clean_urls(self, request, queryset):
         for item in queryset:

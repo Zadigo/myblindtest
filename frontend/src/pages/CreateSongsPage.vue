@@ -1,6 +1,6 @@
 <template>
   <section class="my-5">
-    <div class="col-sm-12 col-md-8 offset-md-2">
+    <div class="col-sm-12 col-md-6 offset-md-3">
       <div class="card shadow-sm">
         <TransitionGroup name="opacity">
           <template v-for="(block, i) in blocks" :key="i">
@@ -52,13 +52,13 @@ const blocks = ref<CreateData[]>([
     name: '',
     genre: '',
     artist: '',
-    youtube: '',
+    youtube_id: '',
     year: 0,
     difficulty: 1
   }
 ])
 
-const genres = useLocalStorage<string[]>('genres', null, {
+const genres = useLocalStorage<string[]>('genres', [], {
   serializer: {
     read (raw) {
       return JSON.parse(raw)

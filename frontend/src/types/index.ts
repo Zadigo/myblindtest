@@ -8,6 +8,7 @@ export interface Song {
     genre: string 
     artist: string 
     youtube: string
+    youtube_id: string
     year: number
     video_id: string
     youtube_watch_link: string
@@ -44,7 +45,7 @@ export interface CreateData {
     name: string
     genre: string,
     artist: string
-    youtube: string
+    youtube_id: string
     year: string | number | null
     difficulty: number
 }
