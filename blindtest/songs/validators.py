@@ -6,7 +6,7 @@ from django.core.validators import RegexValidator
 
 def validate_year(value):
     if value > 0:
-        result = re.match(r'\d{4}', value)
+        result = re.match(r'\d{4}', str(value))
         if not result:
             raise ValidationError('Year is not valid')
 
