@@ -11,6 +11,8 @@ export interface Song {
     youtube_id: string
     year: number
     video_id: string
+    spotify_id: string
+    spotify_avatar: string
     youtube_watch_link: string
     difficulty: number
     created_on: string

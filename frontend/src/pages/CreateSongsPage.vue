@@ -1,6 +1,16 @@
 <template>
   <section class="my-5">
-    <div class="col-sm-12 col-md-6 offset-md-3">
+    <Suspense v-if="showSongs">
+      <template #default>
+        <AsyncListSongs @back="showSongs=false" />
+      </template>
+
+      <template #fallback>
+        <span class="loader-5" />
+      </template>
+    </Suspense>
+    
+    <div v-else class="col-sm-12 col-md-6 offset-md-3">
       <div class="card shadow-sm">
         <TransitionGroup name="opacity">
           <template v-for="(block, i) in blocks" :key="i">
@@ -18,6 +28,10 @@
           <v-btn variant="tonal" color="dark" @click="handleSave">
             Save
           </v-btn>
+
+          <v-btn variant="tonal" color="dark" @click="showSongs=true">
+            Songs
+          </v-btn>
         </div>
       </div>
     </div>
@@ -30,7 +44,7 @@ import { useAxiosClient } from '@/plugins/client';
 import { CreateData } from '@/types';
 import { useLocalStorage } from '@vueuse/core';
 import { useHead } from 'unhead';
-import { onMounted, provide, ref } from 'vue';
+import { defineAsyncComponent, onMounted, provide, ref } from 'vue';
 import { toast } from 'vue-sonner';
 
 import CreateBlock from '@/components/creation/CreateBlock.vue';
@@ -45,8 +59,14 @@ useHead({
   ]
 })
 
+const AsyncListSongs = defineAsyncComponent({
+  loader: async () => import('@/components/creation/ListSongs.vue'),
+  timeout: 20000
+})
+
 const { client } = useAxiosClient()
 
+const showSongs = ref(false)
 const blocks = ref<CreateData[]>([
   {
     name: '',

@@ -5,6 +5,13 @@ from rest_framework.mixins import Response
 from songs.api import serializers
 from songs.choices import MusicGenre
 from songs.models import Song
+from collections import defaultdict
+from rest_framework.pagination import LimitOffsetPagination
+
+
+class BasePagination(LimitOffsetPagination):
+    default_limit = 100
+    max_limit = 100
 
 
 class AllSongs(generics.ListAPIView):
@@ -22,6 +29,38 @@ class AllSongs(generics.ListAPIView):
             queryset = queryset.filter(artist__icontains=search)
 
         return queryset
+
+
+class GetByArtist(generics.GenericAPIView):
+    def get(self, request, **kwargs):
+        qs = Song.objects.all()
+
+        paginator = BasePagination()
+        result = paginator.paginate_queryset(qs, request)
+
+        serializer = serializers.SongSerializer(instance=result, many=True)
+
+        artists = []
+        seen = []
+        data = defaultdict(list)
+
+        for song in serializer.data:
+            artist = {'name': song['artist'], 'avatar': song['spotify_avatar']}
+            if not artist['name'] in seen:
+                artists.append(artist)
+                seen.append(artist['name'])
+
+            songs = data[song['artist']]
+            songs.append(song)
+
+        template = {
+            'previous': paginator.get_previous_link(),
+            'next': paginator.get_next_link(),
+            'artists': list(artists),
+            'items': data
+        }
+
+        return Response(template)
 
 
 class CreateSongs(generics.GenericAPIView):
