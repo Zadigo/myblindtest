@@ -32,18 +32,3 @@ class OTPCode:
 
     def verify(self, code):
         return self.instance.verify(code)
-
-
-def clean_embed_url(url):
-    parsed_url = urlparse(url)
-    clean_url = urlunparse(
-        (
-            parsed_url.scheme,
-            parsed_url.netloc,
-            parsed_url.path,
-            None,
-            None,
-            None
-        )
-    )
-    return clean_url

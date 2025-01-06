@@ -2,11 +2,8 @@ import re
 from urllib.parse import urlunparse
 
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from songs import managers, validators
 from songs.choices import MusicGenre
-from songs.utils import clean_embed_url
 
 
 class Song(models.Model):
@@ -114,11 +111,3 @@ class RapSong(Song):
 #             tokens = instance.youtube.split('/')
 #             instance.video_id = tokens[-1]
 #             instance.save()
-
-
-@receiver(post_save, sender=Song)
-def clean_youtube_url(instance, created, **kwargs):
-    if created:
-        if instance.youtube:
-            instance.youtube = clean_embed_url(instance.youtube)
-            instance.save()
