@@ -76,6 +76,13 @@ class Song(models.Model):
 
     def __str__(self):
         return f'{self.name}'
+    
+    @property
+    def enriched(self):
+        return all([
+            self.spotify_id != None,
+            self.spotify_avatar != None
+        ])
 
     @property
     def video_id(self):

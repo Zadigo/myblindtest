@@ -7,13 +7,16 @@ from songs.models import PopSong, RapSong, Song
 class SongResource(ModelResource):
     class Meta:
         model = Song
-    
+
+
 @admin.register(Song)
 class SongAdmin(ImportExportModelAdmin):
     list_display = [
         'name', 'artist', 'genre',
-        'difficulty', 'period', 'decade'
+        'difficulty', 'period',
+        'decade', 'enriched'
     ]
+    list_filter = ['difficulty']
     search_fields = ['name', 'artist']
     resource_class = SongResource
     actions = [
