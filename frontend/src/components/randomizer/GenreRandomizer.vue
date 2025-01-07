@@ -110,9 +110,13 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
+$grid_size: 3;
+$hover_color: rgba(0, 0, 0, 0.02);
+$highlight_color: #7d7db3;
+
 .floor {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat($grid_size, 1fr);
   border: 5px rgba(0, 0, 0, 1) solid;
 
   .square {
@@ -125,8 +129,21 @@ defineExpose({
     align-items: center;
     justify-content: center;
     text-align: center;
-    border: 1px black solid;
+    // border: 1px black solid;
     cursor: pointer;
+
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+
+    // Remove right border for every 3rd square (last in row)
+    &:nth-child(3n) {
+      border-right: none;
+    }
+
+    // Remove bottom border for last row (last 3 squares)
+    &:nth-last-child(-n + 3) {
+      border-bottom: none;
+    }
 
     &.spinning {
       cursor: not-allowed;
@@ -134,11 +151,11 @@ defineExpose({
 
     &.highlight {
       color: white;
-      background-color: #7d7db3;
+      background-color: $highlight_color;
     }
 
     &:hover {
-      background-color: rgba(0, 0, 0, 0.15);
+      background-color: $hover_color;
     }
   }
 }

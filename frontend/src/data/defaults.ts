@@ -61,5 +61,6 @@ export const wheelDetaults = [
     { id: 5, value: 'Blues', bgColor: '#7d7db3', color: '#000000' },
     { id: 6, value: 'Jazz', bgColor: '#ffffff', color: '#000000' },
     { id: 7, value: 'Indie', bgColor: '#7d7db3', color: '#000000' },
-    { id: 8, value: 'Classical', bgColor: '#ffffff', color: '#000000' }
+    { id: 8, value: 'Classical', bgColor: '#ffffff', color: '#000000' },
+    { id: 9, value: 'Electro', bgColor: '#ffffff', color: '#000000' },
 ]
