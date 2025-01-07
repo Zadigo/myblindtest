@@ -8,12 +8,17 @@ const router = createRouter({
             component: async () => import('../layouts/BaseSite.vue'),
             children: [
                 {
+                    path: '',
+                    component: async () => import('../pages/HomePage.vue'),
+                    name: 'home'
+                },
+                {
                     path: 'blind-test',
                     component: async () => import('../pages/BlindTestPage.vue'),
                     name: 'blind_test'
                 },
                 {
-                    path: '/create',
+                    path: 'create',
                     component: async () => import('../pages/CreateSongsPage.vue'),
                     name: 'create'
                 },

@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg bg-body-light shadow-sm">
     <div class="container-fluid">
-      <RouterLink :to="{ name: 'blind_test' }" class="navbar-brand">
+      <RouterLink :to="{ name: 'home' }" class="navbar-brand">
         Blind test
       </RouterLink>
 
@@ -11,6 +11,12 @@
       
       <div id="navbarNav" class="collapse navbar-collapse">
         <ul class="navbar-nav">
+          <li class="nav-item">
+            <RouterLink :to="{ name: 'blind_test' }" class="nav-link" aria-current="page">
+              Blind test
+            </RouterLink>
+          </li>
+
           <li class="nav-item">
             <RouterLink :to="{ name: 'statistics' }" class="nav-link" aria-current="page">
               Statistics

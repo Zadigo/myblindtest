@@ -1,5 +1,5 @@
 <template>
-  <div class="blind-test position-relative">
+  <div class="blind-test position-relative" style="z-index:1000;">
     <div class="teams">
       <div class="team bg-light">
         <slot name="teamOne" />

@@ -1,9 +1,8 @@
 <template>
   <div class="video">
-    <Transition mode="out-in" class="animate__animated" enter-to-class="animate__fadeInDown" leave-to-class="animate__fadeOutDown">
+    <Transition mode="out-in" name="animate__animated" enter-active-class="animate__animated animate__fadeInDown" leave-active-class="animate__animated animate__fadeOutDown">
       <div v-if="showWheel" class="card">
         <GenreRandomizer ref="randomizerEl" :items="wheelDetaults" @completed="randomizerComplete" />
-        <!-- <FortuneWheel ref="wheel" v-model="selectedGenre" :middle-circle="true" :data="data" @click="spinWheel" @done="spinDone" /> -->
       </div>
       
       <div v-else class="card shadow-sm">
@@ -17,7 +16,7 @@
               </div>
 
               <div class="col-auto">
-                <v-btn :to="{ name: 'blind_test' }" variant="tonal" color="dark" class="me-2" rounded>
+                <v-btn :to="{ name: 'home' }" variant="tonal" color="dark" class="me-2" rounded>
                   <FontAwesomeIcon icon="home" />
                 </v-btn>
 
@@ -81,6 +80,7 @@
 </template>
 
 <script lang="ts" setup>
+import { wheelDetaults } from '@/data/defaults';
 import { getBaseUrl } from '@/plugins/client';
 import { useSongs } from '@/stores/songs';
 import type { DifficultyLevels, Song, SongGenres } from '@/types';
@@ -89,12 +89,9 @@ import { useWebSocket } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { toast } from 'vue-sonner';
-import { wheelDetaults } from '@/data/defaults'
-// import type { Data } from 'vue3-fortune-wheel';
-// https://github.com/joffreyBerrier/vue-fortune-wheel
-// import { FortuneWheel } from 'vue3-fortune-wheel';
-import GenreRandomizer from '../randomizer/GenreRandomizer.vue';
 import { RandomizerData } from '../randomizer';
+
+import GenreRandomizer from '../randomizer/GenreRandomizer.vue';
 
 interface WebsocketMessage {
   type: string,
@@ -117,14 +114,12 @@ const { selectedSongs, isStarted, currentSong, cache } = storeToRefs(songsStore)
 const randomizerEl = ref<HTMLElement>()
 const gameStarted = ref(false)
 const showWheel = ref(false)
-// const selectedGenre = ref(0)
-// const wheel = ref<InstanceType<typeof FortuneWheel> | null>(null)
-// const data = ref<Data[]>(wheelDetaults)
 
 const ws = useWebSocket(getBaseUrl('/ws/songs', null, true), {
   immediate: false,
   onConnected() {
     isStarted.value = true
+    toast.success('Started blind test')
   },
   onMessage() {
     const data = JSON.parse(ws.data.value)
@@ -138,7 +133,6 @@ const ws = useWebSocket(getBaseUrl('/ws/songs', null, true), {
     }
 
     if (data.type === 'get.song') {
-      console.log(data)
       if (songsStore.cache) {
         const existingSong = songsStore.cache.songs.filter(x => x.id === data.song.id)
 
@@ -159,12 +153,6 @@ const ws = useWebSocket(getBaseUrl('/ws/songs', null, true), {
   }
 })
 
-// Function that selects a random index and then
-// spins the wheel in order to select the genre
-// function spinWheel () {
-//   selectedGenre.value = Math.floor(Math.random() * wheelDetaults.length) + 1
-//   wheel.value?.spin()
-// }
 
 function sendMessage <T extends WebsocketMessage>(data: T) {
   return JSON.stringify(data)
@@ -174,18 +162,17 @@ function sendMessage <T extends WebsocketMessage>(data: T) {
 // spinning has finished
 function randomizerComplete (value: string | undefined | RandomizerData) {
   if (value) {
-    console.log(value)
+    setTimeout(() => {
+      showWheel.value = false
+
+      ws.send(sendMessage({
+        type: 'get.song.randomizer',
+        exclude: cache.value.songs.map(x => x.id),
+        genre: value
+      }))
+    }, 5000)
   }
 }
-// function spinDone (result: Data) {
-//   showWheel.value = false
-
-//   ws.send(sendMessage<WebsocketMessage>({
-//     type: 'get.song',
-//     genre: result.value as SongGenres,
-//     exclude: songsStore.cache.songs.map(x => x.id)
-//   }))
-// }
 
 // Returns the next song by excluding
 // those that were already played
@@ -208,8 +195,6 @@ function handleStart () {
       game_difficulty: cache.value.settings.difficultyLevel,
       genre: cache.value.settings.songType
     }))
-
-    toast.success('Started blind test')
 
     ws.send(sendMessage({
       type: 'get.song',

@@ -1,7 +1,7 @@
 <template>
   <section class="site">
-    <Transition class="animate__animated" enter-to-class="animate__slideInDown" enter-from-class="animate__slideInUp">
-      <BaseNavbar v-if="$route.name !== 'blind_test'" />
+    <Transition name="animate__animated" enter-active-class="animate__animated animate__slideInDown" leave-active-class="animate__animated animate__slideInUp">
+      <BaseNavbar v-if="!isStarted" />
     </Transition>
     
     <Toaster position="top-right" />
@@ -15,4 +15,7 @@
 import { Toaster } from 'vue-sonner';
 
 import BaseNavbar from '@/components/BaseNavbar.vue';
+import { useSongs } from '@/stores/songs';
+
+const { isStarted } = useSongs()
 </script>
