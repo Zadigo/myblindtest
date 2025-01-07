@@ -1,14 +1,13 @@
 <template>
   <section class="site">
-    <BaseNavbar v-if="$route.name !== 'blind_test'" />
+    <Transition class="animate__animated" enter-to-class="animate__slideInDown" enter-from-class="animate__slideInUp">
+      <BaseNavbar v-if="$route.name !== 'blind_test'" />
+    </Transition>
+    
     <Toaster position="top-right" />
 
     <!-- Main -->
-    <RouterView v-slot="{ Component }">
-      <Transition name="opacity">
-        <component :is="Component" />
-      </Transition>
-    </RouterView>
+    <RouterView />
   </section>
 </template>
 

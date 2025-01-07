@@ -1,21 +1,21 @@
 <template>
   <v-dialog v-model="show" persistent style="width:500px;">
     <v-card>
+      <v-card-item>
+        <v-btn variant="text" @click="show=false">
+          <FontAwesomeIcon icon="close" />
+        </v-btn>
+      </v-card-item>
+
       <v-card-text>
         <v-text-field v-model="teamName" placeholder="Team name" variant="solo-filled" flat />
         
-        <div class="text-center">
+        <div class="d-flex justify-content-center mb-4">
           <VueColorWheel v-model:color="wheelColor" wheel="aurora" harmony="monochromatic" :radius="160" :default-color="wheelColor" @change="handleChangeColors" />
         </div>
 
         <v-text-field v-model="wheelColor" variant="solo-filled" flat />
       </v-card-text>
-
-      <v-card-actions>
-        <v-btn variant="text" @click="show=false">
-          Close
-        </v-btn>
-      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>

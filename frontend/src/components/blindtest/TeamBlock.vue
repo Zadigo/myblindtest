@@ -93,7 +93,7 @@ const teamName = computed(() => {
   if (team.value && team.value.name !== "") {
     return team.value.name
   } else {
-    return ''
+    return `Team n°${props.teamId + 1}`
   }
 })
 

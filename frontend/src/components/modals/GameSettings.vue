@@ -1,11 +1,11 @@
 <template>
   <v-dialog v-model="show" width="500">
     <v-card>
-      <!-- <v-card-item>
+      <v-card-item>
         <v-btn variant="text" @click="show=false">
           <FontAwesomeIcon icon="close" />
         </v-btn>
-      </v-card-item> -->
+      </v-card-item>
 
       <v-card-text>
         <div v-if="songsStore.cache" class="card-body">

@@ -1,5 +1,11 @@
 <template>
-  <RouterView />
+  <v-app>
+    <RouterView v-slot="{ Component }">
+      <Transition name="opacity">
+        <component :is="Component" />
+      </Transition>
+    </RouterView>
+  </v-app>
 </template>
 
 <script lang="ts" setup>

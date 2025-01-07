@@ -14,20 +14,6 @@
     </div>
 
     <slot />
-
-    <v-dialog v-model="showBlindtestSettings" persistent style="width:500px;">
-      <v-card>
-        <v-card-text>
-          Settings
-        </v-card-text>
-
-        <v-card-actions>
-          <v-btn variant="text" @click="showBlindtestSettings=false">
-            Close
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 
@@ -35,7 +21,7 @@
 import { useSongs } from '@/stores/songs';
 import { useMediaQuery } from '@vueuse/core';
 import { useHead } from 'unhead';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 
 useHead({
   title: 'Blind test'
@@ -45,8 +31,6 @@ const isLargeScreen = useMediaQuery('(min-width: 1024px)')
 console.log('isLargeScreen', isLargeScreen.value)
 
 const songsStore = useSongs()
-const showBlindtestSettings = ref(false)
-
 
 function formatStyle (value: string | null) {
   if (value) {

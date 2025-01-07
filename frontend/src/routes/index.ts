@@ -26,6 +26,11 @@ const router = createRouter({
                     path: 'registration',
                     component: async () => import('../pages/RegisterPlayerPage.vue'),
                     name: 'registration'
+                },
+                {
+                    path: 'test',
+                    component: async () => import('../pages/TestPage.vue'),
+                    name: 'test'
                 }
             ]
         }
