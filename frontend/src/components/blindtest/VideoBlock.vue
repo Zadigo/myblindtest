@@ -20,7 +20,7 @@
                   <FontAwesomeIcon icon="home" />
                 </v-btn>
 
-                <v-btn variant="tonal" color="dark" class="me-2" rounded @click="showWheel=!showWheel">
+                <v-btn :disabled="!isStarted" variant="tonal" color="dark" class="me-2" rounded @click="showWheel=!showWheel">
                   <FontAwesomeIcon icon="bolt" />
                 </v-btn>
 
