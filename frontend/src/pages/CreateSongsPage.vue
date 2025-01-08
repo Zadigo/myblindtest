@@ -41,13 +41,18 @@
 <script setup lang="ts">
 import { addNewSongData } from '@/data/defaults';
 import { useAxiosClient } from '@/plugins/client';
-import { CreateData } from '@/types';
+import { CreateData, Song } from '@/types';
 import { useLocalStorage } from '@vueuse/core';
 import { useHead } from 'unhead';
 import { defineAsyncComponent, onMounted, provide, ref } from 'vue';
 import { toast } from 'vue-sonner';
 
 import CreateBlock from '@/components/creation/CreateBlock.vue';
+
+interface SongCreationApiResponse {
+  errors: string[]
+  items: Song[]
+}
 
 useHead({
   title: ' Create new song',
@@ -72,6 +77,7 @@ const blocks = ref<CreateData[]>([
     name: '',
     genre: '',
     artist: '',
+    featured_artists: '',
     youtube_id: '',
     year: 0,
     difficulty: 1
@@ -91,8 +97,14 @@ const genres = useLocalStorage<string[]>('genres', [], {
 
 async function handleSave () {
   try {
-    client.post('/songs/create', blocks.value)
+    const response = await client.post<SongCreationApiResponse>('/songs/create', blocks.value)
     blocks.value = [{ ...addNewSongData }]
+
+    if (response.data.errors.length > 0) {
+      toast.error(`Error when creating songs: ${response.data.errors}`, {
+        duration: 10000
+      })
+    }
   } catch {
     toast.error('Could not create songs')
   }

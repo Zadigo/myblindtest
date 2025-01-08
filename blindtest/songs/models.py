@@ -27,8 +27,8 @@ class Artist(models.Model):
     )
     genre = models.CharField(
         max_length=100,
-        blank=True,
-        null=True,
+        choices=MusicGenre.choices(),
+        default=MusicGenre.default('Afrobeat'),
         help_text=_(
             "The global classification for "
             "the given artist"

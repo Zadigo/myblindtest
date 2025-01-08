@@ -36,7 +36,7 @@
               </h4>
 
               <div v-if="currentSong" class=" mb-1 fw-light d-flex align-items-center gap-2">
-                <span>{{ currentSong.artist }}</span>
+                <span>{{ currentSong.artist.name }}</span>
                 <span class="badge text-bg-secondary">
                   {{ currentSong.genre }}
                 </span>

@@ -2,20 +2,33 @@ export type DifficultyLevels = 'All' | 'Easy' | 'Medium' | 'Semi-Pro' | 'Difficu
 
 export type SongGenres = 'All' | 'Pop' | 'Electro' | 'Rock'
 
+export interface Artist {
+    id: number
+    name: string
+    spotify_id: string
+    spotify_avatar: string
+    genre: string
+    created_on: string
+}
+
 export interface Song { 
     id: number
     name: string 
     genre: string 
-    artist: string 
     youtube: string
     youtube_id: string
     year: number
     video_id: string
     spotify_id: string
+    artist: Artist
     spotify_avatar: string
     youtube_watch_link: string
     difficulty: number
     created_on: string
+}
+
+export interface ArtistSong extends Exclude<Artist, 'created_on'>{
+    song_set: Exclude<Song, 'artist'>[]
 }
 
 interface Player {
@@ -45,8 +58,9 @@ export interface CacheSession {
 
 export interface CreateData {
     name: string
-    genre: string,
+    genre: string
     artist: string
+    featured_artists: string | null
     youtube_id: string
     year: string | number | null
     difficulty: number

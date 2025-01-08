@@ -20,6 +20,11 @@ urlpatterns = [
         name='by_artists'
     ),
     re_path(
+        r'^artists$',
+        views.AllArtists.as_view(),
+        name='artists'
+    ),
+    re_path(
         r'^$',
         views.AllSongs.as_view(),
         name='songs'

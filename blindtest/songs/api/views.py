@@ -1,12 +1,13 @@
 from django.core.cache import cache
+from django.core.exceptions import ValidationError
 from django.db import IntegrityError
+from django.db.models import Q
 from rest_framework import generics, status
 from rest_framework.mixins import Response
+from rest_framework.pagination import LimitOffsetPagination
 from songs.api import serializers
 from songs.choices import MusicGenre
-from songs.models import Song
-from collections import defaultdict
-from rest_framework.pagination import LimitOffsetPagination
+from songs.models import Artist, Song
 
 
 class BasePagination(LimitOffsetPagination):
@@ -24,43 +25,48 @@ class AllSongs(generics.ListAPIView):
             queryset = super().get_queryset()
             cache.set('songs', queryset, timeout=3600)
 
+        # TODO: Use for now until we set the genres
+        # on each artists
         search = self.request.GET.get('q')
         if search is not None:
-            queryset = queryset.filter(artist__icontains=search)
+            queryset = queryset.filter(artist__name__icontains=search)
 
         return queryset
 
 
-class GetByArtist(generics.GenericAPIView):
-    def get(self, request, **kwargs):
-        qs = Song.objects.all()
+class AllArtists(generics.ListAPIView):
+    queryset = Artist.objects.all()
+    serializer_class = serializers.ArtistSerializer
 
-        paginator = BasePagination()
-        result = paginator.paginate_queryset(qs, request)
+    # TODO: Set the genres on each
+    # artist  in the Artist model
+    def get_queryset(self):
+        queryset = cache.get('artists')
+        if queryset is None:
+            queryset = super().get_queryset()
+            cache.set('artists', queryset, timeout=3600)
 
-        serializer = serializers.SongSerializer(instance=result, many=True)
+        search = self.request.GET.get('q')
+        if search is not None:
+            queryset = queryset.filter(name__icontains=search)
 
-        artists = []
-        seen = []
-        data = defaultdict(list)
+        return queryset
 
-        for song in serializer.data:
-            artist = {'name': song['artist'], 'avatar': song['spotify_avatar']}
-            if not artist['name'] in seen:
-                artists.append(artist)
-                seen.append(artist['name'])
 
-            songs = data[song['artist']]
-            songs.append(song)
+class GetByArtist(generics.ListAPIView):
+    queryset = Artist.objects.all()
+    serializer_class = serializers.ArtistSongSerializer
+    pagination_class = BasePagination
 
-        template = {
-            'previous': paginator.get_previous_link(),
-            'next': paginator.get_next_link(),
-            'artists': list(artists),
-            'items': data
-        }
-
-        return Response(template)
+    def get_queryset(self):
+        qs = super().get_queryset()
+        search = self.request.GET.get('q')
+        if search:
+            return qs.filter(
+                Q(name__icontains =search) |
+                Q(song__name__icontains=search)
+            )
+        return qs
 
 
 class CreateSongs(generics.GenericAPIView):
@@ -85,12 +91,19 @@ class CreateSongs(generics.GenericAPIView):
                 created_songs.append(serializer.save())
             except IntegrityError as e:
                 errors.append(e)
+            except ValidationError as e:
+                errors.append('Multiple artists returned')
 
         response_serializer = serializers.SongSerializer(
             instance=created_songs,
             many=True
         )
-        return Response(response_serializer.data, status=status.HTTP_201_CREATED)
+
+        template = {
+            'errors': errors,
+            'items': response_serializer.data
+        }
+        return Response(template, status=status.HTTP_201_CREATED)
 
 
 class SongGenres(generics.GenericAPIView):

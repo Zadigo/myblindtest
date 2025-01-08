@@ -19,6 +19,7 @@ export const addNewSongData = {
     name: '',
     genre: '',
     artist: '',
+    featured_artists: '',
     youtube_id: '',
     year: 0,
     difficulty: 1

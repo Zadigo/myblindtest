@@ -4,27 +4,32 @@
 import { ref } from "vue"
 
 export function useDebounce () {
-    function debounce(func: (...args: any[]) => void, wait: number, immediate: boolean) {
-        let timeout: number | undefined | null
-
-        return (...callbackArgs: any[]) => {
-            const context = this
-            // const args = arguments
+    function debounce<T extends (...args: any[]) => void>(func: T, wait: number, immediate: boolean = false) {
+        let timeout: ReturnType<typeof setTimeout> | null = null
+        
+        // return function (this: any, ...callbackArgs: Parameters<T>) {
+        return function (...callbackArgs: Parameters<T>) {
+            // const context = this
 
             function later() {
                 timeout = null
+
                 if (!immediate) {
-                    func.apply(context, callbackArgs)
+                    // func.apply(context, callbackArgs)
+                    func.apply(callbackArgs)
                 }
             }
             
             const callNow = immediate && !timeout
             
-            clearTimeout(timeout)
+            if (timeout) {
+                clearTimeout(timeout)
+            }
             timeout = setTimeout(later, wait)
             
             if (callNow) {
-                func.apply(context, callbackArgs)
+                // func.apply(context, callbackArgs)
+                func.apply(callbackArgs)
             }
         }
     }
@@ -62,5 +67,19 @@ export function useLimitOffeset () {
 
     return {
         parser
+    }
+}
+
+export function useString () {
+    function plural (items: (string | number | object)[], word: string) {
+        if (items.length === 0 || items.length > 1) {
+            return `${word}s`
+        } else {
+            return word
+        }
+    }
+
+    return {
+        plural
     }
 }

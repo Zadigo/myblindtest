@@ -14,25 +14,28 @@
           <v-btn variant="tonal" @click="getNextPage">
             Next
           </v-btn>        
+
+          <v-text-field v-model="search" variant="solo-filled" type="search" placeholder="Search" flat @input="debouncedGetSongs" />
         </v-card-text>
       </v-card>
     </div>
 
-    <div class="col-sm-12 col-md-6 offset-md-3">
+    <div v-if="apiResult" class="col-sm-12 col-md-6 offset-md-3">
       <v-expansion-panels>
-        <v-expansion-panel v-for="artist in artists" :key="artist.name">
+        <v-expansion-panel v-for="artist in apiResult.results" :key="artist.name">
           <v-expansion-panel-title>
             <div class="row">
               <div class="d-flex justify-content-start align-items-center gap-3">
-                <v-avatar :image="artist.avatar" />
+                <v-avatar :image="artist.spotify_avatar" />
                 <span>{{ artist.name }}</span>
+                <span class="badge text-bg-secondary">{{ artist.song_set.length }} {{ plural(artist.song_set, 'song') }}</span>
               </div>
             </div>
           </v-expansion-panel-title>
 
-          <v-expansion-panel-text v-if="byArtist">
+          <v-expansion-panel-text>
             <div class="list-group">
-              <div v-for="song in byArtist[artist.name]" :key="song.id" class="list-group-item">
+              <div v-for="song in artist.song_set" :key="song.id" class="list-group-item">
                 {{ song.name }}
               </div>
             </div>
@@ -44,25 +47,17 @@
 </template>
 
 <script lang="ts" setup>
-import { useLimitOffeset } from '@/composables/utils';
+import { useDebounce, useLimitOffeset, useString } from '@/composables/utils';
 import { useAxiosClient } from '@/plugins/client';
-import { Song } from '@/types';
+import { ArtistSong } from '@/types';
 import { ref } from 'vue';
 import { toast } from 'vue-sonner';
 
-type SongItem = Record<string, Song[]>
-
-
-interface Artist {
-  name: string
-  avatar: string
-}
-
 interface ApiResponse {
-  previous: string
+  count: number
   next: string
-  artists: Artist[]
-  items: SongItem
+  previous: string
+  results: ArtistSong[]
 }
 
 const emit = defineEmits({
@@ -71,24 +66,26 @@ const emit = defineEmits({
   }
 })
 
+const { plural } = useString()
 const { parser } = useLimitOffeset()
 const { client } = useAxiosClient()
+const { debounce } = useDebounce()
 
+const search = ref<string>('')
 const previousLink = ref<string>()
 const nextLink = ref<string>()
-const artists = ref<Artist[]>([])
-const byArtist = ref<SongItem>()
+const apiResult = ref<ApiResponse>()
 
-async function getSongs (offset: string | number = 100) {
+async function getSongs (offset: string | number = 0) {
   try {
     const response = await client.get<ApiResponse>('/songs/by-artists', {
       params: {
-        offset
+        offset,
+        q: search.value
       }
     })
 
-    artists.value = response.data.artists
-    byArtist.value = response.data.items
+    apiResult.value = response.data
 
     previousLink.value = response.data.previous
     nextLink.value = response.data.next
@@ -96,6 +93,8 @@ async function getSongs (offset: string | number = 100) {
     toast.error('Could not get songs')
   }
 }
+
+const debouncedGetSongs = debounce(getSongs, 4000)
 
 async function getPrevious () {
   if (previousLink.value) {
