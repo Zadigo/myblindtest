@@ -9,10 +9,16 @@ const router = createRouter({
             children: [
                 {
                     path: '',
-                    redirect: '/blind-test'
+                    component: async () => import('../pages/HomePage.vue'),
+                    name: 'home'
                 },
                 {
-                    path: '/create',
+                    path: 'blind-test',
+                    component: async () => import('../pages/BlindTestPage.vue'),
+                    name: 'blind_test'
+                },
+                {
+                    path: 'create',
                     component: async () => import('../pages/CreateSongsPage.vue'),
                     name: 'create'
                 },
@@ -21,27 +27,15 @@ const router = createRouter({
                     component: async () => import('../pages/StatisticsPage.vue'),
                     name: 'statistics'
                 },
-            ]
-        },
-        {
-            // New design for the blind test page
-            path: '/test',
-            component: async () => import('../pages/TestPage.vue'),
-            name: 'test'
-        },
-        {
-            path: '/blind-test',
-            component: async () => import('../layouts/BlindTestLayout.vue'),
-            children: [
                 {
-                    path: '',
-                    component: async () => import('../pages/BlindTestPage.vue'),
-                    name: 'blind_test'
+                    path: 'registration',
+                    component: async () => import('../pages/RegisterPlayerPage.vue'),
+                    name: 'registration'
                 },
                 {
-                    path: 'settings',
-                    component: async () => import('../pages/SettingsPage.vue'),
-                    name: 'settings'
+                    path: 'test',
+                    component: async () => import('../pages/TestPage.vue'),
+                    name: 'test'
                 }
             ]
         }

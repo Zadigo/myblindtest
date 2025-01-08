@@ -46,3 +46,18 @@ app.autodiscover_tasks()
 #         'schedule': crontab(day_of_week='mon-fri', hour=6)
 #     }
 # }
+
+
+@app.task
+def monthly_spotify_statistics():
+    pass
+
+
+@app.task
+def billboard_data():
+    pass
+
+
+@app.task
+def get_spotify_data(self):
+    pass

@@ -10,6 +10,7 @@ import installPlugins from './plugins'
 
 import './style.scss'
 import './assets/spinners.scss'
+import 'animate.css'
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -19,7 +20,6 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import colors from 'vuetify/util/colors'
 import { aliases, mdi } from 'vuetify/iconsets/mdi'
-
 
 createHead()
 

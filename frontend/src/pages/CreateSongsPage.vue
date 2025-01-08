@@ -1,6 +1,16 @@
 <template>
   <section class="my-5">
-    <div class="col-sm-12 col-md-8 offset-md-2">
+    <Suspense v-if="showSongs">
+      <template #default>
+        <AsyncListSongs @back="showSongs=false" />
+      </template>
+
+      <template #fallback>
+        <span class="loader-5" />
+      </template>
+    </Suspense>
+    
+    <div v-else class="col-sm-12 col-md-6 offset-md-3">
       <div class="card shadow-sm">
         <TransitionGroup name="opacity">
           <template v-for="(block, i) in blocks" :key="i">
@@ -18,6 +28,10 @@
           <v-btn variant="tonal" color="dark" @click="handleSave">
             Save
           </v-btn>
+
+          <v-btn variant="tonal" color="dark" @click="showSongs=true">
+            Songs
+          </v-btn>
         </div>
       </div>
     </div>
@@ -27,13 +41,18 @@
 <script setup lang="ts">
 import { addNewSongData } from '@/data/defaults';
 import { useAxiosClient } from '@/plugins/client';
-import { CreateData } from '@/types';
+import { CreateData, Song } from '@/types';
 import { useLocalStorage } from '@vueuse/core';
 import { useHead } from 'unhead';
-import { onMounted, provide, ref } from 'vue';
+import { defineAsyncComponent, onMounted, provide, ref } from 'vue';
 import { toast } from 'vue-sonner';
 
 import CreateBlock from '@/components/creation/CreateBlock.vue';
+
+interface SongCreationApiResponse {
+  errors: string[]
+  items: Song[]
+}
 
 useHead({
   title: ' Create new song',
@@ -45,11 +64,27 @@ useHead({
   ]
 })
 
+const AsyncListSongs = defineAsyncComponent({
+  loader: async () => import('@/components/creation/ListSongs.vue'),
+  timeout: 20000
+})
+
 const { client } = useAxiosClient()
 
-const blocks = ref<CreateData[]>([ addNewSongData ])
+const showSongs = ref(false)
+const blocks = ref<CreateData[]>([
+  {
+    name: '',
+    genre: '',
+    artist: '',
+    featured_artists: '',
+    youtube_id: '',
+    year: 0,
+    difficulty: 1
+  }
+])
 
-const genres = useLocalStorage<string[]>('genres', null, {
+const genres = useLocalStorage<string[]>('genres', [], {
   serializer: {
     read (raw) {
       return JSON.parse(raw)
@@ -62,13 +97,21 @@ const genres = useLocalStorage<string[]>('genres', null, {
 
 async function handleSave () {
   try {
-    client.post('/songs/create', blocks.value)
-    blocks.value = [ addNewSongData ]
+    const response = await client.post<SongCreationApiResponse>('/songs/create', blocks.value)
+    blocks.value = [{ ...addNewSongData }]
+
+    if (response.data.errors.length > 0) {
+      toast.error(`Error when creating songs: ${response.data.errors}`, {
+        duration: 10000
+      })
+    }
   } catch {
     toast.error('Could not create songs')
   }
 }
 
+// Get all the available genres from
+// the backend
 async function handleGetGenres () {
   try {
     if (genres.value) {
@@ -83,7 +126,7 @@ async function handleGetGenres () {
 }
 
 function handleAddBlock () {
-  blocks.value.push(addNewSongData)
+  blocks.value.push({ ...addNewSongData })
 }
 
 provide('genres', genres)

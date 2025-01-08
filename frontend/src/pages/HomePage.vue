@@ -1,5 +1,5 @@
 <template>
   <div class="container">
-    Test page
+    Home page
   </div>
 </template>

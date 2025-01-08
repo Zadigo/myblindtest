@@ -10,14 +10,19 @@ urlpatterns = [
         name='create'
     ),
     re_path(
-        r'^random$',
-        views.RandomSong.as_view(),
-        name='songs'
-    ),
-    re_path(
         r'^genres$',
         views.SongGenres.as_view(),
         name='genres'
+    ),
+    re_path(
+        r'^by-artists$',
+        views.GetByArtist.as_view(),
+        name='by_artists'
+    ),
+    re_path(
+        r'^artists$',
+        views.AllArtists.as_view(),
+        name='artists'
     ),
     re_path(
         r'^$',
