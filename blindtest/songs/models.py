@@ -55,6 +55,7 @@ class Song(models.Model):
     # artist = models.ForeignKey(
     #     Artist,
     #     models.SET_NULL,
+    #     blank=True,
     #     null=True
     # )
     name = models.CharField(
@@ -68,6 +69,11 @@ class Song(models.Model):
         default=MusicGenre.default('Afrobeat')
     )
     artist = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
+    featured_artists = models.CharField(
         max_length=100,
         blank=True,
         null=True

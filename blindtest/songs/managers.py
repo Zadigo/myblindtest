@@ -1,6 +1,15 @@
 from django.db import models
 
 
+class SongManager(models.Manager):
+    def get_artists(self):
+        from songs.models import Artist
+        if self.featured_artists:
+            tokens = self.featured_artists.split(',')
+            return Artist.objects.filter(name__in=tokens)
+        return []
+
+
 class PopSongManager(models.Manager):
     def get_queryset(self):
         qs = super().get_queryset()
