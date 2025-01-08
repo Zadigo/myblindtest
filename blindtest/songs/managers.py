@@ -2,10 +2,12 @@ from django.db import models
 
 
 class SongManager(models.Manager):
-    def get_artists(self):
+    def get_featured_artists(self, song_id):
         from songs.models import Artist
-        if self.featured_artists:
-            tokens = self.featured_artists.split(',')
+        
+        song = self.get(id=song_id)
+        if song.featured_artists:
+            tokens = song.featured_artists.split(',')
             return Artist.objects.filter(name__in=tokens)
         return []
 

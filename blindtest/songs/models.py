@@ -9,8 +9,6 @@ from songs import managers, validators
 from songs.choices import MusicGenre
 
 
-# TODO: Link this table to the Song model
-
 class Artist(models.Model):
     name = models.CharField(
         max_length=100,
@@ -52,12 +50,12 @@ class Artist(models.Model):
 
 
 class Song(models.Model):
-    # artist = models.ForeignKey(
-    #     Artist,
-    #     models.SET_NULL,
-    #     blank=True,
-    #     null=True
-    # )
+    artist = models.ForeignKey(
+        Artist,
+        models.SET_NULL,
+        blank=True,
+        null=True
+    )
     name = models.CharField(
         max_length=100,
         blank=True,
@@ -68,7 +66,7 @@ class Song(models.Model):
         choices=MusicGenre.choices(),
         default=MusicGenre.default('Afrobeat')
     )
-    artist = models.CharField(
+    artist_name = models.CharField(
         max_length=100,
         blank=True,
         null=True
@@ -126,6 +124,8 @@ class Song(models.Model):
                 name='diffulty_hard'
             )
         ]
+
+    objects = managers.SongManager()
 
     def __str__(self):
         return f'{self.name}'

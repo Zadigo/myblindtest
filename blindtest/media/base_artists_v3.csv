@@ -1,4 +1,4 @@
-name,genre,artist,featured_artists,spotify_id,spotify_avatar,youtube_id,year,difficulty
+name,genre,artist_name,featured_artists,spotify_id,spotify_avatar,youtube_id,year,difficulty
 Kodama,Electropop,20syl,,6mA4csYsYvf4Mq02PleZEV,https://i.scdn.co/image/ab6761610000e5eb8928154b8783203390f4e4c6,Mqbw7CUVWhM,2014,5
 Just A Lil Bit,Rap music,50 Cent,,,,GllEDACUbNo,2005,1
 Outta Control,Rap music,50 Cent,,,,Z3Oux1lN__4,2005,1

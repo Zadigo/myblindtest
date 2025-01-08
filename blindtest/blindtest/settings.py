@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'debug_toolbar',
     'import_export',
+    'django_extensions',
 
     'rest_framework',
     'rest_framework.authtoken',
