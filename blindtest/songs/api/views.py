@@ -83,8 +83,8 @@ class CreateSongs(generics.GenericAPIView):
         for serializer in serializers_list:
             try:
                 created_songs.append(serializer.save())
-            except IntegrityError:
-                errors.append()
+            except IntegrityError as e:
+                errors.append(e)
 
         response_serializer = serializers.SongSerializer(
             instance=created_songs,

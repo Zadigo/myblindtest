@@ -9,7 +9,54 @@ from songs import managers, validators
 from songs.choices import MusicGenre
 
 
+# TODO: Link this table to the Song model
+
+class Artist(models.Model):
+    name = models.CharField(
+        max_length=100,
+        unique=True,
+        blank=True,
+        null=True
+    )
+    spotify_id = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        help_text=_(
+            "ID for the given artist "
+            "on Spotify"
+        )
+    )
+    genre = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        help_text=_(
+            "The global classification for "
+            "the given artist"
+        )
+    )
+    spotify_avatar = models.URLField(
+        blank=True,
+        null=True
+    )
+    created_on = models.DateField(
+        auto_now=True
+    )
+
+    class Meta:
+        ordering = ['name']
+
+    def __str__(self):
+        return f'{self.name}'
+
+
 class Song(models.Model):
+    # artist = models.ForeignKey(
+    #     Artist,
+    #     models.SET_NULL,
+    #     null=True
+    # )
     name = models.CharField(
         max_length=100,
         blank=True,
@@ -76,7 +123,7 @@ class Song(models.Model):
 
     def __str__(self):
         return f'{self.name}'
-    
+
     @property
     def enriched(self):
         return all([
@@ -133,6 +180,15 @@ class RapSong(Song):
 
     class Meta:
         ordering = ['artist']
+        proxy = True
+
+
+class RnBSong(Song):
+    objects = managers.RnBManager()
+
+    class Meta:
+        ordering = ['artist']
+        verbose_name = 'rhythm and blues song'
         proxy = True
 
 
