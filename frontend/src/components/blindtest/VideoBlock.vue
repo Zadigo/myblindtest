@@ -20,13 +20,13 @@
                   <FontAwesomeIcon icon="home" />
                 </v-btn>
 
-                <v-btn :disabled="!isStarted" variant="tonal" color="dark" class="me-2" rounded @click="showWheel=!showWheel">
+                <v-btn :disabled="!gameStarted" variant="tonal" color="dark" class="me-2" rounded @click="showWheel=!showWheel">
                   <FontAwesomeIcon icon="bolt" />
                 </v-btn>
 
-                <v-btn variant="tonal" color="dark" rounded @click="emit('game:settings')">
+                <!-- <v-btn variant="tonal" color="dark" rounded @click="emit('game:settings')">
                   <FontAwesomeIcon icon="cog" />
-                </v-btn>
+                </v-btn> -->
               </div>
             </div>
 
@@ -47,7 +47,7 @@
           </div>
         </div>
 
-        <div v-if="currentSong" class="card-body">
+        <div v-if="currentSong" class="card-body d-flex justify-content-center">
           <iframe :src="currentSong.youtube" width="400" height="200" title="Sinéad O&#39;Connor - Nothing Compares 2 U (Official Music Video) [HD]" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" />
         </div>
 
@@ -59,7 +59,7 @@
 
         <div class="card-footer d-flex justify-content-between align-items-center">
           <div class="actions">
-            <v-btn v-if="isStarted" variant="tonal" @click="handleStop">
+            <v-btn v-if="gameStarted" variant="tonal" @click="handleStop">
               <FontAwesomeIcon icon="stop" class="me-2" /> Stop
             </v-btn>
 
@@ -69,7 +69,7 @@
           </div>
 
           <div class="d-flex gap-1">
-            <v-btn :disabled="!isStarted" variant="tonal" @click="handleNextSong">
+            <v-btn :disabled="!gameStarted" variant="tonal" @click="handleIncorrectAnswer">
               <FontAwesomeIcon icon="close" class="me-2" /> Wrong answer
             </v-btn>
           </div>
@@ -83,9 +83,9 @@
 import { wheelDetaults } from '@/data/defaults';
 import { getBaseUrl } from '@/plugins/client';
 import { useSongs } from '@/stores/songs';
-import type { DifficultyLevels, Song, SongGenres } from '@/types';
+import type { MatchedElement, Song, WebsocketMessage } from '@/types';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { useWebSocket } from '@vueuse/core';
+import { useLocalStorage, useWebSocket } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { toast } from 'vue-sonner';
@@ -93,59 +93,81 @@ import { RandomizerData } from '../randomizer';
 
 import GenreRandomizer from '../randomizer/GenreRandomizer.vue';
 
-interface WebsocketMessage {
-  type: string,
-  exclude?: number[]
-  game_difficulty?: DifficultyLevels
-  genre?: SongGenres
-}
 
 // import z from 'zod'
 
-const emit = defineEmits({
-  'game:settings' () {
-    return true
-  }
-})
-
 const songsStore = useSongs()
-const { selectedSongs, isStarted, currentSong, cache } = storeToRefs(songsStore)
+const { gameStarted, currentSong } = storeToRefs(songsStore)
 
-const randomizerEl = ref<HTMLElement>()
-const gameStarted = ref(false)
+const connectionToken = useLocalStorage<string | null | undefined>('connectionToken', null)
+
 const showWheel = ref(false)
+const randomizerEl = ref<HTMLElement>()
+
+function sendMessage <T extends WebsocketMessage>(data: T) {
+  return JSON.stringify(data)
+}
 
 const ws = useWebSocket(getBaseUrl('/ws/songs', null, true), {
   immediate: false,
   onConnected() {
-    isStarted.value = true
+    const settings = songsStore.cache.settings
+
+    ws.send(sendMessage({
+      type: 'start.game',
+      settings: {
+        point_value: settings.pointValue,
+        game_difficulty: settings.difficultyLevel,
+        genre: settings.songType,
+        difficulty_bonus: settings.songDifficultyBonus,
+        // TODO: speed_bonus
+        time_bonus: settings.speedBonus,
+        number_of_rounds: settings.rounds,
+        solo_mode: settings.soloMode,
+        admin_plays: settings.adminPlays
+      }
+    }))
     toast.success('Started blind test')
   },
   onMessage() {
-    const data = JSON.parse(ws.data.value)
+    const data = JSON.parse(ws.data.value) as WebsocketMessage
 
-    if (data.type === 'start.game') {
-      gameStarted.value = true
-    }
+    switch (data.type) {
+      case 'game.started':
+        gameStarted.value = true
+        break
 
-    if (data.type === 'connection.token') {
-      // Do something
-    }
+      case 'song.new':
+        songsStore.cache.songs.push(data.song as Song)
+        break
 
-    if (data.type === 'get.song') {
-      if (songsStore.cache) {
-        const existingSong = songsStore.cache.songs.filter(x => x.id === data.song.id)
+      case 'timer.tick':
+        break
 
-        if (existingSong.length > 0) {
-          toast.error('Song already played')
-        } else {
-          songsStore.cache.songs.push(data.song as Song)
-        }
-      }
+      case 'guess.correct':
+        // When we receive a message that the guess was
+        // correct by the given team, update the score
+        console.info(data)
+        songsStore.cache.teams[data.team_id].score = data.points
+        break
+
+      case 'song.skipped':
+        break
+
+      case 'connection.token':
+        connectionToken.value = data.token
+        break
+
+      case 'randomize.genre':
+        songsStore.cache.songs.push(data.song as Song)
+        break
+
+      default:
+        break
     }
   },
   onDisconnected() {
-    isStarted.value = false
+    gameStarted.value = false
     toast.error('Disconnected')
   },
   onError() {
@@ -153,10 +175,6 @@ const ws = useWebSocket(getBaseUrl('/ws/songs', null, true), {
   }
 })
 
-
-function sendMessage <T extends WebsocketMessage>(data: T) {
-  return JSON.stringify(data)
-}
 
 // Function that gets called once the
 // spinning has finished
@@ -166,41 +184,53 @@ function randomizerComplete (value: string | undefined | RandomizerData) {
       showWheel.value = false
 
       ws.send(sendMessage({
-        type: 'get.song.randomizer',
-        exclude: cache.value.songs.map(x => x.id),
-        genre: value
+        type: 'randomize.genre',
+        temporary_genre: value
       }))
-    }, 5000)
+    }, 3000)
   }
+}
+
+function handleFinalize() {
+  songsStore.cache.currentStep += 1
 }
 
 // Returns the next song by excluding
 // those that were already played
-function handleNextSong () {
-  ws.send(sendMessage({ 
-    type: 'get.song', 
-    exclude: songsStore.cache.songs.map(x => x.id)
+function handleIncorrectAnswer () {
+  ws.send(sendMessage({ type: 'skip.song' }))
+  handleFinalize()
+}
+
+// Proxy function that can be used by parent elements
+// to trigger a websocket message on the team guess
+function handleCorrectAnswer(teamId: number, match: MatchedElement) {
+  let title_match: boolean = true
+  let artist_match: boolean = true
+
+  if (match === 'Title') {
+    title_match = true
+    artist_match = false
+  }
+
+  if (match === 'Artist') {
+    title_match = false
+    artist_match = true
+  }
+
+  ws.send(sendMessage({
+    type: 'submit.guess',
+    team_id: teamId,
+    title_match,
+    artist_match
   }))
-  
-  songsStore.cache.currentStep += 1
+
+  handleFinalize()
 }
 
 // Starts the game
 function handleStart () {
   ws.open()
-
-  if (cache.value) {
-    ws.send(sendMessage({
-      type: 'start.game',
-      game_difficulty: cache.value.settings.difficultyLevel,
-      genre: cache.value.settings.songType
-    }))
-
-    ws.send(sendMessage({
-      type: 'get.song',
-      exclude: []
-    }))
-  }
 }
 
 // Stops the game
@@ -209,8 +239,8 @@ function handleStop () {
   toast.success('Stopped blind test')
 
   if (songsStore.cache) {
-    selectedSongs.value = []
     songsStore.cache.songs = []
+    songsStore.correctAnswers = []
 
     songsStore.cache.teams.forEach(x => {
       x.score = 0
@@ -220,6 +250,7 @@ function handleStop () {
 }
 
 defineExpose({
-  handleNextSong
+  handleCorrectAnswer,
+  handleIncorrectAnswer
 })
 </script>

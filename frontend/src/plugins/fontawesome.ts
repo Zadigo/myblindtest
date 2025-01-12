@@ -1,4 +1,4 @@
-import { faArrowLeft, faArrowRight, faBars, faBolt, faBrush, faChartSimple, faCheck, faCog, faForward, faHome, faPen, faPeopleGroup, faPlay, faPlus, faRefresh, faShuffle, faStop, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faA, faArrowLeft, faArrowRight, faBars, faBolt, faBrush, faChartSimple, faCheck, faCog, faForward, faHome, faPen, faPeopleGroup, faPlay, faPlus, faRefresh, faShuffle, faStop, faT, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { library } from '@fortawesome/fontawesome-svg-core'
 
 library.add(faPlay)
@@ -19,3 +19,5 @@ library.add(faBolt)
 library.add(faArrowLeft)
 library.add(faArrowRight)
 library.add(faHome)
+library.add(faA)
+library.add(faT)

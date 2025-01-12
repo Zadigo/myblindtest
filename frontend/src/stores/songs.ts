@@ -1,20 +1,17 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { defaults } from '../data/defaults';
-import type { Answer, CacheSession, Song } from "../types";
+import type { Answer, CacheSession } from "../types";
 
 export const useSongs = defineStore('songs', () => {
     const cache = ref<CacheSession>(defaults.cache)
 
-    const selectedSongs = ref<Song[]>([])
-
     const correctAnswers = ref<Answer[]>([])
-    const incorrectAnswers = ref<Answer[]>([])
 
     const scoringTimelineBase = ref(100)
     const scoringTimeline = ref<number[]>([])
 
-    const isStarted = ref(false)
+    const gameStarted = ref(false)
 
     const firstTeamScore = computed(() => {
         if (cache.value) {
@@ -67,15 +64,13 @@ export const useSongs = defineStore('songs', () => {
 
     return {
         cache,
-        isStarted,
+        gameStarted,
         updateScoringTimeline,
         scoringTimelineBase,
         scoringTimeline,
         firstTeamScore,
         secondTeamScore,
         correctAnswers,
-        incorrectAnswers,
-        currentSong,
-        selectedSongs
+        currentSong
     }
 })

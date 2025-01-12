@@ -1,6 +1,8 @@
+export * from './websocket_messages'
+
 export type DifficultyLevels = 'All' | 'Easy' | 'Medium' | 'Semi-Pro' | 'Difficult' | 'Expert'
 
-export type SongGenres = 'All' | 'Pop' | 'Electro' | 'Rock'
+export type SongGenres = 'All' | 'Pop' | 'Electro' | 'Rock' | 'Rhythm and blues' | 'Rap' | 'Classical'
 
 export interface Artist {
     id: number
@@ -48,9 +50,12 @@ export interface CacheSession {
     teams: Team[]
     settings: {
         rounds: number
-        timeLimit: number
+        timeLimit: string | null
         pointValue: number
-        matchSongDifficulty: boolean
+        songDifficultyBonus: boolean
+        speedBonus: boolean
+        soloMode: boolean 
+        adminPlays: boolean
         difficultyLevel: DifficultyLevels
         songType: SongGenres
     }

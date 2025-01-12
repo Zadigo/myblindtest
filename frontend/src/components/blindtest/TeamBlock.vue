@@ -18,10 +18,25 @@
       </p>
     </div>
 
+    <div class="mt-5 mb-3 d-flex justify-content-center gap-2">
+      <!-- :disabled="!songsStore.gameStarted" -->
+      <v-btn :flat="matchedElement!=='Title'" rounded @click="handleMatch('Title')">
+        <FontAwesomeIcon icon="t" class="me-2" /> Title
+      </v-btn>
+
+      <v-btn :flat="matchedElement!=='Artist'" rounded @click="handleMatch('Artist')">
+        <FontAwesomeIcon icon="a" class="me-2" /> Artist
+      </v-btn>
+
+      <v-btn :flat="matchedElement!=='Both'" rounded @click="handleMatch('Both')">
+        <FontAwesomeIcon icon="a" class="me-2" /> Both
+      </v-btn>
+    </div>
+
     <!-- Actions -->
-    <div class="mt-5 d-flex align-items-center flex-column gap-2">
-      <v-btn :disabled="!songsStore.isStarted" size="x-large" rounded @click="handleCorrectAnswer">
-        <FontAwesomeIcon icon="check" class="me-2" /> Validate answer
+    <div class="d-flex align-items-center flex-column gap-2">
+      <v-btn :disabled="!songsStore.gameStarted" size="x-large" rounded @click="handleCorrectAnswer">
+        <FontAwesomeIcon icon="check" class="me-2" /> Validate
       </v-btn>
 
       <v-btn variant="tonal" color="dark" rounded @click="emit('team:settings', teamId)">
@@ -37,7 +52,7 @@
     </Transition>
 
     <!-- Fireworks -->
-    <BaseFireworks v-show="isStarted && hasConsecutiveAnswers" />
+    <BaseFireworks v-show="gameStarted && hasConsecutiveAnswers" />
   </div>
 </template>
 
@@ -46,12 +61,12 @@ import { useSongs } from '@/stores/songs';
 import { whenever } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
-import { toast } from 'vue-sonner';
+import type { MatchedElement } from '@/types';
 
 import BaseFireworks from '../BaseFireworks.vue';
 
 const emit = defineEmits({
-  'next-song' (_data: number) {
+  'next-song' (_data: (number | MatchedElement)[]) {
     return true
   },
   'team:settings' (_teamId: number) {
@@ -75,11 +90,13 @@ const props = defineProps({
 })
 
 const songsStore = useSongs()
-const { cache, correctAnswers, isStarted } = storeToRefs(songsStore)
+const { cache, correctAnswers, gameStarted } = storeToRefs(songsStore)
 
 const teamBlockEl = ref<HTMLElement>()
 const scoreBoxEl = ref<HTMLElement>()
 const currentBonus = ref<number>(0)
+
+const matchedElement = ref<MatchedElement>('Both')
 
 const team = computed(() => {
   if (cache.value) {
@@ -159,30 +176,16 @@ async function handleAnimation () {
   }
 }
 
-// Adds a value set by the admin to 
-// the current team's score
-async function handleScore () {
-  if (team.value) {
-    if (cache.value.settings.matchSongDifficulty) {
-      if (songsStore.currentSong) {
-        team.value.score += (
-          cache.value.settings.pointValue * songsStore.currentSong.difficulty
-        )
-      } else {
-        toast.error('Could not a use song difficulty without current song')
-      }
-    } else {
-      team.value.score += cache.value.settings.pointValue
-    }
-  } else {
-    toast.error('No team was present or cache is empty')
-  }
+async function handleCorrectAnswer () {
+  await handleAnimation()
+  emit('next-song', [props.teamId, matchedElement.value])
+  matchedElement.value = 'Both'
 }
 
-async function handleCorrectAnswer () {
-  await handleScore()
-  await handleAnimation()
-  emit('next-song', props.teamId)
+// Allows us to determine whether the user matched the
+// artist and/or the song title for the current given song
+function handleMatch(match: MatchedElement) {
+  matchedElement.value = match
 }
 </script>
 

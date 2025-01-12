@@ -1,15 +1,16 @@
+import random
 from base64 import b32encode
-from urllib.parse import urlparse, urlunparse
 
 import pyotp
 import qrcode
 from django.conf import settings
-from django.utils.crypto import get_random_string
+from django.utils import timezone
 
 
 def create_token():
-    token = get_random_string(length=5)
-    return f'tok_{token}'
+    number_value = random.randint(1000, 9999)
+    date_value = timezone.now().timestamp()
+    return f"game_{number_value}_{int(date_value)}"
 
 
 class OTPCode:
@@ -23,7 +24,7 @@ class OTPCode:
         self.url = self.instance.provisioning_uri(
             name='Blind Test', issuer_name='Django')
 
-    @property
+    @ property
     def get_qr_code(self):
         return qrcode.make(self.url)
 

@@ -4,6 +4,7 @@ export const difficultyLevels = [
     'All',
     'Easy',
     'Medium',
+    'Semi-Pro',
     'Difficult',
     'Expert'
 ]
@@ -12,7 +13,10 @@ export const songTypes = [
     'All',
     'Pop',
     'Electro',
-    'Rock'
+    'Rock',
+    'Rhythm and blues',
+    'Rap',
+    'Classical'
 ]
 
 export const addNewSongData = {
@@ -45,11 +49,14 @@ export const defaults: { cache: CacheSession } = {
         ],
         settings: {
             rounds: 1,
-            timeLimit: 0,
+            timeLimit: null,
             pointValue: 1,
-            matchSongDifficulty: false,
-            difficultyLevel: 'All' as 'All' | 'Easy' | 'Medium' | 'Difficult' | 'Expert',
-            songType: 'All' as 'All' | 'Pop' | 'Electro' | 'Rock'
+            songDifficultyBonus: false,
+            speedBonus: false,
+            soloMode: false,
+            adminPlays: false,
+            difficultyLevel: 'All' as 'All' | 'Easy' | 'Medium' | 'Semi-Pro' | 'Difficult' | 'Expert',
+            songType: 'All' as 'All' | 'Pop' | 'Electro' | 'Rock' | 'Rhythm and blues' | 'Rap' | 'Classical'
         }
     }
 }
@@ -57,7 +64,7 @@ export const defaults: { cache: CacheSession } = {
 export const wheelDetaults = [
     { id: 1, value: 'Pop', bgColor: '#7d7db3', color: '#ffffff' },
     { id: 2, value: 'Rock', bgColor: '#ffffff', color: '#000000' },
-    { id: 3, value: 'Rythme and blues', bgColor: '#7d7db3', color: '#000000' },
+    { id: 3, value: 'Rythm and blues', bgColor: '#7d7db3', color: '#000000' },
     { id: 4, value: 'Rap', bgColor: '#ffffff', color: '#000000' },
     { id: 5, value: 'Blues', bgColor: '#7d7db3', color: '#000000' },
     { id: 6, value: 'Jazz', bgColor: '#ffffff', color: '#000000' },

@@ -13,7 +13,7 @@
     </template>
 
     <template #default>
-      <GameSettings v-model="showGameSettings" />
+      <!-- <GameSettings v-model="showGameSettings" /> -->
       <TeamSettings v-model="showTeamSettings" :team-id="selectedTeam" :update:team="handleUpdateTeam" />
     </template>
   </BlindTestLayout>
@@ -27,9 +27,10 @@ import { ref } from 'vue';
 
 import TeamBlock from '@/components/blindtest/TeamBlock.vue';
 import VideoBlock from '@/components/blindtest/VideoBlock.vue';
-import GameSettings from '@/components/modals/GameSettings.vue';
+// import GameSettings from '@/components/modals/GameSettings.vue';
 import TeamSettings from '@/components/modals/TeamSettings.vue';
 import BlindTestLayout from '@/layouts/BlindTestLayout.vue';
+import { MatchedElement } from '@/types';
 
 useHead({
   title: 'Blind test'
@@ -45,17 +46,18 @@ const videoEl = ref<HTMLElement>()
 
 // Callback function that handles the correct
 // answser from a given team
-function handleCorrectAnswer (teamId: number) {
+function handleCorrectAnswer (data: (number | MatchedElement)[]) {
   if (songsStore.cache) {
-    if (currentSong.value) {
+    if (currentSong.value && data) {
       correctAnswers.value.push({
-        teamId: teamId,
+        teamId: data[0],
         song: currentSong.value
       })
     }
 
     if (videoEl.value) {
-      videoEl.value.handleNextSong()
+      // videoEl.value.handleNextSong()
+      videoEl.value.handleCorrectAnswer(data[0], data[1])
     }
   }
 }
