@@ -36,6 +36,11 @@ const router = createRouter({
                     path: 'test',
                     component: async () => import('../pages/TestPage.vue'),
                     name: 'test'
+                },
+                {
+                    path: '(.*)',
+                    component: async () => import('../pages/ErrorPage.vue'),
+                    name: 'error'
                 }
             ]
         }

@@ -12,12 +12,6 @@
       <div id="navbarNav" class="collapse navbar-collapse">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <RouterLink :to="{ name: 'blind_test' }" class="nav-link" aria-current="page">
-              Blind test
-            </RouterLink>
-          </li>
-
-          <li class="nav-item">
             <RouterLink :to="{ name: 'statistics' }" class="nav-link" aria-current="page">
               Statistics
             </RouterLink>
@@ -32,12 +26,36 @@
       </div>
     </div>
   </nav>
+
+  <!-- color="blue-darken-1" -->
+  <!-- <v-toolbar :elevation="2">
+    <v-app-bar-nav-icon />
+
+    <v-toolbar-title>
+      <RouterLink to="/" style="cursor: pointer">
+        <span class="fw-bold text-uppercase">
+          Blind Test
+        </span>
+      </RouterLink>
+    </v-toolbar-title>
+
+    <RouterLink :to="{ name: 'statistics' }">
+      Statistics
+    </RouterLink>
+
+    <RouterLink :to="{ name: 'create' }">
+      Add songs
+    </RouterLink>
+
+    <v-spacer />
+
+    <v-btn icon>
+      <v-icon>mdi-export</v-icon>
+    </v-btn>
+  </v-toolbar> -->
 </template>
 
 <script lang="ts" setup>
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-
-
 </script>
 
 <style lang="scss" scoped>

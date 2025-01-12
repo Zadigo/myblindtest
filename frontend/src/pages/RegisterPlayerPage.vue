@@ -1,18 +1,45 @@
 <template>
-  <div class="container">
-    <div class="row my-5">
-      <div class="col-12">
-        <OTPInput v-slot="{ slots }" v-model="input" :maxlength="6">
-          <Slot v-for="(slot, i) in slots.slice(3)" v-bind="slot" :key="i" />
-        </OTPInput>
-      </div>
-    </div>
-  </div>
+  <section ref="sectionEl">
+    <v-container>
+      <v-row class="mt-16">
+        <v-col cols="4" offset="4">
+          <v-card>
+            <v-card-text>
+              <v-form @submit.prevent>
+                <v-text-field variant="solo-filled" placeholder="Blind test ID" flat />
+                <v-btn variant="tonal" color="dark" rounded>
+                  Join blind test
+                </v-btn>
+              </v-form>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+  </section>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { OTPInput } from 'vue-input-otp'
+import { onMounted, ref } from 'vue';
 
-const input = ref<string>('')
+// import { OTPInput } from 'vue-input-otp'
+
+// const input = ref<string>('')
+
+const sectionEl = ref<HTMLElement>()
+
+onMounted(() => {
+  if (sectionEl.value) {
+    sectionEl.value.style.backgroundImage = `url('/registration.jpg')`
+  }
+})
 </script>
+
+<style lang="scss" scoped>
+section {
+  height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-position-y: -300px;
+}
+</style>
