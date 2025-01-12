@@ -336,6 +336,5 @@ class SongConsumer(AsyncJsonWebsocketConsumer):
             # Select a temporary genre within songs, if and only if
             # a global genre is not selected
             temporary_genre = content.get('temporary_genre', None)
-            print(temporary_genre)
             if self.is_started:
                 self.next_song(temporary_genre=temporary_genre)
