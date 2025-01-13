@@ -39,7 +39,10 @@ class SongConsumer(AsyncJsonWebsocketConsumer):
         self.difficulty = 'All'
         self.genre = 'All'
 
+        # self.start_time = None
+        self.current_round = 0
         self.number_of_rounds = None
+
         self.point_value: int = 1
         self.difficulty_bonus = False
         self.time_bonus = False
@@ -119,7 +122,11 @@ class SongConsumer(AsyncJsonWebsocketConsumer):
         if not song_ids:
             await self.send_json({
                 'type': 'game.complete',
-                'final_score': self.scores,
+                'message': 'No songs left',
+                'final_scores': {
+                    'team1': self.team_one_score,
+                    'team2': self.team_two_score
+                },
                 'songs_played': len(self.played_songs)
             })
             self.is_started = False
@@ -130,6 +137,10 @@ class SongConsumer(AsyncJsonWebsocketConsumer):
         self.played_songs.add(random_id)
 
         if self.solo_mode:
+            # In solo mode return only the audio
+            # of the song not its information since
+            # we get those when the user guesses the
+            # the song
             await self.send_json({
                 'type': 'song.new',
                 'song': {
@@ -169,7 +180,7 @@ class SongConsumer(AsyncJsonWebsocketConsumer):
         # Use the song's difficulty level to calculate
         # the amount of points that will be used  to
         # add to team's final score
-        def factor(value):
+        def factor(value: int):
             if self.difficulty_bonus:
                 factor = int(self.current_song['difficulty'])
                 return self.point_value * factor
@@ -258,27 +269,33 @@ class SongConsumer(AsyncJsonWebsocketConsumer):
         if not self.current_song:
             return
 
+        message = {
+            'type': None,
+            'team_id': team,
+            'points': 0
+        }
+
         if title_match or artist_match:
             result = await self.calculate_points(title_match, artist_match)
 
-            message = {
-                'type': 'guess.correct',
-                'team_id': team,
-                'points': 0
-            }
+            message['type'] = 'guess.correct'
 
             if team == 0:
                 self.team_one_score += result
+                # TODO: Fully implement the dataclass
                 self.team_one.points += result
                 message['points'] = self.team_one_score
 
             if team == 1:
                 self.team_two_score += result
+                # TODO: Fully implement the dataclass
                 self.team_two.points += result
                 message['points'] = self.team_two_score
+        else:
+            message['type'] = 'guess.incorrect'
+            message['points'] = self.team_one_score if team == 0 else self.team_two_score
 
-            await self.send_json(message)
-
+        await self.send_json(message)
         await self.next_song()
 
     async def connect(self):
@@ -289,10 +306,11 @@ class SongConsumer(AsyncJsonWebsocketConsumer):
     async def disconnect(self, code):
         if self.timer_task:
             self.timer_task.cancel()
+            
         await self.close(code=1000)
         self.is_started = False
 
-    async def receive_json(self, content: dict[str, Union[str, int]], **kwargs):
+    async def receive_json(self, content: dict[str, Union[str, int, bool]], **kwargs):
         action = content.get('type')
 
         if action is None:
@@ -313,6 +331,7 @@ class SongConsumer(AsyncJsonWebsocketConsumer):
 
             self.team_one_score = 0
             self.team_two_score = 0
+            # TODO: Fully implement the dataclass
             self.team_one.points = 0
             self.team_two.points = 0
             self.played_songs.clear()
@@ -355,3 +374,5 @@ class SongConsumer(AsyncJsonWebsocketConsumer):
             temporary_genre = content.get('temporary_genre', None)
             if self.is_started:
                 self.next_song(temporary_genre=temporary_genre)
+        else:
+            self.send_error('Invalid action')
