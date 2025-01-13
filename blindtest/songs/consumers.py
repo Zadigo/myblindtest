@@ -95,6 +95,7 @@ class SongConsumer(AsyncJsonWebsocketConsumer):
                 'The current blindtest is not set to contain all genres', error='warning')
 
         song_ids = list(qs.values_list('id', flat=True))
+        random.shuffle(song_ids)
         cache.set(cache_key, song_ids, self.cache_timeout)
 
         return song_ids
