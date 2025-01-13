@@ -5,7 +5,8 @@ from channels.routing import URLRouter
 from channels.testing import WebsocketCommunicator
 from django.core.cache import cache
 from django.test import TestCase
-from django.urls import re_path
+from django.urls import re_path, reverse
+from rest_framework.test import APITransactionTestCase
 from songs import consumers
 from songs.utils import OTPCode
 
@@ -246,3 +247,77 @@ class TestSongConsumer(TestCase):
         # difficulty 5, so 1 x 1 = 1 and 1 x 5 = 5 so the final
         # score should be either 1 or 5
         self.assertIn(response['points'], [1, 5])
+
+
+class TestRestApiView(APITransactionTestCase):
+    fixtures = ['songs']
+
+    def setUp(self):
+        self.client = self.client_class()
+
+    def test_get_all_songs(self):
+        response = self.client.get(reverse('songs_api:songs'))
+        data = response.json()
+        self.assertEqual(len(data), 2)
+
+        for item in data:
+            with self.subTest(item=item):
+                self.assertIn('id', item)
+                self.assertIn('artist', item)
+                self.assertIn('youtube', item)
+
+    def test_get_all_artists(self):
+        response = self.client.get(reverse('songs_api:artists'))
+        data = response.json()
+        self.assertEqual(len(data), 1)
+
+        for item in data:
+            with self.subTest(item=item):
+                self.assertIn('id', item)
+                self.assertIn('spotify_id', item)
+
+    def test_search(self):
+        response = self.client.get(
+            reverse('songs_api:search'),
+            data={'q': 'Love'}
+        )
+        data = response.json()
+        results = data['results']
+        self.assertEqual(len(results), 1)
+
+        for item in results:
+            with self.subTest(item=item):
+                self.assertIn('song_set', item)
+
+    def test_genres(self):
+        response = self.client.get(
+            reverse('songs_api:genres'),
+            data={'q': 'Love'}
+        )
+        data = response.json()
+        self.assertIn('Zouk', data)
+
+    def test_create_song(self):
+        data = [
+            {
+                'name': 'Julie, Alice, Au Pays',
+                'genre': 'Zouk',
+                'featured_artists': '',
+                'youtube_id': 'abc-d',
+                'artist_name': 'Malo',
+                'difficulty': 4,
+                'year': 2018
+            }
+        ]
+
+        response = self.client.post(
+            reverse('songs_api:create'),
+            data=data,
+            format='json'
+        )
+        response_data = response.json()
+        self.assertTrue(len(response_data['items']), 1)
+
+        for item in response_data['items']:
+            with self.subTest(item=item):
+                self.assertEqual(item['name'], data[0]['name'])

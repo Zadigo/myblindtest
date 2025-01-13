@@ -16,8 +16,8 @@ urlpatterns = [
     ),
     re_path(
         r'^by-artists$',
-        views.GetByArtist.as_view(),
-        name='by_artists'
+        views.SearchSongsAndArtists.as_view(),
+        name='search'
     ),
     re_path(
         r'^artists$',

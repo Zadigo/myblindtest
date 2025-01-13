@@ -5,6 +5,7 @@ from django.db.models import Q
 from rest_framework import generics, status
 from rest_framework.mixins import Response
 from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.permissions import AllowAny
 from songs.api import serializers
 from songs.choices import MusicGenre
 from songs.models import Artist, Song
@@ -18,6 +19,7 @@ class BasePagination(LimitOffsetPagination):
 class AllSongs(generics.ListAPIView):
     queryset = Song.objects.all()
     serializer_class = serializers.SongSerializer
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
         queryset = cache.get('songs')
@@ -37,6 +39,7 @@ class AllSongs(generics.ListAPIView):
 class AllArtists(generics.ListAPIView):
     queryset = Artist.objects.all()
     serializer_class = serializers.ArtistSerializer
+    permission_classes = [AllowAny]
 
     # TODO: Set the genres on each
     # artist  in the Artist model
@@ -53,23 +56,26 @@ class AllArtists(generics.ListAPIView):
         return queryset
 
 
-class GetByArtist(generics.ListAPIView):
+class SearchSongsAndArtists(generics.ListAPIView):
     queryset = Artist.objects.all()
     serializer_class = serializers.ArtistSongSerializer
     pagination_class = BasePagination
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
         qs = super().get_queryset()
         search = self.request.GET.get('q')
         if search:
             return qs.filter(
-                Q(name__icontains =search) |
+                Q(name__icontains=search) |
                 Q(song__name__icontains=search)
             )
         return qs
 
 
 class CreateSongs(generics.GenericAPIView):
+    permission_classes = [AllowAny]
+
     def post(self, request):
         data = request.data
 
@@ -107,6 +113,13 @@ class CreateSongs(generics.GenericAPIView):
 
 
 class SongGenres(generics.GenericAPIView):
+    permission_classes = [AllowAny]
+
     def get(self, request):
-        data = MusicGenre.choices()
-        return Response(data=[x[0] for x in data])
+        genres = cache.get('genres', None)
+
+        if genres is None:
+            data = MusicGenre.choices()
+            values = sorted([x[0] for x in data])
+            cache.add('genres', values, (24 * 60))
+        return Response(data=values, status=status.HTTP_200_OK)
