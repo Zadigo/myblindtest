@@ -171,7 +171,8 @@ class SongConsumer(AsyncJsonWebsocketConsumer):
         # add to team's final score
         def factor(value):
             if self.difficulty_bonus:
-                return self.point_value * (self.current_song['difficulty'])
+                factor = int(self.current_song['difficulty'])
+                return self.point_value * factor
             return value
 
         if title_match:
