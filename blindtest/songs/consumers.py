@@ -9,6 +9,7 @@ from django.core import exceptions
 from django.core.cache import cache
 from songs.api import serializers
 from songs.models import Song
+from songs.processors import FuzzyMatcher
 from songs.utils import create_token
 
 # TODO: Ability to use jokers:
@@ -67,6 +68,8 @@ class SongConsumer(AsyncJsonWebsocketConsumer):
 
         self.played_songs: set[int] = set()
         self.connection_token = None
+
+        self.fuzzy_matcher = FuzzyMatcher()
 
     @database_sync_to_async
     def get_songs(self, temporary_genre: str = None, exclude: List[int] = []) -> List[int]:
