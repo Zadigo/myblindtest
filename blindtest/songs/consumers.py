@@ -142,6 +142,22 @@ class SongConsumer(AsyncJsonWebsocketConsumer):
                 'song': self.current_song
             })
 
+        self.current_round += 1
+
+        if self.number_of_rounds is not None:
+            if self.current_round > self.number_of_rounds:
+                await self.send_json({
+                    'type': 'game.complete',
+                    'message': 'Final round complete',
+                    'final_scores': {
+                        'team1': self.team_one_score,
+                        'team2': self.team_two_score
+                    },
+                    'songs_played': len(self.played_songs)
+                })
+                self.is_started = False
+                return
+
         # if self.timer_task:
         #     self.timer_task.cancel()
         # self.timer_task = asyncio.create_task(self.timer())
