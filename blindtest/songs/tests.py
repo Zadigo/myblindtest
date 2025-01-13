@@ -210,3 +210,39 @@ class TestSongConsumer(TestCase):
         self.assertIn('final_scores', response)
 
         await instance.disconnect()
+
+    async def test_correct_answer_using_song_difficulty_bonus(self):
+        instance = await self.create_connection()
+
+        await instance.send_json_to({
+            'type': 'start.game',
+            'settings': {
+                'game_difficulty': 'Easy',
+                'genre': 'All',
+                'difficulty_bonus': True
+            }
+        })
+
+        # Start game
+        response = await instance.receive_json_from()
+        self.assertEqual(response['type'], 'game.started')
+
+        # Return a song
+        response = await instance.receive_json_from()
+        self.assertEqual(response['type'], 'song.new')
+
+        # Submit correct guess
+        await instance.send_json_to({
+            'type': 'submit.guess',
+            'team_id': 0,
+            'title_match': True,
+            'artist_match': False
+        })
+
+        # Get score
+        response = await instance.receive_json_from()
+        self.assertEqual(response['type'], 'guess.correct')
+        # We have two songs, one of difficulty 1 and a second of
+        # difficulty 5, so 1 x 1 = 1 and 1 x 5 = 5 so the final
+        # score should be either 1 or 5
+        self.assertIn(response['points'], [1, 5])
