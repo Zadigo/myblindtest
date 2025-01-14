@@ -1,20 +1,14 @@
 import type { DifficultyLevels, Song, SongGenres } from '@/types';
 
-export type WebsocketMessageTypes = 'song.new' | 'timer.tick' | 'guess.correct' | 'error' | 'connection.token' | 'game.started' | 'song.skipped' | 'start.game' | 'submit.guess' | 'skip.song' | 'randomize.genre'
-
-// TODO: Create two different websocket types
-// interface WebsocketReceiveMessage {
-// }
-
-// interface WebsocketSendMessage {
-//   type
-// }
-
 export type MatchedElement = 'Artist' | 'Title' | 'Both' | null
 
-export interface WebsocketMessage {
-    type: WebsocketMessageTypes
+export type WebsocketActions = 'song_new' | 'timer_tick' | 'guess_correct' | 'error' | 'connection_token' | 'game_started' | 'song_skipped' | 'start_game' | 'submit_guess' | 'skip_song' | 'randomize_genre'
 
+export interface WebsocketMessage {
+    action: WebsocketActions
+}
+
+export interface WebsocketBlindTestMessage extends WebsocketMessage {
     // Received
     token?: string | null | undefined,
     song?: Song
@@ -46,5 +40,14 @@ export interface WebsocketMessage {
                 name: string
             }
         }
+    }
+}
+
+export interface WebsocketDiffusionMessage {
+    action: 'game_updates' | 'game_disconnected' | 'initiate_connection'
+    data: {
+        action: Pick<WebsocketMessageTypes, 'guess_correct'>
+        team_id: number,
+        points: number
     }
 }
