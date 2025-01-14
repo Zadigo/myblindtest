@@ -36,6 +36,9 @@ class Team:
 
 
 class ConsumerMixin:
+    # TODO: Append the blindtest ID to the group
+    # when creating the diffusion group in order
+    # to be able to run multiple different blindtests
     diffusion_group_name = 'blind_test_updates'
 
     async def send_error(self, message, error_type='error'):
@@ -53,6 +56,10 @@ class ConsumerMixin:
     async def device_disconnected(self, content):
         """Channels handler for the devices that have been disconnected
         from the current blind test game"""
+
+    async def game_disconnected(self, content):
+        """Channels handler to indicate to devices that game has either
+        disconnected or simply over"""
 
     async def game_updates(self, content):
         """Channels handler for receiving messages on score updates
@@ -324,11 +331,11 @@ class SongConsumer(ConsumerMixin, AsyncJsonWebsocketConsumer):
             message['points'] = self.team_one_score if team == 0 else self.team_two_score
 
         # TODO: Ensure this works properly
-        # await self.channel_layer.group_send(self.diffusion_group_name, {
-        #     'type': 'game.updates',
-        #     'origin': self.__class__.__name__,
-        #     'updates': message
-        # })
+        await self.channel_layer.group_send(self.diffusion_group_name, {
+            'type': 'game_updates',
+            'sender': 'blind_test',
+            'updates': message
+        })
 
         await self.send_json(message)
         await self.next_song()
@@ -338,13 +345,17 @@ class SongConsumer(ConsumerMixin, AsyncJsonWebsocketConsumer):
         # devices to get updates on blind test actual state
         await self.accept()
         # TODO: Channel make diffusion group
-        # await self.channel_layer.group_add(self.diffusion_group_name, self.channel_name)
+        await self.channel_layer.group_add(self.diffusion_group_name, self.channel_name)
         self.connection_token = create_token()
         await self.send_json({'type': 'connection.token', 'token': self.connection_token})
 
     async def disconnect(self, code):
         # TODO: Channel make diffusion group
-        # await self.channel_layer.group_discard(self.diffusion_group_name, self.channel_name)
+        await self.channel_layer.group_send(self.diffusion_group_name, {
+            'type': 'game.disconnected',
+            'origin': 'blind_test'
+        })
+        await self.channel_layer.group_discard(self.diffusion_group_name, self.channel_name)
 
         if self.timer_task:
             self.timer_task.cancel()
@@ -419,6 +430,19 @@ class SongConsumer(ConsumerMixin, AsyncJsonWebsocketConsumer):
         else:
             self.send_error('Invalid action')
 
+    async def device_connected(self, content):
+        await self.send_json({
+            'action': 'device.connected',
+            **content
+        })
+
+    async def device_disconnected(self, content):
+        print(content)
+        await self.send_json({
+            'action': 'device.disconnected',
+            **content
+        })
+
 
 class TeamConsumer(ConsumerMixin, AsyncJsonWebsocketConsumer):
     """TODO: Consumer that allows players or a team captain to connect to their team, 
@@ -438,28 +462,33 @@ class ScreenInterfaceConsumer(ConsumerMixin, AsyncJsonWebsocketConsumer):
 
         self.connection_token = get_random_string(length=20)
         self.update_cache = {}
+        self.device = 'projection_screen'
 
     async def connect(self):
         await self.accept()
+        # Register this consumer to the diffusion group in order for
+        # it to be able to receive messages from the main blind test game
+        await self.channel_layer.group_add(self.diffusion_group_name, self.channel_name)
         await self.send_json({
             'action': 'initiate.connection',
             'connection_token': self.connection_token
         })
 
         # TODO: Channel make diffusion group
-        # await self.channel_layer.group_send(self.diffusion_group_name, {
-        #     'type': 'device.connected',
-        #     'origin': self.__class__.__name__,
-        #     'connection_token': self.connection_token
-        # })
+        await self.channel_layer.group_send(self.diffusion_group_name, {
+            'type': 'device.connected',
+            'origin': self.device,
+            'connection_token': self.connection_token
+        })
 
     async def disconnect(self, code):
         # TODO: Channel make diffusion group
-        # await self.channel_layer.group_send(self.diffusion_group_name, {
-        #     'type': 'device.disconnected',
-        #     'origin': self.__class__.__name__,
-        #     'connection_token': self.connection_token
-        # })
+        await self.channel_layer.group_send(self.diffusion_group_name, {
+            'type': 'device.disconnected',
+            'origin': self.device,
+            'connection_token': self.connection_token
+        })
+        await self.channel_layer.group_discard(self.diffusion_group_name, self.channel_name)
         await self.close()
 
     async def receive_json(self, content, **kwargs):
@@ -468,3 +497,15 @@ class ScreenInterfaceConsumer(ConsumerMixin, AsyncJsonWebsocketConsumer):
         if action is None:
             self.send_error('An action was not provided')
             return
+
+    async def game_updates(self, content):
+        await self.send_json({
+            'action': 'game_updates',
+            **content
+        })
+
+    async def game_disconnected(self, content):
+        await self.send_json({
+            'action': 'game_disconnected',
+            **content
+        })
