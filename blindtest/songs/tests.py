@@ -4,7 +4,7 @@ from channels.db import database_sync_to_async
 from channels.routing import URLRouter
 from channels.testing import WebsocketCommunicator
 from django.core.cache import cache
-from django.test import TestCase
+from django.test import TestCase, TransactionTestCase
 from django.urls import re_path, reverse
 from rest_framework.test import APITransactionTestCase
 from songs import consumers
@@ -321,3 +321,71 @@ class TestRestApiView(APITransactionTestCase):
         for item in response_data['items']:
             with self.subTest(item=item):
                 self.assertEqual(item['name'], data[0]['name'])
+
+
+class TestScreenInterfaceConsumer(TransactionTestCase):
+    fixtures = ['songs']
+
+    def setUp(self):
+        self.app = URLRouter([
+            re_path(r'^ws/songs$', consumers.SongConsumer.as_asgi()),
+            re_path(r'^ws/connect$', consumers.ScreenInterfaceConsumer.as_asgi())
+        ])
+
+    async def create_connections(self):
+        conn1 = WebsocketCommunicator(self.app, '/ws/songs')
+        conn2 = WebsocketCommunicator(self.app, '/ws/connect')
+
+        state, _ = await conn1.connect()
+        self.assertTrue(state)
+
+        state, _ = await conn2.connect()
+        self.assertTrue(state)
+
+        # Song consumer
+        response = await conn1.receive_json_from()
+        self.assertEqual(response['type'], 'connection.token')
+
+        # Team consumer
+        response = await conn2.receive_json_from()
+        self.assertIn('connection_token', response)
+
+        return conn1, conn2
+
+    async def test_connection(self):
+        conn1, conn2 = await self.create_connections()
+        await conn1.disconnect()
+        await conn2.disconnect()
+
+    async def test_game_updates(self):
+        conn1, conn2 = await self.create_connections()
+
+        await conn1.send_json_to({'type': 'start.game'})
+
+        # Start game
+        response = await conn1.receive_json_from()
+        self.assertEqual(response['type'], 'game.started')
+
+        # Return a song
+        response = await conn1.receive_json_from()
+        self.assertEqual(response['type'], 'song.new')
+
+        # Submit correct guess
+        await conn1.send_json_to({
+            'type': 'submit.guess',
+            'team_id': 0,
+            'title_match': True,
+            'artist_match': False
+        })
+
+        # Get score
+        response = await conn1.receive_json_from()
+        self.assertEqual(response['type'], 'guess.correct')
+
+        # Get next song
+        response = await conn1.receive_json_from()
+        self.assertEqual(response['type'], 'song.new')
+
+        # Game updates
+        response = await conn2.receive_json_from()
+        self.assertEqual(response['type'], 'game.updates')

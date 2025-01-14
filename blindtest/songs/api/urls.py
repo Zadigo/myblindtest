@@ -5,6 +5,11 @@ app_name = 'songs_api'
 
 urlpatterns = [
     re_path(
+        r'^test$',
+        views.test,
+        name='test'
+    ),
+    re_path(
         r'^create$',
         views.CreateSongs.as_view(),
         name='create'

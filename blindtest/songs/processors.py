@@ -7,6 +7,7 @@ from thefuzz import fuzz as thefuzz
 from unidecode import unidecode
 
 # https://www.datacamp.com/tutorial/fuzzy-string-python
+# https://en.wikipedia.org/wiki/Levenshtein_distance#:~:text=The%20Levenshtein%20distance%20between%20two,Levenshtein%20distance
 
 
 class FuzzyMatcher:

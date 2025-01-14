@@ -1,3 +1,4 @@
+from rest_framework.decorators import api_view
 from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
@@ -123,3 +124,10 @@ class SongGenres(generics.GenericAPIView):
             values = sorted([x[0] for x in data])
             cache.add('genres', values, (24 * 60))
         return Response(data=values, status=status.HTTP_200_OK)
+
+
+@api_view(http_method_names=['get'])
+def test(request):
+    from songs import tasks
+    tasks.song_information_completion.s()
+    return Response({'status': 'ok'})

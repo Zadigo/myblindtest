@@ -1,3 +1,4 @@
+from django.utils.crypto import get_random_string
 import asyncio
 import dataclasses
 import random
@@ -21,6 +22,10 @@ from songs.utils import create_token
 # Boost: 1x, 2x, 3x, 4x, 5x
 
 
+# TODO: "type" is for channels and I should rename them to something
+# else when sending messages using send_json
+
+
 @dataclasses.dataclass
 class Team:
     name: str = None
@@ -30,13 +35,38 @@ class Team:
     answer_times: List[int] = dataclasses.field(default_factory=list)
 
 
-class SongConsumer(AsyncJsonWebsocketConsumer):
+class ConsumerMixin:
+    diffusion_group_name = 'blind_test_updates'
+
+    async def send_error(self, message, error_type='error'):
+        await self.send_json({
+            'type': error_type,
+            'error': message
+        })
+
+    # TODO: Channel make diffusion group
+
+    async def device_connected(self, content):
+        """Channels handler for the devices that are connecting
+        to the current blind test game"""
+
+    async def device_disconnected(self, content):
+        """Channels handler for the devices that have been disconnected
+        from the current blind test game"""
+
+    async def game_updates(self, content):
+        """Channels handler for receiving messages on score updates
+        on the current blindtest"""
+
+
+class SongConsumer(ConsumerMixin, AsyncJsonWebsocketConsumer):
     difficulties = ['All', 'Easy', 'Medium', 'Semi-Pro', 'Difficult', 'Expert']
     game_duration: int = 30
     cache_timeout: int = 3600
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         self.difficulty = 'All'
         self.genre = 'All'
 
@@ -225,12 +255,6 @@ class SongConsumer(AsyncJsonWebsocketConsumer):
         except asyncio.CancelledError:
             pass
 
-    async def send_error(self, message, error_type='error'):
-        await self.send_json({
-            'type': error_type,
-            'error': message
-        })
-
     async def handle_string_guess(self, guess: str):
         """Handles player's song guess"""
         if not self.current_song:
@@ -299,18 +323,32 @@ class SongConsumer(AsyncJsonWebsocketConsumer):
             message['type'] = 'guess.incorrect'
             message['points'] = self.team_one_score if team == 0 else self.team_two_score
 
+        # TODO: Ensure this works properly
+        # await self.channel_layer.group_send(self.diffusion_group_name, {
+        #     'type': 'game.updates',
+        #     'origin': self.__class__.__name__,
+        #     'updates': message
+        # })
+
         await self.send_json(message)
         await self.next_song()
 
     async def connect(self):
+        # Create a diffusion group that will allow other
+        # devices to get updates on blind test actual state
         await self.accept()
+        # TODO: Channel make diffusion group
+        # await self.channel_layer.group_add(self.diffusion_group_name, self.channel_name)
         self.connection_token = create_token()
         await self.send_json({'type': 'connection.token', 'token': self.connection_token})
 
     async def disconnect(self, code):
+        # TODO: Channel make diffusion group
+        # await self.channel_layer.group_discard(self.diffusion_group_name, self.channel_name)
+
         if self.timer_task:
             self.timer_task.cancel()
-            
+
         await self.close(code=1000)
         self.is_started = False
 
@@ -380,3 +418,53 @@ class SongConsumer(AsyncJsonWebsocketConsumer):
                 self.next_song(temporary_genre=temporary_genre)
         else:
             self.send_error('Invalid action')
+
+
+class TeamConsumer(ConsumerMixin, AsyncJsonWebsocketConsumer):
+    """TODO: Consumer that allows players or a team captain to connect to their team, 
+    buzz for a correct answer and receive game updates"""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+class ScreenInterfaceConsumer(ConsumerMixin, AsyncJsonWebsocketConsumer):
+    """Consumer that allows the game admin to project the actual state
+    of the game (scores...) to the actual playing teams. This might require
+    the user to have another computer to connect to the endpoint"""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.connection_token = get_random_string(length=20)
+        self.update_cache = {}
+
+    async def connect(self):
+        await self.accept()
+        await self.send_json({
+            'action': 'initiate.connection',
+            'connection_token': self.connection_token
+        })
+
+        # TODO: Channel make diffusion group
+        # await self.channel_layer.group_send(self.diffusion_group_name, {
+        #     'type': 'device.connected',
+        #     'origin': self.__class__.__name__,
+        #     'connection_token': self.connection_token
+        # })
+
+    async def disconnect(self, code):
+        # TODO: Channel make diffusion group
+        # await self.channel_layer.group_send(self.diffusion_group_name, {
+        #     'type': 'device.disconnected',
+        #     'origin': self.__class__.__name__,
+        #     'connection_token': self.connection_token
+        # })
+        await self.close()
+
+    async def receive_json(self, content, **kwargs):
+        action = content.get('type')
+
+        if action is None:
+            self.send_error('An action was not provided')
+            return

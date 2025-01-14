@@ -1,6 +1,7 @@
 import os
 from datetime import timedelta
 from pathlib import Path
+from re import I
 
 import dotenv
 
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'corsheaders',
+    'django_celery_beat',
     'drf_spectacular',
     'debug_toolbar',
     'import_export',
@@ -146,10 +148,18 @@ MEDIA_PATH = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
 # Celery
 # https://docs.celeryq.dev/en/stable/
 
+REDIS_USER = os.getenv('REDIS_USER')
+
+REDIS_HOST = os.getenv('REDIS_HOST')
+
 REDIS_PASSWORD = os.getenv('REDIS_PASSWORD')
+
+REDIS_URL = 'redis://127.0.0.1:6379'
+
 
 if not DEBUG:
     # Use Redis as backend for caching instead of
@@ -167,13 +177,12 @@ if not DEBUG:
         user=RABBITMQ_USER,
         password=RABBITMQ_PASSWORD
     )
-
-    CELERY_RESULT_BACKEND = f'redis://:{REDIS_PASSWORD}@redis:6379'
 else:
     CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672'
 
-    CELERY_RESULT_BACKEND = 'rpc://'
+    # CELERY_RESULT_BACKEND = 'rpc://'
 
+CELERY_RESULT_BACKEND = REDIS_URL
 
 CELERY_ACCEPT_CONTENT = ['json']
 
@@ -184,6 +193,18 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Europe/Oslo'
 
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+
+# Cache
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': REDIS_URL,
+        'KEY_PREFIX': 'blind_test'
+    }
+}
 
 
 # Emailing
@@ -257,3 +278,16 @@ CSRF_TRUSTED_ORIGINS = [
 # Debug
 
 INTERNAL_IPS = ['127.0.0.1']
+
+
+# Channels
+# https://channels.readthedocs.io/en/latest/topics/channel_layers.html
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [(REDIS_HOST, 6379)]
+        }
+    }
+}

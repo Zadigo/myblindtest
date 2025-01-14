@@ -1,7 +1,11 @@
 import os
 
 from celery import Celery
+from django.conf import settings
 from celery.schedules import crontab
+
+# celery -A blindtest.celery_app worker -E
+# celery -A blindtest.celery_app beat -l INFO
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'blindtest.settings')
 
@@ -27,37 +31,34 @@ app.conf.update(
     task_serializer='json',
     accept_content=['json'],
     result_serializer='json',
-    timezone='Europe/London',
-    enable_utc=True,
-    # task_routes={
-    #     'emailing_script.tasks.testing': {
-    #         'queue': 'seo'
-    #     }
-    # }
+    timezone='Europe/Oslo',
+    enable_utc=True
 )
 
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
-app.autodiscover_tasks()
-
-# app.conf.beat_schedule = {
-#     'check-orders': {
-#         'task': 'check_orders',
-#         'schedule': crontab(day_of_week='mon-fri', hour=6)
-#     }
-# }
+app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 
-@app.task
+@app.task(bind=True)
 def monthly_spotify_statistics():
-    pass
+    print('works')
+    return True
 
 
-@app.task
+@app.task(bind=True)
 def billboard_data():
     pass
 
 
-@app.task
-def get_spotify_data(self):
+@app.task(bind=True)
+def get_spotify_data():
     pass
+
+
+app.conf.beat_schedule = {
+    'monthly-spotify-statistics': {
+        'task': 'monthly_spotify_statistics',
+        'schedule': crontab(minute='0,3')
+    }
+}
