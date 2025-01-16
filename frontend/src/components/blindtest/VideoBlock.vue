@@ -83,7 +83,7 @@
 import { wheelDetaults } from '@/data/defaults';
 import { getBaseUrl } from '@/plugins/client';
 import { useSongs } from '@/stores/songs';
-import type { MatchedElement, Song, WebsocketMessage } from '@/types';
+import type { MatchedElement, Song, WebsocketBlindTestMessage } from '@/types';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { useLocalStorage, useWebSocket } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
@@ -92,29 +92,29 @@ import { toast } from 'vue-sonner';
 import { RandomizerData } from '../randomizer';
 
 import GenreRandomizer from '../randomizer/GenreRandomizer.vue';
+import { useWebsocketUtilities } from '@/composables/utils';
 
 
 // import z from 'zod'
 
 const songsStore = useSongs()
 const { gameStarted, currentSong } = storeToRefs(songsStore)
+const { sendMessage, parseMessage } = useWebsocketUtilities()
 
 const connectionToken = useLocalStorage<string | null | undefined>('connectionToken', null)
 
 const showWheel = ref(false)
 const randomizerEl = ref<HTMLElement>()
 
-function sendMessage <T extends WebsocketMessage>(data: T) {
-  return JSON.stringify(data)
-}
-
 const ws = useWebSocket(getBaseUrl('/ws/songs', null, true), {
   immediate: false,
   onConnected() {
     const settings = songsStore.cache.settings
 
-    ws.send(sendMessage({
-      type: 'start.game',
+    ws.send(sendMessage<WebsocketBlindTestMessage>({
+      action: 'start_game',
+      cache: songsStore.cache,
+      // TODO: Just use and send all the cache
       settings: {
         point_value: settings.pointValue,
         game_difficulty: settings.difficultyLevel,
@@ -127,39 +127,63 @@ const ws = useWebSocket(getBaseUrl('/ws/songs', null, true), {
         admin_plays: settings.adminPlays
       }
     }))
-    toast.success('Started blind test')
+
+    toast.success('Info', {
+      description: 'Started blind test'
+    })
   },
   onMessage() {
-    const data = JSON.parse(ws.data.value) as WebsocketMessage
+    const data = parseMessage<WebsocketBlindTestMessage>(ws.data.value)
 
-    switch (data.type) {
-      case 'game.started':
+    switch (data.action) {
+      case 'game_started':
         gameStarted.value = true
         break
 
-      case 'song.new':
+      case 'song_new':
         songsStore.cache.songs.push(data.song as Song)
         break
 
-      case 'timer.tick':
+      case 'timer_tick':
         break
 
-      case 'guess.correct':
+      case 'guess_correct':
         // When we receive a message that the guess was
         // correct by the given team, update the score
-        console.info(data)
         songsStore.cache.teams[data.team_id].score = data.points
         break
 
-      case 'song.skipped':
+      case 'song_skipped':
         break
 
-      case 'connection.token':
+      case 'connection_token':
         connectionToken.value = data.token
         break
 
-      case 'randomize.genre':
+      case 'randomize_genre':
         songsStore.cache.songs.push(data.song as Song)
+        break
+
+      case 'device_connected':
+        ws.send(sendMessage<WebsocketBlindTestMessage>({
+          action: 'update_device_cache',
+          cache: songsStore.cache
+        }))
+        toast.success('Device', {
+          description: 'Projecton device connected'
+        })
+        break
+        
+      case 'device_disconnected':
+        toast.success('Device', {
+          description: 'Projecton device disconnected'
+        })
+        break
+
+      case 'error':
+        toast.error('Error', {
+          description: data.error
+        })
         break
 
       default:
@@ -168,13 +192,16 @@ const ws = useWebSocket(getBaseUrl('/ws/songs', null, true), {
   },
   onDisconnected() {
     gameStarted.value = false
-    toast.error('Disconnected')
+    toast.error('Error', {
+      description: 'Game has been disconnected'
+    })
   },
   onError() {
-    toast.error('Websocket error')
+    toast.error('Error', {
+      description: 'An error has occured'
+    })
   }
 })
-
 
 // Function that gets called once the
 // spinning has finished
@@ -183,8 +210,8 @@ function randomizerComplete (value: string | undefined | RandomizerData) {
     setTimeout(() => {
       showWheel.value = false
 
-      ws.send(sendMessage({
-        type: 'randomize.genre',
+      ws.send(sendMessage<WebsocketBlindTestMessage>({
+        action: 'randomize_genre',
         temporary_genre: value
       }))
     }, 3000)
@@ -198,7 +225,7 @@ function handleFinalize() {
 // Returns the next song by excluding
 // those that were already played
 function handleIncorrectAnswer () {
-  ws.send(sendMessage({ type: 'skip.song' }))
+  ws.send(sendMessage<WebsocketBlindTestMessage>({ action: 'skip_song' }))
   handleFinalize()
 }
 
@@ -218,8 +245,8 @@ function handleCorrectAnswer(teamId: number, match: MatchedElement) {
     artist_match = true
   }
 
-  ws.send(sendMessage({
-    type: 'submit.guess',
+  ws.send(sendMessage<WebsocketBlindTestMessage>({
+    action: 'submit_guess',
     team_id: teamId,
     title_match,
     artist_match

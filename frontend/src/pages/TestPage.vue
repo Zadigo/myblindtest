@@ -4,6 +4,10 @@
       Show
     </v-btn>
 
+    <v-btn @click="testCacheUpdates">
+      Cache
+    </v-btn>
+
     {{ teamOneCards }}
     {{ availableCards.length }}
 
@@ -32,6 +36,9 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
+import { useWebSocket } from '@vueuse/core'
+import { getBaseUrl } from '@/plugins/client'
+import { useWebsocketUtilities } from '@/composables/utils'
 
 interface Card {
   name: string
@@ -110,6 +117,26 @@ function onAfterEnter(el: HTMLElement) {
 function onBeforeLeave (el: HTMLElement) {
   el.classList.remove('animate__animated', 'animate__swing')
   el.classList.add('animate__animated', 'animate__swing')
+}
+
+// TEST
+const id = ref()
+const ws = useWebSocket(getBaseUrl('/ws/connect', null, true), {
+  immediate: false,
+  onMessage() {
+    id.value = ws.data.value.device_id
+    console.log(ws.data.value)
+  }
+})
+
+const { sendMessage } = useWebsocketUtilities()
+
+function testCacheUpdates () {
+  ws.open()
+  ws.send(sendMessage({
+    action: 'update_device_cache',
+    device_id: id.value
+  }))
 }
 </script>
 

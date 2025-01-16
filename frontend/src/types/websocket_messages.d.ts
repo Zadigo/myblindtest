@@ -1,11 +1,15 @@
 import type { DifficultyLevels, Song, SongGenres } from '@/types';
+import type { RandomizerData } from '../components/randomizer';
+import type { CacheSession } from '.';
 
 export type MatchedElement = 'Artist' | 'Title' | 'Both' | null
+
+type DeviceActions = 'device_connected' | 'device_disconnected' | 'update_device_cache' | 'apply_cache' | 'game_updates' | 'game_disconnected' | 'initiate_connection'
 
 export type WebsocketActions = 'song_new' | 'timer_tick' | 'guess_correct' | 'error' | 'connection_token' | 'game_started' | 'song_skipped' | 'start_game' | 'submit_guess' | 'skip_song' | 'randomize_genre'
 
 export interface WebsocketMessage {
-    action: WebsocketActions
+    action: WebsocketActions | DeviceActions
 }
 
 export interface WebsocketBlindTestMessage extends WebsocketMessage {
@@ -14,10 +18,13 @@ export interface WebsocketBlindTestMessage extends WebsocketMessage {
     song?: Song
     team?: number
     points?: number
+    error?: string
 
     // Send
+    cache?: CacheSession
     exclude?: number[]
     genre?: SongGenres
+    temporary_genre?: string | null | undefined | RandomizerData
 
     team_id?: number
     title_match?: string | boolean | null
@@ -44,8 +51,10 @@ export interface WebsocketBlindTestMessage extends WebsocketMessage {
 }
 
 export interface WebsocketDiffusionMessage {
-    action: 'game_updates' | 'game_disconnected' | 'initiate_connection'
-    data: {
+    action: DeviceActions
+    cache?: CacheSession
+    device_id?: string
+    updates?: {
         action: Pick<WebsocketMessageTypes, 'guess_correct'>
         team_id: number,
         points: number

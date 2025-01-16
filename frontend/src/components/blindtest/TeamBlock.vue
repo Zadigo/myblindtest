@@ -18,7 +18,7 @@
       </p>
     </div>
 
-    <div class="mt-5 mb-3 d-flex justify-content-center gap-2">
+    <div v-if="!diffusionMode" class="mt-5 mb-3 d-flex justify-content-center gap-2">
       <!-- :disabled="!songsStore.gameStarted" -->
       <v-btn :flat="matchedElement!=='Title'" rounded @click="handleMatch('Title')">
         <FontAwesomeIcon icon="t" class="me-2" /> Title
@@ -34,7 +34,7 @@
     </div>
 
     <!-- Actions -->
-    <div class="d-flex align-items-center flex-column gap-2">
+    <div v-if="!diffusionMode" class="d-flex align-items-center flex-column gap-2">
       <v-btn :disabled="!songsStore.gameStarted" size="x-large" rounded @click="handleCorrectAnswer">
         <FontAwesomeIcon icon="check" class="me-2" /> Validate
       </v-btn>
@@ -86,6 +86,10 @@ const props = defineProps({
   marginLeft: {
     type: Number,
     default: 0
+  },
+  diffusionMode: {
+    type: Boolean,
+    default: false
   }
 })
 
