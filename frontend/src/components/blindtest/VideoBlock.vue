@@ -23,10 +23,6 @@
                 <v-btn :disabled="!gameStarted" variant="tonal" color="dark" class="me-2" rounded @click="showWheel=!showWheel">
                   <FontAwesomeIcon icon="bolt" />
                 </v-btn>
-
-                <!-- <v-btn variant="tonal" color="dark" rounded @click="emit('game:settings')">
-                  <FontAwesomeIcon icon="cog" />
-                </v-btn> -->
               </div>
             </div>
 
@@ -91,11 +87,8 @@ import { ref } from 'vue';
 import { toast } from 'vue-sonner';
 import { RandomizerData } from '../randomizer';
 
-import GenreRandomizer from '../randomizer/GenreRandomizer.vue';
 import { useWebsocketUtilities } from '@/composables/utils';
-
-
-// import z from 'zod'
+import GenreRandomizer from '../randomizer/GenreRandomizer.vue';
 
 const songsStore = useSongs()
 const { gameStarted, currentSong } = storeToRefs(songsStore)
@@ -136,6 +129,18 @@ const ws = useWebSocket(getBaseUrl('/ws/songs', null, true), {
     const data = parseMessage<WebsocketBlindTestMessage>(ws.data.value)
 
     switch (data.action) {
+      case 'connection_token':
+        connectionToken.value = data.token
+
+        if (data.team_one_id) {
+          songsStore.cache.teams[0].id = data.team_one_id
+        }
+        
+        if (data.team_two_id) {
+          songsStore.cache.teams[1].id = data.team_two_id
+        }
+        break
+
       case 'game_started':
         gameStarted.value = true
         break
@@ -150,14 +155,17 @@ const ws = useWebSocket(getBaseUrl('/ws/songs', null, true), {
       case 'guess_correct':
         // When we receive a message that the guess was
         // correct by the given team, update the score
-        songsStore.cache.teams[data.team_id].score = data.points
+        if (data.team_id) {
+          if (data.points) {
+            const team = songsStore.cache.teams.find(x => x.id === data.team_id)
+            if (team) {
+              team.score = data.points
+            }
+          }
+        }
         break
 
       case 'song_skipped':
-        break
-
-      case 'connection_token':
-        connectionToken.value = data.token
         break
 
       case 'randomize_genre':
@@ -231,7 +239,7 @@ function handleIncorrectAnswer () {
 
 // Proxy function that can be used by parent elements
 // to trigger a websocket message on the team guess
-function handleCorrectAnswer(teamId: number, match: MatchedElement) {
+function handleCorrectAnswer(teamId: string, match: MatchedElement) {
   let title_match: boolean = true
   let artist_match: boolean = true
 

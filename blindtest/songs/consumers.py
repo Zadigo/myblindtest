@@ -54,8 +54,13 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
         await self.channel_layer.group_add(self.diffusion_group_name, self.channel_name)
         self.connection_token = create_token()
 
-        await self.send_json({'action': 'connection_token', 'token': self.connection_token})
-
+        await self.send_json({
+            'action': 'connection_token',
+            'token': self.connection_token,
+            'team_one_id': self.team_one.team_id,
+            'team_two_id': self.team_two.team_id
+        })
+    
     async def disconnect(self, code):
         # TODO: Channel make diffusion group
         await self.channel_layer.group_send(self.diffusion_group_name, {

@@ -39,7 +39,7 @@
         <FontAwesomeIcon icon="check" class="me-2" /> Validate
       </v-btn>
 
-      <v-btn variant="tonal" color="dark" rounded @click="emit('team:settings', teamId)">
+      <v-btn variant="tonal" color="dark" rounded @click="emit('team:settings', team.id)">
         <FontAwesomeIcon icon="cog" />
       </v-btn>
     </div>
@@ -66,16 +66,16 @@ import type { MatchedElement } from '@/types';
 import BaseFireworks from '../BaseFireworks.vue';
 
 const emit = defineEmits({
-  'next-song' (_data: (number | MatchedElement)[]) {
+  'next-song' (_data: (string | MatchedElement)[]) {
     return true
   },
-  'team:settings' (_teamId: number) {
+  'team:settings' (_teamId: string) {
     return true
   }
 })
 
 const props = defineProps({
-  teamId: {
+  teamIndex: {
     type: Number,
     default: 1
   },
@@ -103,18 +103,18 @@ const currentBonus = ref<number>(0)
 const matchedElement = ref<MatchedElement>('Both')
 
 const team = computed(() => {
-  if (cache.value) {
-    return cache.value.teams[props.teamId]
-  } else {
-    return null
-  }
+  return cache.value.teams[props.teamIndex]
 })
 
 const teamName = computed(() => {
-  if (team.value && team.value.name !== "") {
-    return team.value.name
+  if (team.value) {
+    if (team.value.name !== "") {
+      return team.value.name
+    } else {
+      return team.value.id
+    }
   } else {
-    return `Team n°${props.teamId + 1}`
+    return 'Team'
   }
 })
 
@@ -144,7 +144,7 @@ const consecutiveAnswers = computed(() => {
   for (let i = correctAnswers.value.length - 1; i >= 0; i--) {
     const answer = correctAnswers.value[i];
     
-    if (answer.teamId === props.teamId) {
+    if (answer.teamId === team.value.id) {
       count++;
     } else {
       break;
@@ -181,9 +181,13 @@ async function handleAnimation () {
 }
 
 async function handleCorrectAnswer () {
-  await handleAnimation()
-  emit('next-song', [props.teamId, matchedElement.value])
-  matchedElement.value = 'Both'
+  if (team.value) {
+    await handleAnimation()
+    emit('next-song', [team.value.id, matchedElement.value])
+    matchedElement.value = 'Both'
+  } else {
+    console.error('handleCorrectAnswer', 'No team')
+  }
 }
 
 // Allows us to determine whether the user matched the

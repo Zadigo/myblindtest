@@ -39,33 +39,9 @@ export const useSongs = defineStore('songs', () => {
         }
     })
 
-    // The timeline allows us to track the progression for
-    // correct and incorrect answers globally for all teams
-    function updateScoringTimeline (action: 'add' | 'sub') {
-        const lastScore = scoringTimeline.value[scoringTimeline.value.length]
-
-        if (lastScore) {
-            if (action === 'add') {
-                scoringTimeline.value.push(lastScore + 1)
-            } else {
-                scoringTimeline.value.push(lastScore - 1)
-            }
-        } else {
-            if (action === 'add') {
-                scoringTimeline.value.push(100 + 1)
-            }
-            
-            if (action === 'sub') {
-                scoringTimeline.value.push(100 - 1)
-            }
-        }
-
-    }
-
     return {
         cache,
         gameStarted,
-        updateScoringTimeline,
         scoringTimelineBase,
         scoringTimeline,
         firstTeamScore,

@@ -38,6 +38,7 @@ interface Player {
 }
 
 export interface Team {
+    id: string
     name: string
     players: Player[]
     score: number
@@ -72,6 +73,6 @@ export interface CreateData {
 }
 
 export interface Answer {
-    teamId: number
+    teamId: string
     song: Song
 }

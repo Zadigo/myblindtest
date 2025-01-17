@@ -37,8 +37,8 @@ const props = defineProps({
     default: false
   },
   teamId: {
-    type: Number,
-    default: 0
+    type: String,
+    default: ''
   }
 })
 
@@ -51,21 +51,24 @@ const emit = defineEmits({
 const wheelColor = useDebounce(ref('#40ffff'))
 const colorList = ref<Harmony[]>()
 
+const teamIndex = computed(() => {
+  return songsStore.cache.teams.findIndex(x => x.id === props.teamId)
+})
+
 watch(wheelColor, (newValue) => {
-  songsStore.cache.teams[props.teamId].color = newValue
+  songsStore.cache.teams[teamIndex.value].color = newValue
 })
 
 const teamName = computed({
   get: () => {
     if (songsStore.cache) {
-      return songsStore.cache.teams[props.teamId].name
+      return songsStore.cache.teams[teamIndex.value].name
     } else {
       return `Team n° ${props.teamId}`
     }
   },
   set: (value) => {
-    console.log(value)
-    songsStore.cache.teams[props.teamId].name = value
+    songsStore.cache.teams[teamIndex.value].name = value
   }
 })
 

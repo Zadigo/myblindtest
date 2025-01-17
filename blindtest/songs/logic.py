@@ -9,6 +9,7 @@ from django.core.cache import cache
 from songs.api import serializers
 from songs.models import Song
 from songs.processors import FuzzyMatcher
+from django.utils.crypto import get_random_string
 
 # TODO: Ability to use jokers:
 # 1. point boost (win 15 points on this specific answer)
@@ -22,17 +23,51 @@ from songs.processors import FuzzyMatcher
 # TODO: Centralize the frontend cache directly in Python and dispatch
 # the updates to the frontend applications
 
+
+# // The timeline allows us to track the progression for
+# // correct and incorrect answers globally for all teams
+# // function updateScoringTimeline (action: 'add' | 'sub') {
+# //     const lastScore = scoringTimeline.value[scoringTimeline.value.length]
+
+# //     if (lastScore) {
+# //         if (action === 'add') {
+# //             scoringTimeline.value.push(lastScore + 1)
+# //         } else {
+# //             scoringTimeline.value.push(lastScore - 1)
+# //         }
+# //     } else {
+# //         if (action === 'add') {
+# //             scoringTimeline.value.push(100 + 1)
+# //         }
+
+# //         if (action === 'sub') {
+# //             scoringTimeline.value.push(100 - 1)
+# //         }
+# //     }
+
+# // }
+
 @dataclasses.dataclass
 class Team:
+    team_id: str
     name: str = None
     color: str = None
-    team_id: int = 1
     points: int = 0
     correct_answers: List[int] = dataclasses.field(default_factory=list)
     answer_times: List[int] = dataclasses.field(default_factory=list)
 
+    def __hash__(self):
+        return hash((self.team_id))
 
-class GameLogicMixin:
+    def __eq__(self, value):
+        return self.team_id == value
+
+
+class GameGlobalStatisticsMixin:
+    pass
+
+
+class GameLogicMixin(GameGlobalStatisticsMixin):
     difficulties = ['All', 'Easy', 'Medium', 'Semi-Pro', 'Difficult', 'Expert']
     game_duration: int = 30
     cache_timeout: int = 3600
@@ -55,8 +90,11 @@ class GameLogicMixin:
         self.point_value: int = 1
         self.difficulty_bonus = False
         self.time_bonus = False
-        self.team_one = Team(team_id=0)
-        self.team_two = Team(team_id=1)
+
+        team_one_id = f'team_{get_random_string(length=12)}'
+        team_two_id = f'team_{get_random_string(length=12)}'
+        self.team_one = Team(team_one_id)
+        self.team_two = Team(team_two_id)
         self.team_one_score = 0
         self.team_two_score = 0
 
@@ -85,19 +123,21 @@ class GameLogicMixin:
         present in the current game"""
         teams = [
             {
+                "id": self.team_one.team_id,
                 "name": self.team_one.name,
                 "score": self.team_one_score,
                 "players": [],
                 "color": self.team_two.color
             },
             {
+                "id": self.team_one.team_id,
                 "name": self.team_two.name,
                 "score": self.team_two_score,
                 "players": [],
                 "color": self.team_two.color
             }
         ]
-        
+
         cache = {
             "songs": [],
             "currentStep": 0,
@@ -307,14 +347,14 @@ class GameLogicMixin:
     #     """Simple fuzzy matching - can be improved with more sophisticated algorithms"""
     #     return guess in target.lower()
 
-    async def handle_guess(self, team: int, title_match: bool, artist_match: bool):
+    async def handle_guess(self, team_id: str, title_match: bool, artist_match: bool):
         """Handles player's song guess"""
         if not self.current_song:
             return
 
         message = {
             'action': None,
-            'team_id': team,
+            'team_id': team_id,
             'points': 0
         }
 
@@ -323,22 +363,21 @@ class GameLogicMixin:
 
             message['action'] = 'guess_correct'
 
-            if team == 0:
+            if team_id == self.team_one:
                 self.team_one_score += result
                 # TODO: Fully implement the dataclass
                 self.team_one.points += result
                 message['points'] = self.team_one_score
 
-            if team == 1:
+            if team_id == self.team_two:
                 self.team_two_score += result
                 # TODO: Fully implement the dataclass
                 self.team_two.points += result
                 message['points'] = self.team_two_score
         else:
             message['action'] = 'guess_incorrect'
-            message['points'] = self.team_one_score if team == 0 else self.team_two_score
+            message['points'] = self.team_one_score if team_id == self.team_one else self.team_two_score
 
-        # TODO: Ensure this works properly
         await self.channel_layer.group_send(self.diffusion_group_name, {
             'type': 'game_updates',
             'sender': 'blind_test',

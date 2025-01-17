@@ -19,6 +19,8 @@ export interface WebsocketBlindTestMessage extends WebsocketMessage {
     team?: number
     points?: number
     error?: string
+    team_one_id?: string
+    team_two_id?: string
 
     // Send
     cache?: CacheSession
@@ -26,7 +28,7 @@ export interface WebsocketBlindTestMessage extends WebsocketMessage {
     genre?: SongGenres
     temporary_genre?: string | null | undefined | RandomizerData
 
-    team_id?: number
+    team_id?: string
     title_match?: string | boolean | null
     artist_match?: string | boolean | null
     
