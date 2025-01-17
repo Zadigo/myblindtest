@@ -41,7 +41,7 @@
 <script setup lang="ts">
 import { addNewSongData } from '@/data/defaults';
 import { useAxiosClient } from '@/plugins/client';
-import { CreateData, Song } from '@/types';
+import { CreateData, Song, CopiedCreateData, Artist } from '@/types';
 import { useLocalStorage } from '@vueuse/core';
 import { useHead } from 'unhead';
 import { defineAsyncComponent, onMounted, provide, ref } from 'vue';
@@ -76,8 +76,8 @@ const blocks = ref<CreateData[]>([
   {
     name: '',
     genre: '',
-    artist: '',
-    featured_artists: '',
+    artist_name: '',
+    featured_artists: [],
     youtube_id: '',
     year: 0,
     difficulty: 1
@@ -95,15 +95,50 @@ const genres = useLocalStorage<string[]>('genres', [], {
   }
 })
 
+const featuredArtists = useLocalStorage<Artist[]>('artists', null, {
+  serializer: {
+    read (raw) {
+      return JSON.parse(raw)
+    },
+    write (value) {
+      return JSON.stringify(value)
+    },
+  }
+})
+
+async function handleSearchFeaturedArtists() {
+  try {
+    const response = await client.get<Artist[]>('/songs/artists')
+    featuredArtists.value = response.data
+  } catch (e) {
+    toast.error('Request failed')
+  }
+}
+
 async function handleSave () {
   try {
-    const response = await client.post<SongCreationApiResponse>('/songs/create', blocks.value)
+    // Transform the list so that the featured artists
+    // is a comma separated string
+    const transformedRequestData: CopiedCreateData = blocks.value.map(item => {
+      if (item.featured_artists.length > 0) {
+        const copiedItem = {...item}
+        const featuredArists = copiedItem.featured_artists.join(',')
+        copiedItem.featured_artists = featuredArists
+        return copiedItem
+      } else {
+        return item
+      }
+    })
+
+    const response = await client.post<SongCreationApiResponse>('/songs/create', transformedRequestData)
     blocks.value = [{ ...addNewSongData }]
 
     if (response.data.errors.length > 0) {
       toast.error(`Error when creating songs: ${response.data.errors}`, {
         duration: 10000
       })
+    } else {
+      await handleSearchFeaturedArtists()
     }
   } catch {
     toast.error('Could not create songs')

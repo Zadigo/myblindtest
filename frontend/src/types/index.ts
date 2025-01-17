@@ -65,11 +65,15 @@ export interface CacheSession {
 export interface CreateData {
     name: string
     genre: string
-    artist: string
-    featured_artists: string | null
+    artist_name: string
+    featured_artists: string[]
     youtube_id: string
     year: string | number | null
     difficulty: number
+}
+
+export interface CopiedCreateData extends Omit<CreateData, 'featured_artists'>{
+    featured_artists: string
 }
 
 export interface Answer {

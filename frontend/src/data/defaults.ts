@@ -22,8 +22,8 @@ export const songTypes = [
 export const addNewSongData = {
     name: '',
     genre: '',
-    artist: '',
-    featured_artists: '',
+    artist_name: '',
+    featured_artists: [],
     youtube_id: '',
     year: 0,
     difficulty: 1

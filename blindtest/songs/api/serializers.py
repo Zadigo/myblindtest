@@ -17,7 +17,7 @@ class SongSerializer(serializers.Serializer):
     id = fields.IntegerField(read_only=True)
     name = fields.CharField(max_length=255)
     genre = fields.CharField(max_length=100)
-    featured_artists = fields.CharField(allow_null=True)
+    featured_artists = fields.CharField(allow_null=True, write_only=True)
     youtube = fields.URLField(read_only=True)
     youtube_id = fields.CharField()
     year = fields.IntegerField(allow_null=True)
@@ -34,14 +34,14 @@ class SongSerializer(serializers.Serializer):
 
     def to_internal_value(self, data):
         value = data.get('featured_artists')
-        if value == '':
+        if value == '' or value == []:
             data['featured_artists'] = None
         return super().to_internal_value(data)
 
     def validate(self, attrs):
-        featured_artists = attrs['featured_artists']
+        featured_artists = attrs.get('featured_artists')
 
-        if featured_artists:
+        if featured_artists is not None:
             tokens = featured_artists.split(',')
             clean_tokens = (str(token).strip() for token in tokens)
             attrs['featured_artists'] = ','.join(clean_tokens)
@@ -50,6 +50,19 @@ class SongSerializer(serializers.Serializer):
     def create(self, validated_data):
         artist_name = validated_data['artist_name']
         qs = Artist.objects.filter(name__icontains=artist_name.lower())
+
+        # If there are featured artists, create
+        # them in the database
+        featured_artists = validated_data.get('featured_artists')
+        if featured_artists and featured_artists != '':
+            artists = featured_artists.split(',')
+            for artist_name in artists:
+                Artist.objects.get_or_create(
+                    defaults={
+                        'name': artist_name
+                    },
+                    name=artist_name
+                )
 
         if qs.exists():
             try:
@@ -72,16 +85,6 @@ class SongSerializer(serializers.Serializer):
             'youtube_id': validated_data['youtube_id'],
             'difficulty': validated_data['difficulty']
         })
-
-        # artist, state = Artist.objects.get_or_create(artist=validated_data['artist'])
-        # artist.song_set.create(**{
-        #     'name': validated_data['name'],
-        #     'genre': validated_data['genre'],
-        #     'year': validated_data['year'],
-        #     'video_id': validated_data['video_id'],
-        #     'difficulty': validated_data['difficulty']
-        # })
-        # return Song.objects.create(**validated_data)
 
 
 class ArtistSongSerializer(serializers.Serializer):

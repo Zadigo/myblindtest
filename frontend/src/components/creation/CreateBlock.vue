@@ -18,23 +18,26 @@
       </div>
 
       <div class="col-6">
-        <v-text-field v-model="requestData.artist" :rules="[rules.required]" type="text" placeholder="Artist" hint="Press shift+Enter to split and infer genre" variant="solo-filled" clearable flat @keypress.shift.enter="handleSplit" />
+        <v-text-field v-model="requestData.artist_name" :rules="[rules.required]" type="text" placeholder="Artist" hint="Press shift+Enter to split and infer genre" variant="solo-filled" clearable flat @keypress.shift.enter="handleSplit" />
       </div>
 
       <div class="col-6">
         <v-text-field v-model="requestData.youtube_id" :rules="[rules.required]" type="text" placeholder="YouTube" variant="solo-filled" clearable flat />      
       </div>
-    </div>
 
-    <!-- <v-text-field v-model="iframe" variant="solo-filled" placeholder="Iframe parser" flat @keypress.enter="handleParseIframe" /> -->
+      <div class="col-8">
+        <v-combobox v-model="requestData.featured_artists" :items="featuredArtists" :return-object="false" item-title="name" item-value="name" variant="solo-filled" placeholder="Featured artists" clearable flat chips multiple />
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { useDayJs } from '@/plugins';
 import { useAxiosClient } from '@/plugins/client';
-import type { CreateData, Song } from '@/types';
-import { computed, inject, PropType, reactive, ref } from 'vue';
+import type { Artist, CreateData, Song } from '@/types';
+import { useLocalStorage } from '@vueuse/core';
+import { computed, inject, PropType, reactive, ref, onBeforeMount } from 'vue';
 import { toast } from 'vue-sonner';
 
 const { currentYear } = useDayJs()
@@ -45,7 +48,8 @@ const props = defineProps({
     default: () => ({
       name: '',
       genre: '',
-      artist: '',
+      artist_name: '',
+      featured_artists: [],
       youtube_id: '',
       year: null,
       difficulty: 1
@@ -54,6 +58,26 @@ const props = defineProps({
   index: {
     type: Number,
     required: true
+  }
+})
+
+const emit = defineEmits({
+  'update:block' (_data: CreateData) {
+    return true
+  }
+})
+
+const { client } = useAxiosClient()
+const searching = ref(false)
+const genres = inject<string[]>('genres')
+const featuredArtists = useLocalStorage<Artist[]>('artists', null, {
+  serializer: {
+    read (raw) {
+      return JSON.parse(raw)
+    },
+    write (value) {
+      return JSON.stringify(value)
+    },
   }
 })
 
@@ -101,16 +125,16 @@ function validateData(data: CreateData) {
     errors.genre = 'Genre is required'
   }
 
-  if (!data.artist) {
+  if (!data.artist_name) {
     errors.artist = 'Artist is required'
   }
   
   // YouTube URL validation
-  if (!data.youtube) {
-    errors.youtube = 'YouTube video ID is required';
-  } else if (!rules.youtubeUrl(data.youtube_id)) {
-    errors.youtube = 'Please enter a valid YouTube URL';
-  }
+  // if (!data.youtube) {
+  //   errors.youtube = 'YouTube video ID is required';
+  // } else if (!rules.youtubeUrl(data.youtube_id)) {
+  //   errors.youtube = 'Please enter a valid YouTube URL';
+  // }
   
   // Year validation (optional but must be valid if provided)
   if (data.year !== null && !rules.year(data.year)) {
@@ -125,12 +149,6 @@ function validateData(data: CreateData) {
   return errors;
 }
 
-const emit = defineEmits({
-  'update:block' (_data: CreateData) {
-    return true
-  }
-})
-
 const requestData = computed({
   get: () => props.block,
   set: (value) => {
@@ -140,10 +158,6 @@ const requestData = computed({
   }
 })
 
-const { client } = useAxiosClient()
-const searching = ref(false)
-const genres = inject<string[]>('genres')
-
 // Allows the user to automatically infer the
 // current genre of the song based on a pre-existing
 // songs from the same artist from the database
@@ -152,7 +166,7 @@ async function handleSearchExistingArtist () {
     searching.value = true
     const result = await client.get<Song[]>('/songs/', {
       params: {
-        q: requestData.value.artist
+        q: requestData.value.artist_name
       }
     })
 
@@ -169,21 +183,30 @@ async function handleSearchExistingArtist () {
 }
 
 async function handleSplit () {
-  if (requestData.value.artist.includes('-') && requestData.value.artist !== "") {
-    const tokens = requestData.value.artist.split('-')
-    requestData.value.artist = tokens[0].trim()
+  if (requestData.value.artist_name.includes('-') && requestData.value.artist_name !== "") {
+    const tokens = requestData.value.artist_name.split('-')
+    requestData.value.artist_name = tokens[0].trim()
     requestData.value.name = tokens[1].trim()
     await handleSearchExistingArtist()
   }
 }
 
-// function handleParseIframe () {
-//   const regex = /src="([^"]*)"/;
-//   const match = iframe.value.match(regex);
+async function handleSearchFeaturedArtists() {
+  try {
+    if (!featuredArtists.value) {
+      searching.value = true
+      const response = await client.get<Artist[]>('/songs/artists')
+      featuredArtists.value = response.data
+      searching.value = false
 
-//   if (match) {
-//     requestData.value.youtube_id = match[1]
-//     iframe.value = ''
-//   }
-// }
+    }
+  } catch (e) {
+    toast.error('Request failed')
+    searching.value = false
+  }
+}
+
+onBeforeMount(async () => {
+  await handleSearchFeaturedArtists()
+})
 </script>

@@ -13,7 +13,6 @@ class SongResource(ModelResource):
         model = Song
 
 
-
 class ArtistResource(ModelResource):
     class Meta:
         model = Artist
@@ -22,7 +21,7 @@ class ArtistResource(ModelResource):
 @admin.register(Artist)
 class ArtistAdmin(ImportExportModelAdmin):
     list_display = ['name', 'genre', 'spotify_id']
-    search_fields = ['name']
+    search_fields = ['name', 'genre']
     resource_class = ArtistResource
     actions = ['update_metadata']
 
@@ -54,7 +53,11 @@ class SongAdmin(ImportExportModelAdmin):
         'decade', 'enriched'
     ]
     list_filter = ['difficulty']
-    search_fields = ['name', 'artist']
+    search_fields = [
+        'name', 
+        'artist__name', 
+        'artist__genre'
+    ]
     resource_class = SongResource
     actions = [
         'set_difficulty_medium',
