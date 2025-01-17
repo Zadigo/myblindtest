@@ -20,11 +20,39 @@
             </label>
 
             <v-select id="song-type" v-model="songStore.cache.settings.songType" :items="songTypes" variant="solo-filled" flat />
+            <!-- <v-autocomplete :items="genreDistribution" item-value="genre" auto-select-first solo>
+              <template #item="{ props, item }">
+                <v-list-item v-bind="props" :title="item.raw.genre">
+                  <v-chip>{{ item.raw.count }}</v-chip>
+                </v-list-item>
+              </template>
+            </v-autocomplete> -->
 
             <label for="game-difficulty" class="fw-bold">
               Time limit
             </label>
             <v-text-field v-model="songStore.cache.settings.timeLimit" type="time" variant="solo-filled" clearable flat />
+
+
+            <label for="game-difficulty" class="fw-bold">
+              Time period
+            </label>
+
+            <p>
+              Choose a timeframe in years to select the 
+              period in which the songs should be located
+              for the blind test
+            </p>
+
+            <v-range-slider v-model="songStore.cache.settings.timeRange" :min="minimumPeriod" :max="maximumPeriod" :step="1" class="align-center" hide-details>
+              <template #prepend>
+                <v-text-field v-model="songStore.cache.settings.timeRange[0]" density="compact" style="width: 70px" type="number" variant="outlined" hide-details single-line />
+              </template>
+
+              <template #append>
+                <v-text-field v-model="songStore.cache.settings.timeRange[1]" density="compact" style="width: 70px" type="number" variant="outlined" hide-details single-line />
+              </template>
+            </v-range-slider>
           </v-card-text>
         </v-card>
 
@@ -96,10 +124,19 @@
 
 <script lang="ts" setup>
 import { songTypes, difficultyLevels } from '@/data/defaults'
+import { useAxiosClient } from '@/plugins/client';
 import { useSongs } from '@/stores/songs';
-import { computed } from 'vue';
+import { GenreDistribution, SettingsDataApiResponse } from '@/types';
+import { computed, onBeforeMount, ref } from 'vue';
+import { toast } from 'vue-sonner';
 
+const { client } = useAxiosClient()
 const songStore = useSongs()
+
+// TODO: Place in cache
+const minimumPeriod = ref<number>(0)
+const maximumPeriod = ref<number>(100)
+const genreDistribution = ref<GenreDistribution[]>([])
 
 const difficultyLevelPhrase = computed(() => {
   if (songStore.cache.settings.difficultyLevel === 'All') {
@@ -118,6 +155,21 @@ const useTimeLimit = computed(() => {
 const useNumberOfRounds = computed(() => {
   return songStore.cache.settings.rounds !== null
 })
+
+async function requestSettingsData() {
+  try {
+    const response = await client.get<SettingsDataApiResponse>('/songs/settings')
+    songStore.cache.settings.timeRange[0] = response.data.period.minimum
+    songStore.cache.settings.timeRange[1] = response.data.period.maximum
+    minimumPeriod.value = response.data.period.minimum
+    maximumPeriod.value = response.data.period.maximum
+    genreDistribution.value = response.data.count_by_genre
+  } catch (e) {
+    toast.error('Could not get settings')
+  }
+}
+
+onBeforeMount(requestSettingsData)
 </script>
 
 <style lang="scss">

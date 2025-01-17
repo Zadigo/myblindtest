@@ -59,6 +59,7 @@ export interface CacheSession {
         adminPlays: boolean
         difficultyLevel: DifficultyLevels
         songType: SongGenres
+        timeRange: number[]
     }
 }
 
@@ -79,4 +80,17 @@ export interface CopiedCreateData extends Omit<CreateData, 'featured_artists'>{
 export interface Answer {
     teamId: string
     song: Song
+}
+
+export interface GenreDistribution {
+    genre: string
+    count: number
+}
+
+export interface SettingsDataApiResponse {
+    count_by_genre: GenreDistribution[]
+    period: {
+        minimum: number
+        maximum: number
+    }
 }

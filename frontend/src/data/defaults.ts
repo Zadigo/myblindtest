@@ -58,7 +58,8 @@ export const defaults: { cache: CacheSession } = {
             soloMode: false,
             adminPlays: false,
             difficultyLevel: 'All' as 'All' | 'Easy' | 'Medium' | 'Semi-Pro' | 'Difficult' | 'Expert',
-            songType: 'All' as 'All' | 'Pop' | 'Electro' | 'Rock' | 'Rhythm and blues' | 'Rap' | 'Classical'
+            songType: 'All' as 'All' | 'Pop' | 'Electro' | 'Rock' | 'Rhythm and blues' | 'Rap' | 'Classical',
+            timeRange: []
         }
     }
 }

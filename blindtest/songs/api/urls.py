@@ -30,6 +30,11 @@ urlpatterns = [
         name='artists'
     ),
     re_path(
+        r'^settings$',
+        views.GameSettings.as_view(),
+        name='settings'
+    ),
+    re_path(
         r'^$',
         views.AllSongs.as_view(),
         name='songs'

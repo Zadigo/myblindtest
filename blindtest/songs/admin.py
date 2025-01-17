@@ -54,8 +54,8 @@ class SongAdmin(ImportExportModelAdmin):
     ]
     list_filter = ['difficulty']
     search_fields = [
-        'name', 
-        'artist__name', 
+        'name',
+        'artist__name',
         'artist__genre'
     ]
     resource_class = SongResource
@@ -76,16 +76,16 @@ class SongAdmin(ImportExportModelAdmin):
 @admin.register(PopSong)
 class PopSongAdmin(admin.ModelAdmin):
     list_display = ['name', 'artist', 'genre', 'difficulty']
-    search_fields = ['name', 'artist']
+    search_fields = ['name', 'artist__name', 'artist__genre']
 
 
 @admin.register(RapSong)
 class RapSongAdmin(admin.ModelAdmin):
     list_display = ['name', 'artist', 'genre', 'difficulty']
-    search_fields = ['name', 'artist']
+    search_fields = ['name', 'artist__name', 'artist__genre']
 
 
 @admin.register(RnBSong)
 class RnBSongAdmin(admin.ModelAdmin):
     list_display = ['name', 'artist', 'genre', 'difficulty']
-    search_fields = ['name', 'artist']
+    search_fields = ['name', 'artist__name', 'artist__genre']
