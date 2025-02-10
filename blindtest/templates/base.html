@@ -1,4 +1,4 @@
-{% load static i18n seo %}
+{% load static i18n %}
 
 <!doctype html>
 <html lang="{{ LANGUAGE_CODE|default:" fr" }}">
@@ -10,7 +10,9 @@
 
     <title>{% block title %}{% endblock %} | Gency313</title>
 
+    {% comment %}
     <link rel="canonical" href="{{ request.build_absolute_uri|canonical }}">
+    {% endcomment %}
 
     {% comment %}
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicons/favicon-32x32.png' %}">
@@ -27,7 +29,9 @@
 
     <meta itemprop="name" content="{% block itemprop_name %}{% endblock %} | Blindtest">
     <meta itemprop="description" content="{% block itemprop_description %}{% endblock %}">
+    {% comment %}
     <meta itemprop="image" content="{% static 'hero/hero5.webp' %}">
+    {% endcomment %}
 
     <meta property="og:type" content="website">
     <meta property="og:title" content="{% block og_title %}{% endblock %} | Blindtest">
@@ -43,7 +47,9 @@
     <meta property="twitter:site" content="@gency313">
     <meta property="twitter:title" content="{% block twitter_title %}{% endblock %}">
     <meta property="twitter:description" content="{% block twitter_description %}{% endblock %}">
+    {% comment %}
     <meta property="twitter:image" content="{% static 'hero/hero5.webp' %}">
+    {% endcomment %}
 
     <meta name="robots" content="{% block robots %}follow,index{% endblock %}">
 

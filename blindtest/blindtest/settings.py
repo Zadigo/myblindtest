@@ -17,14 +17,19 @@ def load_env_file():
 
 load_env_file()
 
+
+def get_debug():
+    value = os.getenv('DEBUG', '1')
+    return True if value == '1' else False
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=yszx^7nt+868cg%_%ddh(cglrh6qy!!i@f2ef_*xrnok5n7+b'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = get_debug()
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
