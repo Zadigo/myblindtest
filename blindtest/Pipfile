@@ -30,6 +30,7 @@ thefuzz = "*"
 rapidfuzz = "*"
 pyotp = "*"
 qrcode = "*"
+whitenoise = "*"
 
 [dev-packages]
 autopep8 = "*"
