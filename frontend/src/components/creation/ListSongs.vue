@@ -26,7 +26,9 @@
           <v-expansion-panel-title>
             <div class="row">
               <div class="d-flex justify-content-start align-items-center gap-3">
-                <v-avatar :image="artist.spotify_avatar" />
+                <v-avatar>
+                  <v-img :src="artist.spotify_avatar" :alt="artist.name" />
+                </v-avatar>
                 <span>{{ artist.name }}</span>
                 <span class="badge text-bg-secondary">{{ artist.song_set.length }} {{ plural(artist.song_set, 'song') }}</span>
               </div>
@@ -35,8 +37,9 @@
 
           <v-expansion-panel-text>
             <div class="list-group">
-              <div v-for="song in artist.song_set" :key="song.id" class="list-group-item">
-                {{ song.name }}
+              <div v-for="song in artist.song_set" :key="song.id" :aria-label="song.name" class="list-group-item p-3 d-flex justify-content-between align-items-center">
+                <span>{{ song.name }}</span>
+                <v-rating :size="22" :length="song.difficulty" model-value="5" readonly />
               </div>
             </div>
           </v-expansion-panel-text>
@@ -53,6 +56,9 @@ import { ArtistSong } from '@/types';
 import { ref } from 'vue';
 import { toast } from 'vue-sonner';
 
+// TODO: Refactor the types
+// for this endpoint because it
+// is very confusing
 interface ApiResponse {
   count: number
   next: string
