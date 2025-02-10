@@ -1,3 +1,5 @@
+from blindtest.views import HomePage
+from django.urls import re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -28,11 +30,17 @@ urlpatterns = [
         'api/v1/songs/',
         include('songs.api.urls')
     ),
+    re_path(
+        r'^$',
+        HomePage.as_view(),
+        name='home'
+    ),
     path(
         'admin/',
         admin.site.urls
-    ),
+    )
 ]
+
 
 if settings.DEBUG:
     urlpatterns += static(

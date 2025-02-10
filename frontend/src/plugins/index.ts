@@ -8,13 +8,13 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
+import './fontawesome';
+
 dayjs.extend(calendar)
 dayjs.extend(duration)
 dayjs.extend(utc)
 dayjs.extend(timezone)
 dayjs.extend(relativeTime)
-
-import './fontawesome';
 
 export default function installPlugins () {
     return {

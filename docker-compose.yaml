@@ -1,0 +1,68 @@
+networks:
+  blindtest:
+    driver: bridge
+
+services:
+  app:
+    build: ./blindtest
+    command: daphne blindtest.asgi:application -b 0.0.0.0
+    # command: python manage.py runserver 0.0.0.0:8000
+    container_name: app_django
+    ports:
+      - 8000:8000
+    volumes:
+      - ./blindtest:/app
+    networks:
+      - blindtest
+  
+  frontend:
+    build: ./frontend
+    container_name: app_frontend
+    command: pnpm run preview --host 0.0.0.0
+    ports:
+      - 4173:4173
+    networks:
+      - blindtest
+
+  # db:
+  #   build: ./docker/database
+  #   container_name: app_database
+  #   env_file: ./docker/environment/postgres.env
+  #   restart: always
+  #   ports:
+  #     - 5432:5432
+  #   volumes:
+  #     - PostgresData:/var/lib/postgresql/data/
+  #   networks:
+  #     - blindtest
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -h localhost -U $$DB_USER -d $$DB_NAME"]
+  #     interval: 5s
+  #     timeout: 5s
+  #     retries: 10
+  
+  # redis:
+  #   build: ./docker/redis
+  #   container_name: app_redis
+  #   # https://stackoverflow.com/questions/68461172/docker-compose-redis-password-via-environment-variable
+  #   ports:
+  #     - 6379:6000
+  #   restart: always
+  #   volumes:
+  #     - RedisData:/data
+  #     # - ~/var/redis.log:/data/redis.log:rw
+  #     - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+  #   networks:
+  #     - blindtest
+
+  # rabbitmq:
+  #   image: rabbitmq:management
+  #   container_name: app_rabbitmq
+  #   env_file:
+  #     - ./docker/environment/rabbit.env
+  #   ports:
+  #     - 5672:5672
+  #     - 15672:15672
+  #   networks:
+  #     - blindtest
+
