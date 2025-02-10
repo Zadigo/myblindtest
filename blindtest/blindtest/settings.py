@@ -202,7 +202,6 @@ if not DEBUG:
         password=RABBITMQ_PASSWORD
     )
 else:
-    print(REDIS_URL)
     CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672'
 
     # CELERY_RESULT_BACKEND = 'rpc://'
@@ -312,7 +311,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [(REDIS_HOST, 6379)]
+            'hosts': [REDIS_URL]
         }
     }
 }
