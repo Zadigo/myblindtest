@@ -90,4 +90,5 @@ class SongSerializer(serializers.Serializer):
 class ArtistSongSerializer(serializers.Serializer):
     id = fields.IntegerField()
     name = fields.CharField()
+    spotify_avatar = fields.URLField()
     song_set = SongSerializer(many=True)
