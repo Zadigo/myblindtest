@@ -76,19 +76,6 @@ class Song(models.Model):
         blank=True,
         null=True
     )
-    spotify_id = models.CharField(
-        max_length=100,
-        blank=True,
-        null=True,
-        help_text=_(
-            "ID for the given artist "
-            "on Spotify"
-        )
-    )
-    spotify_avatar = models.URLField(
-        blank=True,
-        null=True
-    )
     youtube_id = models.CharField(
         max_length=150,
         blank=True,

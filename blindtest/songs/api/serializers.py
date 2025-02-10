@@ -21,8 +21,6 @@ class SongSerializer(serializers.Serializer):
     youtube = fields.URLField(read_only=True)
     youtube_id = fields.CharField()
     year = fields.IntegerField(allow_null=True)
-    spotify_id = fields.CharField(read_only=True)
-    spotify_avatar = fields.URLField(read_only=True)
     youtube_watch_link = fields.URLField(read_only=True)
     artist_name = fields.CharField(write_only=True)
     artist = ArtistSerializer(read_only=True)
