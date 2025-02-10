@@ -25,6 +25,7 @@ def get_debug():
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
 
@@ -181,7 +182,7 @@ REDIS_HOST = os.getenv('REDIS_HOST')
 
 REDIS_PASSWORD = os.getenv('REDIS_PASSWORD')
 
-REDIS_URL = 'redis://127.0.0.1:6379'
+REDIS_URL = f'redis://:{REDIS_PASSWORD}@127.0.0.1:6379'
 
 
 if not DEBUG:
@@ -201,6 +202,7 @@ if not DEBUG:
         password=RABBITMQ_PASSWORD
     )
 else:
+    print(REDIS_URL)
     CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672'
 
     # CELERY_RESULT_BACKEND = 'rpc://'
