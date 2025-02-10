@@ -48,6 +48,6 @@ if settings.DEBUG:
         document_root=settings.MEDIA_ROOT
     )
     urlpatterns += static(
-        settings.STATUC_URL,
+        settings.STATIC_URL,
         document_root=settings.STATIC_ROOT
     )
