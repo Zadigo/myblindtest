@@ -2,12 +2,22 @@
 
 {% block container %}
     <div class="row">
-        <div class="col-md-12 col-sm-12">
+        <div class="col-md-12 col-sm-4 offset-md-2">
             <div class="card">
                 <div class="card-body">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure dolorem id totam, 
-                    temporibus maiores cum adipisci ipsa sapiente est ratione autem laudantium placeat libero amet 
-                    facere facilis. Nisi, molestias consectetur?
+                    <h3 class="card-title">
+                        Welcome!
+                    </h3>
+
+                    <p class="card-text">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure dolorem id totam, 
+                        temporibus maiores cum adipisci ipsa sapiente est ratione autem laudantium placeat libero amet 
+                        facere facilis. Nisi, molestias consectetur?
+                    </p>
+
+                    <a type="button" href="{% url 'admin:index' %}" class="btn btn-primary btn-rounded">
+                        Admin
+                    </a>
                 </div>
             </div>
         </div>
