@@ -2,8 +2,8 @@
 
 {% block container %}
     <div class="row">
-        <div class="col-md-12 col-sm-4 offset-md-2">
-            <div class="card">
+        <div class="col-sm-12 col-md-4 offset-md-4 my-5">
+            <div class="card shadow-sm">
                 <div class="card-body">
                     <h3 class="card-title">
                         Welcome!
@@ -15,7 +15,10 @@
                         facere facilis. Nisi, molestias consectetur?
                     </p>
 
+                    {{ statistics }}
+
                     <a type="button" href="{% url 'admin:index' %}" class="btn btn-primary btn-rounded">
+                        <i class="fas fa-link me-2"></i>
                         Admin
                     </a>
                 </div>

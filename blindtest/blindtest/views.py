@@ -1,8 +1,8 @@
-from django.views.generic import TemplateView
-from django.views.decorators.cache import cache_page
-from django.utils.decorators import method_decorator
-from songs.models import Song
 from django.db.models.aggregates import Count
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.generic import TemplateView
+from songs.models import Song
 
 
 @method_decorator(cache_page(1 * 60), name='dispatch')
