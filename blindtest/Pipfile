@@ -1,0 +1,38 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+daphne = "*"
+django-redis = "*"
+celery = "*"
+pymemcache = "*"
+requests = "*"
+selenium = "*"
+webdriver-manager = "*"
+psycopg = {extras = ["binary", "pool"], version = "*"}
+pillow = "*"
+djangorestframework = "*"
+django-cors-headers = "*"
+django-imagekit = "*"
+django-celery-beat = "*"
+drf-spectacular = "*"
+django-debug-toolbar = "*"
+django-import-export = "*"
+django-extensions = "*"
+djangorestframework-simplejwt = "*"
+unidecode = "*"
+channels = {extras = ["daphne"], version = "*"}
+levenshtein = "*"
+thefuzz = "*"
+rapidfuzz = "*"
+pyotp = "*"
+qrcode = "*"
+
+[dev-packages]
+autopep8 = "*"
+
+[requires]
+python_version = "3.13"

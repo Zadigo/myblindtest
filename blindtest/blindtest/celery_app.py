@@ -42,18 +42,17 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 @app.task(bind=True)
 def monthly_spotify_statistics():
-    print('works')
-    return True
+    return {}
 
 
 @app.task(bind=True)
 def billboard_data():
-    pass
+    return {}
 
 
 @app.task(bind=True)
 def get_spotify_data():
-    pass
+    return {}
 
 
 app.conf.beat_schedule = {
