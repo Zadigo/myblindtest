@@ -50,7 +50,7 @@ class SongAdmin(ImportExportModelAdmin):
     list_display = [
         'name', 'artist', 'genre',
         'difficulty', 'period',
-        'decade', 'enriched'
+        'decade'
     ]
     list_filter = ['difficulty']
     search_fields = [

@@ -1,0 +1,3089 @@
+[
+    {
+        "id": "1",
+        "name": "2 CHainz",
+        "spotify_id": "17lzZA2AlOHwCwFALHttmp",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebf556662d187b9191c421be1c"
+    },
+    {
+        "id": "2",
+        "name": "20syl",
+        "spotify_id": "6mA4csYsYvf4Mq02PleZEV",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb8928154b8783203390f4e4c6"
+    },
+    {
+        "id": "3",
+        "name": "21 Savage",
+        "spotify_id": "1URnnhqYAYcrqrcwql10ft",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb4f8f76117470957c0e81e5b2"
+    },
+    {
+        "id": "4",
+        "name": "50 Cent",
+        "spotify_id": "3q7HBObVc0L8jNeTe5Gofh",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/6f0da41419b31d9d2ba55d2df212f59ad0668118"
+    },
+    {
+        "id": "5",
+        "name": "A Caus' Des Garçons",
+        "spotify_id": "44rIoyd04L9FBK4P8zrodX",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab67616d0000b273348346b3ce49ea9027f6f56c"
+    },
+    {
+        "id": "6",
+        "name": "Ace of Base",
+        "spotify_id": "5ksRONqssB7BR161NTtJAm",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/df9832bacbaeb43077530fa37a8178cea85cb956"
+    },
+    {
+        "id": "7",
+        "name": "Afro B",
+        "spotify_id": "7oMRcCu0OYSCtCyS3P37iC",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb628c8d57d3561e11d219c2dc"
+    },
+    {
+        "id": "8",
+        "name": "Agnes Obel",
+        "spotify_id": "1rKrEdI6GKirxWHxIUPYms",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co//image//ab6761610000e5eb312fa20da6b19e20d9b07974"
+    },
+    {
+        "id": "9",
+        "name": "Akon",
+        "spotify_id": "0z4gvV4rjIZ9wHck67ucSV",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb3b6ab4190c7435238735b59d"
+    },
+    {
+        "id": "10",
+        "name": "Al Jarreau",
+        "spotify_id": "3YR92OLKlvkK5oKNekSqXe",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/0328aeaea8dff5a8695fd9f87de3f2dd41b8d4aa"
+    },
+    {
+        "id": "11",
+        "name": "Alanis Morissette",
+        "spotify_id": "6ogn9necmbUdCppmNnGOdi",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebf6a97342ccd47692b7cdf8c0"
+    },
+    {
+        "id": "12",
+        "name": "Alexander",
+        "spotify_id": "0znpFLuaey34oJTE1jHSnT",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb7b8555e7c926b78242c7a52d"
+    },
+    {
+        "id": "13",
+        "name": "Alicia Keys",
+        "spotify_id": "3DiDSECUqqY1AuBP8qtaIa",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebebfd16a3bca87c31c1e20576"
+    },
+    {
+        "id": "14",
+        "name": "Alizee",
+        "spotify_id": "53deL58uye6fCqRK4COtR4",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/01319daaa5efa55935e2c84d8070a821f4de1dd2"
+    },
+    {
+        "id": "441",
+        "name": "All-4-One",
+        "spotify_id": "1B8ySGDAiXTCvnJNH4HSCG",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/76758f54e0a9ad08225e42c262f80ca1ad4cebcf"
+    },
+    {
+        "id": "15",
+        "name": "Aloe Blacc",
+        "spotify_id": "0id62QV2SZZfvBn9xpmuCl",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebd58b6657f0f41954c0fcee55"
+    },
+    {
+        "id": "16",
+        "name": "Alphaville",
+        "spotify_id": "0xliTEbFfy5HQHvsTknTkX",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb3f8779bb1c97be855c6b51a8"
+    },
+    {
+        "id": "17",
+        "name": "AlunaGeorge",
+        "spotify_id": "2VAnyOxzJuSAj7XIuEOT38",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb7261f020417f3931cc3db324"
+    },
+    {
+        "id": "18",
+        "name": "Aly & AJ",
+        "spotify_id": "5wugb0kaq0J6nyQ5Xgd17i",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb941b05d6a8f552e1e61a7a1f"
+    },
+    {
+        "id": "19",
+        "name": "America",
+        "spotify_id": "35U9lQaRWSQISxQAB94Meo",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb1918619d3b26c6cb16084997"
+    },
+    {
+        "id": "20",
+        "name": "Amy Winehouse",
+        "spotify_id": "6Q192DXotxtaysaqNPy5yR",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb2ceb023b10da17590878e88c"
+    },
+    {
+        "id": "21",
+        "name": "Anastacia",
+        "spotify_id": "2siHvYaxjaW5rKVRiIrMYH",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb1d479612f500e9fb7bbd9abb"
+    },
+    {
+        "id": "22",
+        "name": "Anggun",
+        "spotify_id": "3ahVFszO9ucf8JQLCNQeYA",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/e7ede14ea2a743fed12c8df24b2cedb0b91117ff"
+    },
+    {
+        "id": "23",
+        "name": "Angus and Julia Stone",
+        "spotify_id": "4tvKz56Tr39bkhcQUTO0Xr",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eba6bec94f269e61676f2fe977"
+    },
+    {
+        "id": "24",
+        "name": "Angèle",
+        "spotify_id": "3QVolfxko2UyCOtexhVTli",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co//image//ab6761610000e5eb2aefdc0f42eef75a60b341dd"
+    },
+    {
+        "id": "25",
+        "name": "Anitta",
+        "spotify_id": "1Xyo4u8uXC1ZmMpatF05PJ",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb9e528993a2820267b97f6aae"
+    },
+    {
+        "id": "26",
+        "name": "Anya Marina",
+        "spotify_id": "3QkzcRNHg1pCeifBUZGmb6",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb00685313e751bd64de3cfdab"
+    },
+    {
+        "id": "27",
+        "name": "Aqua",
+        "spotify_id": "24wZhe5S2ElzaYdULrJPhV",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebc90d212dc6af4460eff2b42e"
+    },
+    {
+        "id": "28",
+        "name": "Arctic Monkeys",
+        "spotify_id": "7Ln80lUS6He07XvHI8qqHH",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb7da39dea0a72f581535fb11f"
+    },
+    {
+        "id": "29",
+        "name": "Aretha Franklin",
+        "spotify_id": "7nwUJBm0HE4ZxD3f5cy5ok",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebf12270128127ba170f90097d"
+    },
+    {
+        "id": "30",
+        "name": "Asake",
+        "spotify_id": "3a1tBryiczPAZpgoZN9Rzg",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eba3ae97af098bf3aeeb24d338"
+    },
+    {
+        "id": "31",
+        "name": "Ashnikko",
+        "spotify_id": "3PyJHH2wyfQK3WZrk9rpmP",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb12393f2112b9496d048b6736"
+    },
+    {
+        "id": "32",
+        "name": "Avril Lavigne",
+        "spotify_id": "0p4nmQO2msCgU4IF37Wi3j",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb5c3349ddba6b8e064c1bab16"
+    },
+    {
+        "id": "33",
+        "name": "Ayo",
+        "spotify_id": "4kuHnKdDObYPKYPcyJC4f6",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb099f22295927964636fd288e"
+    },
+    {
+        "id": "34",
+        "name": "BB Brunes",
+        "spotify_id": "4tHeypFR25Cnx83nuHhrud",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb6971278da3fc32512405258f"
+    },
+    {
+        "id": "35",
+        "name": "Babes Wodumo",
+        "spotify_id": "3jfVtv9mWfW0c5b3Fx440e",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab67616d0000b273799143b30879f7496e63a187"
+    },
+    {
+        "id": "36",
+        "name": "Bach",
+        "spotify_id": "5aIqB5nVVvmFsvSdExz408",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/a2ec08fe69ecec2748fbc764aede8f1b03ae8f88"
+    },
+    {
+        "id": "436",
+        "name": "Backstreet Boys",
+        "spotify_id": "5rSXSAkZ67PYJSvpUpkOr7",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebd792783a725a0ed42866204c"
+    },
+    {
+        "id": "37",
+        "name": "Bali Baby",
+        "spotify_id": "5hPcCMWgf6Qu9vUQVySwcY",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb0b3a29a471d23e384c3cbf65"
+    },
+    {
+        "id": "38",
+        "name": "Barry White",
+        "spotify_id": "3rfgbfpPSfXY40lzRK7Syt",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/d04ae222146d052fbbe9ed2598c1c3319d4e7ebc"
+    },
+    {
+        "id": "39",
+        "name": "BazBaz",
+        "spotify_id": "4ijFABgyX2ULYjcr0tSYZ3",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb8d6d77345f28f2b76552a1cc"
+    },
+    {
+        "id": "40",
+        "name": "Beck",
+        "spotify_id": "3vbKDsSS70ZX9D2OcvbZmS",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb917df61d55ce3ab98d43351a"
+    },
+    {
+        "id": "41",
+        "name": "Bee Gees",
+        "spotify_id": "1LZEQNv7sE11VDY3SdxQeN",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/1ea4795e17ffa658d7ad23095d58997a278179a9"
+    },
+    {
+        "id": "42",
+        "name": "Berlin",
+        "spotify_id": "2aS6jYh7ysTL1ZUsHneNgM",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebfba07dbdca45039f9d20e5bb"
+    },
+    {
+        "id": "43",
+        "name": "Bertrand Belin",
+        "spotify_id": "5yFrjxlSd8zPqzCCNrOI5h",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb0e91e83afd3c20626755aef0"
+    },
+    {
+        "id": "44",
+        "name": "Beyoncé",
+        "spotify_id": "6vWDO969PvNqNYHIOW5v0m",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb247f44069c0bd1781df2f785"
+    },
+    {
+        "id": "45",
+        "name": "Bhad Bhabie",
+        "spotify_id": "7DuTB6wdzqFJGFLSH17k8e",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb32f6eec95752845078cbf24e"
+    },
+    {
+        "id": "46",
+        "name": "Big Scarr",
+        "spotify_id": "579LsvZcRVKtToYjS0tkKz",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb3cfacf8b70d1dce6ab669fd7"
+    },
+    {
+        "id": "47",
+        "name": "Big Sean",
+        "spotify_id": "0c173mlxpT3dSFRgMO8XPh",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb3d5b14b45d4c3d10d23b03ff"
+    },
+    {
+        "id": "48",
+        "name": "Billy Joel",
+        "spotify_id": "6zFYqv1mOsgBRQbae3JJ9e",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebb34057d59275011032ef8bc8"
+    },
+    {
+        "id": "49",
+        "name": "Birdy",
+        "spotify_id": "2WX2uTcsvV5OnS0inACecP",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb778483686ae247c1906f02fb"
+    },
+    {
+        "id": "50",
+        "name": "Bloc Party",
+        "spotify_id": "3MM8mtgFzaEJsqbjZBSsHJ",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb42712519962b4c8fe48bc4a6"
+    },
+    {
+        "id": "51",
+        "name": "Blu Cantrell",
+        "spotify_id": "6vytZ677lz4LzCrUDcDokM",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb28831abca4b27c9f46416eb1"
+    },
+    {
+        "id": "52",
+        "name": "Blueface",
+        "spotify_id": "3Fl1V19tmjt57oBdxXKAjJ",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb9ee6c8739ef1f20553231132"
+    },
+    {
+        "id": "53",
+        "name": "Blur",
+        "spotify_id": "7MhMgCo0Bl0Kukl93PZbYS",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb00620d736644d2359ce99430"
+    },
+    {
+        "id": "442",
+        "name": "Boyz II Men",
+        "spotify_id": "6O74knDqdv3XaWtkII7Xjp",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/c8b0d67be35852171d04d7309c2cfe1992a8a4eb"
+    },
+    {
+        "id": "54",
+        "name": "Brandy & Monica",
+        "spotify_id": "05oH07COxkXKIMt6mIPRee",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebb39417aaafb9c373e78594ef"
+    },
+    {
+        "id": "55",
+        "name": "Brigitte",
+        "spotify_id": "3sB1RV3IE5yCyMbl01FzBN",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebb6db9f26998bdda2e7c0ff6e"
+    },
+    {
+        "id": "56",
+        "name": "Britney Spears",
+        "spotify_id": "26dSoYclwsYLMAKD3tpOr4",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb3a49b0a3954e460a8a76ed90"
+    },
+    {
+        "id": "57",
+        "name": "Bruce Springsteen",
+        "spotify_id": "3eqjTLE0HfPfh78zjh6TqT",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb81df2fa2f937029ec986bbb8"
+    },
+    {
+        "id": "58",
+        "name": "Bun B",
+        "spotify_id": "45a6gCQWq61lIUDmr1tKuO",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/3bba8d19446261eb36f6ce214dc472c6669536fa"
+    },
+    {
+        "id": "59",
+        "name": "Burna Boy",
+        "spotify_id": "3wcj11K77LjEY1PkEazffa",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb2d405f4858ce3cd52d409c98"
+    },
+    {
+        "id": "60",
+        "name": "Busta Rhymes",
+        "spotify_id": "1YfEcTuGvBQ8xSD1f53UnK",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb7b31aba081ef084510cde4e3"
+    },
+    {
+        "id": "61",
+        "name": "CKay",
+        "spotify_id": "048LktY5zMnakWq7PTtFrz",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb6bc8c6ddd810306da5659254"
+    },
+    {
+        "id": "62",
+        "name": "Caballero & JeanJass",
+        "spotify_id": "1mMUzAMrNqoTHgtxA0dZi6",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebbc17ac2f9ed41684682ac6d1"
+    },
+    {
+        "id": "63",
+        "name": "Camille",
+        "spotify_id": "0gOsZcHl7H3ewXVIEnWFZX",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb11f431f95fc3776d22a5ac37"
+    },
+    {
+        "id": "64",
+        "name": "Captain Kid",
+        "spotify_id": "7BEfMxbaqx6dOpbtlEqScm",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/4f2f9946d13c03740d4a033c662bb3995d0c00e1"
+    },
+    {
+        "id": "65",
+        "name": "Cardi B",
+        "spotify_id": "4kYSro6naA4h99UJvo89HB",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb4e8a7e14e2f602eb9af24e31"
+    },
+    {
+        "id": "66",
+        "name": "Carla Bruni",
+        "spotify_id": "1HVwzNriKEjaeE06okqSpx",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb1d05c17e7271984b1e009d6f"
+    },
+    {
+        "id": "67",
+        "name": "Carnage",
+        "spotify_id": "7CCjtD0hCK005Bvg2WG1a7",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb9dce3cbff297c22fbcd62a96"
+    },
+    {
+        "id": "68",
+        "name": "Cascada",
+        "spotify_id": "0N0d3kjwdY2h7UVuTdJGfp",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb7977be627e6c9e8018ad7831"
+    },
+    {
+        "id": "69",
+        "name": "Cassie",
+        "spotify_id": "27FGXRNruFoOdf1vP8dqcH",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb9592a41ec193fd20c5372ed3"
+    },
+    {
+        "id": "70",
+        "name": "Cassius",
+        "spotify_id": "4sf3QZW8a3xZ14IGsOAzoy",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb6686276b73ec5c27ae481992"
+    },
+    {
+        "id": "71",
+        "name": "Castro",
+        "spotify_id": "0LAurKItZ2c5kltNoRMtKq",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb398e7242fda5cccab0b5e6ec"
+    },
+    {
+        "id": "72",
+        "name": "Cat Clyde",
+        "spotify_id": "7oRT0oC3vhUGQJCL6CYYzk",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb1acd7024a0d1bde10d17930b"
+    },
+    {
+        "id": "73",
+        "name": "CeCe Peniston",
+        "spotify_id": "5UoVLCWzOKMIJ9iioof9OD",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb7b400216c37c439df6fd49b0"
+    },
+    {
+        "id": "74",
+        "name": "Ceeza Milli",
+        "spotify_id": "11b21KVATwG7LgLPiD3a1A",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb80df5f836a383ea97dab791d"
+    },
+    {
+        "id": "75",
+        "name": "Celeste",
+        "spotify_id": "49HlOY4gkHqsYG9GCuhkcc",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb3b48ae3bd4b963766b769f7c"
+    },
+    {
+        "id": "76",
+        "name": "Celine Dion",
+        "spotify_id": "4S9EykWXhStSc15wEx8QFK",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebc3b380448158e7b6e5863cde"
+    },
+    {
+        "id": "77",
+        "name": "Chamillionaire",
+        "spotify_id": "6vdMPayKk8YJxxeNP5oMCb",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/6e4914e9a46e7a5d4f3bdf47ddb85a78464aee05"
+    },
+    {
+        "id": "78",
+        "name": "Chance the Rapper",
+        "spotify_id": "1anyVhU62p31KFi8MEzkbf",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebe8717f034edfa96049ece459"
+    },
+    {
+        "id": "79",
+        "name": "Charlotte Gainsbourg",
+        "spotify_id": "2rBcvLKWCZs9w1qIWv560v",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb5c6941ccec946b6e52c87362"
+    },
+    {
+        "id": "80",
+        "name": "Cherish",
+        "spotify_id": "1c70yCa8sRgIiQxl3HOEFo",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebed896a298ee61f6cec91abc4"
+    },
+    {
+        "id": "81",
+        "name": "Chingy",
+        "spotify_id": "3s2wTjWxK8NOX09dmsvVOh",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebec6d65f8f8a7a95d6c6817d7"
+    },
+    {
+        "id": "82",
+        "name": "Chris Lake",
+        "spotify_id": "5Igpc9iLZ3YGtKeYfSrrOE",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb3c4c752f83e79a2f4f84341b"
+    },
+    {
+        "id": "83",
+        "name": "Christina Aguilera",
+        "spotify_id": "1l7ZsJRRS8wlW3WfJfPfNS",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb1fb7a2d94b56df1f8a61d779"
+    },
+    {
+        "id": "84",
+        "name": "Chronixx",
+        "spotify_id": "2oZcMYiKpjaA2Et5mU3RPP",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebff811e1e25b9cf99dc4e544f"
+    },
+    {
+        "id": "85",
+        "name": "Ciara",
+        "spotify_id": "2NdeV5rLm47xAvogXrYhJX",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb7aba0bf3576fe56c2b367c83"
+    },
+    {
+        "id": "86",
+        "name": "Cigarettes After Sex",
+        "spotify_id": "1QAJqy2dA3ihHBFIHRphZj",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb0e871e0389b9722cc12a4118"
+    },
+    {
+        "id": "87",
+        "name": "Clams Casino",
+        "spotify_id": "5vSQUyT33qxr1xAX2Tkf3A",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebeb01ceedf9eb7f7cf92b634a"
+    },
+    {
+        "id": "88",
+        "name": "Coco Jambo",
+        "spotify_id": "5yj6LsFcAIhJvsrRnF02Gl",
+        "genre": "",
+        "spotify_avatar": ""
+    },
+    {
+        "id": "89",
+        "name": "Colbie Caillat",
+        "spotify_id": "6aZyMrc4doVtZyKNilOmwu",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb08635ff0ed30023d2ee764a1"
+    },
+    {
+        "id": "90",
+        "name": "Colby O'Donis",
+        "spotify_id": "7fObcBw9VM3x7ntWKCYl0z",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb2c44e078944196a8c1eec256"
+    },
+    {
+        "id": "91",
+        "name": "Commodores",
+        "spotify_id": "6twIAGnYuIT1pncMAsXnEm",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb21a213a4fe1a6f9b45d3f7f9"
+    },
+    {
+        "id": "92",
+        "name": "Coolio",
+        "spotify_id": "3y24n3XhZ96wgwRXjvS17T",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb5ea53fc78df8f7e7559e228d"
+    },
+    {
+        "id": "93",
+        "name": "Corinne Bailey Rae",
+        "spotify_id": "5gFZo6Oh5WehnbEj0XtxiF",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb102a1c8e6a4838425728d673"
+    },
+    {
+        "id": "94",
+        "name": "Corneille",
+        "spotify_id": "2GBDOaCl73BVUs2RerIme7",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb8dd642e3a61cd544d9abfee7"
+    },
+    {
+        "id": "95",
+        "name": "Craig David",
+        "spotify_id": "2JyWXPbkqI5ZJa3gwqVa0c",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebf5fa84e65aeb19b122aae9cb"
+    },
+    {
+        "id": "96",
+        "name": "Culture Club",
+        "spotify_id": "6kz53iCdBSqhQCZ21CoLcc",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb5903965a15551fd12feb8b87"
+    },
+    {
+        "id": "97",
+        "name": "Cyndi Lauper",
+        "spotify_id": "2BTZIqw0ntH9MvilQ3ewNY",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb72f5bad471601240967563d6"
+    },
+    {
+        "id": "98",
+        "name": "Cœur De Pirate",
+        "spotify_id": "5j4HeCoUlzhfWtjAfM1acR",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebcc129f1c9b5047760d66aae2"
+    },
+    {
+        "id": "99",
+        "name": "DARKSIDE",
+        "spotify_id": "2933wDUojoQmvqSdTAE5NB",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebedbd92a9fcc728efed3e89b8"
+    },
+    {
+        "id": "100",
+        "name": "DJ Tira",
+        "spotify_id": "4FC2wXrDWr5lLCZeAUgfVn",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb91b0f2590693ad44d3377c1e"
+    },
+    {
+        "id": "101",
+        "name": "DMX",
+        "spotify_id": "1HwM5zlC5qNWhJtM00yXzG",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebd3258669d149a2e4e247a3d2"
+    },
+    {
+        "id": "103",
+        "name": "DaBaby",
+        "spotify_id": "4r63FhuTkUYltbVAg5TQnk",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebbd6918901c1714560669f570"
+    },
+    {
+        "id": "105",
+        "name": "Dae Dae",
+        "spotify_id": "41LfjfTCcTCUdykJqNyFw8",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb1d9ba2e65ac287e19968fae5"
+    },
+    {
+        "id": "106",
+        "name": "Daft Punk",
+        "spotify_id": "4tZwfgrHOc3mvqYlEYSvVi",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eba7bfd7835b5c1eee0c95fa6e"
+    },
+    {
+        "id": "107",
+        "name": "Damso",
+        "spotify_id": "2UwqpfQtNuhBwviIC0f2ie",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb2c7ede97239d20260baa9cdc"
+    },
+    {
+        "id": "108",
+        "name": "Danger",
+        "spotify_id": "5jco0Od4vChi5xTq1EZDRn",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab67616d0000b2734f6a47e662f88252a96365ca"
+    },
+    {
+        "id": "109",
+        "name": "David Banner",
+        "spotify_id": "7jFaoqWPhYLrKzjzlpXmUO",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/4313930ec65d6adbafdcffe5f08270de828a79df"
+    },
+    {
+        "id": "110",
+        "name": "Depeche Mode",
+        "spotify_id": "762310PdDnwsDxAQxzQkfX",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebaff13c9484fdad590ccfb73c"
+    },
+    {
+        "id": "111",
+        "name": "Des'ree",
+        "spotify_id": "73ZPfpfg1LBVvDEArK4l5B",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb93b0ecceb2fec8e515bdac37"
+    },
+    {
+        "id": "112",
+        "name": "Desiigner",
+        "spotify_id": "7pFeBzX627ff0VnN6bxPR4",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb7142aa94e6774b71d88eb3bd"
+    },
+    {
+        "id": "113",
+        "name": "Destiny's Child",
+        "spotify_id": "1Y8cdNmUJH7yBTd9yOvr5i",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebf75e64532704bd6acf0b4e76"
+    },
+    {
+        "id": "114",
+        "name": "Devonte",
+        "spotify_id": "0M1ImWN3uInxUCZVIE9uxa",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb409b7842b75d071739f2eaa8"
+    },
+    {
+        "id": "115",
+        "name": "Diamond Platnumz",
+        "spotify_id": "3cAisWS37sGCCtRgWfvrod",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebdd3584a621a443882fbdfc7d"
+    },
+    {
+        "id": "116",
+        "name": "Dido",
+        "spotify_id": "2mpeljBig2IXLXRAFO9AAs",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebf36e7b59cdaa0df8bee8e63f"
+    },
+    {
+        "id": "435",
+        "name": "Dionne Warwick",
+        "spotify_id": "2JSjCHK79gdaiPWdKiNUNp",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb460f728695000dadb44a4e8c"
+    },
+    {
+        "id": "117",
+        "name": "Disclosure",
+        "spotify_id": "6nS5roXSAGhTGr34W6n7Et",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb3faf416d3be99d63fec18baa"
+    },
+    {
+        "id": "118",
+        "name": "Discobitch",
+        "spotify_id": "48vWW7ozlrI3oT6zecxDUV",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab67616d0000b273aefb45a6e8a68685b3b3a025"
+    },
+    {
+        "id": "119",
+        "name": "Distruction Boyz",
+        "spotify_id": "44MG6uiTa2VeYlcy6VKDXe",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb35d00cd4724f50c8142ea630"
+    },
+    {
+        "id": "120",
+        "name": "Dladla Mshunqisi",
+        "spotify_id": "5M9mFjVaPT2T1HFYFFSoCt",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb37606bb1b959a7bd8bef63a5"
+    },
+    {
+        "id": "121",
+        "name": "Doris Day",
+        "spotify_id": "3ESG6pj6a0LvUKklENalT6",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/c11bb32e6a96a88cffce8f459ca93ef0bbc12ec6"
+    },
+    {
+        "id": "122",
+        "name": "Dr. Dre",
+        "spotify_id": "6DPYiyq5kWVQS4RGwxzPC7",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/170254ebdd747f4e7045df1cae8f11a42dc1a547"
+    },
+    {
+        "id": "123",
+        "name": "Drake",
+        "spotify_id": "3TVXtAsR1Inumwj472S9r4",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb4293385d324db8558179afd9"
+    },
+    {
+        "id": "124",
+        "name": "Dru Hill",
+        "spotify_id": "1255GTUKNCLCTvH9ctD4cT",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/486972d0215af437990698714e81ffdc177ee82f"
+    },
+    {
+        "id": "125",
+        "name": "Duffy",
+        "spotify_id": "37NqXwtb6nIEqRt4EJSoIO",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6772690000dd2250e750d1aed632c37a450ffb"
+    },
+    {
+        "id": "126",
+        "name": "Duma Ntando",
+        "spotify_id": "3Capes475wUe21Gzvk5gvA",
+        "genre": "",
+        "spotify_avatar": ""
+    },
+    {
+        "id": "127",
+        "name": "Earth, Wind & Fire",
+        "spotify_id": "4QQgXkCYTt3BlENzhyNETg",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb9722e16a886767adf1178f92"
+    },
+    {
+        "id": "128",
+        "name": "Ed Sheeran",
+        "spotify_id": "6eUKZXaKkcviH0Ku9w2n3V",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb784daff754ecfe0464ddbeb9"
+    },
+    {
+        "id": "129",
+        "name": "Edward Maya",
+        "spotify_id": "6XwwFnewNgWp81MYMK8zLq",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb877f1dbdef641d7e31c90d4c"
+    },
+    {
+        "id": "130",
+        "name": "Elephant Man",
+        "spotify_id": "6NOvBZrkd83MSD51xkq4on",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/11b5d170e9899db7033a38fcacfcf3a746d06d76"
+    },
+    {
+        "id": "131",
+        "name": "Ellie Goulding",
+        "spotify_id": "0X2BH1fck6amBIoJhDVmmJ",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebc3cd7dc428871e8985d62b9a"
+    },
+    {
+        "id": "132",
+        "name": "Elvis Presley",
+        "spotify_id": "43ZHCT0cAZBISjO8DG9PnE",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb9a93e273380982dff84c0d7c"
+    },
+    {
+        "id": "133",
+        "name": "Emilie Simon",
+        "spotify_id": "6kLw7VpGwN4N0sBdmKhhfd",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb2940ee9508c7ae72b8dd873b"
+    },
+    {
+        "id": "134",
+        "name": "Eminem",
+        "spotify_id": "7dGJo4pcD2V6oG8kP0tJRR",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eba00b11c129b27a88fc72f36b"
+    },
+    {
+        "id": "135",
+        "name": "En Vogue",
+        "spotify_id": "5fikk4h5qbEebqK2Fc6e48",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb6bb7f8ea26ac28c8d18efd8e"
+    },
+    {
+        "id": "136",
+        "name": "Ephemera",
+        "spotify_id": "64xAHfAOo1FcDxFDrnBgmr",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebcade8fbbec364a37e1a4998e"
+    },
+    {
+        "id": "137",
+        "name": "Eurythmics",
+        "spotify_id": "0NKDgy9j66h3DLnN8qu1bB",
+        "genre": "Electro house",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb145a01fb993c3088fe6ac5e7"
+    },
+    {
+        "id": "138",
+        "name": "Evanescence",
+        "spotify_id": "5nGIFgo0shDenQYSE0Sn7c",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb7ecf213c7dd78e0049379c5b"
+    },
+    {
+        "id": "139",
+        "name": "Eve",
+        "spotify_id": "58oPVy7oihAEXE0Ott6JOf",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebcf1059806aef122d3b7cf0f0"
+    },
+    {
+        "id": "140",
+        "name": "Fally Ipupa",
+        "spotify_id": "6IflU2YrY5Cyw7YoBICosV",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebaef56a6cfdcc53e6e8865579"
+    },
+    {
+        "id": "141",
+        "name": "Fat Joe",
+        "spotify_id": "3ScY9CQxNLQei8Umvpx5g6",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eba1fe5b14818dd48f0efbf919"
+    },
+    {
+        "id": "142",
+        "name": "Fat Man Scoop",
+        "spotify_id": "15GGbJKqC6w0VYyAJtjej6",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb0a79b0e631f15a9ad1a1e779"
+    },
+    {
+        "id": "143",
+        "name": "Fatal Bazooka",
+        "spotify_id": "68DWke2VjdDmA75aJX5C57",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb009e7843e0c929a1f2c34c27"
+    },
+    {
+        "id": "144",
+        "name": "Feist",
+        "spotify_id": "6CWTBjOJK75cTE8Xv8u1kj",
+        "genre": "('2 Tone', '2 Tone')",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebe062176ee3682ca24d6fddd7"
+    },
+    {
+        "id": "145",
+        "name": "Fergie",
+        "spotify_id": "3r17AfJCCUqC9Lf0OAc73G",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb1fd1c6d465e03a904d63c9b5"
+    },
+    {
+        "id": "146",
+        "name": "Fireboy DML",
+        "spotify_id": "75VKfyoBlkmrJFDqo1o2VY",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb833675081693a864702b2084"
+    },
+    {
+        "id": "147",
+        "name": "Flavien Berger",
+        "spotify_id": "5PyU5aVBI66v0pkCIvEJfu",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb26b1433693a8e356b430f1fe"
+    },
+    {
+        "id": "148",
+        "name": "Flavour",
+        "spotify_id": "0oKNR4ahj1CPnK2kQmbOfo",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebab245685296531fb3df5d48f"
+    },
+    {
+        "id": "430",
+        "name": "Flipmode Squad",
+        "spotify_id": "7JXCJDLGh1k9cg6JbYCpYl",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab67616d0000b27323436e32ad40bb78d3610f8d"
+    },
+    {
+        "id": "149",
+        "name": "Flo Milli",
+        "spotify_id": "08PvCOlef4xdOr20jFSTPd",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb2dd4342359c7b3aca2bca63c"
+    },
+    {
+        "id": "150",
+        "name": "Foreigner",
+        "spotify_id": "6IRouO5mvvfcyxtPDKMYFN",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebb338d6964565206f741d5ad1"
+    },
+    {
+        "id": "151",
+        "name": "Foxes",
+        "spotify_id": "7qRll6DYV06u2VuRPAVqug",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebadb663c00fcc431448abfcb4"
+    },
+    {
+        "id": "428",
+        "name": "Foxy Brown",
+        "spotify_id": "1wvlC6NwleHt1iRD6d5X2C",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ae4905a8c03a0643faf42310aa4962b5374aa206"
+    },
+    {
+        "id": "152",
+        "name": "French Montana",
+        "spotify_id": "6vXTefBL93Dj5IqAWq6OTv",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebadb2f8e09c3e3171956aafe4"
+    },
+    {
+        "id": "153",
+        "name": "Fugees",
+        "spotify_id": "2WKdxPFRD7IqZvlIAvhMgY",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/52bae8b59a21ec1ee6bc07a1e08382333bea27d6"
+    },
+    {
+        "id": "154",
+        "name": "Future",
+        "spotify_id": "1RyvyyTE3xzB2ZywiAwp0i",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb7565b356bc9d9394eefa2ccb"
+    },
+    {
+        "id": "155",
+        "name": "GS Boyz",
+        "spotify_id": "7Ej52CNJlhlwWROkrcjKLL",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebecd1cf094ae8d075cd1b34a2"
+    },
+    {
+        "id": "156",
+        "name": "Gabriella Cilmi",
+        "spotify_id": "5v2GEv1pQaCp6oeOQROdKE",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb317b44f735751dade05cdae7"
+    },
+    {
+        "id": "157",
+        "name": "Georges Brassens",
+        "spotify_id": "5UWyW1PcEM8coxeqg3RIHr",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebaa16370f435f9f9a99813417"
+    },
+    {
+        "id": "158",
+        "name": "Gotan Project",
+        "spotify_id": "44ejFPE33H5aOInxNV2BFP",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebfc6bddb68122d983a934a4b2"
+    },
+    {
+        "id": "159",
+        "name": "Gucci Mane",
+        "spotify_id": "13y7CgLHjMVRMDqxdx0Xdo",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebb9b77f64bd278ffde2c94428"
+    },
+    {
+        "id": "160",
+        "name": "Gunna",
+        "spotify_id": "2hlmm7s2ICUX0LVIhVFlZQ",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebb978b95b8e03351df8e103af"
+    },
+    {
+        "id": "161",
+        "name": "Gwen Stefani",
+        "spotify_id": "4yiQZ8tQPux8cPriYMWUFP",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb64b94bebbaee56f793e24853"
+    },
+    {
+        "id": "162",
+        "name": "H.E.R",
+        "spotify_id": "3Y7RZ31TRPVadSFVy1o8os",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb417db49cde3ed1c5a65e3514"
+    },
+    {
+        "id": "163",
+        "name": "Handel",
+        "spotify_id": "1QL7yTHrdahRMpvNtn6rI2",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/80e4fa2aac467af1b0a13201b585ae0ca27367dc"
+    },
+    {
+        "id": "164",
+        "name": "Helmut Fritz",
+        "spotify_id": "5xsFbfm9lL1iTOvX3hXpoK",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb56f2a9ca29e6f7293339bae9"
+    },
+    {
+        "id": "165",
+        "name": "Hooverphonic",
+        "spotify_id": "5EP020iZcwBqHRnJftibXX",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb1f66a237db39260155162f93"
+    },
+    {
+        "id": "166",
+        "name": "Imogen Heap",
+        "spotify_id": "6Xb4ezwoAQC4516kI89nWz",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb7ed0386d30b59531eddd34ba"
+    },
+    {
+        "id": "167",
+        "name": "Inez",
+        "spotify_id": "2sGGaKKex7GgNlH1DRXZSa",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebde82d4278b2c3223bb4c63b2"
+    },
+    {
+        "id": "168",
+        "name": "Innoss'B",
+        "spotify_id": "1nLQWXXs7ZauI4SC6rUFPV",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebf6649911e14b5c431098f744"
+    },
+    {
+        "id": "169",
+        "name": "Inside Llewyn Davis OST",
+        "spotify_id": "5qEtLvXzYdv0G7c7rR6irX",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab67616d0000b27359a6022f671f929b9979011d"
+    },
+    {
+        "id": "170",
+        "name": "Jabberwocky",
+        "spotify_id": "7AVxhrWi3oA5Setg6vvAoT",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb7ee6b5a8687801d515ae3909"
+    },
+    {
+        "id": "171",
+        "name": "Jain",
+        "spotify_id": "2HHmvvSQ44ePDH7IKVzgK0",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb887264fafa6634019ce9bd11"
+    },
+    {
+        "id": "172",
+        "name": "Jamelia",
+        "spotify_id": "3f5W9NEwkc1SAIPFuumcaf",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab67616d0000b273ac27b4f5d1ad74f433274cd5"
+    },
+    {
+        "id": "173",
+        "name": "James Bay",
+        "spotify_id": "4EzkuveR9pLvDVFNx6foYD",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb58d57084e75247d33ce25eaf"
+    },
+    {
+        "id": "174",
+        "name": "James Blake",
+        "spotify_id": "53KwLdlmrlCelAZMaLVZqU",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb93fe5fc8fdb5a98248911a07"
+    },
+    {
+        "id": "175",
+        "name": "James Brown",
+        "spotify_id": "7GaxyUddsPok8BuhxN6OUW",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb158342aa8bb8a192c778f2a5"
+    },
+    {
+        "id": "437",
+        "name": "Janet Jackson",
+        "spotify_id": "4qwGe91Bz9K2T8jXTZ815W",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebbe81fceb268078b7cecabaf5"
+    },
+    {
+        "id": "176",
+        "name": "Jason Mraz",
+        "spotify_id": "4phGZZrJZRo4ElhRtViYdl",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebc3b370fc26c83312db52af14"
+    },
+    {
+        "id": "177",
+        "name": "Jay-Z",
+        "spotify_id": "3nFkdlSjzX9mRTtwJOzDYB",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebc75afcd5a9027f60eaebb5e4"
+    },
+    {
+        "id": "178",
+        "name": "Jean Knight",
+        "spotify_id": "2Tk0pWxTuQgnE5nsUexrLr",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab67616d0000b2735b221b78b425f3f4b45188d2"
+    },
+    {
+        "id": "179",
+        "name": "Jennifer Lopez",
+        "spotify_id": "2DlGxzQSjYe5N6G9nkYghR",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebdc125248f01efbffd4efaaf4"
+    },
+    {
+        "id": "180",
+        "name": "Jennifer Paige",
+        "spotify_id": "26PDtWYDJ1KD0brukKsJH1",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb6cb06b64535283ceab01d414"
+    },
+    {
+        "id": "181",
+        "name": "Jeremih",
+        "spotify_id": "3KV3p5EY4AvKxOlhGHORLg",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb8ddeab89a67542470e2631c8"
+    },
+    {
+        "id": "429",
+        "name": "Jermaine Dupri",
+        "spotify_id": "6nfYGe7IIuuP5bMY1jkJP6",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb5b35a576c4e67e75bdc2fa68"
+    },
+    {
+        "id": "182",
+        "name": "Jewel",
+        "spotify_id": "6FbDoZnMBTdhhhLuJBOOqP",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb75a955fe415fd460bf1bf0f2"
+    },
+    {
+        "id": "423",
+        "name": "Jiva Phez'kombhede",
+        "spotify_id": "1D86M7ewUQH1vS0QsXCmI9",
+        "genre": "('2 Tone', '2 Tone')",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb4a6f3766a23e91536d7ee6ed"
+    },
+    {
+        "id": "183",
+        "name": "Joan Osborne",
+        "spotify_id": "0djV4iaxhNfYWpH60ia85o",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebe521dfff71ae1299e3a02e26"
+    },
+    {
+        "id": "184",
+        "name": "Johann Sebastian Bach",
+        "spotify_id": "5aIqB5nVVvmFsvSdExz408",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/a2ec08fe69ecec2748fbc764aede8f1b03ae8f88"
+    },
+    {
+        "id": "185",
+        "name": "John Dahlback",
+        "spotify_id": "15xvsJMf8phaNa1LYvL9Qv",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebe324c01d3fb6b2b5af61f271"
+    },
+    {
+        "id": "186",
+        "name": "John Lennon",
+        "spotify_id": "2s4tjL6W3qrblOe0raIzwJ",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb2cfed18861c121d7cfe9ee96"
+    },
+    {
+        "id": "187",
+        "name": "Johnny cash",
+        "spotify_id": "6kACVPfCOnqzgfEF5ryl0x",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb94a8326675bfcafb20f0a235"
+    },
+    {
+        "id": "188",
+        "name": "Joss Stone",
+        "spotify_id": "7bvcQXJHkFiN1ppIN3q4fi",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebaf8e9730026523b1ef1eedb8"
+    },
+    {
+        "id": "189",
+        "name": "Juanes",
+        "spotify_id": "0UWZUmn7sybxMCqrw9tGa7",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb330d24db775125dcec2c7b4c"
+    },
+    {
+        "id": "190",
+        "name": "Julie Zenatti",
+        "spotify_id": "3CoYG5pUuCzGnXzPoOkaNY",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebc623cbf85c3d91903107733f"
+    },
+    {
+        "id": "191",
+        "name": "Julien Doré",
+        "spotify_id": "6jStlKLflTMUN6BajxrNlj",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eba7475b5895e9a1d3800d60e4"
+    },
+    {
+        "id": "192",
+        "name": "Justin Timberlake",
+        "spotify_id": "31TPClRtHm23RisEBtV3X7",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb7a5cfe2597665a3d160e805e"
+    },
+    {
+        "id": "193",
+        "name": "K Camp",
+        "spotify_id": "5bgfj5zUoWpyeVatGDjn6H",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb2948cd9251b72583d6319140"
+    },
+    {
+        "id": "440",
+        "name": "K-Ci & JoJo",
+        "spotify_id": "05RZIdfz59ZW2FvFuwnmNK",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/3de68d33a1cc5dd51b61ddf68e7471955ba8266c"
+    },
+    {
+        "id": "194",
+        "name": "Kalash",
+        "spotify_id": "3J7r4VsNmuWixU0nXvyPd8",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebbeffebd066171f03029a3c2a"
+    },
+    {
+        "id": "426",
+        "name": "Kamini",
+        "spotify_id": "7wkxPRg2kNTzASm38ESobG",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab67616d0000b27328b92a46f7291d038fdecfeb"
+    },
+    {
+        "id": "195",
+        "name": "Kaoma",
+        "spotify_id": "1LsXqDdYVyONhrjAORENbu",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab67616d0000b27370a92681f8aff88714cb0296"
+    },
+    {
+        "id": "196",
+        "name": "Kash Doll",
+        "spotify_id": "3u579Gdap91lMptBSdXTpf",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb3ae964ef740d482d7cebcc1c"
+    },
+    {
+        "id": "197",
+        "name": "Kat DeLuna",
+        "spotify_id": "0bOlhT8OcoC1lCpN69NcFP",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebaadbf3efa3011c328f847a26"
+    },
+    {
+        "id": "198",
+        "name": "Kate Nash",
+        "spotify_id": "5vBKu1igxFo6g1sHADkIdg",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebd12d6e0c00e078cf73744d9a"
+    },
+    {
+        "id": "199",
+        "name": "Katie Melua",
+        "spotify_id": "5uCXJWo3WoXgqv3T1RlAbh",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb66cf8e94a58ca0238ecd0a9b"
+    },
+    {
+        "id": "200",
+        "name": "Katie Noonan",
+        "spotify_id": "4ch5DvHFpBlRtZAERVcfHr",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebdff17ae1816023449961e44a"
+    },
+    {
+        "id": "201",
+        "name": "Katy Perry",
+        "spotify_id": "6jJ0s89eD6GaHleKKya26X",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb5e5f676a99a81dba06cc3db6"
+    },
+    {
+        "id": "202",
+        "name": "Ke$ha",
+        "spotify_id": "6LqNN22kT3074XbTVUrhzX",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb2ac07249400857d8b16dc17a"
+    },
+    {
+        "id": "203",
+        "name": "Keane",
+        "spotify_id": "53A0W3U0s8diEn9RhXQhVz",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb92f6dba2793814a1c5aa8d35"
+    },
+    {
+        "id": "204",
+        "name": "Kelis",
+        "spotify_id": "0IF46mUS8NXjgHabxk2MCM",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebd1222863c4217cf03dde3613"
+    },
+    {
+        "id": "205",
+        "name": "Kelly Clarkson",
+        "spotify_id": "3BmGtnKgCSGYIUhmivXKWX",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb20b8c7d395994dc81a85f291"
+    },
+    {
+        "id": "431",
+        "name": "Kelly Rowland",
+        "spotify_id": "3AuMNF8rQAKOzjYppFNAoB",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb7c614a2b3cedfc53e4679c2e"
+    },
+    {
+        "id": "206",
+        "name": "King africa",
+        "spotify_id": "2vAu3qMgOvtukijgajuXhM",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebaabb411dd2d09c0f6f7c5ed4"
+    },
+    {
+        "id": "207",
+        "name": "Koba LaD",
+        "spotify_id": "1q7T9rFQ2a2ukA1PU51fo3",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb59d9403f63dbda10b2875c53"
+    },
+    {
+        "id": "208",
+        "name": "Kodak Black",
+        "spotify_id": "46SHBwWsqBkxI7EeeBEQG7",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb70c05cf4dc9a7d3ffd02ba19"
+    },
+    {
+        "id": "209",
+        "name": "Koffee",
+        "spotify_id": "1gWjcmBsveEYMxOZ0VRi32",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebcd0a7077824ca67fe4ce2850"
+    },
+    {
+        "id": "210",
+        "name": "Koffi Olomide",
+        "spotify_id": "7e14Bh8oZXNRmZxjhhTARb",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb8e4b5946ca3ca42359d9b5ee"
+    },
+    {
+        "id": "211",
+        "name": "Kool & The Gang",
+        "spotify_id": "3VNITwohbvU5Wuy5PC6dsI",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb69287c3f1b150bbead642499"
+    },
+    {
+        "id": "212",
+        "name": "Korede Bello",
+        "spotify_id": "2TwUVWFJs4LD0lOBbJXnNa",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebb1c20eed912deca20590da98"
+    },
+    {
+        "id": "213",
+        "name": "Koxie",
+        "spotify_id": "54eDBxDgfcmO6jqlKg0XLb",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebae7186179384c1f51aa2c14e"
+    },
+    {
+        "id": "214",
+        "name": "Kylie Minogue",
+        "spotify_id": "4RVnAU35WRWra6OZ3CbbMA",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb9a8ae4546aa5fb59aac60262"
+    },
+    {
+        "id": "215",
+        "name": "Kyo",
+        "spotify_id": "15uQG9wIjrfNYm9rHcEFwS",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb9ab4bce8ed6a72ab17b42ffc"
+    },
+    {
+        "id": "216",
+        "name": "Lady Gaga",
+        "spotify_id": "1HY2Jd0NmPuamShAr6KMms",
+        "genre": "('2 Tone', '2 Tone')",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebaadc18cac8d48124357c38e6"
+    },
+    {
+        "id": "217",
+        "name": "Latto",
+        "spotify_id": "3MdXrJWsbVzdn6fe5JYkSQ",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eba11b0b5c37498f5dddb1bd7b"
+    },
+    {
+        "id": "218",
+        "name": "Led Zeppelin",
+        "spotify_id": "36QJpDe2go2KgaRleHCDTp",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/207803ce008388d3427a685254f9de6a8f61dc2e"
+    },
+    {
+        "id": "219",
+        "name": "Leona Lewis",
+        "spotify_id": "5lKZWd6HiSCLfnDGrq9RAm",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebe9cf3862b8027eb5b9f6b831"
+    },
+    {
+        "id": "220",
+        "name": "Lil Baby",
+        "spotify_id": "5f7VJjfbwm532GiveGC0ZK",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb6cad3eff5adc29e20f189a6c"
+    },
+    {
+        "id": "221",
+        "name": "Lil Jon",
+        "spotify_id": "7sfl4Xt5KmfyDs2T3SVSMK",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebf893feb44e74c8b4c15ecc95"
+    },
+    {
+        "id": "222",
+        "name": "Lil Loaded",
+        "spotify_id": "7scapvSjZLSm0fBgqGM0Mn",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb8cc6644007a3c1510ba2e935"
+    },
+    {
+        "id": "223",
+        "name": "Lil Uzi Vert",
+        "spotify_id": "4O15NlyKLIASxsJ0PrXPfz",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eba8ce348f34f18241d3249fa9"
+    },
+    {
+        "id": "224",
+        "name": "Lil Wayne",
+        "spotify_id": "55Aa2cqylxrFIXC767Z865",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebc1c08e541eae3cc82c6988c4"
+    },
+    {
+        "id": "225",
+        "name": "Lil Yachty",
+        "spotify_id": "6icQOAFXDZKsumw3YXyusw",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb86c7c38d4c8c461dba55035c"
+    },
+    {
+        "id": "226",
+        "name": "Lil' Kim",
+        "spotify_id": "5tth2a3v0sWwV1C7bApBdX",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb44f424402a1933b745019107"
+    },
+    {
+        "id": "227",
+        "name": "Lily Allen",
+        "spotify_id": "13saZpZnCDWOI9D4IJhp1f",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb4816f55146bf03d294005165"
+    },
+    {
+        "id": "228",
+        "name": "Lisa Stansfield",
+        "spotify_id": "2jS7I1u7BpgWT9ssG62Zr1",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebf5030c0934958ec99d386bc4"
+    },
+    {
+        "id": "229",
+        "name": "Lizzo",
+        "spotify_id": "56oDRnqbIiwx4mymNEv7dS",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb0d66b3670294bf801847dae2"
+    },
+    {
+        "id": "230",
+        "name": "London Grammar",
+        "spotify_id": "3Bd1cgCjtCI32PYvDC3ynO",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb03fca863ba2e1e379ad19998"
+    },
+    {
+        "id": "231",
+        "name": "Lorie",
+        "spotify_id": "2ixb8I8BVdLRywPPklssgM",
+        "genre": "French pop",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebabf69eecaf0149dc14db4c28"
+    },
+    {
+        "id": "232",
+        "name": "Los Del Rio",
+        "spotify_id": "2JXn03fudjyRkQ1Ye9f5rk",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb80db2204010a200f07de58dc"
+    },
+    {
+        "id": "233",
+        "name": "Lud Foe X Z-Money",
+        "spotify_id": "0Cu32uCaqDJYQADOev92Et",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebde8a95961bcfb55f79382920"
+    },
+    {
+        "id": "234",
+        "name": "Ludacris",
+        "spotify_id": "3ipn9JLAPI5GUEo4y4jcoi",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/0515a0dfc9c25cd8290cc4be58abf6f66f21706a"
+    },
+    {
+        "id": "235",
+        "name": "Lykke Li",
+        "spotify_id": "6oBm8HB0yfrIc9IHbxs6in",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb0bf8a86c8e3a34bb4934abb7"
+    },
+    {
+        "id": "236",
+        "name": "Lynyrd Skynyrd",
+        "spotify_id": "4MVyzYMgTwdP7Z49wAZHx0",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb451eb07ddc6e68d3e474c2bf"
+    },
+    {
+        "id": "237",
+        "name": "M.C. Hammer",
+        "spotify_id": "2rblp9fJo16ZPTcKDtlmKW",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/80166b125a7e32ab55a867ca704c1f414d4ccc39"
+    },
+    {
+        "id": "238",
+        "name": "M.O.P.",
+        "spotify_id": "1BH45DVSTeGBvcYXNCd67g",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb5cc50382a0668ae107a972d2"
+    },
+    {
+        "id": "239",
+        "name": "M83",
+        "spotify_id": "63MQldklfxkjYDoUE4Tppz",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebfdb74f864a7a2cca6014a8a6"
+    },
+    {
+        "id": "240",
+        "name": "MGMT",
+        "spotify_id": "0SwO7SWeDHJijQ3XNS7xEE",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb9dccdc8f4087cbe2bdedc9d3"
+    },
+    {
+        "id": "241",
+        "name": "MKL",
+        "spotify_id": "57Vnemieu10x71jR2UWc4o",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb04ecd72cd2181dfb4faec55a"
+    },
+    {
+        "id": "242",
+        "name": "Macy Gray",
+        "spotify_id": "4ylR3zwA0zaapAu94fktwa",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb1f2b77b2426a741478bbbaf6"
+    },
+    {
+        "id": "243",
+        "name": "MadeinTYO",
+        "spotify_id": "5SyGEPymt1G2uto47tVWvZ",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eba355df72cb79fb74616b7e23"
+    },
+    {
+        "id": "244",
+        "name": "Maes",
+        "spotify_id": "6L34dW6SKMSDaGIfYDU19j",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb94d3aff5f84dfc8bf111f157"
+    },
+    {
+        "id": "245",
+        "name": "Mai Lan",
+        "spotify_id": "2mDibyYe7k76MBMSZDTGo1",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab67616d0000b273ff63c911808bdaffd5db8d7f"
+    },
+    {
+        "id": "246",
+        "name": "Major Lazer",
+        "spotify_id": "738wLrAtLtCtFOLvQBXOXp",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb133f44ab343b35c715a4ac97"
+    },
+    {
+        "id": "247",
+        "name": "Mampintsha",
+        "spotify_id": "2XyZibBnLI6ciT5J5ynkUK",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab67616d0000b2733909c816b1a90b068a9c0635"
+    },
+    {
+        "id": "248",
+        "name": "Maravillas de Mali",
+        "spotify_id": "3bOctOMNMbRy5E8treNpSK",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb52c3eda25a30a403797078fd"
+    },
+    {
+        "id": "427",
+        "name": "Mariah Carey",
+        "spotify_id": "4iHNK0tOyZPYnBU7nGAgpQ",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb35c3eff5d73f7e20ba3c9a2e"
+    },
+    {
+        "id": "249",
+        "name": "Maroon 5",
+        "spotify_id": "04gDigrS5kc9YWfZHwBETP",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebf8349dfb619a7f842242de77"
+    },
+    {
+        "id": "250",
+        "name": "Marvin Gaye",
+        "spotify_id": "3koiLjNrgRTNbOwViDipeA",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/f69e669cd95c6008c6220fd060982ff9516ed636"
+    },
+    {
+        "id": "251",
+        "name": "Massive Attack",
+        "spotify_id": "6FXMGgJwohJLUSr5nVlf9X",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/52c2a824e84f4e8adf0b12418f9f8306b4b5b77a"
+    },
+    {
+        "id": "438",
+        "name": "Meredith Brooks",
+        "spotify_id": "2QmLFuIDtNDmmJY3OtvinN",
+        "genre": "Electropop",
+        "spotify_avatar": "https://i.scdn.co/image/56b19ef06c56431583675c2c16448b1993c669e9"
+    },
+    {
+        "id": "252",
+        "name": "Mesparrow",
+        "spotify_id": "5ai4H4duxTBym6XsFjuGlD",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb2ed28965bff7cd75a373c153"
+    },
+    {
+        "id": "253",
+        "name": "Metro Boomin",
+        "spotify_id": "0iEtIxbK0KxaSlF7G42ZOp",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebdf9a1555f53a20087b8c5a5c"
+    },
+    {
+        "id": "443",
+        "name": "Michael Jackson",
+        "spotify_id": "3fMbdgg4jU18AjLCKBhRSm",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb997cc9a4aec335d46c9481fd"
+    },
+    {
+        "id": "254",
+        "name": "Migos",
+        "spotify_id": "6oMuImdp5ZcFhWP0ESe6mG",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebf4593f7b778219838d858c34"
+    },
+    {
+        "id": "255",
+        "name": "Mika",
+        "spotify_id": "5MmVJVhhYKQ86izuGHzJYA",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebc5adcd7630c57d002cc5a645"
+    },
+    {
+        "id": "256",
+        "name": "Milky Chance",
+        "spotify_id": "1hzfo8twXdOegF3xireCYs",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb44692946203bdd94759116e3"
+    },
+    {
+        "id": "257",
+        "name": "Milow",
+        "spotify_id": "6mo0UbyIvIePdXNyLwQlk5",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebd8167838eeea4e8cddfcc045"
+    },
+    {
+        "id": "258",
+        "name": "Mis-Teeq",
+        "spotify_id": "6csA2rxNLkQJXeEa7lyGXn",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb01604c583eee95123e61098c"
+    },
+    {
+        "id": "259",
+        "name": "Missy Elliott",
+        "spotify_id": "2wIVse2owClT7go1WT98tk",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebf6691f40d906f097e9fbaa4c"
+    },
+    {
+        "id": "260",
+        "name": "Moriarty",
+        "spotify_id": "3iTsJGG39nMg9YiolUgLMQ",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/75416e947bf832f9181500e2da9ebd5feed53d93"
+    },
+    {
+        "id": "261",
+        "name": "Moriarty Meets Mama Rosin",
+        "spotify_id": "3gXj2P4t2wkBTjvJ8s64BE",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebe905fd9e24019bc418c1e396"
+    },
+    {
+        "id": "262",
+        "name": "Mory Kanté",
+        "spotify_id": "0roLSs1WqlurDniSZ1pttN",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/96548389c36f0fa76fa5b3f1bf1118ac67074227"
+    },
+    {
+        "id": "263",
+        "name": "Mr Eazi",
+        "spotify_id": "4TAoP0f9OuWZUesao43xUW",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb6bb92fd0515f7bb07ec67a98"
+    },
+    {
+        "id": "264",
+        "name": "Mungo Jerry",
+        "spotify_id": "2mbvqMGpwLsakeH45p1Jrb",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb63d7307f5e3c9f7538af6877"
+    },
+    {
+        "id": "265",
+        "name": "My American Heart",
+        "spotify_id": "40ahTPmIE9WQOOTutV1dwc",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb54bc48d8b533fbe67a406679"
+    },
+    {
+        "id": "266",
+        "name": "Mya",
+        "spotify_id": "6lHL3ubAMgSasKjNqKb8HF",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebfdc389563fdfb51527f4603d"
+    },
+    {
+        "id": "267",
+        "name": "NLE Choppa",
+        "spotify_id": "0ErzCpIMyLcjPiwT4elrtZ",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebe2c985e8509fc8788a5a5208"
+    },
+    {
+        "id": "268",
+        "name": "Natalie Imbruglia",
+        "spotify_id": "0dlOr0VIysztGWvU1dpjmP",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb2e023776b822635846e1f5f1"
+    },
+    {
+        "id": "269",
+        "name": "Natasha Bedingfield",
+        "spotify_id": "7o95ZoZt5ZYn31e9z1Hc0a",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb15f48264917c2b09a573ecc7"
+    },
+    {
+        "id": "270",
+        "name": "Natasha St-Pier",
+        "spotify_id": "1miK7RIscxXIgQgHQ0G7ch",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebcd55923ff87894189b6884aa"
+    },
+    {
+        "id": "271",
+        "name": "Nelly Furtado",
+        "spotify_id": "2jw70GZXlAI8QzWeY2bgRc",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebd2ce0bf5614b54bd44e059d5"
+    },
+    {
+        "id": "272",
+        "name": "Neneh Cherry",
+        "spotify_id": "3JxCEqL9zjKnDJgUhRuRJD",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb72aecba283cf67c2f058980e"
+    },
+    {
+        "id": "273",
+        "name": "Nolwenn Leroy",
+        "spotify_id": "6suRVbMTiFWlTpB6fdLdF2",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb08a61d1e3eea5c114fcc8304"
+    },
+    {
+        "id": "274",
+        "name": "Nomads",
+        "spotify_id": "6aUKy2LG1OU6KhYOZADolN",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb7a0ae37f224490ad5440b281"
+    },
+    {
+        "id": "275",
+        "name": "Oasis",
+        "spotify_id": "2DaxqgrOhkeH0fpeiQq2f4",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb0522e98a6f0cf1ddbee9a74f"
+    },
+    {
+        "id": "276",
+        "name": "Offset",
+        "spotify_id": "4DdkRBBYG6Yk9Ka8tdJ9BW",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb628143c3dd14fc995f925d56"
+    },
+    {
+        "id": "277",
+        "name": "Olivia Ruiz",
+        "spotify_id": "12OSqKGORygb2C6H36qKuj",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb1901412c66270f5b3109d656"
+    },
+    {
+        "id": "278",
+        "name": "Os Banah",
+        "spotify_id": "0YrwMp3TZqDED4LRMk81iD",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab67616d0000b2731e26c43cc7ae5e11a8d3ca8f"
+    },
+    {
+        "id": "279",
+        "name": "Otis Redding",
+        "spotify_id": "60df5JBRRPcnSpsIMxxwQm",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/a5897eff01844c42d894a586e618ebc4aa0b9d2f"
+    },
+    {
+        "id": "280",
+        "name": "Ouais Chery",
+        "spotify_id": "0xrkjwFe3CIbYHTpMRi7ED",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb12c94b2ea0bb617531714497"
+    },
+    {
+        "id": "281",
+        "name": "Outlandish",
+        "spotify_id": "5tqMW5dSAlvh0GvgD3XfDy",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb228dedcb9ba0116a58bfdce4"
+    },
+    {
+        "id": "282",
+        "name": "Owl City",
+        "spotify_id": "07QEuhtrNmmZ0zEcqE9SF6",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebce3fbd73ae4f8b3ff54a0a5c"
+    },
+    {
+        "id": "283",
+        "name": "P Square",
+        "spotify_id": "42IUN9kTPdUdI1kre6L7Wk",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb7c6b34713eca70196726378f"
+    },
+    {
+        "id": "284",
+        "name": "P!nk",
+        "spotify_id": "1KCSPY1glIKqW2TotWuXOR",
+        "genre": "Pop punk",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb7bbad89a61061304ec842588"
+    },
+    {
+        "id": "285",
+        "name": "Passenger",
+        "spotify_id": "0gadJ2b9A4SKsB1RFkBb66",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb3eb6f55c271d954cc871954f"
+    },
+    {
+        "id": "286",
+        "name": "Pat Boone",
+        "spotify_id": "7fmKtIgmxqNEKjATioVNsu",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb1d6bec189c1ca27f6ce699dc"
+    },
+    {
+        "id": "287",
+        "name": "Patience & Prudence",
+        "spotify_id": "4F78tRprgxpEnopKTTWXor",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab67616d0000b2735f71ec43b302d6fad5688f1b"
+    },
+    {
+        "id": "288",
+        "name": "Pep's",
+        "spotify_id": "6dvyAgidTbcn9vJO1eWQ6y",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/562cf9d4dea2bf0dcbfb7c47aca15abbbdbce860"
+    },
+    {
+        "id": "289",
+        "name": "Peter Bjorn And John",
+        "spotify_id": "6u11Qbko2N2hP4lTBYjX86",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb9cc950721c840af3679622f3"
+    },
+    {
+        "id": "290",
+        "name": "Petey Pablo",
+        "spotify_id": "4Js9eYwAf9rypNtV8pNSw9",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebe308e14a34efcb2f11e2013d"
+    },
+    {
+        "id": "291",
+        "name": "Phil Collins",
+        "spotify_id": "4lxfqrEsLX6N1N4OCSkILp",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebd4e38c4e3e5c82774740e28d"
+    },
+    {
+        "id": "292",
+        "name": "Portishead",
+        "spotify_id": "6liAMWkVf5LH7YR9yfFy1Y",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/27802710b01453435de93d71bab2c9988a841ace"
+    },
+    {
+        "id": "293",
+        "name": "Prokofiev",
+        "spotify_id": "4kHtgiRnpmFIV5Tm4BIs8l",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/3d519206c3e18b8de2d8749988a398ded9a6b625"
+    },
+    {
+        "id": "294",
+        "name": "Quality Control",
+        "spotify_id": "6i392l38cR3uBPF0DbNs7S",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab67616d0000b273f5c547a4335523f10a802f94"
+    },
+    {
+        "id": "295",
+        "name": "Quavo",
+        "spotify_id": "0VRj0yCOv2FXJNP47XQnx5",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebd52229f479361a2375f6021c"
+    },
+    {
+        "id": "296",
+        "name": "Queens Of The Stone Age",
+        "spotify_id": "4pejUc4iciQfgdX6OKulQn",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb909b2c4b7c768ee03445cd10"
+    },
+    {
+        "id": "297",
+        "name": "Radical Face",
+        "spotify_id": "5EM6xJN2QNk0cL7EEm9HR9",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb525cf67298ee623539c1b8bf"
+    },
+    {
+        "id": "298",
+        "name": "Ray Charles",
+        "spotify_id": "1eYhYunlNJlDoQhtYBvPsi",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb6fc460f10177fa38af69b8bf"
+    },
+    {
+        "id": "299",
+        "name": "Rayvanny",
+        "spotify_id": "7G9dCn1mqomAa0ucJoBm6J",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb5c0d680fc6f8578c2493934b"
+    },
+    {
+        "id": "300",
+        "name": "Regina Spektor",
+        "spotify_id": "3z6Gk257P9jNcZbBXJNX5i",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eba36a9f95d59ab791d5e897e9"
+    },
+    {
+        "id": "301",
+        "name": "Rema",
+        "spotify_id": "46pWGuE3dSwY3bMMXGBvVS",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb0100fea4bd79ae2ce801be09"
+    },
+    {
+        "id": "302",
+        "name": "Renan Luce",
+        "spotify_id": "7f2jQ928ZRehCJrGGHN46J",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebbbf5b5346dcf909179957b4b"
+    },
+    {
+        "id": "303",
+        "name": "Rick Astley",
+        "spotify_id": "0gxyHStUsqpMadRV0Di1Qt",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb019782a5d4654e00db2a28a0"
+    },
+    {
+        "id": "304",
+        "name": "Ricky Nelson",
+        "spotify_id": "73sSFVlM6pkweLXE8qw1OS",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/3c0b0278e7cc5a8f062f7797993e099683b10e1e"
+    },
+    {
+        "id": "305",
+        "name": "Righteous Brothers",
+        "spotify_id": "4b0WsB47XCa9F83BmwQ7WX",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/e97b7cd22945863ebc926c5c8e4e92bd2b8698d9"
+    },
+    {
+        "id": "306",
+        "name": "Rihanna",
+        "spotify_id": "5pKCCKE2ajJHZ9KAiaK11H",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb99e4fca7c0b7cb166d915789"
+    },
+    {
+        "id": "307",
+        "name": "Rilo Kiley",
+        "spotify_id": "2cevwbv7ISD92VMNLYLHZA",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/2b56ef4b6f2093ebb46b18cbb4c0fccb9f27b2e2"
+    },
+    {
+        "id": "308",
+        "name": "Rita Hayworth",
+        "spotify_id": "24u2lWQYyTWB7VUTnwEavi",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab67616d0000b27346d4cdd08ab5c14b2f71f3e1"
+    },
+    {
+        "id": "309",
+        "name": "Roméo Elvis",
+        "spotify_id": "2pHk4wAmL7ofTAuvCIUWtv",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb243f1b8756f0bbd0fcdb7260"
+    },
+    {
+        "id": "310",
+        "name": "Roxette",
+        "spotify_id": "2SHhfs4BiDxGQ3oxqf0UHY",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb347ca7e9f41f3ff8e2b19034"
+    },
+    {
+        "id": "311",
+        "name": "Rudeboy",
+        "spotify_id": "583D4MicNImtI9URI0fIFT",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebbdfe992b6463746c79b8138b"
+    },
+    {
+        "id": "312",
+        "name": "SAODAJ'",
+        "spotify_id": "3RR7yaMwyMZ00dVrXmO8ow",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb2c4d833d18d2796c7bb6f07a"
+    },
+    {
+        "id": "313",
+        "name": "SCH",
+        "spotify_id": "2kXKa3aAFngGz2P4GjG5w2",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebcbdc659419a9f684e547164e"
+    },
+    {
+        "id": "314",
+        "name": "SEFYU",
+        "spotify_id": "2OULCPo7k0vPKlEZimhaVc",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb96cc237b24316fe2f2ae6195"
+    },
+    {
+        "id": "315",
+        "name": "SEVDALIZA",
+        "spotify_id": "5MraexJKZDrQYzS98kNwie",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb62ee96f535c8939e42bb68d7"
+    },
+    {
+        "id": "316",
+        "name": "SEXY SUSHI",
+        "spotify_id": "6yNXUzxIakMVY5LoVgZGHG",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb3649e4fb8d618d1baa1f7bb5"
+    },
+    {
+        "id": "317",
+        "name": "SNAP!",
+        "spotify_id": "2FrKQPjJe4pVMZOgm0ESOx",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb1097cae1ae4199d388081661"
+    },
+    {
+        "id": "318",
+        "name": "SWV",
+        "spotify_id": "2NmK5FyrQ18HOPXq1UBzqa",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb2c43fa54ddf21c961d2fd6c3"
+    },
+    {
+        "id": "319",
+        "name": "Sade",
+        "spotify_id": "47zz7sob9NUcODy0BTDvKx",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb92883b0e094a36d2f43ad284"
+    },
+    {
+        "id": "320",
+        "name": "SahBabii",
+        "spotify_id": "7GuUYiGZOzQwq4L6gAfy1T",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb6a379e26fd4999a0b9bc9baa"
+    },
+    {
+        "id": "321",
+        "name": "Salt-N-Pepa",
+        "spotify_id": "7wqtxqI3eo7Gn1P7SpP6cQ",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb0675a243b8f4b5301f514206"
+    },
+    {
+        "id": "322",
+        "name": "Sandra Dee & Bobby Darin",
+        "spotify_id": "0EodhzA6yW1bIdD5B4tcmJ",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/0145d946866cb2205bba2f17ab445e290eb1ec4c"
+    },
+    {
+        "id": "323",
+        "name": "Sara Bareilles",
+        "spotify_id": "2Sqr0DXoaYABbjBo9HaMkM",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb0bae7cfd3b32b10154e0b8b3"
+    },
+    {
+        "id": "324",
+        "name": "Sarah Blasko",
+        "spotify_id": "75jU2q0uEWzSIlqRJtedJV",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb1a1dc351a9cf6837c55d20f0"
+    },
+    {
+        "id": "325",
+        "name": "Sarkodie",
+        "spotify_id": "01DTVE3KmoPogPZaOvMqO8",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebdc9f92be0e1d353f4f7a037b"
+    },
+    {
+        "id": "439",
+        "name": "Seal",
+        "spotify_id": "5GtMEZEeFFsuHY8ad4kOxv",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebe29f9c69aad50e33fa61805a"
+    },
+    {
+        "id": "326",
+        "name": "Sean P",
+        "spotify_id": "3Isy6kedDrgPYoTS1dazA9",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb60c3e9abe7327c0097738f22"
+    },
+    {
+        "id": "425",
+        "name": "Selena Gomez",
+        "spotify_id": "0C8ZW7ezQVs4URX5aX7Kqx",
+        "genre": "Dance-pop",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebc3c753851496854e29abff7a"
+    },
+    {
+        "id": "327",
+        "name": "Shakira",
+        "spotify_id": "0EmeFodog0BfCgMzAIvKQp",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb2528c726e5ddb90a7197e527"
+    },
+    {
+        "id": "328",
+        "name": "Shalala lala",
+        "spotify_id": "2njkfzRhOJFKLWFTu8FNWx",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb1173fe0d523590d3ff1ea3b1"
+    },
+    {
+        "id": "329",
+        "name": "Shanel Hill",
+        "spotify_id": "4Voj5mMTNvEhyP1hmPJAeM",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab67616d0000b273a37de6d85d388a04596bff35"
+    },
+    {
+        "id": "330",
+        "name": "Shania Twain",
+        "spotify_id": "5e4Dhzv426EvQe3aDb64jL",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb01022f4092cb96e0a91811a5"
+    },
+    {
+        "id": "331",
+        "name": "Shanice",
+        "spotify_id": "0Ttph0pOZiPNTD3y2wUUb6",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/50ce596949e8d05d1ad380a649aabad8629164f7"
+    },
+    {
+        "id": "104",
+        "name": "Shanika",
+        "spotify_id": "4bRIHVXfIPH6r3qe1Suybf",
+        "genre": "('2 Tone', '2 Tone')",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb007ed1c2c1505f2975463e39"
+    },
+    {
+        "id": "102",
+        "name": "Shannon",
+        "spotify_id": "6A5Ns1SpGWTt8SzXPwiqVE",
+        "genre": "('2 Tone', '2 Tone')",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb2c83cf30c063810760cb2ab2"
+    },
+    {
+        "id": "332",
+        "name": "Sheryl Crow",
+        "spotify_id": "4TKTii6gnOnUXQHyuo9JaD",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb962c94da847bcc4ef21c4ad9"
+    },
+    {
+        "id": "333",
+        "name": "Sho Madjozi",
+        "spotify_id": "08V2vgJBY6VLoUPWlznRKo",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb0cd53b8135071be85329535c"
+    },
+    {
+        "id": "334",
+        "name": "Sinéad O'Connor",
+        "spotify_id": "4sD9znwiVFx9cgRPZ42aQ1",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb973ffafbef7825fdaa2ae5c5"
+    },
+    {
+        "id": "432",
+        "name": "Sisqo",
+        "spotify_id": "6x9QLdzo6eBZxJ1bHsDkjg",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/4aed80b41410e15695438b0dc1e54805a92873b2"
+    },
+    {
+        "id": "335",
+        "name": "Skepta",
+        "spotify_id": "2p1fiYHYiXz9qi0JJyxBzN",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb247e3bd61bd004869b5bffc3"
+    },
+    {
+        "id": "336",
+        "name": "Ski Mask The Slump God",
+        "spotify_id": "2rhFzFmezpnW82MNqEKVry",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb6fe251c4f2ab0cffe13c7cd0"
+    },
+    {
+        "id": "337",
+        "name": "Skiibii",
+        "spotify_id": "72Z2AhMKpxZjLNnPMyinUE",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb9f634440f5804eb98db5a6ef"
+    },
+    {
+        "id": "338",
+        "name": "Slim Thug",
+        "spotify_id": "0st5vgzw9XkH5ALJiUM1lE",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb474b284211d41aa5ce2f7a09"
+    },
+    {
+        "id": "339",
+        "name": "Snoop Dogg",
+        "spotify_id": "7hJcb9fa4alzcOq3EaNPoG",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebc19a88576ebe6fcbb325c297"
+    },
+    {
+        "id": "340",
+        "name": "Sophie Ellis-Bextor",
+        "spotify_id": "2cBh5lVMg222FFuRU7EfDE",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb78ac16f5d194c15658e80fce"
+    },
+    {
+        "id": "341",
+        "name": "Southside",
+        "spotify_id": "23DYJsw4uSCguIqiTIDtcN",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb78c315b04122bfc826bf9697"
+    },
+    {
+        "id": "342",
+        "name": "Spice Girls",
+        "spotify_id": "0uq5PttqEjj3IH1bzwcrXF",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb2e91ffbba84e8e94bafbc6d7"
+    },
+    {
+        "id": "343",
+        "name": "Spotless",
+        "spotify_id": "7zd8O0lGS5sHftyvnhtWD1",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb11cc48c6b18181302b4ea2aa"
+    },
+    {
+        "id": "344",
+        "name": "Stacy",
+        "spotify_id": "3q8tRS0hCMVCylgKAoA0ya",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/8b60f098a854a024d7f4849b52f538d7d04e7c63"
+    },
+    {
+        "id": "345",
+        "name": "StarBoy",
+        "spotify_id": "2udaNgT7EdnplmMaAAkP25",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb9b059136a6563b34c8c3ca2b"
+    },
+    {
+        "id": "346",
+        "name": "Stereo Total",
+        "spotify_id": "662bj9rCw8Twt6JDAMmMDb",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebc7ed6a9ee7bddee65d2c6b3a"
+    },
+    {
+        "id": "347",
+        "name": "Steve Aoki",
+        "spotify_id": "77AiFEVeAVj2ORpC85QVJs",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebcf85b39d94c486218a687248"
+    },
+    {
+        "id": "424",
+        "name": "Stevie Wonder",
+        "spotify_id": "7guDJrEfX3qb6FEbdPA5qi",
+        "genre": "Funk",
+        "spotify_avatar": "https://i.scdn.co/image/37c7875911b1d8195b05d40061a86bd01908a0d9"
+    },
+    {
+        "id": "348",
+        "name": "Sting",
+        "spotify_id": "0Ty63ceoRnnJKVEYP0VQpk",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb9fdb4dab484a9f12e347c216"
+    },
+    {
+        "id": "349",
+        "name": "Stormzy",
+        "spotify_id": "2SrSdSvpminqmStGELCSNd",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb674d29e07df021a35df3ddf1"
+    },
+    {
+        "id": "350",
+        "name": "Sum 41",
+        "spotify_id": "0qT79UgT5tY4yudH9VfsdT",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb625af80b68ae4eb559c6c417"
+    },
+    {
+        "id": "351",
+        "name": "Summer Walker",
+        "spotify_id": "57LYzLEk2LcFghVwuWbcuS",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebe0ff24e6eb6e1c0214f158b6"
+    },
+    {
+        "id": "352",
+        "name": "Superbus",
+        "spotify_id": "3Hog7RVQ1lAv1crdfiJPLq",
+        "genre": "Pop rock",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb735edc388fce2f4c242e1e1d"
+    },
+    {
+        "id": "353",
+        "name": "TLC",
+        "spotify_id": "0TImkz4nPqjegtVSMZnMRq",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb7356ae4581e46319f99c813a"
+    },
+    {
+        "id": "354",
+        "name": "TM88",
+        "spotify_id": "5RMUeKq0dZxg9RHE1f0B9P",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb477c0251af51e3dc08161c40"
+    },
+    {
+        "id": "355",
+        "name": "Takeoff",
+        "spotify_id": "3EW0kQ1skZiK1NHg3Spt9J",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebd986fb8037e0b8e2f9f4f37d"
+    },
+    {
+        "id": "356",
+        "name": "Tanto Metro",
+        "spotify_id": "4mVpYIVAOE8sEdYuL8HDpd",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb23af7fb6b9934f1dd241ca96"
+    },
+    {
+        "id": "357",
+        "name": "Tekno",
+        "spotify_id": "6IhG3Yxm3UW98jhyBvrIut",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebbdfa92a97f9da3258e7776e9"
+    },
+    {
+        "id": "358",
+        "name": "Teni",
+        "spotify_id": "3ukrG1BmfEiuo0KDj8YTTS",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebb660f04f0452e80160feb13c"
+    },
+    {
+        "id": "359",
+        "name": "Terri",
+        "spotify_id": "19TPpTWkgX13Qc2stbqVoP",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb6d0592295377a93cb370b775"
+    },
+    {
+        "id": "360",
+        "name": "The Be Good Tanyas",
+        "spotify_id": "37PywjKNsxHji5F9eFODF2",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/691e56fb2b282de87d423a9602ac40146cba796b"
+    },
+    {
+        "id": "361",
+        "name": "The Beatles",
+        "spotify_id": "3WrFJ7ztbogyGnTHbHJFl2",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebe9348cc01ff5d55971b22433"
+    },
+    {
+        "id": "362",
+        "name": "The Black Eyed Peas",
+        "spotify_id": "1yxSLGMDHlW21z4YXirZDS",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebb3037310c07b99cbefbd2c6d"
+    },
+    {
+        "id": "363",
+        "name": "The Cinematic Orchestra",
+        "spotify_id": "32ogthv0BdaSMPml02X9YB",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb9e2576943e27fcddc3bb3646"
+    },
+    {
+        "id": "364",
+        "name": "The Corrs",
+        "spotify_id": "1VbWUxZTRNY2gw3qZ1tg9W",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb599f5b4f1ea78db47fbead4e"
+    },
+    {
+        "id": "365",
+        "name": "The Drifters",
+        "spotify_id": "1FqqOl9itIUpXr4jZPIVoT",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/3361d8c88dc781f3a76657778454051db42e6d9e"
+    },
+    {
+        "id": "366",
+        "name": "The Dø",
+        "spotify_id": "2mcNCn1qbZUQ3J9KHapUxj",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/0d94f0d43132aa9762a9958e4eba50c049d956ce"
+    },
+    {
+        "id": "367",
+        "name": "The East Side Boyz",
+        "spotify_id": "3ciRvbBIVz9fBoPbtSYq4x",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/aafc4156598fa9f8f052ec5687e648ba9120f07e"
+    },
+    {
+        "id": "368",
+        "name": "The Game",
+        "spotify_id": "0NbfKEOTQCcwd6o7wSDOHI",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eba657aa5506945d264e147244"
+    },
+    {
+        "id": "369",
+        "name": "The La's",
+        "spotify_id": "47Z8LEl3LnQkcpva0xSthT",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/e2657fa7789ec2be647b71076b46f980f7540c73"
+    },
+    {
+        "id": "370",
+        "name": "The Plastic Ono Band",
+        "spotify_id": "4m2kfAHEnK7Z7qLGxeWtro",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb01f6227cc7b24c0b740ff848"
+    },
+    {
+        "id": "371",
+        "name": "The Police",
+        "spotify_id": "5NGO30tJxFlKixkPSgXcFE",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/72fe2cadb69ab59960ae3dbd29618549e4432699"
+    },
+    {
+        "id": "372",
+        "name": "The Pussycat Dolls",
+        "spotify_id": "6wPhSqRtPu1UhRCDX5yaDJ",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb292575f7d081016e04dff9ee"
+    },
+    {
+        "id": "373",
+        "name": "The Rolling Stones",
+        "spotify_id": "22bE4uQ6baNwSHPVcDxLCe",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebe4cea917b68726aadb4854b8"
+    },
+    {
+        "id": "374",
+        "name": "The Shanghai Restoration Project",
+        "spotify_id": "0EP5EpsiMP8oLYy7sPHwf9",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebdbc1170d337c9ae619b8d5b9"
+    },
+    {
+        "id": "375",
+        "name": "The Ting Tings",
+        "spotify_id": "2wvUfjKGoXvcnDHq7GgMOa",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb525060ec706fc0f5dd7a2878"
+    },
+    {
+        "id": "376",
+        "name": "The White Stripes",
+        "spotify_id": "4F84IBURUo98rz4r61KF70",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb70cc06de8fc28226d4743cd9"
+    },
+    {
+        "id": "377",
+        "name": "Timbaland",
+        "spotify_id": "5Y5TRrQiqgUO4S36tzjIRZ",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebb713079a55dcf937d241dd2b"
+    },
+    {
+        "id": "378",
+        "name": "Timber Timbre",
+        "spotify_id": "7HeVXdOdMhLslVputGTZFQ",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebc66bd6288b6f7fb11ac1bc40"
+    },
+    {
+        "id": "379",
+        "name": "Tina Arena",
+        "spotify_id": "1ZTCpKWDwHhbjhkdHhvTm8",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb9aad26a0f7c7fbb791aed6e5"
+    },
+    {
+        "id": "380",
+        "name": "Tinashe",
+        "spotify_id": "0NIIxcxNHmOoyBx03SfTCD",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eba669f860c74c9007934d2cb6"
+    },
+    {
+        "id": "381",
+        "name": "Tom Odell",
+        "spotify_id": "2txHhyCwHjUEpJjWrEyqyX",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb532e8dd8ba9fbd5e78105a78"
+    },
+    {
+        "id": "382",
+        "name": "Toni Braxton",
+        "spotify_id": "3X458ddYA2YcVWuVIGGOYe",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb89773feeaeff0e1cb4951d37"
+    },
+    {
+        "id": "383",
+        "name": "Tony Yayo",
+        "spotify_id": "50UMTib697JJ44le8DO2Va",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/af4998b29a084cf9f1507a1428c4645688e5fea0"
+    },
+    {
+        "id": "384",
+        "name": "Too $hort",
+        "spotify_id": "4sb7rZNN93BSS6Gqgepo4v",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebe1000f5b1cde8889cf4dc44b"
+    },
+    {
+        "id": "385",
+        "name": "Toofan",
+        "spotify_id": "5BfpzKNakWiXUNm1RfBgUi",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb336d715decf9d4737d65813b"
+    },
+    {
+        "id": "386",
+        "name": "Toto",
+        "spotify_id": "0PFtn5NtBbbUNbU9EAmIWF",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eba59a5bcab211f964fe9bfb06"
+    },
+    {
+        "id": "387",
+        "name": "Tove Lo",
+        "spotify_id": "4NHQUGzhtTLFvgF5SZesLK",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb2360c963315739fc33b01687"
+    },
+    {
+        "id": "388",
+        "name": "Toy-Box",
+        "spotify_id": "0BYEp3eyHK9Wsp4t2Ad1R8",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/4cca3caba269ae28b285e448142214aa2515db95"
+    },
+    {
+        "id": "389",
+        "name": "Tracy Chapman",
+        "spotify_id": "7oPgCQqMMXEXrNau5vxYZP",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/fe0085416276eb64c28eda1d2ef1feecbaa16d60"
+    },
+    {
+        "id": "390",
+        "name": "Travis Scott",
+        "spotify_id": "0Y5tJX1MQlPlqiwlOH1tJY",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb19c2790744c792d05570bb71"
+    },
+    {
+        "id": "391",
+        "name": "Trio",
+        "spotify_id": "417rMeQ1e1B90lsiS1iMZ1",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/8ad1809ee7fe02f1c348b2d075065aa78ffe9e77"
+    },
+    {
+        "id": "392",
+        "name": "Tujamo",
+        "spotify_id": "2vVNxGBvKRQMWwI5c8KmYh",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb4ff3493ab05afb520e3a4380"
+    },
+    {
+        "id": "393",
+        "name": "Ty Dolla Sign",
+        "spotify_id": "7c0XG5cIJTrrAgEC3ULPiq",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb24b3c0f33bc5e3f6a53f84d7"
+    },
+    {
+        "id": "434",
+        "name": "U.S.A. For Africa",
+        "spotify_id": "7sF6m3PpW6G6m6J2gzzmzM",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab67616d0000b273920f421260033ee54865d673"
+    },
+    {
+        "id": "394",
+        "name": "UB40",
+        "spotify_id": "69MEO1AADKg1IZrq2XLzo5",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb057ec513c696b66901270810"
+    },
+    {
+        "id": "395",
+        "name": "Umngan'wami",
+        "spotify_id": "4ClziihVpBeFXNyDH83Lde",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb55b976c32dbc2fb158a3981a"
+    },
+    {
+        "id": "396",
+        "name": "Valerie June",
+        "spotify_id": "4QZdOCb3UacKbQ1ybDFAKM",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eba4d591c3d5009ceddb94c822"
+    },
+    {
+        "id": "397",
+        "name": "Vanessa Carlton",
+        "spotify_id": "5ILrArfIV0tMURcHJN8Q07",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb9a9873aca07694682036f5b7"
+    },
+    {
+        "id": "398",
+        "name": "Vanessa Paradis",
+        "spotify_id": "1FmxE030Xe2H8Bn9bdv6Pd",
+        "genre": "French pop",
+        "spotify_avatar": "https://i.scdn.co/image/bd26cfb38c01991fa2fbb71053c567c4537e9a6e"
+    },
+    {
+        "id": "399",
+        "name": "Vengaboys",
+        "spotify_id": "0cwmNvclzPd8mQnoHuIksj",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb957b1db0e338bbf2fe2cdc37"
+    },
+    {
+        "id": "400",
+        "name": "Vika Jigulina",
+        "spotify_id": "34dZRjYum6vVBGslgYaBtB",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab67616d0000b273695991d6f4a544a05df4c1c0"
+    },
+    {
+        "id": "401",
+        "name": "Village People",
+        "spotify_id": "0dCKce6tJJdHvlWnDMwzPW",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb60571cd7326957308bad6380"
+    },
+    {
+        "id": "403",
+        "name": "Wejdene",
+        "spotify_id": "1SxuyHZnLUFyFHGzdGaxZk",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb286465e95bce362747d44be2"
+    },
+    {
+        "id": "404",
+        "name": "Whigfield",
+        "spotify_id": "0lHoDF96DNKSIcIpcOfMnq",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eba1414d4790f546e86fea6b03"
+    },
+    {
+        "id": "433",
+        "name": "Whitney Houston",
+        "spotify_id": "6XpaIBNiVzIetEPCWDvAFP",
+        "genre": "Rhythm and blues",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebcd9f60ab57585bf3b77ecc51"
+    },
+    {
+        "id": "406",
+        "name": "Wizkid",
+        "spotify_id": "3tVQdUvClmAT7URs9V3rsp",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebfa2e36a9d14dc11f3233bb4a"
+    },
+    {
+        "id": "407",
+        "name": "Wyclef Jean",
+        "spotify_id": "7aBzpmFXB4WWpPl2F7RjBe",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebad53e714cc3481bd069bfc93"
+    },
+    {
+        "id": "408",
+        "name": "Yael Naim",
+        "spotify_id": "32aFdXARUiqP81SXqIPD4w",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb6898fb91c70d5e6a10a67fde"
+    },
+    {
+        "id": "409",
+        "name": "Yasmine Hamdan",
+        "spotify_id": "5VElAWe58JiEzEl4vtjw7J",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb5489a3dd0030f64ceab2420b"
+    },
+    {
+        "id": "410",
+        "name": "Yella Beezy",
+        "spotify_id": "7kwCkEJ384PWm0UQW3hxjS",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb19885a885ca44e6781163f18"
+    },
+    {
+        "id": "411",
+        "name": "Yelle",
+        "spotify_id": "0WbqAlM1WvfUD6dF7omThd",
+        "genre": "French pop",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebcf45d275cf9b3788c96fd6b3"
+    },
+    {
+        "id": "412",
+        "name": "Yemi Alade",
+        "spotify_id": "7fKO99ryLDo8VocdtVvwZW",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb2ce4e49443ccea1a7abf2e4d"
+    },
+    {
+        "id": "413",
+        "name": "Ying Yang Twins",
+        "spotify_id": "44PA0rCQXikgOWbfY7Fq7m",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/8a522c7faa13cf4321ca6bea075fd97f75f40cfe"
+    },
+    {
+        "id": "414",
+        "name": "Yodelice",
+        "spotify_id": "167abweXl3demO9x0VMMeJ",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb0ed74d3ef6aa3f6887b63d0a"
+    },
+    {
+        "id": "415",
+        "name": "Young Scooter",
+        "spotify_id": "4cmA2QDPdzh8W2ytpyUGes",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eba92577640045c4dd4d455a91"
+    },
+    {
+        "id": "416",
+        "name": "Young Thug",
+        "spotify_id": "50co4Is1HCEo8bhOyUWKpn",
+        "genre": "Rap music",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb547d2b41c9f2c97318aad0ed"
+    },
+    {
+        "id": "417",
+        "name": "Youssou N'Dour",
+        "spotify_id": "77zlytAFjPFjUKda8TNIDY",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebc6ce99c0d31331765bd499e2"
+    },
+    {
+        "id": "418",
+        "name": "Zaho",
+        "spotify_id": "38GSybQjdc6sxptciOkxMq",
+        "genre": "French pop",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb7e1088a61b4f3b3d30f9d82b"
+    },
+    {
+        "id": "419",
+        "name": "a-ha",
+        "spotify_id": "2jzc5TC5TVFLXQlBNiIUzE",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb0168ba8148c07c2cdeb7d067"
+    },
+    {
+        "id": "420",
+        "name": "alt-J",
+        "spotify_id": "3XHO7cRUPCLOr6jwp8vsx5",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5eb3fb5214e667e278a20878a6b"
+    },
+    {
+        "id": "421",
+        "name": "björk",
+        "spotify_id": "7w29UYBi0qsHi5RTcv3lmA",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebaeb5c04fdd8ec6273850d207"
+    },
+    {
+        "id": "422",
+        "name": "t.A.T.u.",
+        "spotify_id": "2Q3eZMfDQgT8MhPowKFXYO",
+        "genre": "",
+        "spotify_avatar": "https://i.scdn.co/image/ab6761610000e5ebc8bb15d091287d6ce663d430"
+    }
+]

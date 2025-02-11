@@ -118,13 +118,6 @@ class Song(models.Model):
         return f'{self.name}'
 
     @property
-    def enriched(self):
-        return all([
-            self.spotify_id != None,
-            self.spotify_avatar != None
-        ])
-
-    @property
     def video_id(self):
         result = re.search(r'\/embed\/(\w+)', self.youtube)
         if result:
