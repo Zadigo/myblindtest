@@ -3,7 +3,7 @@
         "model": "songs.Artist",
         "pk": 1,
         "fields": {
-            "name": "Fabien Roussi",
+            "name": "Mariah Carey",
             "spotify_id": null,
             "genre": "Zouk",
             "spotify_avatar": null,

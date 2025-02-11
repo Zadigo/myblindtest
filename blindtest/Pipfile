@@ -31,6 +31,7 @@ rapidfuzz = "*"
 pyotp = "*"
 qrcode = "*"
 whitenoise = "*"
+googlesearch-python = "*"
 
 [dev-packages]
 autopep8 = "*"

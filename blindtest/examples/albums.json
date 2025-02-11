@@ -1,0 +1,1266 @@
+{
+    "data": {
+        "artist": {
+            "discography": {
+                "albums": {
+                    "totalCount": 22,
+                    "items": [
+                        {
+                            "releases": {
+                                "items": [
+                                    {
+                                        "id": "6aouVhqJ9SkEUS2gAR0xBS",
+                                        "uri": "spotify:album:6aouVhqJ9SkEUS2gAR0xBS",
+                                        "name": "Merry Christmas: 30th Anniversary Edition",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 2024,
+                                            "isoString": "2024-12-06T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e02ea7eed4c41a1580b87d4edac",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00004851ea7eed4c41a1580b87d4edac",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b273ea7eed4c41a1580b87d4edac",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "XImWYsdBSbuLyXqtFQebeA",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/6aouVhqJ9SkEUS2gAR0xBS?si=XImWYsdBSbuLyXqtFQebeA"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 19
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "releases": {
+                                "items": [
+                                    {
+                                        "id": "6yitEMT7G4qfIcV3jWXP8I",
+                                        "uri": "spotify:album:6yitEMT7G4qfIcV3jWXP8I",
+                                        "name": "Rainbow: 25th Anniversary Expanded Edition",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 2024,
+                                            "isoString": "2024-06-14T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e022f8b4699015f9abb4aed5504",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d000048512f8b4699015f9abb4aed5504",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b2732f8b4699015f9abb4aed5504",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "EZ72G_DtQZi3o1gTw4Zctg",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/6yitEMT7G4qfIcV3jWXP8I?si=EZ72G_DtQZi3o1gTw4Zctg"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 28
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "releases": {
+                                "items": [
+                                    {
+                                        "id": "1GzBLltCCKsiIJM3T3AWj3",
+                                        "uri": "spotify:album:1GzBLltCCKsiIJM3T3AWj3",
+                                        "name": "Music Box: 30th Anniversary Edition",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 2023,
+                                            "isoString": "2023-09-08T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e02a03e2a5d28055e5a22e4e78c",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00004851a03e2a5d28055e5a22e4e78c",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b273a03e2a5d28055e5a22e4e78c",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "jpvIrbm7TLKXfZu3T669lQ",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/1GzBLltCCKsiIJM3T3AWj3?si=jpvIrbm7TLKXfZu3T669lQ"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 36
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "releases": {
+                                "items": [
+                                    {
+                                        "id": "3VOqo81Nwyx8rcZEc2l379",
+                                        "uri": "spotify:album:3VOqo81Nwyx8rcZEc2l379",
+                                        "name": "Butterfly: 25th Anniversary Expanded Edition",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 2022,
+                                            "isoString": "2022-09-16T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e028220bba5c6d0993c0425aca4",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d000048518220bba5c6d0993c0425aca4",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b2738220bba5c6d0993c0425aca4",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "fNsSxoBtSvuHdkYCYEhGsQ",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/3VOqo81Nwyx8rcZEc2l379?si=fNsSxoBtSvuHdkYCYEhGsQ"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 20
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "releases": {
+                                "items": [
+                                    {
+                                        "id": "5VfesyhwiNgpEEPXlO5c84",
+                                        "uri": "spotify:album:5VfesyhwiNgpEEPXlO5c84",
+                                        "name": "Mariah Carey's Magical Christmas Special (Apple TV+ Original Soundtrack)",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 2020,
+                                            "isoString": "2020-12-11T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e0277267b60c905c5704fcb3c44",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000485177267b60c905c5704fcb3c44",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b27377267b60c905c5704fcb3c44",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "-g41Ieu2Qv-an59KOs0qMA",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/5VfesyhwiNgpEEPXlO5c84?si=-g41Ieu2Qv-an59KOs0qMA"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 17
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "releases": {
+                                "items": [
+                                    {
+                                        "id": "0v1DRRYBXYg1uVN1CIsyy0",
+                                        "uri": "spotify:album:0v1DRRYBXYg1uVN1CIsyy0",
+                                        "name": "The Rarities",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 2020,
+                                            "isoString": "2020-10-02T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e022711c9ecee889a8f4f8392b5",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d000048512711c9ecee889a8f4f8392b5",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b2732711c9ecee889a8f4f8392b5",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "plki3Td7R865ritao87MRQ",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/0v1DRRYBXYg1uVN1CIsyy0?si=plki3Td7R865ritao87MRQ"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 32
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "releases": {
+                                "items": [
+                                    {
+                                        "id": "0cS9prZ8u3fdbc7lmtCaMV",
+                                        "uri": "spotify:album:0cS9prZ8u3fdbc7lmtCaMV",
+                                        "name": "Merry Christmas (Deluxe Anniversary Edition)",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 2019,
+                                            "isoString": "2019-11-01T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e0201c44a2d3c4ae7a6682df677",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000485101c44a2d3c4ae7a6682df677",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b27301c44a2d3c4ae7a6682df677",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "tl47LUdmSgy0-s5q7RPQgg",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/0cS9prZ8u3fdbc7lmtCaMV?si=tl47LUdmSgy0-s5q7RPQgg"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 29
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "releases": {
+                                "items": [
+                                    {
+                                        "id": "6GhWU8SIWavH4IQAoeJazI",
+                                        "uri": "spotify:album:6GhWU8SIWavH4IQAoeJazI",
+                                        "name": "Caution",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 2018,
+                                            "isoString": "2018-11-17T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e0225fc30d368f9d11d27faa43e",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000485125fc30d368f9d11d27faa43e",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b27325fc30d368f9d11d27faa43e",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "2hH6yB1iQuag2i9HOUNtPg",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/6GhWU8SIWavH4IQAoeJazI?si=2hH6yB1iQuag2i9HOUNtPg"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 11
+                                        }
+                                    },
+                                    {
+                                        "id": "64zK6tmksJw9gNZR0L4DVx",
+                                        "uri": "spotify:album:64zK6tmksJw9gNZR0L4DVx",
+                                        "name": "Caution",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 2018,
+                                            "isoString": "2018-11-16T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e02a789783eeb5d95acaaa6cfdb",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00004851a789783eeb5d95acaaa6cfdb",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b273a789783eeb5d95acaaa6cfdb",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "-Bc_dSH3QQKt-SDURXnXgA",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/64zK6tmksJw9gNZR0L4DVx?si=-Bc_dSH3QQKt-SDURXnXgA"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 10
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "releases": {
+                                "items": [
+                                    {
+                                        "id": "2tVxdAJ16NY9bpjb1h5fQc",
+                                        "uri": "spotify:album:2tVxdAJ16NY9bpjb1h5fQc",
+                                        "name": "Me. I Am Mariah\u2026The Elusive Chanteuse (Deluxe)",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 2014,
+                                            "isoString": "2014-05-23T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e02bd435b3891c7093f261379e8",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00004851bd435b3891c7093f261379e8",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b273bd435b3891c7093f261379e8",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "sNRZ2gHjSB-sQjaFR-bxQQ",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/2tVxdAJ16NY9bpjb1h5fQc?si=sNRZ2gHjSB-sQjaFR-bxQQ"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 18
+                                        }
+                                    },
+                                    {
+                                        "id": "47voGlgRLcSe9VVO4K4IQa",
+                                        "uri": "spotify:album:47voGlgRLcSe9VVO4K4IQa",
+                                        "name": "Me. I Am Mariah\u2026The Elusive Chanteuse (Deluxe)",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 2014,
+                                            "isoString": "2014-05-23T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e02cabd651128394ddc698b02fc",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00004851cabd651128394ddc698b02fc",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b273cabd651128394ddc698b02fc",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "J-8G6HX7TWGsbVUJ0a2ISA",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/47voGlgRLcSe9VVO4K4IQa?si=J-8G6HX7TWGsbVUJ0a2ISA"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 18
+                                        }
+                                    },
+                                    {
+                                        "id": "0nOIs5tkwu7l4x5XCMEQOk",
+                                        "uri": "spotify:album:0nOIs5tkwu7l4x5XCMEQOk",
+                                        "name": "Me. I Am Mariah\u2026The Elusive Chanteuse",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 2014,
+                                            "isoString": "2014-05-23T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e02b3cffd1bd83045c9e077d63b",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00004851b3cffd1bd83045c9e077d63b",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b273b3cffd1bd83045c9e077d63b",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "Ldom7AAzSRy1u5X0Njr96g",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/0nOIs5tkwu7l4x5XCMEQOk?si=Ldom7AAzSRy1u5X0Njr96g"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 15
+                                        }
+                                    },
+                                    {
+                                        "id": "6hGRm1piHNE0Xp7I5Guesy",
+                                        "uri": "spotify:album:6hGRm1piHNE0Xp7I5Guesy",
+                                        "name": "Me. I Am Mariah\u2026The Elusive Chanteuse",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 2014,
+                                            "isoString": "2014-05-23T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e027fb8d2970f38ee4a14020e87",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d000048517fb8d2970f38ee4a14020e87",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b2737fb8d2970f38ee4a14020e87",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "qa89u6vTTPqGLnCNpCqoJA",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/6hGRm1piHNE0Xp7I5Guesy?si=qa89u6vTTPqGLnCNpCqoJA"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 15
+                                        }
+                                    },
+                                    {
+                                        "id": "2nyTAHLCRPIZFfyIYPV5Cs",
+                                        "uri": "spotify:album:2nyTAHLCRPIZFfyIYPV5Cs",
+                                        "name": "Me. I Am Mariah\u2026The Elusive Chanteuse (Deluxe)",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 2014,
+                                            "isoString": "2014-05-23T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e02f6a228383fff58b535e74001",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00004851f6a228383fff58b535e74001",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b273f6a228383fff58b535e74001",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "KU2AzB3JTpKEk2vvs4E8ww",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/2nyTAHLCRPIZFfyIYPV5Cs?si=KU2AzB3JTpKEk2vvs4E8ww"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 18
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "releases": {
+                                "items": [
+                                    {
+                                        "id": "4q88opkbXkvvL0iIvbs0pv",
+                                        "uri": "spotify:album:4q88opkbXkvvL0iIvbs0pv",
+                                        "name": "Merry Christmas II You",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 2010,
+                                            "isoString": "2010-11-02T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e02bfd9c30ddcfa6e55eb433043",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00004851bfd9c30ddcfa6e55eb433043",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b273bfd9c30ddcfa6e55eb433043",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "OR1k-ExDTeKLehk36vLucA",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/4q88opkbXkvvL0iIvbs0pv?si=OR1k-ExDTeKLehk36vLucA"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 14
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "releases": {
+                                "items": [
+                                    {
+                                        "id": "3RPImDZ7Ihh5YR5iJh1gH1",
+                                        "uri": "spotify:album:3RPImDZ7Ihh5YR5iJh1gH1",
+                                        "name": "Memoirs of an imperfect Angel",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 2009,
+                                            "isoString": "2009-09-29T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e02a9e20a20b9fc607d81f9c335",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00004851a9e20a20b9fc607d81f9c335",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b273a9e20a20b9fc607d81f9c335",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "AkGHq1RPSfe4R-D9cJ5MmA",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/3RPImDZ7Ihh5YR5iJh1gH1?si=AkGHq1RPSfe4R-D9cJ5MmA"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 21
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "releases": {
+                                "items": [
+                                    {
+                                        "id": "31MluXLYC0ZnCSfUZ5T4GX",
+                                        "uri": "spotify:album:31MluXLYC0ZnCSfUZ5T4GX",
+                                        "name": "E=MC2 (Deluxe Version)",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 2008,
+                                            "isoString": "2008-04-04T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e02633bb0a5f75b91c45c3a6b37",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00004851633bb0a5f75b91c45c3a6b37",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b273633bb0a5f75b91c45c3a6b37",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "SrVwJOKLRLOB4YYKPwE5UA",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/31MluXLYC0ZnCSfUZ5T4GX?si=SrVwJOKLRLOB4YYKPwE5UA"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 16
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "releases": {
+                                "items": [
+                                    {
+                                        "id": "7MMpjM0wynysTbhpvKjHrm",
+                                        "uri": "spotify:album:7MMpjM0wynysTbhpvKjHrm",
+                                        "name": "The Emancipation Of Mimi (Ultra Platinum Edition)",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 2005,
+                                            "isoString": "2005-04-12T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e02b20b50bd34fe4dbc754c85dc",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00004851b20b50bd34fe4dbc754c85dc",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b273b20b50bd34fe4dbc754c85dc",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "yS_PRqwJTX-NYygAn44XYQ",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/7MMpjM0wynysTbhpvKjHrm?si=yS_PRqwJTX-NYygAn44XYQ"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 20
+                                        }
+                                    },
+                                    {
+                                        "id": "43iBTEWECK7hSnE0p6GgNo",
+                                        "uri": "spotify:album:43iBTEWECK7hSnE0p6GgNo",
+                                        "name": "The Emancipation of Mimi",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 2005,
+                                            "isoString": "2005-04-12T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e02768bc8d9f078db929dfcfbd1",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00004851768bc8d9f078db929dfcfbd1",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b273768bc8d9f078db929dfcfbd1",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "fFOkmI8LT6a5O0Q5aaVzjQ",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/43iBTEWECK7hSnE0p6GgNo?si=fFOkmI8LT6a5O0Q5aaVzjQ"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 14
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "releases": {
+                                "items": [
+                                    {
+                                        "id": "16rTsMjlDt6DEbLRtxvcWu",
+                                        "uri": "spotify:album:16rTsMjlDt6DEbLRtxvcWu",
+                                        "name": "Charmbracelet",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 2002,
+                                            "isoString": "2002-01-01T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e028314c58fa6aead284c0ec126",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d000048518314c58fa6aead284c0ec126",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b2738314c58fa6aead284c0ec126",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "KcHLrvrpTnic4O_1685kpw",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/16rTsMjlDt6DEbLRtxvcWu?si=KcHLrvrpTnic4O_1685kpw"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 15
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "releases": {
+                                "items": [
+                                    {
+                                        "id": "2hHFZLYnwsYOOxTCrlNvg0",
+                                        "uri": "spotify:album:2hHFZLYnwsYOOxTCrlNvg0",
+                                        "name": "Glitter",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 2001,
+                                            "isoString": "2001-09-11T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e0214974bf74b76f793ad0d71e0",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000485114974bf74b76f793ad0d71e0",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b27314974bf74b76f793ad0d71e0",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "QRfST2lIRqKtR7RX2b4TKQ",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/2hHFZLYnwsYOOxTCrlNvg0?si=QRfST2lIRqKtR7RX2b4TKQ"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 12
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "releases": {
+                                "items": [
+                                    {
+                                        "id": "1iSTXHBhLc9ImaqyvVZGft",
+                                        "uri": "spotify:album:1iSTXHBhLc9ImaqyvVZGft",
+                                        "name": "Rainbow",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 1999,
+                                            "isoString": "1999-11-02T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e028ed130c0fbcf25117916f6d8",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d000048518ed130c0fbcf25117916f6d8",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b2738ed130c0fbcf25117916f6d8",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "u3CeiTzSQhyrHesj3BqM1Q",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/1iSTXHBhLc9ImaqyvVZGft?si=u3CeiTzSQhyrHesj3BqM1Q"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 14
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "releases": {
+                                "items": [
+                                    {
+                                        "id": "7aDBFWp72Pz4NZEtVBANi9",
+                                        "uri": "spotify:album:7aDBFWp72Pz4NZEtVBANi9",
+                                        "name": "Butterfly",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 1997,
+                                            "isoString": "1997-09-16T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e0298ed501c6a838b2244ebaf75",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000485198ed501c6a838b2244ebaf75",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b27398ed501c6a838b2244ebaf75",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "aPyJcF8BTZOyzZuEeGk47g",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/7aDBFWp72Pz4NZEtVBANi9?si=aPyJcF8BTZOyzZuEeGk47g"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 12
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "releases": {
+                                "items": [
+                                    {
+                                        "id": "1ibYM4abQtSVQFQWvDSo4J",
+                                        "uri": "spotify:album:1ibYM4abQtSVQFQWvDSo4J",
+                                        "name": "Daydream",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 1995,
+                                            "isoString": "1995-10-03T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e02749e9bfa78277f30ad2c9a9c",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00004851749e9bfa78277f30ad2c9a9c",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b273749e9bfa78277f30ad2c9a9c",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "Vpg6mMkjSlWplGuDdabEYg",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/1ibYM4abQtSVQFQWvDSo4J?si=Vpg6mMkjSlWplGuDdabEYg"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 12
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "releases": {
+                                "items": [
+                                    {
+                                        "id": "61ulfFSmmxMhc2wCdmdMkN",
+                                        "uri": "spotify:album:61ulfFSmmxMhc2wCdmdMkN",
+                                        "name": "Merry Christmas",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 1994,
+                                            "isoString": "1994-10-28T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e024246e3158421f5abb75abc4f",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d000048514246e3158421f5abb75abc4f",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b2734246e3158421f5abb75abc4f",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "gkOWnAJUQ5OhvDwyW8SkpA",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/61ulfFSmmxMhc2wCdmdMkN?si=gkOWnAJUQ5OhvDwyW8SkpA"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 10
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "releases": {
+                                "items": [
+                                    {
+                                        "id": "5Mr8FpZP1DaLDxjbMD7GcR",
+                                        "uri": "spotify:album:5Mr8FpZP1DaLDxjbMD7GcR",
+                                        "name": "Music Box",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 1993,
+                                            "isoString": "1993-08-31T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e0237100bc4938b7d7cc25bad17",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000485137100bc4938b7d7cc25bad17",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b27337100bc4938b7d7cc25bad17",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "SOh3QqODT1q2g5_f35DYrQ",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/5Mr8FpZP1DaLDxjbMD7GcR?si=SOh3QqODT1q2g5_f35DYrQ"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 11
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "releases": {
+                                "items": [
+                                    {
+                                        "id": "0SHpIbyBLUugMXsl3yNkUz",
+                                        "uri": "spotify:album:0SHpIbyBLUugMXsl3yNkUz",
+                                        "name": "Emotions",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 1991,
+                                            "isoString": "1991-09-17T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e02cac78df6ec3c73e118a308e0",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00004851cac78df6ec3c73e118a308e0",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b273cac78df6ec3c73e118a308e0",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "5j-VNnDCTx-320c2-ALn_g",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/0SHpIbyBLUugMXsl3yNkUz?si=5j-VNnDCTx-320c2-ALn_g"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 10
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "releases": {
+                                "items": [
+                                    {
+                                        "id": "5SwNGsGw1I8H361DKiYnnn",
+                                        "uri": "spotify:album:5SwNGsGw1I8H361DKiYnnn",
+                                        "name": "Mariah Carey",
+                                        "type": "ALBUM",
+                                        "date": {
+                                            "year": 1990,
+                                            "isoString": "1990-06-12T00:00:00Z"
+                                        },
+                                        "coverArt": {
+                                            "sources": [
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d00001e025084c69ed3f70e8fb139e1ea",
+                                                    "width": 300,
+                                                    "height": 300
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d000048515084c69ed3f70e8fb139e1ea",
+                                                    "width": 64,
+                                                    "height": 64
+                                                },
+                                                {
+                                                    "url": "https:\/\/i.scdn.co\/image\/ab67616d0000b2735084c69ed3f70e8fb139e1ea",
+                                                    "width": 640,
+                                                    "height": 640
+                                                }
+                                            ]
+                                        },
+                                        "playability": {
+                                            "playable": true,
+                                            "reason": "PLAYABLE"
+                                        },
+                                        "sharingInfo": {
+                                            "shareId": "m0ytfPzNSPmHqrUiq_wu1A",
+                                            "shareUrl": "https:\/\/open.spotify.com\/album\/5SwNGsGw1I8H361DKiYnnn?si=m0ytfPzNSPmHqrUiq_wu1A"
+                                        },
+                                        "tracks": {
+                                            "totalCount": 11
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "extensions": []
+}

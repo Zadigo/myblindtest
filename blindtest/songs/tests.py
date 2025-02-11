@@ -7,8 +7,10 @@ from django.core.cache import cache
 from django.test import TestCase, TransactionTestCase
 from django.urls import re_path, reverse
 from rest_framework.test import APITransactionTestCase
-from songs import consumers
+from songs import consumers, tasks
+from unittest.mock import patch
 from songs.utils import OTPCode
+from django.test import override_settings
 
 
 class TestOTPCreation(TestCase):
@@ -422,3 +424,21 @@ class TestScreenInterfaceConsumer(TransactionTestCase):
         # self.assertIn('device_disconnected', response)
 
         await conn1.disconnect()
+
+
+@override_settings(CELERY_TASK_ALWAYS_EAGER=True, CELERY_TASK_EAGER_PROPAGATES=True)
+class TestCeleryTasks(TestCase):
+    fixtures = ['songs']
+
+    def test_artist_spotify_information(self):
+        t1 = tasks.artist_spotify_information.apply(args=['Mariah Carey'])
+        result = t1.get()
+        self.assertIsNotNone(result)
+        self.assertIsNotNone(result, str)
+
+    def test_wikipedia_information(self):
+        t1 = tasks.wikipedia_information.apply(args=['Mariah Carey'])
+        result = t1.get()
+        print(result)
+        self.assertIsNotNone(result)
+        self.assertIsNotNone(result, str)
