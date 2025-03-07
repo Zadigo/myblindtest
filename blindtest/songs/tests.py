@@ -300,6 +300,22 @@ class TestRestApiView(APITransactionTestCase):
         data = response.json()
         self.assertIn('Zouk', data)
 
+    def test_artist_automation(self):
+        path = reverse('songs_api:artist_automation')
+        response = self.client.get(path)
+        data = response.json()
+        self.assertIn('id', data[0])
+
+        response = self.client.patch(path, data={
+            'id': 1,
+            'name': 'Mariah Carey',
+            'birthname': 'Mariah K Carey',
+            'date_of_birth': '1988-1-1'
+        })
+        data = response.json()
+        self.assertIn('id', data)
+        self.assertEqual(data['birthname'], 'Mariah K Carey')
+
     def test_create_song(self):
         data = [
             {

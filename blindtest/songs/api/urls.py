@@ -10,6 +10,11 @@ urlpatterns = [
         name='test'
     ),
     re_path(
+        r'^(?P<pk>\d+)/automate$',
+        views.SongsUpdateAutomation.as_view(),
+        name='automate'
+    ),
+    re_path(
         r'^create$',
         views.CreateSongs.as_view(),
         name='create'
@@ -33,6 +38,11 @@ urlpatterns = [
         r'^settings$',
         views.GameSettings.as_view(),
         name='settings'
+    ),
+    re_path(
+        r'^artist/automation$',
+        views.ArtistAutomation.as_view(),
+        name='artist_automation'
     ),
     re_path(
         r'^$',

@@ -44,6 +44,7 @@ def wikipedia_information(artist_name):
 @celery.shared_task
 def artist_spotify_information(artist_name):
     artist = Artist.objects.get(name=artist_name)
+    print(artist_name, artist)
     songs = artist.song_set.filter(year=0).values_list('id', flat=True)
 
     instance = Spotify(artist_name)
@@ -64,10 +65,10 @@ def artist_spotify_information(artist_name):
             return {}
         artist.save()
 
-    lazy_group = celery.group([
-        wikipedia_information.s(artist.name),
-        song_information.s(list(songs))
-    ])
+    # lazy_group = celery.group([
+    #     wikipedia_information.s(artist.name),
+    #     song_information.s(list(songs))
+    # ])
 
-    songs = lazy_group().get()
+    # songs = lazy_group().get()
     return artist.spotify_id

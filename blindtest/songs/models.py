@@ -13,6 +13,16 @@ class Artist(models.Model):
     name = models.CharField(
         max_length=100,
         unique=True,
+        help_text=_("The artist's stage name"),
+        blank=True,
+        null=True
+    )
+    birthname = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True
+    )
+    date_of_birth = models.DateField(
         blank=True,
         null=True
     )
@@ -48,6 +58,12 @@ class Artist(models.Model):
     def __str__(self):
         return f'{self.name}'
 
+    @property
+    def age(self):
+        if self.date_of_birth:
+            current_date = timezone.now()
+            return (current_date.year - self.date_of_birth.year)
+        return None
 
 class Song(models.Model):
     artist = models.ForeignKey(
@@ -65,11 +81,6 @@ class Song(models.Model):
         max_length=100,
         choices=MusicGenre.choices(),
         default=MusicGenre.default('Afrobeat')
-    )
-    artist_name = models.CharField(
-        max_length=100,
-        blank=True,
-        null=True
     )
     featured_artists = models.CharField(
         max_length=100,
@@ -93,6 +104,8 @@ class Song(models.Model):
         auto_now=True
     )
 
+    objects = managers.SongManager()
+
     class Meta:
         ordering = ['artist']
         constraints = [
@@ -111,8 +124,6 @@ class Song(models.Model):
                 name='diffulty_hard'
             )
         ]
-
-    objects = managers.SongManager()
 
     def __str__(self):
         return f'{self.name}'

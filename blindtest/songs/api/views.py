@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
@@ -9,6 +10,7 @@ from rest_framework.decorators import api_view
 from rest_framework.mixins import Response
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import AllowAny
+from songs import tasks
 from songs.api import serializers
 from songs.choices import MusicGenre
 from songs.models import Artist, Song
@@ -77,6 +79,9 @@ class SearchSongsAndArtists(generics.ListAPIView):
 
 
 class CreateSongs(generics.GenericAPIView):
+    """Endpoint used to created new songs
+    in the database"""
+
     permission_classes = [AllowAny]
 
     def post(self, request):
@@ -85,23 +90,33 @@ class CreateSongs(generics.GenericAPIView):
         if not isinstance(data, list):
             data = [data]
 
-        serializers_list = []
+        serializers_list: list[serializers.SongSerializer] = []
         for song_data in data:
             serializer = serializers.SongSerializer(data=song_data)
             if serializer.is_valid():
                 serializers_list.append(serializer)
-            else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                continue
 
         errors = []
-        created_songs = []
+        created_songs: list[Song] = []
         for serializer in serializers_list:
             try:
-                created_songs.append(serializer.save())
+                instance: Song = serializer.save()
+                created_songs.append(instance)
             except IntegrityError as e:
                 errors.append(e)
             except ValidationError as e:
                 errors.append('Multiple artists returned')
+            else:
+                if instance.artist.spotify_id:
+                    continue
+
+                tasks.artist_spotify_information.apply_async(
+                    (
+                        instance.artist.name,
+                    ),
+                    countdown=15
+                )
 
         response_serializer = serializers.SongSerializer(
             instance=created_songs,
@@ -170,3 +185,37 @@ def test(request):
     from songs import tasks
     tasks.song_information_completion.s()
     return Response({'status': 'ok'})
+
+
+class SongsUpdateAutomation(generics.UpdateAPIView):
+    """Endpoint that can be used by webscrapper in order
+    to automate the updates of the pieces of information
+    of the songs in the database"""
+
+    queryset = Song.objects.filter(year=0)
+    serializer_class = serializers.SongAutomationSerializer
+    permission_classes = []
+
+
+class ArtistAutomation(generics.GenericAPIView):
+    queryset = Artist.objects.filter(
+        Q(birthname__isnull=True) |
+        Q(date_of_birth__isnull=True)
+    )
+    serializer_class = serializers.ArtistAutomationSerializer
+    permission_classes = []
+
+    def get(self, request, *args, **kwargs):
+        queryset = super().get_queryset()
+        values = queryset.values('id', 'name', 'birthname', 'date_of_birth')
+        return Response(values, status=status.HTTP_200_OK)
+
+    def patch(self, request, **kwargs):
+        artist_id = request.data.get('id')
+        artist = get_object_or_404(Artist, id=artist_id)
+
+        serializer = self.get_serializer(instance=artist, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)

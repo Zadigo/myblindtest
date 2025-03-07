@@ -3,6 +3,7 @@ import time
 from django.contrib import admin, messages
 from import_export.admin import ImportExportModelAdmin
 from import_export.resources import ModelResource
+from songs import tasks
 from songs.models import Artist, PopSong, RapSong, RnBSong, Song
 
 from blindtest.rapidapi.client import Spotify
@@ -21,6 +22,20 @@ class ArtistResource(ModelResource):
 @admin.register(Artist)
 class ArtistAdmin(ImportExportModelAdmin):
     list_display = ['name', 'genre', 'spotify_id']
+    fieldsets = [
+        [
+            'General',
+            {
+                'fields': ['name', 'birthname', 'date_of_birth']
+            }
+        ],
+        [
+            'Spotify',
+            {
+                'fields': ['spotify_id', 'spotify_avatar', 'genre']
+            }
+        ]
+    ]
     search_fields = ['name', 'genre']
     resource_class = ArtistResource
     actions = ['update_metadata']

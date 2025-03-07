@@ -90,3 +90,33 @@ class ArtistSongSerializer(serializers.Serializer):
     name = fields.CharField()
     spotify_avatar = fields.URLField()
     song_set = SongSerializer(many=True)
+
+
+class SongAutomationSerializer(serializers.Serializer):
+    year = fields.IntegerField()
+
+    def update(self, instance, validated_data):
+        for key, value in validated_data:
+            setattr(instance, key, value)
+        instance.save()
+        return instance
+
+
+class ArtistAutomationSerializer(serializers.Serializer):
+    id = fields.IntegerField(read_only=True)
+    name = fields.CharField()
+    birthname = fields.CharField(allow_null=True)
+    date_of_birth = fields.CharField(allow_null=True)
+
+    def validate(self, attrs):
+        birthname = attrs['birthname']
+        return attrs
+
+    def update(self, instance, validated_data):
+        skip_keys = ['name']
+        for key, value in validated_data.items():
+            if key in skip_keys:
+                continue
+            setattr(instance, key, value)
+        instance.save()
+        return instance
