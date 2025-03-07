@@ -182,29 +182,22 @@ REDIS_HOST = os.getenv('REDIS_HOST')
 
 REDIS_PASSWORD = os.getenv('REDIS_PASSWORD')
 
-REDIS_URL = f'redis://:{REDIS_PASSWORD}@127.0.0.1:6379'
+REDIS_URL = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:6379'
 
+# Use Redis as backend for caching instead of
+# the file system caching that we use for debugging
 
-if not DEBUG:
-    # Use Redis as backend for caching instead of
-    # the file system caching that we use for debugging
+# REDIS_URL = f'redis://:{REDIS_PASSWORD}@redis:6379'
 
-    REDIS_URL = f'redis://:{REDIS_PASSWORD}@redis:6379'
+RABBITMQ_HOST = os.getenv('RABBITMQ_HOST')
 
-    RABBITMQ_HOST = os.getenv('RABBITMQ_HOST')
+RABBITMQ_USER = os.getenv('RABBITMQ_DEFAULT_USER')
 
-    RABBITMQ_USER = os.getenv('RABBITMQ_DEFAULT_USER')
+RABBITMQ_PASSWORD = os.getenv('RABBITMQ_DEFAULT_PASS')
 
-    RABBITMQ_PASSWORD = os.getenv('RABBITMQ_DEFAULT_PASS')
+# CELERY_BROKER_URL = f'amqp://{RABBITMQ_USER}:{RABBITMQ_PASSWORD}@rabbitmq:5672'
 
-    CELERY_BROKER_URL = 'amqp://{user}:{password}@rabbitmq:5672'.format(
-        user=RABBITMQ_USER,
-        password=RABBITMQ_PASSWORD
-    )
-else:
-    CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672'
-
-    # CELERY_RESULT_BACKEND = 'rpc://'
+CELERY_BROKER_URL = f'amqp://{RABBITMQ_USER}:{RABBITMQ_PASSWORD}@localhost:5672'
 
 CELERY_RESULT_BACKEND = REDIS_URL
 
