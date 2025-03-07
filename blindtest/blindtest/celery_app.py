@@ -5,6 +5,7 @@ from django.conf import settings
 from celery.schedules import crontab
 
 # celery -A blindtest.celery_app worker -E
+# Windows: celery -A blindtest.celery_app worker -E --pool=solo
 # celery -A blindtest.celery_app beat -l INFO
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'blindtest.settings')
