@@ -46,11 +46,11 @@
 
             <v-range-slider v-model="songStore.cache.settings.timeRange" :min="minimumPeriod" :max="maximumPeriod" :step="1" class="align-center" hide-details>
               <template #prepend>
-                <v-text-field v-model="songStore.cache.settings.timeRange[0]" density="compact" style="width: 70px" type="number" variant="outlined" hide-details single-line />
+                <v-text-field v-model="songStore.cache.settings.timeRange[0]" :min="0" density="compact" style="width: 70px" type="number" variant="outlined" hide-details single-line />
               </template>
 
               <template #append>
-                <v-text-field v-model="songStore.cache.settings.timeRange[1]" density="compact" style="width: 70px" type="number" variant="outlined" hide-details single-line />
+                <v-text-field v-model="songStore.cache.settings.timeRange[1]" :min="0" density="compact" style="width: 70px" type="number" variant="outlined" hide-details single-line />
               </template>
             </v-range-slider>
           </v-card-text>
@@ -112,8 +112,8 @@
           </v-card-text>
 
           <v-card-actions>
-            <v-btn to="/blind-test" color="primary" variant="tonal" rounded>
-              Create blindtest
+            <v-btn to="/teams" color="primary" variant="tonal" rounded>
+              Manage teams
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -127,8 +127,13 @@ import { songTypes, difficultyLevels } from '@/data/defaults'
 import { useAxiosClient } from '@/plugins/client';
 import { useSongs } from '@/stores/songs';
 import { GenreDistribution, SettingsDataApiResponse } from '@/types';
+import { useHead } from 'unhead';
 import { computed, onBeforeMount, ref } from 'vue';
 import { toast } from 'vue-sonner';
+
+useHead({
+  title: 'Réglages'
+})
 
 const { client } = useAxiosClient()
 const songStore = useSongs()
@@ -159,10 +164,13 @@ const useNumberOfRounds = computed(() => {
 async function requestSettingsData() {
   try {
     const response = await client.get<SettingsDataApiResponse>('/songs/settings')
+
     songStore.cache.settings.timeRange[0] = response.data.period.minimum
     songStore.cache.settings.timeRange[1] = response.data.period.maximum
+    
     minimumPeriod.value = response.data.period.minimum
     maximumPeriod.value = response.data.period.maximum
+    
     genreDistribution.value = response.data.count_by_genre
   } catch (e) {
     toast.error('Could not get settings')

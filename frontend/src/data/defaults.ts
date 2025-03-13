@@ -35,14 +35,14 @@ export const defaults: { cache: CacheSession } = {
         currentStep: 0,
         teams: [
             {
-                id: '',
+                id: 1,
                 name: '',
                 score: 0,
                 players: [],
                 color: null
             },
             {
-                id: '',
+                id: 2,
                 name: '',
                 score: 0,
                 players: [],

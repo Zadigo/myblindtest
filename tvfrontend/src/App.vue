@@ -4,7 +4,7 @@
       Show answer
     </button>
     <div class="px-5 my-10">
-      <div v-if="ws.status.value==='CLOSED'" class="grid grid-cols-5 grid-rows- gap-5 text-center">
+      <div v-if="ws.status.value==='OPEN'" class="grid grid-cols-5 grid-rows- gap-5 text-center">
         <!-- Team 1 -->
         <TeamBlock ref="teamOneEl" :team-id="1" :correct-answer="correctAnswer" class="col-span-2" />
 
@@ -21,8 +21,15 @@
         <TeamBlock :team-id="2" :correct-answer="correctAnswer" class="col-span-2" />
       </div>
 
-      <div v-else>
-        Somthing
+      <div v-else class="w-full flex justify-center">
+        <div class="bg-white shadow-md rounded-md p-10 w-2/5">
+          <form class="flex flex-col" @submit.prevent>
+            <input type="text" class="bg-slate-100 rounded-sm w-full p-6 mb-4" placeholder="Code de connection">
+            <button type="button" class="p-4 shadow-sm bg-blue-400 rounded-md place-self-end text-white uppercase font-semibold cursor-pointer transition-all hover:bg-blue-500">
+              Se connecter
+            </button>
+          </form>
+        </div>
       </div>
     </div>
 

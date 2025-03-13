@@ -38,10 +38,6 @@
       <v-btn :disabled="!songsStore.gameStarted" size="x-large" rounded @click="handleCorrectAnswer">
         <FontAwesomeIcon icon="check" class="me-2" /> Validate
       </v-btn>
-
-      <v-btn variant="tonal" color="dark" rounded @click="emit('team:settings', team.id)">
-        <FontAwesomeIcon icon="cog" />
-      </v-btn>
     </div>
 
     <!-- Consecutive Answers -->
@@ -66,10 +62,7 @@ import type { MatchedElement } from '@/types';
 import BaseFireworks from '../BaseFireworks.vue';
 
 const emit = defineEmits({
-  'next-song' (_data: (string | MatchedElement)[]) {
-    return true
-  },
-  'team:settings' (_teamId: string) {
+  'next-song' (_data: (number | MatchedElement)[]) {
     return true
   }
 })

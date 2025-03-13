@@ -8,7 +8,7 @@
   </v-app>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { defaults, difficultyLevels, songTypes } from '@/data/defaults';
 import { useSongs } from '@/stores/songs';
 import type { CacheSession } from '@/types';
@@ -45,8 +45,6 @@ songsStore.$subscribe((_, state) => {
 })
 
 onBeforeMount(() => {
-  if (!songsStore.cache) {
-    songsStore.cache = sessionCache.value
-  }
+  songsStore.cache = sessionCache.value
 })
 </script>

@@ -37,8 +37,8 @@ const props = defineProps({
     default: false
   },
   teamId: {
-    type: String,
-    default: ''
+    type: Number,
+    required: true
   }
 })
 
@@ -59,16 +59,16 @@ watch(wheelColor, (newValue) => {
   songsStore.cache.teams[teamIndex.value].color = newValue
 })
 
+const team = computed(() => {
+  return songsStore.cache.teams.find(x => x.id === props.teamId)
+})
+
 const teamName = computed({
-  get: () => {
-    if (songsStore.cache) {
-      return songsStore.cache.teams[teamIndex.value].name
-    } else {
-      return `Team n° ${props.teamId}`
-    }
-  },
+  get: () => team.value?.name || 'Team',
   set: (value) => {
-    songsStore.cache.teams[teamIndex.value].name = value
+    if (team.value) {
+      team.value.name = value
+    }
   }
 })
 

@@ -46,7 +46,7 @@ const teamStyles = computed(() => {
       return formatStyle(songsStore.cache.teams[1].color)
     }
   }
-  return formatStyle('#48a9a6')
+  return formatStyle('#e74c3c')
 })
 </script>
 

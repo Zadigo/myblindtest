@@ -13,6 +13,11 @@ const router = createRouter({
                     name: 'home'
                 },
                 {
+                    path: 'teams',
+                    component: async () => import('../pages/TeamsPage.vue'),
+                    name: 'teams'
+                },
+                {
                     path: 'blind-test',
                     component: async () => import('../pages/BlindTestPage.vue'),
                     name: 'blind_test'

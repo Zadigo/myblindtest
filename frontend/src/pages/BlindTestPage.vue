@@ -1,20 +1,15 @@
 <template>
   <BlindTestLayout>
     <template #teamOne>
-      <TeamBlock :team-index="0" :margin-right="10" @next-song="handleCorrectAnswer" @team:settings="handleTeamSelection" />
+      <TeamBlock :team-index="0" :margin-right="10" @next-song="handleCorrectAnswer" @team-settings="handleTeamSelection" />
     </template>
     
     <template #teamTwo>
-      <TeamBlock :team-index="1" :margin-left="10" @next-song="handleCorrectAnswer" @team:settings="handleTeamSelection" />
+      <TeamBlock :team-index="1" :margin-left="10" @next-song="handleCorrectAnswer" @team-settings="handleTeamSelection" />
     </template>
 
     <template #video>
-      <VideoBlock ref="videoEl" @game:settings="showGameSettings=true" />
-    </template>
-
-    <template #default>
-      <!-- <GameSettings v-model="showGameSettings" /> -->
-      <TeamSettings v-model="showTeamSettings" :team-id="selectedTeamId" :update:team="handleUpdateTeam" />
+      <VideoBlock ref="videoEl" />
     </template>
   </BlindTestLayout>
 </template>
@@ -28,7 +23,6 @@ import { ref } from 'vue';
 
 import TeamBlock from '@/components/blindtest/TeamBlock.vue';
 import VideoBlock from '@/components/blindtest/VideoBlock.vue';
-import TeamSettings from '@/components/modals/TeamSettings.vue';
 import BlindTestLayout from '@/layouts/BlindTestLayout.vue';
 
 useHead({
@@ -38,14 +32,13 @@ useHead({
 const songsStore = useSongs()
 const { currentSong, correctAnswers } = storeToRefs(songsStore)
 
-const showGameSettings = ref(false)
 const showTeamSettings = ref(false)
-const selectedTeamId = ref<string>('')
+const selectedTeamId = ref<number>()
 const videoEl = ref<HTMLElement>()
 
 // Callback function that handles the correct
 // answser from a given team
-function handleCorrectAnswer (data: (string | MatchedElement)[]) {
+function handleCorrectAnswer (data: (number | MatchedElement)[]) {
   if (songsStore.cache) {
     if (currentSong.value && data) {
       correctAnswers.value.push({
@@ -64,19 +57,19 @@ function handleCorrectAnswer (data: (string | MatchedElement)[]) {
 }
 
 // Function that sets the team to edit
-function handleTeamSelection (teamId: string) {
+function handleTeamSelection (teamId: number) {
   selectedTeamId.value = teamId
   showTeamSettings.value = true
 }
 
 // Handles updating the details for a
 // given team
-function handleUpdateTeam (value: string) {
-  if (songsStore.cache) {
-    const team = songsStore.cache.teams.find(x => x.id === value)
-    if (team) {
-      team.name = value
-    }
-  }
-}
+// function handleUpdateTeam (value: string) {
+//   if (songsStore.cache) {
+//     const team = songsStore.cache.teams.find(x => x.id === value)
+//     if (team) {
+//       team.name = value
+//     }
+//   }
+// }
 </script>

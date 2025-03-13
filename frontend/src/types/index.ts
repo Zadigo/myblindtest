@@ -36,7 +36,7 @@ interface Player {
 }
 
 export interface Team {
-    id: string
+    id: number
     name: string
     players: Player[]
     score: number
@@ -76,7 +76,7 @@ export interface CopiedCreateData extends Omit<CreateData, 'featured_artists'>{
 }
 
 export interface Answer {
-    teamId: string
+    teamId: number
     song: Song
 }
 
