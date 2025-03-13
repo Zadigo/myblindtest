@@ -3,20 +3,49 @@ import time
 from django.contrib import admin, messages
 from import_export.admin import ImportExportModelAdmin
 from import_export.resources import ModelResource
+from import_export.widgets import ForeignKeyWidget
 from songs import tasks
+from import_export import fields
 from songs.models import Artist, PopSong, RapSong, RnBSong, Song
 
 from blindtest.rapidapi.client import Spotify
 
 
+class ArtistForeignKeyWidget(ForeignKeyWidget):
+    """Widget that handles the creation of the artist
+    in the Artist model when importing songs"""
+
+    def clean(self, value, row=None, **kwargs):
+        try:
+            artist = super().clean(value, row, **kwargs)
+        except:
+            artist = Artist.objects.create(name=row['name'])
+        return artist
+
+
 class SongResource(ModelResource):
+    artist_name = fields.Field(
+        attribute='artist',
+        column_name='artist',
+        widget=ArtistForeignKeyWidget(Artist, field='name')
+    )
+
     class Meta:
         model = Song
+        fields = [
+            'artist_name', 'name', 'genre',
+            'featured_artists', 'youtube_id',
+            'year', 'difficulty'
+        ]
 
 
 class ArtistResource(ModelResource):
     class Meta:
         model = Artist
+        fields = [
+            'name', 'birth_name', 'date_of_birth',
+            'spotify_id', 'genre', 'spotify_avatar'
+        ]
 
 
 @admin.register(Artist)
