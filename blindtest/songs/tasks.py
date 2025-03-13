@@ -1,9 +1,9 @@
 import celery
 from celery.utils.log import get_task_logger
+from googlesearch import search
 from songs.models import Artist, Song
 
 from blindtest.rapidapi.client import Spotify
-from googlesearch import search
 
 logger = get_task_logger(__name__)
 
@@ -18,27 +18,26 @@ def song_information(songs):
 
 
 @celery.shared_task
-def wikipedia_information(artist_name):
+def wikipedia_information(artist_id: int):
     """This task searches for the Wikipedia pages for the
     given artist on Google. Both the french and english
     pages are used if provided"""
     try:
-        artist = Artist.objects.get(name=artist_name)
+        artist = Artist.objects.get(id=artist_id)
     except:
-        logger.error(f'Could not get Wikipedia page for: {artist_name}')
-        return False
+        logger.error('Artist does not exists')
     else:
         base_domain = 'wikipedia.org/wiki/'
-        results = list(search(f'{artist_name} Wikipedia', num_results=2))
+        results = list(search(f'{artist.name} Wikipedia', num_results=2))
 
         candidates = list(filter(lambda x: base_domain in x, results))
 
-        if len(candidates) > 0:
-            wikipedia_page = candidates[0]
-            return wikipedia_page
-
-        logger.error(f'No Wikipedia url candidates for: {artist_name}')
-        return False
+        if not candidates:
+            logger.error(f'No Wikipedia url candidates for: {artist.name}')
+            return False
+        
+        french_wikipedia = list(filter(lambda x: 'fr.wikipedia' in x, candidates))[-1]
+        english_wikipedia = list(filter(lambda x: 'en.wikipedia' in x, candidates))[-1]
 
 
 @celery.shared_task

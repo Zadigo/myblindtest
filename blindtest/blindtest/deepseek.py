@@ -47,14 +47,16 @@
 # )
 # print(list(value))
 
+import re
 import dataclasses
 import unicodedata
 from urllib.parse import unquote, urlencode, urljoin
-
+import locale
 import requests
 from bs4 import BeautifulSoup
 from bs4._typing import _QueryResults
 from googlesearch import search
+import datetime
 
 
 class DataclassMixin:
@@ -139,11 +141,14 @@ class Wikipedia:
         for item in items:
             print(item.text)
 
-    def parse_artist_page(self):
+    def request_page(self):
+        """Searches for Wikipedia page on Google and
+        then returns the correspoding HTML content of
+        the page"""
         try:
             results = search(f'{self.artist_name} Wikipedia', num_results=2)
         except:
-            pass
+            return False
         else:
             if not results:
                 return False
@@ -159,42 +164,66 @@ class Wikipedia:
         try:
             response = requests.get(url, headers={'user-agent': 'Google'})
         except:
-            pass
+            return False
         else:
-            if response.status_code == 200:
-                # with open('D:/mywebsites/myblindtest/test.html', mode='r', encoding='utf-8') as f:
-                # s = BeautifulSoup(f.read(), 'html.parser')
+            return response
 
-                s = BeautifulSoup(response.content, 'html.parser')
-                title = s.find('h3', attrs={'id': 'Albums_studio'})
-                album_list = title.parent.find_next('ul')
-                album_items = album_list.find_all('li')
-                albums = list(
+    def parse_artist_page(self):
+        response = self.request_page()
+        if response and response.status_code == 200:
+            # with open('D:/mywebsites/myblindtest/test.html', mode='r', encoding='utf-8') as f:
+            # s = BeautifulSoup(f.read(), 'html.parser')
+
+            s = BeautifulSoup(response.content, 'html.parser')
+            title = s.find('h3', attrs={'id': 'Albums_studio'})
+            album_list = title.parent.find_next('ul')
+            album_items = album_list.find_all('li')
+            albums = list(
+                self.release_iterator(
+                    self.base_domain,
+                    album_items
+                )
+            )
+
+            template = {
+                'albums': [item.as_dict() for item in albums],
+                'singles': []
+            }
+
+            title = s.find('h3', attrs={'id': 'Singles'})
+            if title is not None:
+                singles_list = title.parent.find_next('ul')
+                singles_items = singles_list.find_all('li')
+                singles = list(
                     self.release_iterator(
                         self.base_domain,
-                        album_items
+                        singles_items
                     )
                 )
+                template['singles'] = [item.as_dict() for item in singles]
 
-                template = {
-                    'albums': [item.as_dict() for item in albums],
-                    'singles': []
-                }
+            raw_text = s.find('body').get_text()
+            text = ' '.join(filter(lambda x: x != '', raw_text.split('\n')))
 
-                title = s.find('h3', attrs={'id': 'Singles'})
-                if title is not None:
-                    singles_list = title.parent.find_next('ul')
-                    singles_items = singles_list.find_all('li')
-                    singles = list(
-                        self.release_iterator(
-                            self.base_domain,
-                            singles_items
-                        )
-                    )
-                    template['singles'] = [item.as_dict() for item in singles]
+            result = re.search(
+                r'née? le (?P<birth>\d+ \w+ \d{4})\[?\d?\]?',
+                text
+            )
 
-                return template
+            if result:
+                locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
+                date_of_birth = result.groupdict()['birth']
+                d = datetime.datetime.strptime(date_of_birth, '%d %B %Y')
+                # city = result.groupdict()['city']
+                # country = result.groupdict()['country']
+
+                template['date_of_birth'] = d
+                # template['city'] = city
+                # template['country'] = country
+
+            return template
 
 
 w = Wikipedia('Mariah Carey')
 print(w.parse_artist_page())
+# print(w.parse_artist_page())

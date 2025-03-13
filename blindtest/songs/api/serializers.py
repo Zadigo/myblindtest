@@ -105,11 +105,10 @@ class SongAutomationSerializer(serializers.Serializer):
 class ArtistAutomationSerializer(serializers.Serializer):
     id = fields.IntegerField(read_only=True)
     name = fields.CharField()
-    birthname = fields.CharField(allow_null=True)
-    date_of_birth = fields.CharField(allow_null=True)
+    birthname = fields.CharField(required=True, allow_null=True)
+    date_of_birth = fields.CharField(required=True, allow_null=True)
 
     def validate(self, attrs):
-        birthname = attrs['birthname']
         return attrs
 
     def update(self, instance, validated_data):
