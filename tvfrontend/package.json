@@ -1,0 +1,41 @@
+{
+  "name": "tvfrontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:tsc": "vue-tsc -b && vite build",
+    "test": "vitest",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.0.14",
+    "@vueuse/core": "^10.9.0",
+    "@vueuse/integrations": "^10.9.0",
+    "@unhead/addons": "^1.9.7",
+    "@unhead/schema-org": "^1.9.5",
+    "eslint-plugin-vue": "^9.22.0",
+    "animate.css": "^4.1.1",
+    "dayjs": "^1.11.10",
+    "axios": "^1.6.8",
+    "pinia": "^3.0.1",
+    "tailwindcss": "^4.0.14",
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/tsconfig": "^0.7.0",
+    "@types/node": "^22.5.2",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "eslint": "^8.57.0",
+    "typescript": "~5.7.2",
+    "sass": "^1.79.3",
+    "vitest": "^1.5.0",
+    "vite-plugin-eslint": "^1.8.1",
+    "vite": "^6.2.0",
+    "vue-tsc": "^2.2.4"
+  }
+}
