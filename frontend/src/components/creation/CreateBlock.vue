@@ -32,7 +32,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { useDayJs } from '@/plugins';
 import { useAxiosClient } from '@/plugins/client';
 import type { Artist, CreateData, Song } from '@/types';

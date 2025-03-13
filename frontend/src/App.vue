@@ -15,7 +15,7 @@ import type { CacheSession } from '@/types';
 import { useSessionStorage } from '@vueuse/core';
 import { onBeforeMount } from 'vue';
 
-const sessionCache = useSessionStorage<CacheSession>('cache', null, {
+const sessionCache = useSessionStorage<CacheSession>('cache', defaults.cache, {
   serializer: {
     read (raw) {
       const data = JSON.parse(raw) as CacheSession
@@ -40,16 +40,12 @@ const sessionCache = useSessionStorage<CacheSession>('cache', null, {
 
 const songsStore = useSongs()
 
-songsStore.$subscribe(({ storeId }) => {
-  if (storeId === 'songs') {
-    sessionCache.value = songsStore.cache
-  }
+songsStore.$subscribe((_, state) => {
+  state.cache = sessionCache.value
 })
 
 onBeforeMount(() => {
-  if (!sessionCache.value) {
-    sessionCache.value = defaults.cache
-  } else {
+  if (!songsStore.cache) {
     songsStore.cache = sessionCache.value
   }
 })

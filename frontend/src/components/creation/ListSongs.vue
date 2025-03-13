@@ -3,17 +3,19 @@
     <div class="col-sm-12 col-md-6 offset-md-3">
       <v-card class="mb-2">
         <v-card-text>
-          <v-btn variant="tonal" @click="emit('back')">
-            <FontAwesomeIcon icon="arrow-left" /> Back
-          </v-btn>
-          
-          <v-btn variant="tonal" @click="getPrevious">
-            Previous
-          </v-btn>
+          <div class="d-flex gap-2 mb-3">
+            <v-btn variant="tonal" @click="emit('back')">
+              <FontAwesomeIcon icon="arrow-left" /> Back
+            </v-btn>
+            
+            <v-btn variant="tonal" @click="getPrevious">
+              Previous
+            </v-btn>
 
-          <v-btn variant="tonal" @click="getNextPage">
-            Next
-          </v-btn>        
+            <v-btn variant="tonal" @click="getNextPage">
+              Next
+            </v-btn>        
+          </div>
 
           <v-text-field v-model="search" variant="solo-filled" type="search" placeholder="Search" flat @input="debouncedGetSongs" />
         </v-card-text>
