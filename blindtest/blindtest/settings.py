@@ -178,26 +178,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REDIS_USER = os.getenv('REDIS_USER')
 
-REDIS_HOST = os.getenv('REDIS_HOST')
+REDIS_HOST = os.getenv('REDIS_HOST', '127.0.0.1')
 
 REDIS_PASSWORD = os.getenv('REDIS_PASSWORD')
 
 REDIS_URL = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:6379'
 
-# Use Redis as backend for caching instead of
-# the file system caching that we use for debugging
-
-# REDIS_URL = f'redis://:{REDIS_PASSWORD}@redis:6379'
-
-RABBITMQ_HOST = os.getenv('RABBITMQ_HOST')
+RABBITMQ_HOST = os.getenv('RABBITMQ_HOST', 'localhost')
 
 RABBITMQ_USER = os.getenv('RABBITMQ_DEFAULT_USER')
 
 RABBITMQ_PASSWORD = os.getenv('RABBITMQ_DEFAULT_PASS')
 
-# CELERY_BROKER_URL = f'amqp://{RABBITMQ_USER}:{RABBITMQ_PASSWORD}@rabbitmq:5672'
-
-CELERY_BROKER_URL = f'amqp://{RABBITMQ_USER}:{RABBITMQ_PASSWORD}@localhost:5672'
+CELERY_BROKER_URL = f'amqp://{RABBITMQ_USER}:{RABBITMQ_PASSWORD}@{RABBITMQ_HOST}:5672'
 
 CELERY_RESULT_BACKEND = REDIS_URL
 
