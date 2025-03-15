@@ -1,6 +1,7 @@
 import datetime
 import pathlib
 import re
+import locale
 import unicodedata
 
 import kagglehub
@@ -12,20 +13,21 @@ from googlesearch import search
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from songs.models import Artist
+from bs4.element import PageElement, Tag
 
 HEADERS = {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36'
 }
 
+# nltk.download('punkt')
+# nltk.download('stopwords')
+# nltk.download('wordnet')
+# nltk.download('punkt_tab')
+# nltk.download('omw-1.4')
+
 
 class Wikipedia:
     def __init__(self):
-        nltk.download('punkt')
-        nltk.download('stopwords')
-        nltk.download('wordnet')
-        nltk.download('punkt_tab')
-        nltk.download('omw-1.4')
-
         en_contractions_path = pathlib.Path(
             kagglehub.dataset_download(
                 'ishivinal/contractions'
@@ -42,9 +44,53 @@ class Wikipedia:
             'abreviations.csv'
         )
 
+        # Extra meta data that can be extracted from the page
+        self.metadata = {
+            'birthname': None,
+            'genres': None,
+            'date_of_birth': None
+        }
         self.errors = []
 
+    def get_general_information(self, soup: Tag):
+        locale.setlocale(locale.LC_ALL, 'fr_FR')
+
+        infobox = soup.find('div', attrs={'class': 'infobox_v3'})
+        infos = infobox.find_all('tr')
+
+        values: list[str] = [
+            item.text.replace('\n', ' ').strip()
+            for item in infos
+        ]
+
+        for value in values:
+            if value.startswith('Nom de naissance'):
+                content = value.replace('Nom de naissance', '')
+                self.metadata['birthname'] = content.strip()
+
+            if value.startswith('Genre musical'):
+                content = value.replace('Genre musical', '')
+                self.metadata['genres'] = content.split(',')
+
+            if value.startswith('Naissance'):
+                content = value.replace('Naissance', '')
+                text = content.strip()
+                result = re.match(r'^(\d+(?:er)?\s?\w+\s?\d{4})', text)
+                if result:
+                    string_date = result.group(1).replace('1er', '1')
+                    self.metadata['date_of_birth'] = datetime.datetime.strptime(
+                        string_date,
+                        '%d %B %Y'
+                    )
+
+        # Reset the locale to the user
+        # preferred one
+        locale.setlocale(locale.LC_ALL, '')
+        return values
+
     def get_date_or_birth(self, text: str | None):
+        """Tries to return the date of birth from
+        within the text"""
         if text is not None:
             result = re.search(r'naissance\s(\d+\s\w+\s\d+)', text)
 
@@ -81,7 +127,7 @@ class Wikipedia:
 
             if not candidates:
                 return None
-            
+
             try:
                 french_wikipedia = list(
                     filter(
@@ -109,6 +155,8 @@ class Wikipedia:
         else:
             if response.ok:
                 soup = BeautifulSoup(response.content, 'html.parser')
+                self.get_general_information(soup)
+
                 body = soup.find('main', attrs={'id': 'content'})
                 body_content = body.find('div', attrs={'id': 'bodyContent'})
 

@@ -35,7 +35,11 @@ def wikipedia_information(artist_id: int):
         text = instance.extract_text_from_page(artist)
         date_of_birth = instance.get_date_or_birth(text)
 
-        artist.date_of_birth = date_of_birth
+        logger.warning(f'Found data for: {artist.name}: {instance.metadata}')
+
+        artist.birthname = instance.metadata['birthname']
+        artist.date_of_birth = date_of_birth or instance.metadata['date_of_birth']
+
         artist.save()
 
         # chain(
