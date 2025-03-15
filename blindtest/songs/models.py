@@ -48,6 +48,11 @@ class Artist(models.Model):
         blank=True,
         null=True
     )
+    wikipedia_page = models.URLField(
+        blank=True,
+        null=True,
+        validators=[validators.validate_wikipedia_page]
+    )
     created_on = models.DateField(
         auto_now=True
     )
@@ -64,6 +69,7 @@ class Artist(models.Model):
             current_date = timezone.now()
             return (current_date.year - self.date_of_birth.year)
         return None
+
 
 class Song(models.Model):
     artist = models.ForeignKey(
@@ -187,16 +193,3 @@ class RnBSong(Song):
         ordering = ['artist']
         verbose_name = 'rhythm and blues song'
         proxy = True
-
-
-# TODO: Instead of saving the whole url,
-# only save the video ID and then return
-# the constructured urls with ID
-# @receiver(post_save, sender=Song)
-# def get_youtube_id(instance, created, **kwargs):
-#     if created:
-#         if instance.youtube:
-#             instance = urlparse(instance.youtube)
-#             tokens = instance.youtube.split('/')
-#             instance.video_id = tokens[-1]
-#             instance.save()

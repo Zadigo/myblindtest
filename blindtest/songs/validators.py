@@ -26,3 +26,10 @@ def validate_difficulty(value):
             "Difficulty should be a between "
             "1 and 5"
         )
+
+
+def validate_wikipedia_page(value):
+    if not 'wikipedia.org/wiki/' in value:
+        raise ValidationError(
+            'Url is not a valid Wikipediage page'
+        )

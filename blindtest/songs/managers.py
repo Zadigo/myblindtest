@@ -4,7 +4,7 @@ from django.db import models
 class SongManager(models.Manager):
     def get_featured_artists(self, song_id):
         from songs.models import Artist
-        
+
         song = self.get(id=song_id)
         if song.featured_artists:
             tokens = song.featured_artists.split(',')

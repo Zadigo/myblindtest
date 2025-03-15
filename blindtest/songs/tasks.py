@@ -1,7 +1,9 @@
 import celery
 from celery.utils.log import get_task_logger
+from django.db import transaction
 from googlesearch import search
 from songs.models import Artist, Song
+from songs.wikipedia import Wikipedia
 
 from blindtest.rapidapi.client import Spotify
 
@@ -27,17 +29,28 @@ def wikipedia_information(artist_id: int):
     except:
         logger.error('Artist does not exists')
     else:
-        base_domain = 'wikipedia.org/wiki/'
-        results = list(search(f'{artist.name} Wikipedia', num_results=2))
-
-        candidates = list(filter(lambda x: base_domain in x, results))
-
-        if not candidates:
-            logger.error(f'No Wikipedia url candidates for: {artist.name}')
-            return False
+        instance = Wikipedia()
         
-        french_wikipedia = list(filter(lambda x: 'fr.wikipedia' in x, candidates))[-1]
-        english_wikipedia = list(filter(lambda x: 'en.wikipedia' in x, candidates))[-1]
+        text = instance.extract_text_from_page()
+        date_of_birth = instance.get_date_or_birth(text)
+
+        with transaction.atomic():
+            artist.date_of_birth = date_of_birth
+            artist.save()
+
+            s1 = transaction.savepoint()
+
+        # base_domain = 'wikipedia.org/wiki/'
+        # results = list(search(f'{artist.name} Wikipedia', num_results=2))
+
+        # candidates = list(filter(lambda x: base_domain in x, results))
+
+        # if not candidates:
+        #     logger.error(f'No Wikipedia url candidates for: {artist.name}')
+        #     return False
+        
+        # french_wikipedia = list(filter(lambda x: 'fr.wikipedia' in x, candidates))[-1]
+        # english_wikipedia = list(filter(lambda x: 'en.wikipedia' in x, candidates))[-1]
 
 
 @celery.shared_task
