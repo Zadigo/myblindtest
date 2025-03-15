@@ -1,9 +1,9 @@
-from django.shortcuts import get_object_or_404
 from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.db.models import (Count, ExpressionWrapper, F, IntegerField, Max,
                               Min, Q, Sum)
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import generics, status
 from rest_framework.decorators import api_view
@@ -118,6 +118,14 @@ class CreateSongs(generics.GenericAPIView):
                     countdown=15
                 )
 
+                if not instance.artist.wikipedia_page:
+                    tasks.wikipedia_information.apply_async(
+                        (
+                            instance.artist.id,
+                        ),
+                        countdown=20
+                    )
+
         response_serializer = serializers.SongSerializer(
             instance=created_songs,
             many=True
@@ -214,7 +222,8 @@ class ArtistAutomation(generics.GenericAPIView):
         artist_id = request.data.get('id')
         artist = get_object_or_404(Artist, id=artist_id)
 
-        serializer = self.get_serializer(instance=artist, data=request.data, partial=True)
+        serializer = self.get_serializer(
+            instance=artist, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
