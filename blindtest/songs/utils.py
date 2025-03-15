@@ -35,9 +35,11 @@ class OTPCode:
         return self.instance.verify(code)
 
 
-def astrologic_sign(date_of_birth: datetime.datetime | None, translate=False) -> str | None:
+def astrologic_sign(date_of_birth: datetime.date | None, translate=False) -> str | None:
     if date_of_birth is None:
         return None
+
+    shifts_to_next_year = ['Capricorne', 'Verseau', 'Poissons']
 
     dates = {
         'Bélier': [
@@ -90,27 +92,61 @@ def astrologic_sign(date_of_birth: datetime.datetime | None, translate=False) ->
         ]
     }
 
+    reset_year = False
     candidates = []
     for key, d in dates.items():
         start, end = d
-        if date_of_birth >= start and date_of_birth <= end:
+
+        # When trying comparisions like 2000/1/1 > 2000/12/20
+        # we get false, We have to shift the year of the
+        # right (date of birth) to the next year in order
+        # for the comparision to work effectively 2001/1/1 > 2000/12/20 -; 
+        # at the same time, we also need to replace the start year for all 
+        # signsthat are not Capricorne (which is the previous year - december) 
+        # and also the end year by moving them to the next year since the
+        # date of birth would be on the next year
+        if key in shifts_to_next_year:
+            date_of_birth = date_of_birth.replace(year=date_of_birth.year + 1)
+            if key != 'Capricorne':
+                start = start.replace(year=date_of_birth.year)
+            end = end.replace(year=date_of_birth.year)
+            reset_year = True
+
+        logic = [
+            date_of_birth >= start.date(),
+            date_of_birth <= end.date()
+        ]
+
+        if all(logic):
             candidates.append(key)
 
-    sign = candidates[-1]
-    if translate:
-        translations = {
-            'Bélier': 'Aries',
-            'Taureau': 'Taurus',
-            'Gémeaux': 'Gemini',
-            'Cancer': 'Cancer',
-            'Lion': 'Leo',
-            'Vierge': 'Virgo',
-            'Balance': 'Libra',
-            'Scorpion': 'Scorpio',
-            'Sagittaire': 'Sagittarius',
-            'Capricorne': 'Capricorn',
-            'Verseau': 'Aquarius',
-            'Poissons': 'Pisces'
-        }
-        return translations.get(sign)
-    return sign
+        if reset_year:
+            # Replace does not create a copy of the date of birth
+            # but increments the year to infinity so we need to
+            # reset it to its initial value
+            date_of_birth = date_of_birth.replace(year=date_of_birth.year - 1)
+
+    if candidates:
+        sign = candidates[-1]
+        if translate:
+            translations = {
+                'Bélier': 'Aries',
+                'Taureau': 'Taurus',
+                'Gémeaux': 'Gemini',
+                'Cancer': 'Cancer',
+                'Lion': 'Leo',
+                'Vierge': 'Virgo',
+                'Balance': 'Libra',
+                'Scorpion': 'Scorpio',
+                'Sagittaire': 'Sagittarius',
+                'Capricorne': 'Capricorn',
+                'Verseau': 'Aquarius',
+                'Poissons': 'Pisces'
+            }
+            return translations.get(sign)
+        return sign
+    return None
+
+
+# print(astrologic_sign(datetime.datetime(year=1996, month=1, day=8).date()))
+print(astrologic_sign(datetime.datetime(year=1996, month=2, day=18).date()))

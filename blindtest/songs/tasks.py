@@ -42,6 +42,8 @@ def wikipedia_information(artist_id: int):
 
         artist.save()
 
+        nrj_information.apply_async((artist_id,), countdown=5)
+
         # chain(
         #     nrj_information.s(artist_id)
         # )
