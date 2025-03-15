@@ -254,10 +254,12 @@ def nrj(artist: Artist):
                 place_of_birth: str = place_of_birth[-1].split(':')[0]
 
                 if date_of_birth:
+                    date_text = date_of_birth[-1].replace('Né(e) le :', '')
                     date_of_birth = datetime.datetime.strptime(
-                        date_of_birth, '%d/%m/%Y')
+                        date_text.strip(),
+                        '%d/%m/%Y'
+                    )
                     metadata['date_of_birth'] = date_of_birth.date()
 
                 metadata['place_of_birth'] = place_of_birth
-        print(metadata)
         return metadata
