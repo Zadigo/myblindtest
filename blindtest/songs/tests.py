@@ -1,3 +1,4 @@
+import datetime
 import json
 from unittest.mock import patch
 
@@ -8,16 +9,21 @@ from django.core.cache import cache
 from django.test import TestCase, TransactionTestCase, override_settings
 from django.urls import re_path, reverse
 from rest_framework.test import APITransactionTestCase
-from songs import consumers, tasks
+from songs import consumers, tasks, utils
 from songs.utils import OTPCode
 
 
-class TestOTPCreation(TestCase):
-    def test_general_structure(self):
+class TestUtils(TestCase):
+    def test_otp_util(self):
         instance = OTPCode()
         code = instance.get_code()
         self.assertIsNotNone(code)
         self.assertTrue(instance.verify(code))
+
+    def test_astrologic_sign_util(self):
+        d = datetime.datetime(year=2000, month=10, day=1)
+        sign = utils.astrologic_sign(d)
+        self.assertEqual(sign, 'Balance')
 
 
 class TestSongConsumer(TestCase):

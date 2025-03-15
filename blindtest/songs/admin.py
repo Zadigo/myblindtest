@@ -50,7 +50,7 @@ class ArtistResource(ModelResource):
 
 @admin.register(Artist)
 class ArtistAdmin(ImportExportModelAdmin):
-    list_display = ['name', 'genre', 'spotify_id']
+    list_display = ['name', 'age', 'genre', 'spotify_id']
     fieldsets = [
         [
             'General',
@@ -63,11 +63,17 @@ class ArtistAdmin(ImportExportModelAdmin):
             {
                 'fields': ['spotify_id', 'spotify_avatar', 'genre']
             }
+        ],
+        [
+            'External links',
+            {
+                'fields': ['wikipedia_page']
+            }
         ]
     ]
     search_fields = ['name', 'genre']
     resource_class = ArtistResource
-    actions = ['update_metadata']
+    actions = ['update_metadata', 'update_from_wikipedia']
 
     def update_metadata(self, request, queryset):
         for artist in queryset:
@@ -87,6 +93,10 @@ class ArtistAdmin(ImportExportModelAdmin):
                 except:
                     time.sleep(5)
                 artist.save()
+
+    def update_from_wikipedia(self, request, queryset):
+        for artist in queryset:
+            tasks.wikipedia_information.apply_async((artist.id,), countdown=10)
 
 
 @admin.register(Song)

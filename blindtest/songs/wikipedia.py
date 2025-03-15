@@ -13,6 +13,10 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from songs.models import Artist
 
+HEADERS = {
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36'
+}
+
 
 class Wikipedia:
     def __init__(self):
@@ -22,7 +26,7 @@ class Wikipedia:
         nltk.download('punkt_tab')
         nltk.download('omw-1.4')
 
-        en_contractions_path = pathlib.path(
+        en_contractions_path = pathlib.Path(
             kagglehub.dataset_download(
                 'ishivinal/contractions'
             )
@@ -77,30 +81,29 @@ class Wikipedia:
 
             if not candidates:
                 return None
+            
+            try:
+                french_wikipedia = list(
+                    filter(
+                        lambda x: 'fr.wikipedia' in x,
+                        candidates
+                    )
+                )[-1]
 
-            french_wikipedia = list(
-                filter(
-                    lambda x: 'fr.wikipedia' in x,
-                    candidates
-                )
-            )[-1]
-
-            english_wikipedia = list(
-                filter(
-                    lambda x: 'en.wikipedia' in x,
-                    candidates
-                )
-            )[-1]
-
-            artist.wikipedia_page = french_wikipedia
-            artist.save()
-
-        headers = {
-            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36'
-        }
+                english_wikipedia = list(
+                    filter(
+                        lambda x: 'en.wikipedia' in x,
+                        candidates
+                    )
+                )[-1]
+            except:
+                return None
+            else:
+                artist.wikipedia_page = french_wikipedia
+                artist.save()
 
         try:
-            response = requests.get(artist.wikipedia_page, headers=headers)
+            response = requests.get(artist.wikipedia_page, headers=HEADERS)
         except:
             return None
         else:
@@ -117,7 +120,7 @@ class Wikipedia:
                     fullform = df.loc[item.Index, 'meaning']
                     raw_text = re.sub(
                         r'\b' + value + r'\b',
-                        fullform, 
+                        fullform,
                         raw_text
                     )
 
@@ -149,3 +152,64 @@ class Wikipedia:
 
                 return ' '.join(tokens)
             return None
+
+
+def nrj(artist: Artist):
+    name = artist.name.lower().replace(' ', '-')
+    url = f'https://www.nrj.fr/artistes/{name}/biographie'
+
+    metadata = {
+        'place_of_birth': None,
+        'date_of_birth': None
+    }
+
+    try:
+        response = requests.get(url, headers=HEADERS)
+    except:
+        return metadata
+    else:
+
+        if response.ok:
+            soup = BeautifulSoup(response.content, 'html.parser')
+            header = soup.find('div', attrs={'class': 'headerArtist-content'})
+
+            if header is not None:
+                sections = []
+                for item in header.find_all('p'):
+                    sections.append(item.text.strip())
+
+                sections = [re.sub('\n', ' ', section) for section in sections]
+
+                clean_sections = []
+                for text in sections:
+                    tokens = text.split(' ')
+                    clean_sections.append(
+                        ' '.join(
+                            filter(lambda x: x != '', tokens)
+                        )
+                    )
+
+                place_of_birth = list(
+                    filter(
+                        lambda x: 'Pays de naissance' in x,
+                        clean_sections
+                    )
+                )
+
+                date_of_birth = list(
+                    filter(
+                        lambda x: 'Né(e) le' in x,
+                        clean_sections
+                    )
+                )
+
+                place_of_birth: str = place_of_birth[-1].split(':')[0]
+
+                if date_of_birth:
+                    date_of_birth = datetime.datetime.strptime(
+                        date_of_birth, '%d/%m/%Y')
+                    metadata['date_of_birth'] = date_of_birth.date()
+
+                metadata['place_of_birth'] = place_of_birth
+        print(metadata)
+        return metadata

@@ -1,9 +1,10 @@
 import celery
+from celery import chain
 from celery.utils.log import get_task_logger
 from django.db import transaction
 from googlesearch import search
 from songs.models import Artist, Song
-from songs.wikipedia import Wikipedia
+from songs.wikipedia import Wikipedia, nrj
 
 from blindtest.rapidapi.client import Spotify
 
@@ -30,33 +31,36 @@ def wikipedia_information(artist_id: int):
         logger.error('Artist does not exists')
     else:
         instance = Wikipedia()
-        
-        text = instance.extract_text_from_page()
+
+        text = instance.extract_text_from_page(artist)
         date_of_birth = instance.get_date_or_birth(text)
 
-        with transaction.atomic():
-            artist.date_of_birth = date_of_birth
+        artist.date_of_birth = date_of_birth
+        artist.save()
+
+        # chain(
+        #     nrj_information.s(artist_id)
+        # )
+
+        # chain.apply_async()
+
+
+@celery.shared_task
+def nrj_information(artist_id: int):
+    try:
+        artist = Artist.objects.get(id=artist_id)
+    except:
+        logger.error('Artist does not exist')
+    else:
+        result = nrj(artist)
+        if artist.date_of_birth is None:
+            artist.date_of_birth = result['date_of_birth']
             artist.save()
-
-            s1 = transaction.savepoint()
-
-        # base_domain = 'wikipedia.org/wiki/'
-        # results = list(search(f'{artist.name} Wikipedia', num_results=2))
-
-        # candidates = list(filter(lambda x: base_domain in x, results))
-
-        # if not candidates:
-        #     logger.error(f'No Wikipedia url candidates for: {artist.name}')
-        #     return False
-        
-        # french_wikipedia = list(filter(lambda x: 'fr.wikipedia' in x, candidates))[-1]
-        # english_wikipedia = list(filter(lambda x: 'en.wikipedia' in x, candidates))[-1]
 
 
 @celery.shared_task
 def artist_spotify_information(artist_name):
     artist = Artist.objects.get(name=artist_name)
-    print(artist_name, artist)
     songs = artist.song_set.filter(year=0).values_list('id', flat=True)
 
     instance = Spotify(artist_name)

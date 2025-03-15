@@ -1,3 +1,4 @@
+from songs import utils
 import re
 from urllib.parse import urlunparse
 
@@ -69,6 +70,10 @@ class Artist(models.Model):
             current_date = timezone.now()
             return (current_date.year - self.date_of_birth.year)
         return None
+
+    @cached_property
+    def astrological_sign(self):
+        return utils.astrologic_sign(self.date_of_birth)
 
 
 class Song(models.Model):
