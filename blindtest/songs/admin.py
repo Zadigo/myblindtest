@@ -1,12 +1,13 @@
 import time
 
 from django.contrib import admin, messages
+from import_export import fields
 from import_export.admin import ImportExportModelAdmin
 from import_export.resources import ModelResource
 from import_export.widgets import ForeignKeyWidget
 from songs import tasks
-from import_export import fields
-from songs.models import Artist, PopSong, RapSong, RnBSong, Song
+from songs.models import (Artist, PopArtist, PopSong, RapArtist, RapSong,
+                          RnBSong, Song)
 
 from blindtest.rapidapi.client import Spotify
 
@@ -43,8 +44,9 @@ class ArtistResource(ModelResource):
     class Meta:
         model = Artist
         fields = [
-            'name', 'birth_name', 'date_of_birth',
-            'spotify_id', 'genre', 'spotify_avatar'
+            'name', 'birthname', 'date_of_birth',
+            'spotify_id', 'genre', 'spotify_avatar',
+            'wikipedia_page'
         ]
 
 
@@ -73,7 +75,11 @@ class ArtistAdmin(ImportExportModelAdmin):
     ]
     search_fields = ['name', 'genre']
     resource_class = ArtistResource
-    actions = ['update_metadata', 'update_from_wikipedia']
+    actions = ['update_metadata', 'update_from_wikipedia',
+               'define_genre_to_base_pop']
+
+    def define_genre_to_base_pop(self, request, queryset):
+        queryset.update(genre='Electropop')
 
     def update_metadata(self, request, queryset):
         for artist in queryset:
@@ -135,7 +141,9 @@ class PopSongAdmin(admin.ModelAdmin):
 
 @admin.register(RapSong)
 class RapSongAdmin(admin.ModelAdmin):
-    list_display = ['name', 'artist', 'genre', 'difficulty']
+    list_display = [
+        'name', 'artist', 'difficulty'
+    ]
     search_fields = ['name', 'artist__name', 'artist__genre']
 
 
@@ -143,3 +151,17 @@ class RapSongAdmin(admin.ModelAdmin):
 class RnBSongAdmin(admin.ModelAdmin):
     list_display = ['name', 'artist', 'genre', 'difficulty']
     search_fields = ['name', 'artist__name', 'artist__genre']
+
+
+@admin.register(RapArtist)
+class RapArtistAdmin(admin.ModelAdmin):
+    list_display = ['name', 'birthname', 'date_of_birth', 'astrological_sign']
+    # filter_horizontal = ['astrological_sign']
+    search_fields = ['name', 'birthname']
+
+
+@admin.register(PopArtist)
+class PopArtistAdmin(admin.ModelAdmin):
+    list_display = ['name', 'birthname', 'date_of_birth', 'astrological_sign']
+    # filter_horizontal = ['astrological_sign']
+    search_fields = ['name', 'birthname']

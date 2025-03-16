@@ -45,6 +45,7 @@ class Artist(models.Model):
             "the given artist"
         )
     )
+    additional_genres = None
     spotify_avatar = models.URLField(
         blank=True,
         null=True
@@ -197,4 +198,20 @@ class RnBSong(Song):
     class Meta:
         ordering = ['artist']
         verbose_name = 'rhythm and blues song'
+        proxy = True
+
+
+class RapArtist(Artist):
+    objects = managers.RapArtistManager()
+
+    class Meta:
+        ordering = ['birthname']
+        proxy = True
+
+
+class PopArtist(Artist):
+    objects = managers.PopArtistManager()
+
+    class Meta:
+        ordering = ['birthname']
         proxy = True

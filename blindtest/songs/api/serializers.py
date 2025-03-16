@@ -1,8 +1,8 @@
 from django.forms import ValidationError
-from songs import validators
 from rest_framework import fields, serializers
+from songs import tasks, validators
 from songs.models import Artist
-
+from songs import tasks
 
 class ArtistSerializer(serializers.Serializer):
     id = fields.IntegerField()
@@ -55,12 +55,18 @@ class SongSerializer(serializers.Serializer):
         if featured_artists and featured_artists != '':
             artists = featured_artists.split(',')
             for artist_name in artists:
-                Artist.objects.get_or_create(
-                    defaults={
-                        'name': artist_name
-                    },
+                instance, state = Artist.objects.get_or_create(
+                    defaults={'name': artist_name},
                     name=artist_name
                 )
+                if state:
+                    tasks.wikipedia_information.apply_async(
+                        (
+                            instance.id,
+                        ),
+                        countdown=40
+                    )
+
 
         if qs.exists():
             try:

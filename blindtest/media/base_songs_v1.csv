@@ -1,9 +1,12 @@
 artist,name,genre,featured_artists,youtube_id,year,difficulty
 1T1,Bouwey,Bouyon,Théomaa,tW8KrbpTXcI,2025,3
 20syl,Kodama,Electropop,,Mqbw7CUVWhM,2014,5
+21 Savage,Ric Flair Drip,Rap music,,LPTlvQ1Zet0,2017,1
+21 Savage,Bank Account,Rap music,,H1KBHFXm2Bg,2017,1
 50 Cent,Ayo Technology,Rap music,Justin Timberlake,0kJ7FYgJ7Mo,2007,1
 50 Cent,Outta Control,Rap music,,Z3Oux1lN__4,2005,1
 50 Cent,Just A Lil Bit,Rap music,,GllEDACUbNo,2005,1
+6ix9ine,FEFE,Rap music,,V_MXGdSBbAI,2018,1
 A Caus' Des Garçons,A Caus' Des Garçons,French pop,,JqYhuwu614Y,2007,1
 Ace of Base,Beautiful Life,Pop rock,,wh-07BzfgYY,1995,1
 Ace of Base,All That She Wants,Pop rock,,d73tiBBzvFM,1992,2
@@ -59,6 +62,7 @@ Bertrand Belin,Un Déluge,French pop,,P0dhz-KTxV4,0,1
 Beyoncé,Crazy In Love,Rhythm and blues,Jay-Z,ViwtNLUqkMY,2003,1
 Beyoncé,Check On It,Rhythm and blues,"Bun B, Slim Thug",Q1dUDzBdnmI,2005,1
 Beyoncé,Single Ladies (Put a Ring on It),Rhythm and blues,,4m1EFMoRFvY,2008,1
+Bhad Babie,Cash Me Outside,Rap music,,LN1Q8u64COc,2017,2
 Bhad Bhabie,Gucci Flip Flops,Rap music,Lil Yachty,tsp7IOr7Q9A,0,2
 Bhad Bhabie,Geek'd,Rap music,Lil Baby,66h5dGoQ1IU,0,2
 Big Scarr,Make A Play,Rap music,,rRxqWYW-EZE,0,1
@@ -89,14 +93,20 @@ Busta Rhymes,Touch It,Rap music,,GDtn_FtU614,0,1
 CKay,Love Nwantiti,Afrobeat,,MxjrsDV8Aeo,2019,1
 CKay,Emiliana,Afrobeat,,Ypr5QN7Xn_M,0,1
 Caballero & JeanJass,Sur Mon Nom,Rap music,,w0na7OG-16A,0,2
+Calvin Harris,One Kiss,Traditional pop music,,DkeiKbqa02g,2018,1
+Camila Cabello,Havana,Latin pop,,BQ0mxQXmLsk,2018,1
 Camille,Allez Allez Allez,Indie pop,,lVPlG4UDwXM,0,4
 Captain Kid,We & I,Indian pop,,LpgO6lhi3pY,0,1
+Cardi B,Money,Rap music,,KHAPUDcJDG8,2018,1
+Cardi B,Bodak Yellow,Rap music,,PEGccV-NOm8,2017,1
+Cardi B,WAP,Rap music,,hsm4poTWjMs,2020,1
+Cardi B,I Like It,Rap music,,xTlNMmZKwpA,2018,2
 Cardi B,Drip,Rap music,Migos,H4Hb6HcCm_E,0,1
 Cardi B,Bartier Cardi,Rap music,21 Savage,hXnMSaK6C2w,0,1
 Cardi B,Be Careful,Rap music,,8zSRkr1nQNw,0,1
 Carla Bruni,Quelqu'un m'a dit,French pop,,EC7Re8cczj0,2002,2
 Carnage,Bricks,Rap music,Migos,zYU75-OANxc,0,1
-Cascada,Everytime We Touch,Europop,,4G6QDNC4jPs,0,1
+Cascada,Everytime We Touch,Europop,,4G6QDNC4jPs,0,5
 Cassie,Goodies,Rhythm and blues,Petey Pablo,YtC92pzp5vw,2004,1
 Cassie,Me & You,Rhythm and blues,,rrby-9U2TYE,0,1
 Cassius,I Love U So,Electro music,,NazVKnD-_sQ,0,4
@@ -104,6 +114,7 @@ Cat Clyde,Mama Said,Blues rock,,gqXdU1IK2JI,0,5
 CeCe Peniston,Finally,Rhythm and blues,,xk8mm1Qmt-Y,1992,4
 Celeste,Strange,Jazz blues,,7ZbO3pq9qq4,0,5
 Celine Dion,"My Heart Will Go On (Love Theme from ""Titanic"")",Film score,,gfTk-0qSMaY,1997,1
+Chaka Khan,Ain't Nobody,Rhythm and blues,,kDwms-9hdKw,1983,2
 Chamillionaire,Creepin',Rap music,,ibzeCACuBcg,0,1
 Chance the Rapper,Hot Shower,Rap music,"MadeinTYO,DaBaby",3qoV_Ee9pOM,0,1
 Charlotte Gainsbourg,Time of the Assassins,French pop,,-RSRmQ6WiUU,0,5
@@ -121,7 +132,8 @@ Ciara,"1, 2 Step",Rhythm and blues,Missy Elliott,iBHNgV6_znU,2004,1
 Ciara,Oh,Rhythm and blues,Ludacris,Hr4wz4-27PY,2004,1
 Cigarettes After Sex,Nothing's Gonna Hurt You Baby,Electropop,,R2LQdh42neg,0,4
 Clams Casino,I'm God R.I.P,Indie pop,David Higgs,FJJ8hWDXWGs,0,1
-Coco Jambo,Mr. President,Alternative rock,,bY-oMCmrvPM,0,5
+Coi Leray,Blick Blick!,Rap music,,1N1RwMOcjks,2022,3
+Coi Leray,Players,Rap music,,BQ0mxQXmLsk,2022,4
 Colbie Caillat,Bubbly,Folk pop,,AWGqoCNbsvM,2007,3
 Colbie Caillat,Realize,Folk pop,,GlZxZ2n2zpw,2007,4
 Commodores,Nightshift,Funk,,FrkEDe6Ljqs,0,1
@@ -145,6 +157,7 @@ David Banner,Play,Rhythm and blues,,qld7WvHa5kc,2005,2
 Depeche Mode,Personal Jesus,Alternative rock,,u1xrNaTO1bI,0,5
 Des'ree,Life,Rhythm and blues,,BKtrWU4zaaI,1998,2
 Des'ree,You Gotta Be,Rhythm and blues,,pO40TcKa_5U,1994,2
+Desiigner,Panda,Rap music,,E5ONTXHS2mM,2015,1
 Desiigner,Tiimmy Turner,Rap music,,ProbPpO_8oo,2016,1
 Destiny's Child,Bug-A-Boo,Rhythm and blues,,9i-y0G8nNA8,1999,1
 Destiny's Child,"Independent Women, Pt. 1",Rhythm and blues,,0lPQZni7I18,1999,1
@@ -155,10 +168,12 @@ Dido,Thank You,Pop rock,,1TO48Cnl66w,0,1
 Dido,White Flag,Pop rock,,j-fWDrZSiZs,0,2
 Dionne Warwick,That's What Friends Are For,Rhythm and blues,,HyTpu6BmE88,1985,5
 Disclosure,You and Me,Electro music,,tkAKj-L8ono,0,3
-Discobitch,C'est Beau La Bourgeoisie,Dance-pop,,QKVQ2r-_zQk,0,1
+Discobitch,C'est Beau La Bourgeoisie,Electro music,,QKVQ2r-_zQk,0,1
 Dladla Mshunqisi,Pakisha,Afrobeat,"Distruction Boyz,DJ Tira",ap2YvNDn6xM,0,1
+Doja Cat,Say So,Bitpop,,pok8H_KF1FA,2019,1
 Doris Day,Que Sera Sera,Indie rock,,0WNHNfBUFB0,0,5
 Dr. Dre,Still D.R.E.,Rap music,,_CL6n0FJZpk,0,1
+Drake,God's Plan,Rap music,,PEGccV-NOm8,2018,1
 Drake,Yes Indeed,Rap music,Lil Baby,AbEHRrq7xwU,0,1
 Duffy,Mercy,Pop soul,,eJCrb1oNbH4,0,2
 "Earth, Wind & Fire",Boogie Wonderland,Funk,,god7hAPv8f0,0,1
@@ -183,6 +198,8 @@ Fergie,Big Girls Don't Cry,Pop rock,,SvAQAeLa-jY,0,1
 Fergie,Fergalicious,Pop rock,,5T0utQ-XWGY,2006,1
 Fergie,Clumsy,Pop rock,,tf_gPZSDIxI,2006,1
 Fergie,London Bridge,Pop rock,,WD33ii01kXI,2006,1
+Fifth Harmony,Worth It,Traditional pop music,,YBHQbu5rbdQ,2015,1
+Fifth Harmony,Work from Home,Traditional pop music,,5GL9JoH4Sws,2016,1
 Fireboy DML,Peru,Afrobeat,Ed Sheeran,pekzpzNCNDQ,0,1
 Fireboy DML,Bandana,Afrobeat,Asake,gCLUIzOsgGg,0,1
 Flavien Berger,Gravité,French pop,,uhy7QoOYuNo,0,5
@@ -192,10 +209,12 @@ Foreigner,I Want to know what love is,Pop rock,,loWXMtjUZWM,0,4
 Foxes,Home,Electropop,,tQ-pVU6SEkI,0,1
 Foxy Brown,Big Bad Mama,Rhythm and blues,,5hJ1E7JFw64,1997,3
 Fugees,Killing Me Softly With His Song,Rhythm and blues,,oKOtzIo-uYw,1996,2
+Future,Mask Off,Rap music,,xvZqHgFz51I,2017,1
 Future,Patek Water,Rap music,"Young Thug,Offset",tT5TDmiAY78,0,1
 GS Boyz,Stanky Legg,Rap music,,ewufRwrayTI,0,1
 Gabriella Cilmi,Sweet About Me,British blues,,qvuyYj5ROmk,0,4
 Georges Brassens,La guerre de 14-18,French pop,,l2F5qaHzkj0,0,2
+GloRilla,WHATCHU KNO ABOUT ME,Rap music,,Py9S2bD0RZQ,2024,1
 Gotan Project,Época,Europop,,Jc7Lt5FLRiA,0,1
 Gunna,Sold Out Dates,Rap music,Lil Baby,wp6oQlb--Ks,0,1
 Gunna,Idk Why,Rap music,,nqxXeJen7S4,0,1
@@ -244,6 +263,8 @@ Joé Dwèt Filé,4 Kampé,Konpa,,Srvt_6up-0o,2024,1
 Juanes,La Camisa Negra,Soft rock,,kRt2sRyup6A,0,1
 Julie Zenatti,A quoi ça sert,French pop,,pvscM-UGj4M,2004,2
 Julie Zenatti,Princesse (Tango),French pop,,XkJcvRqI7O8,2004,2
+Justin Bieber,Baby,Traditional pop music,,kffacxfA7G4,2010,1
+Justin Bieber,Sorry,Traditional pop music,,fRh_vgS2dFE,2015,1
 Justin Timberlake,Cry Me A River,Rhythm and blues,,DksSPZTZES0,0,1
 K Camp,Lottery,Rap music,,gF8rsUYENgc,0,3
 K-Ci & JoJo,All My Life,Rhythm and blues,,DXvMT_mVbqw,1998,1
@@ -256,6 +277,7 @@ Kat DeLuna,Whine Up,Electropop,Elephant Man,jcMXZjYqIog,2007,2
 Kate Nash,Foundations,Indie pop,,ryH5cga0yUI,2007,3
 Katie Melua,Wonderful Life,Soul blues,,abGe6uM9Ias,2014,5
 Katie Noonan,Crazy (Cover),Indie pop,,yOeelyS8LKs,0,5
+Katy Perry,Swish Swish,Pop rock,,iGk5fR-t5AU,2017,1
 Katy Perry,I Kissed A Girl,Pop rock,,tAp9BKosZXs,0,1
 Ke$ha,TiK ToK,Electropop,,iP6XpLQM2Cs,2010,1
 Keane,Somewhere Only We Know,Alternative rock,,Oextk-If8HQ,0,3
@@ -263,6 +285,7 @@ Kelis,Bossy,Rhythm and blues,Too $hort,SSgp-IIgr4I,2006,1
 Kelis,Trick Me,Rhythm and blues,,zI339U6GS9s,2003,1
 Kelis,Milkshake,Rhythm and blues,,6AwXKJoKJz4,2003,1
 Kelly Clarkson,Breakaway,Pop rock,,c-3vPxKdj6o,2004,3
+Kendrick Lamar,Not Like Us,Rap music,,H58vbez_m4E,2024,1
 Kim,Mon ami,Zouk,,WpyN4YzEwIE,2009,1
 King africa,Bomba,Pop rock,,QlPS16NeBO0,0,1
 Koba LaD,Guedro,Rap music,,diH1xNRyZ_o,0,1
@@ -276,6 +299,8 @@ Lady Gaga,Just Dance,Electropop,Colby O'Donis,2Abk1jAONjw,2008,1
 Lady Gaga,Bad Romance,Electropop,,qrO4YZeyl0I,2009,1
 Lady Gaga,Poker Face,Electropop,,bESGLojNYSo,2008,1
 Lady Gaga,Telephone,Electropop,,KfSVnUvKyZ0,2009,1
+Latto,Big Energy,Rap music,,T8GpG8C0YzA,2022,1
+Latto,Muwop,Rap music,,meFxq3-mNEc,2020,1
 Latto,He Say She Say,Rap music,,mFxAfsg-3r4,0,1
 Led Zeppelin,Stairway To Heaven,Rock and roll,,QkF3oxziUI4,0,1
 Leona Lewis,Bleeding Love,Pop rock,,Vzo-EL_62fQ,2012,1
@@ -340,11 +365,14 @@ Michael Jackson,Bad,Rhythm and blues,,Sd4SJVsTulc,1987,1
 Michael Jackson,You Rock My World,Rhythm and blues,,1-7ABIM2qjU,2001,2
 Michael Jackson,Thriller,Rhythm and blues,,sOnqjkJTMaA,1982,1
 Michael Jackson,Smooth Criminal,Rhythm and blues,,h_D3VFfhvs4,1987,1
+Migos,MotorSport,Rap music,,9v_rtaye2yY,2018,1
 Migos,T-shirt,Rap music,,1VUa99-tJqs,0,1
 Migos,Bad and Boujee,Rap music,,S-sJp1FfG7Q,0,1
 Migos,Call Casting,Rap music,,exbj5VQ_0Mg,0,1
 Migos,Emoji A Chain,Rap music,,gthETpJIa14,0,1
 Mika,Underwater,Pop rock,,e21s9tZaVro,0,1
+Mike WiLL Made,Gucci On My,Rap music,,KXd-FM51VsY,2017,1
+Mike WiLL Made,23,Rap music,,bbEoRnaOIbs,2013,1
 Milky Chance,Stolen Dance,Pop rock,,iX-QaNzd-0Y,0,3
 Milow,Ayo Technology,Austropop,,DE9IchvpOPk,0,4
 Mis-Teeq,Scandalous,Rhythm and blues,,S1kE0MMfr20,2003,4
@@ -355,6 +383,7 @@ Moriarty,Jimmy,Indie folk,,NHhaZnnz5yE,0,5
 Moriarty Meets Mama Rosin,Calypso Triste,Indie pop,,KLI5xzxPwWM,0,5
 Mr Eazi,Leg Over (Remix),Afrobeat,"Major Lazer,French Montana,Ty Dolla Sign",Cyw9fv_NBdk,0,1
 Mr Eazi,Supernova,Afrobeat,,InIeez-2WIs,0,1
+Mr.President,Coco Jamboo,Eurodance,,bY-oMCmrvPM,1996,5
 Mungo Jerry,In the summertime,Alternative rock,,yG0oBPtyNb0,0,1
 My American Heart,The Shake,Alternative rock,,th2PWpEQ6_o,0,1
 Mya,It's All About Me,Soul blues,Dru Hill,WzfLg2Bwk4I,1998,4
@@ -375,6 +404,7 @@ Nolwenn Leroy,Cassé,French pop,,eIjL4khJxk4,2003,2
 Nolwenn Leroy,Mon Ange,French pop,,sNE7t8Cyt6I,2005,1
 Nomads,Yakalelo,Pop rock,,Dz4aeYPl-0Q,0,1
 Oasis,Wonderwall,Pop rock,,bx1Bh8ZvH84,0,1
+Offset,Clout,Freestyle rap,,mt2zvsvkKKo,2019,1
 Offset,Violation Freestyle,Freestyle rap,,GdPbIM8-v7Q,0,1
 Olivia Ruiz,La Femme Chocolat,Pop rock,,gU8ckNkKbDA,0,1
 Os Banah,Kapri,Afrobeat,,2_XvoTUBG9M,0,1
@@ -419,6 +449,7 @@ Rihanna,Don't Stop The Music,Electropop,,yd8jh9QYfEs,2007,1
 Rihanna,SOS,Electropop,,IXmF4GbA86E,2006,1
 Rilo Kiley,Go Ahead,Indie pop,,-ZBvAAzMphE,0,1
 Rita Hayworth,Moon River,Art rock,,SQ8keKFByh8,0,1
+Roddy Ricch,The Box,Rap music,,UNZqm3dxd2w,2019,1
 Roxette,It Must Have Been Love,Electropop,,k2C5TjS2sh4,1987,4
 Rudeboy,Reason With Me,Afrobeat,,KQ7FpYDQLOI,0,2
 SAODAJ',Pokor Lèr,World fusion,,IbSopDjYsZA,0,5
@@ -427,6 +458,7 @@ SEFYU,Molotov 4,Rap music,,Nzt7puchldA,0,1
 SEVDALIZA,Human,Electroacoustic,,9t7SclAXoQw,0,5
 SEXY SUSHI,J'aime Mon Pays,French pop,,GkprBmXED4o,0,5
 SNAP!,The Power,Alternative dance,,nm6DO_7px1I,0,1
+SPOTEMGOTTEM,Beatbox 2,Rap music,,94zTrkr5_xY,2020,1
 SWV,Right Here (Human Nature Radio Mix),Rhythm and blues,,vHwXoY0LiQk,1992,5
 Sade,Smooth Operator,Smooth jazz,,4TYv2PhG89A,1984,4
 SahBabii,Boyfriend,Rap music,,BRx75rzFCIU,0,1
@@ -474,6 +506,7 @@ TLC,No Scrubs,Rhythm and blues,,FrLequ6dUdM,1999,1
 TM88,Order,Rap music,"Southside, Gunna",2JNaGLw3WbA,0,1
 Takeoff,Casper,Rap music,,vnddx3dS6Ks,0,1
 Tanto Metro,Everyone Falls In Love Sometime,Dancehall,Devonte,FzhhKZgLT7I,0,1
+Taylor Swift,Bad Blood,Traditional pop music,,QcIy9NiNbmo,2014,1
 Tekno,Pana,Afrobeat,,8YhAFBOSk1U,0,2
 Tekno,Skeletun,Afrobeat,,KErqMcZR0KA,0,1
 Teni,Case,Afrobeat,,hYx5ukr_YWw,0,1
@@ -539,6 +572,7 @@ Yemi Alade,Johnny,Afrobeat,,-sRNPULEOgo,0,1
 Yemi Alade,Number One,Afrobeat,,P-MjbXH5uKY,0,1
 Ying Yang Twins,Wait,Rap music,,Ofl1HRCrUw4,0,1
 Yodelice,Familiar Fire,Indie pop,,ikDeNLDE2-M,0,4
+Young M.A,BIG,Rap music,,Ma_0WZbksBE,2019,3
 Young Thug,Guwop,Rap music,"Quavo, Offset, and Young Scooter",NTayABOrFrk,0,1
 Young Thug,Circle Of Bosses,Rap music,Quavo,UA5baCJw5gU,0,1
 Young Thug,What's The Move,Rap music,Lil Uzi Vert,L32ZHlOqqGY,0,1
