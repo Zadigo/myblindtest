@@ -76,10 +76,13 @@ class ArtistAdmin(ImportExportModelAdmin):
     search_fields = ['name', 'genre']
     resource_class = ArtistResource
     actions = ['update_metadata', 'update_from_wikipedia',
-               'define_genre_to_base_pop']
+               'define_genre_to_base_pop', 'define_genre_to_base_afrobeats']
 
     def define_genre_to_base_pop(self, request, queryset):
         queryset.update(genre='Electropop')
+
+    def define_genre_to_base_afrobeats(self, request, queryset):
+        queryset.update(genre='Afrobeat')
 
     def update_metadata(self, request, queryset):
         for artist in queryset:
