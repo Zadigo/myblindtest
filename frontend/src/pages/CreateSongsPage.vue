@@ -9,7 +9,7 @@
         <span class="loader-5" />
       </template>
     </Suspense>
-    
+
     <div v-else class="col-sm-12 col-md-6 offset-md-3">
       <div class="card shadow-sm">
         <TransitionGroup name="opacity">
@@ -19,12 +19,11 @@
           </template>
         </TransitionGroup>
 
-
         <div class="card-body d-flex gap-2">
           <v-btn variant="tonal" color="dark" @click="handleAddBlock">
             <FontAwesomeIcon class="me-2" icon="plus" />Add block
           </v-btn>
-          
+
           <v-btn variant="tonal" color="dark" @click="handleSave">
             Save
           </v-btn>
@@ -39,15 +38,15 @@
 </template>
 
 <script setup lang="ts">
-import { addNewSongData } from '@/data/defaults';
-import { useAxiosClient } from '@/plugins/client';
-import { CreateData, Song, CopiedCreateData, Artist } from '@/types';
-import { useLocalStorage } from '@vueuse/core';
-import { useHead } from 'unhead';
-import { defineAsyncComponent, onMounted, provide, ref } from 'vue';
-import { toast } from 'vue-sonner';
+import { addNewSongData } from '@/data/defaults'
+import { useAxiosClient } from '@/plugins/client'
+import { CreateData, Song, CopiedCreateData, Artist } from '@/types'
+import { useLocalStorage } from '@vueuse/core'
+import { useHead } from 'unhead'
+import { defineAsyncComponent, onMounted, provide, ref } from 'vue'
+import { toast } from 'vue-sonner'
 
-import CreateBlock from '@/components/creation/CreateBlock.vue';
+import CreateBlock from '@/components/creation/CreateBlock.vue'
 
 interface SongCreationApiResponse {
   errors: string[]
@@ -86,10 +85,10 @@ const blocks = ref<CreateData[]>([
 
 const genres = useLocalStorage<string[]>('genres', [], {
   serializer: {
-    read (raw) {
+    read(raw) {
       return JSON.parse(raw)
     },
-    write (value) {
+    write(value) {
       return JSON.stringify(value)
     }
   }
@@ -97,12 +96,12 @@ const genres = useLocalStorage<string[]>('genres', [], {
 
 const featuredArtists = useLocalStorage<Artist[]>('artists', null, {
   serializer: {
-    read (raw) {
+    read(raw) {
       return JSON.parse(raw)
     },
-    write (value) {
+    write(value) {
       return JSON.stringify(value)
-    },
+    }
   }
 })
 
@@ -115,13 +114,13 @@ async function handleSearchFeaturedArtists() {
   }
 }
 
-async function handleSave () {
+async function handleSave() {
   try {
     // Transform the list so that the featured artists
     // is a comma separated string
-    const transformedRequestData: CopiedCreateData = blocks.value.map(item => {
+    const transformedRequestData: CopiedCreateData = blocks.value.map((item) => {
       if (item.featured_artists.length > 0) {
-        const copiedItem = {...item}
+        const copiedItem = { ...item }
         const featuredArists = copiedItem.featured_artists.join(',')
         copiedItem.featured_artists = featuredArists
         return copiedItem
@@ -147,7 +146,7 @@ async function handleSave () {
 
 // Get all the available genres from
 // the backend
-async function handleGetGenres () {
+async function handleGetGenres() {
   try {
     if (genres.value) {
       if (genres.value.length === 0) {
@@ -160,7 +159,7 @@ async function handleGetGenres () {
   }
 }
 
-function handleAddBlock () {
+function handleAddBlock() {
   blocks.value.push({ ...addNewSongData })
 }
 

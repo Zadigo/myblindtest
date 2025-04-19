@@ -6,7 +6,7 @@
         {{ teamName }}
       </h1>
     </div>
-    
+
     <!-- Score -->
     <div ref="scoreBoxEl" class="score p-3 rounded-3 bg-dark text-light" style="width: 200px;">
       <h2 class="fs-1 w bold m-0">
@@ -53,16 +53,16 @@
 </template>
 
 <script lang="ts" setup>
-import { useSongs } from '@/stores/songs';
-import { whenever } from '@vueuse/core';
-import { storeToRefs } from 'pinia';
-import { computed, ref } from 'vue';
-import type { MatchedElement } from '@/types';
+import { useSongs } from '@/stores/songs'
+import { whenever } from '@vueuse/core'
+import { storeToRefs } from 'pinia'
+import { computed, ref } from 'vue'
+import type { MatchedElement } from '@/types'
 
-import BaseFireworks from '../BaseFireworks.vue';
+import BaseFireworks from '../BaseFireworks.vue'
 
 const emit = defineEmits({
-  'next-song' (_data: (number | MatchedElement)[]) {
+  'next-song'(_data: (number | MatchedElement)[]) {
     return true
   }
 })
@@ -101,7 +101,7 @@ const team = computed(() => {
 
 const teamName = computed(() => {
   if (team.value) {
-    if (team.value.name !== "") {
+    if (team.value.name !== '') {
       return team.value.name
     } else {
       return team.value.id
@@ -125,27 +125,27 @@ const blockStyles = computed(() => {
 
 // Checks when a team has given multiple consecutive
 // answers (at least 2)
-const MIN_CONSECUTIVE = 2; // or whatever number you want
+const MIN_CONSECUTIVE = 2 // or whatever number you want
 
 const consecutiveAnswers = computed(() => {
   if (correctAnswers.value.length < MIN_CONSECUTIVE) {
-    return 0;
+    return 0
   }
 
-  let count = 0;
-  
+  let count = 0
+
   for (let i = correctAnswers.value.length - 1; i >= 0; i--) {
-    const answer = correctAnswers.value[i];
-    
+    const answer = correctAnswers.value[i]
+
     if (answer.teamId === team.value.id) {
-      count++;
+      count++
     } else {
-      break;
+      break
     }
   }
 
-  return count >= MIN_CONSECUTIVE ? count : 0;
-});
+  return count >= MIN_CONSECUTIVE ? count : 0
+})
 
 // Flag that explicitly returns if the team has
 // answered consecutive answers
@@ -158,22 +158,22 @@ whenever(hasConsecutiveAnswers, () => {
   currentBonus.value = 0
 })
 
-async function handleAnimation () {
+async function handleAnimation() {
   if (scoreBoxEl.value) {
-    const animationClasses = ['animate__animated', 'animate__heartBeat', 'animate__repeat-1'];
-    
+    const animationClasses = ['animate__animated', 'animate__heartBeat', 'animate__repeat-1']
+
     // First remove the classes if they exist
-    scoreBoxEl.value.classList.remove(...animationClasses);
-    
+    scoreBoxEl.value.classList.remove(...animationClasses)
+
     // Force a reflow to restart the animation
-    void scoreBoxEl.value.offsetWidth;
-    
+    void scoreBoxEl.value.offsetWidth
+
     // Add the classes back
-    scoreBoxEl.value.classList.add(...animationClasses);
+    scoreBoxEl.value.classList.add(...animationClasses)
   }
 }
 
-async function handleCorrectAnswer () {
+async function handleCorrectAnswer() {
   if (team.value) {
     await handleAnimation()
     emit('next-song', [team.value.id, matchedElement.value])

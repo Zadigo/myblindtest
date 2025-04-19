@@ -20,7 +20,7 @@
         </div>
       </v-col>
     </v-row>
-    
+
     <Transition class="animate__animated animate__fast" enter-active-class="animate__slideInLeft animate__rubberBand" leave-active-class="animate__slideOutRight" @after-enter="onAfterEnter" @before-laave="onBeforeLeave">
       <v-card v-if="showCard" ref="cardEl" class="combat-card" @click="handleRandom">
         <v-card-text>
@@ -114,7 +114,7 @@ function onAfterEnter(el: HTMLElement) {
   el.classList.add('animate__animated', 'animate__swing')
 }
 
-function onBeforeLeave (el: HTMLElement) {
+function onBeforeLeave(el: HTMLElement) {
   el.classList.remove('animate__animated', 'animate__swing')
   el.classList.add('animate__animated', 'animate__swing')
 }
@@ -131,7 +131,7 @@ const ws = useWebSocket(getBaseUrl('/ws/connect', null, true), {
 
 const { sendMessage } = useWebsocketUtilities()
 
-function testCacheUpdates () {
+function testCacheUpdates() {
   ws.open()
   ws.send(sendMessage({
     action: 'update_device_cache',

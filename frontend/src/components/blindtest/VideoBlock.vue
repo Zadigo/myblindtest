@@ -4,7 +4,7 @@
       <div v-if="showWheel" class="card">
         <GenreRandomizer ref="randomizerEl" :items="wheelDetaults" @completed="randomizerComplete" />
       </div>
-      
+
       <div v-else class="card shadow-sm">
         <div class="card-header border-bottom-0">
           <div class="row">
@@ -37,7 +37,7 @@
                   {{ currentSong.genre }}
                 </span>
               </div>
-              
+
               <v-rating v-if="currentSong" :length="5" :model-value="currentSong.difficulty" :size="22" color="blue-darken-1" readonly />
             </div>
           </div>
@@ -76,19 +76,19 @@
 </template>
 
 <script lang="ts" setup>
-import { wheelDetaults } from '@/data/defaults';
-import { getBaseUrl } from '@/plugins/client';
-import { useSongs } from '@/stores/songs';
-import type { MatchedElement, Song, WebsocketBlindTestMessage } from '@/types';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { useLocalStorage, useWebSocket } from '@vueuse/core';
-import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
-import { toast } from 'vue-sonner';
-import { RandomizerData } from '../randomizer';
+import { wheelDetaults } from '@/data/defaults'
+import { getBaseUrl } from '@/plugins/client'
+import { useSongs } from '@/stores/songs'
+import type { MatchedElement, Song, WebsocketBlindTestMessage } from '@/types'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { useLocalStorage, useWebSocket } from '@vueuse/core'
+import { storeToRefs } from 'pinia'
+import { ref } from 'vue'
+import { toast } from 'vue-sonner'
+import { RandomizerData } from '../randomizer'
 
-import { useWebsocketUtilities } from '@/composables/utils';
-import GenreRandomizer from '../randomizer/GenreRandomizer.vue';
+import { useWebsocketUtilities } from '@/composables/utils'
+import GenreRandomizer from '../randomizer/GenreRandomizer.vue'
 
 const songsStore = useSongs()
 const { gameStarted, currentSong } = storeToRefs(songsStore)
@@ -135,7 +135,7 @@ const ws = useWebSocket(getBaseUrl('/ws/songs', null, true), {
         if (data.team_one_id) {
           songsStore.cache.teams[0].id = data.team_one_id
         }
-        
+
         if (data.team_two_id) {
           songsStore.cache.teams[1].id = data.team_two_id
         }
@@ -181,7 +181,7 @@ const ws = useWebSocket(getBaseUrl('/ws/songs', null, true), {
           description: 'Projecton device connected'
         })
         break
-        
+
       case 'device_disconnected':
         toast.success('Device', {
           description: 'Projecton device disconnected'
@@ -213,7 +213,7 @@ const ws = useWebSocket(getBaseUrl('/ws/songs', null, true), {
 
 // Function that gets called once the
 // spinning has finished
-function randomizerComplete (value: string | undefined | RandomizerData) {
+function randomizerComplete(value: string | undefined | RandomizerData) {
   if (value) {
     setTimeout(() => {
       showWheel.value = false
@@ -232,7 +232,7 @@ function handleFinalize() {
 
 // Returns the next song by excluding
 // those that were already played
-function handleIncorrectAnswer () {
+function handleIncorrectAnswer() {
   ws.send(sendMessage<WebsocketBlindTestMessage>({ action: 'skip_song' }))
   handleFinalize()
 }
@@ -264,12 +264,12 @@ function handleCorrectAnswer(teamId: string, match: MatchedElement) {
 }
 
 // Starts the game
-function handleStart () {
+function handleStart() {
   ws.open()
 }
 
 // Stops the game
-function handleStop () {
+function handleStop() {
   ws.close()
   toast.success('Stopped blind test')
 
@@ -277,7 +277,7 @@ function handleStop () {
     songsStore.cache.songs = []
     songsStore.correctAnswers = []
 
-    songsStore.cache.teams.forEach(x => {
+    songsStore.cache.teams.forEach((x) => {
       x.score = 0
     })
     songsStore.cache.currentStep = 0

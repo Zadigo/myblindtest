@@ -29,7 +29,7 @@
                 Team 2
               </v-btn>
             </div>
-            
+
             <div class="d-flex justify-content-center mb-4">
               <VueColorWheel v-model:color="wheelColor" wheel="aurora" harmony="complementary" :radius="160" :default-color="wheelColor" @change="handleChangeColor" />
             </div>
@@ -51,13 +51,13 @@
 </template>
 
 <script setup lang="ts">
-import { useSongs } from '@/stores/songs';
-import { useDebounce } from '@vueuse/core';
-import { useHead } from 'unhead';
-import { computed, onBeforeMount, ref, watch } from 'vue';
+import { useSongs } from '@/stores/songs'
+import { useDebounce } from '@vueuse/core'
+import { useHead } from 'unhead'
+import { computed, onBeforeMount, ref, watch } from 'vue'
 
-import type { Harmony } from 'vue-color-wheel';
-import { VueColorWheel } from 'vue-color-wheel';
+import type { Harmony } from 'vue-color-wheel'
+import { VueColorWheel } from 'vue-color-wheel'
 
 useHead({
   title: 'Réglages'
@@ -85,7 +85,7 @@ watch(wheelColor, (newValue) => {
   }
 })
 
-function handleChangeColor (harmonyColors: Harmony[]) {
+function handleChangeColor(harmonyColors: Harmony[]) {
   colorList.value = harmonyColors
 }
 

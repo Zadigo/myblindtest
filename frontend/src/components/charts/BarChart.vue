@@ -28,7 +28,7 @@ const chartRef = ref<HTMLCanvasElement | null>(null)
 let chart: Chart | null = null
 
 // Create chart instance
-function createChart () {
+function createChart() {
   if (chartRef.value) {
     chart = new Chart(chartRef.value, {
       type: 'bar',
@@ -38,7 +38,7 @@ function createChart () {
   }
 }
 
-function updateChart () {
+function updateChart() {
   if (chart) {
     chart.data = props.chartData
     chart.update()

@@ -6,7 +6,7 @@ import {
   SelectItemIndicator,
   type SelectItemProps,
   SelectItemText,
-  useForwardProps,
+  useForwardProps
 } from 'reka-ui'
 import { computed, type HTMLAttributes } from 'vue'
 

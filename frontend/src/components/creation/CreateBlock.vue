@@ -4,9 +4,9 @@
       <div class="col-4">
         <v-text-field v-model="requestData.name" :rules="[rules.required]" type="text" placeholder="Name" variant="solo-filled" clearable flat />
       </div>
-      
+
       <div class="col-4">
-        <v-combobox v-model="requestData.genre" :items="genres" :loading="searching" :rules="[rules.required]" type="text" variant="solo-filled" flat />        
+        <v-combobox v-model="requestData.genre" :items="genres" :loading="searching" :rules="[rules.required]" type="text" variant="solo-filled" flat />
       </div>
 
       <div class="col-4">
@@ -22,7 +22,7 @@
       </div>
 
       <div class="col-6">
-        <v-text-field v-model="requestData.youtube_id" :rules="[rules.required]" type="text" placeholder="YouTube" variant="solo-filled" clearable flat />      
+        <v-text-field v-model="requestData.youtube_id" :rules="[rules.required]" type="text" placeholder="YouTube" variant="solo-filled" clearable flat />
       </div>
 
       <div class="col-8">
@@ -33,12 +33,12 @@
 </template>
 
 <script setup lang="ts">
-import { useDayJs } from '@/plugins';
-import { useAxiosClient } from '@/plugins/client';
-import type { Artist, CreateData, Song } from '@/types';
-import { useLocalStorage } from '@vueuse/core';
-import { computed, inject, PropType, reactive, ref, onBeforeMount } from 'vue';
-import { toast } from 'vue-sonner';
+import { useDayJs } from '@/plugins'
+import { useAxiosClient } from '@/plugins/client'
+import type { Artist, CreateData, Song } from '@/types'
+import { useLocalStorage } from '@vueuse/core'
+import { computed, inject, PropType, reactive, ref, onBeforeMount } from 'vue'
+import { toast } from 'vue-sonner'
 
 const { currentYear } = useDayJs()
 
@@ -62,7 +62,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits({
-  'update:block' (_data: CreateData) {
+  'update:block'(_data: CreateData) {
     return true
   }
 })
@@ -72,12 +72,12 @@ const searching = ref(false)
 const genres = inject<string[]>('genres')
 const featuredArtists = useLocalStorage<Artist[]>('artists', null, {
   serializer: {
-    read (raw) {
+    read(raw) {
       return JSON.parse(raw)
     },
-    write (value) {
+    write(value) {
       return JSON.stringify(value)
-    },
+    }
   }
 })
 
@@ -87,15 +87,15 @@ const fieldErrors = reactive({
   artist: '',
   youtube: '',
   year: ''
-});
+})
 
 // const iframe = ref<string>('')
 
 const rules = {
   required: (v: string) => !!v || 'This field is required',
   youtubeUrl: (v: string) => {
-    const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/;
-    return youtubeRegex.test(v) || 'Please enter a valid YouTube URL';
+    const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/
+    return youtubeRegex.test(v) || 'Please enter a valid YouTube URL'
   },
   difficulty: (v: number) => {
     return v <= 5 || 'Difficulty should be between 1 and 5'
@@ -104,23 +104,23 @@ const rules = {
     if (!v) {
       return true
     } else {
-      return (v >= 1900 && v <= currentYear.value) || `Year must be between 1900 and ${currentYear.value}`;
+      return (v >= 1900 && v <= currentYear.value) || `Year must be between 1900 and ${currentYear.value}`
     }
   }
 }
 
 // Validation function
 function validateData(data: CreateData) {
-  const errors: Record<string, string> = {};
-  
-  Object.keys(fieldErrors).forEach(key => {
-    fieldErrors[key as keyof typeof fieldErrors] = '';
-  });
+  const errors: Record<string, string> = {}
+
+  Object.keys(fieldErrors).forEach((key) => {
+    fieldErrors[key as keyof typeof fieldErrors] = ''
+  })
 
   if (!data.name) {
     errors.name = 'Name is required'
   }
-  
+
   if (!data.genre) {
     errors.genre = 'Genre is required'
   }
@@ -128,25 +128,25 @@ function validateData(data: CreateData) {
   if (!data.artist_name) {
     errors.artist = 'Artist is required'
   }
-  
+
   // YouTube URL validation
   // if (!data.youtube) {
   //   errors.youtube = 'YouTube video ID is required';
   // } else if (!rules.youtubeUrl(data.youtube_id)) {
   //   errors.youtube = 'Please enter a valid YouTube URL';
   // }
-  
+
   // Year validation (optional but must be valid if provided)
   if (data.year !== null && !rules.year(data.year)) {
-    errors.year = `Year must be between 1900 and ${currentYear}`;
+    errors.year = `Year must be between 1900 and ${currentYear}`
   }
 
   // Update field errors
   Object.entries(errors).forEach(([key, value]) => {
-    fieldErrors[key as keyof typeof fieldErrors] = value;
-  });
+    fieldErrors[key as keyof typeof fieldErrors] = value
+  })
 
-  return errors;
+  return errors
 }
 
 const requestData = computed({
@@ -161,7 +161,7 @@ const requestData = computed({
 // Allows the user to automatically infer the
 // current genre of the song based on a pre-existing
 // songs from the same artist from the database
-async function handleSearchExistingArtist () {
+async function handleSearchExistingArtist() {
   try {
     searching.value = true
     const result = await client.get<Song[]>('/songs/', {
@@ -182,8 +182,8 @@ async function handleSearchExistingArtist () {
   }
 }
 
-async function handleSplit () {
-  if (requestData.value.artist_name.includes('-') && requestData.value.artist_name !== "") {
+async function handleSplit() {
+  if (requestData.value.artist_name.includes('-') && requestData.value.artist_name !== '') {
     const tokens = requestData.value.artist_name.split('-')
     requestData.value.artist_name = tokens[0].trim()
     requestData.value.name = tokens[1].trim()
@@ -198,9 +198,8 @@ async function handleSearchFeaturedArtists() {
       const response = await client.get<Artist[]>('/songs/artists')
       featuredArtists.value = response.data
       searching.value = false
-
     }
-  } catch (e) {
+  } catch {
     toast.error('Request failed')
     searching.value = false
   }

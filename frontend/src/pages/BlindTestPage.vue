@@ -3,7 +3,7 @@
     <template #teamOne>
       <TeamBlock :team-index="0" :margin-right="10" @next-song="handleCorrectAnswer" @team-settings="handleTeamSelection" />
     </template>
-    
+
     <template #teamTwo>
       <TeamBlock :team-index="1" :margin-left="10" @next-song="handleCorrectAnswer" @team-settings="handleTeamSelection" />
     </template>
@@ -15,15 +15,15 @@
 </template>
 
 <script lang="ts" setup>
-import { useSongs } from '@/stores/songs';
-import { MatchedElement } from '@/types';
-import { storeToRefs } from 'pinia';
-import { useHead } from 'unhead';
-import { ref } from 'vue';
+import { useSongs } from '@/stores/songs'
+import { MatchedElement } from '@/types'
+import { storeToRefs } from 'pinia'
+import { useHead } from 'unhead'
+import { ref } from 'vue'
 
-import TeamBlock from '@/components/blindtest/TeamBlock.vue';
-import VideoBlock from '@/components/blindtest/VideoBlock.vue';
-import BlindTestLayout from '@/layouts/BlindTestLayout.vue';
+import TeamBlock from '@/components/blindtest/TeamBlock.vue'
+import VideoBlock from '@/components/blindtest/VideoBlock.vue'
+import BlindTestLayout from '@/layouts/BlindTestLayout.vue'
 
 useHead({
   title: 'Blind test'
@@ -38,14 +38,14 @@ const videoEl = ref<HTMLElement>()
 
 // Callback function that handles the correct
 // answser from a given team
-function handleCorrectAnswer (data: (number | MatchedElement)[]) {
+function handleCorrectAnswer(data: (number | MatchedElement)[]) {
   if (songsStore.cache) {
     if (currentSong.value && data) {
       correctAnswers.value.push({
         teamId: data[0],
         song: currentSong.value
       })
-      
+
       if (videoEl.value) {
         // videoEl.value.handleNextSong()
         videoEl.value.handleCorrectAnswer(data[0], data[1])
@@ -57,7 +57,7 @@ function handleCorrectAnswer (data: (number | MatchedElement)[]) {
 }
 
 // Function that sets the team to edit
-function handleTeamSelection (teamId: number) {
+function handleTeamSelection(teamId: number) {
   selectedTeamId.value = teamId
   showTeamSettings.value = true
 }

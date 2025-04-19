@@ -9,7 +9,7 @@
 
       <v-card-text>
         <v-text-field v-model="teamName" placeholder="Team name" variant="solo-filled" flat />
-        
+
         <div class="d-flex justify-content-center mb-4">
           <VueColorWheel v-model:color="wheelColor" wheel="aurora" harmony="monochromatic" :radius="160" :default-color="wheelColor" @change="handleChangeColors" />
         </div>
@@ -21,13 +21,12 @@
 </template>
 
 <script lang="ts" setup>
-import { useDebounce } from '@vueuse/core';
-import { useSongs } from '@/stores/songs';
-import { computed, ref, watch } from 'vue';
+import { useDebounce } from '@vueuse/core'
+import { useSongs } from '@/stores/songs'
+import { computed, ref, watch } from 'vue'
 
-import type { Harmony } from 'vue-color-wheel';
-import { VueColorWheel } from 'vue-color-wheel';
-
+import type { Harmony } from 'vue-color-wheel'
+import { VueColorWheel } from 'vue-color-wheel'
 
 const songsStore = useSongs()
 
@@ -43,7 +42,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits({
-  'update:modelValue' (_value: boolean) {
+  'update:modelValue'(_value: boolean) {
     return true
   }
 })
@@ -79,7 +78,7 @@ const show = computed({
   }
 })
 
-function handleChangeColors (harmonyColors: Harmony[]) {
+function handleChangeColors(harmonyColors: Harmony[]) {
   colorList.value = harmonyColors
 }
 </script>

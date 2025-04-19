@@ -7,14 +7,14 @@
             <v-btn variant="tonal" @click="emit('back')">
               <FontAwesomeIcon icon="arrow-left" /> Back
             </v-btn>
-            
+
             <v-btn variant="tonal" @click="getPrevious">
               Previous
             </v-btn>
 
             <v-btn variant="tonal" @click="getNextPage">
               Next
-            </v-btn>        
+            </v-btn>
           </div>
 
           <v-text-field v-model="search" variant="solo-filled" type="search" placeholder="Search" flat @input="debouncedGetSongs" />
@@ -46,17 +46,17 @@
             </div>
           </v-expansion-panel-text>
         </v-expansion-panel>
-      </v-expansion-panels>        
+      </v-expansion-panels>
     </div>
   </section>
 </template>
 
 <script lang="ts" setup>
-import { useDebounce, useLimitOffeset, useString } from '@/composables/utils';
-import { useAxiosClient } from '@/plugins/client';
-import { ArtistSong } from '@/types';
-import { ref } from 'vue';
-import { toast } from 'vue-sonner';
+import { useDebounce, useLimitOffeset, useString } from '@/composables/utils'
+import { useAxiosClient } from '@/plugins/client'
+import { ArtistSong } from '@/types'
+import { ref } from 'vue'
+import { toast } from 'vue-sonner'
 
 // TODO: Refactor the types
 // for this endpoint because it
@@ -84,7 +84,7 @@ const previousLink = ref<string>()
 const nextLink = ref<string>()
 const apiResult = ref<ApiResponse>()
 
-async function getSongs (offset: string | number = 0) {
+async function getSongs(offset: string | number = 0) {
   try {
     const response = await client.get<ApiResponse>('/songs/by-artists', {
       params: {
@@ -104,15 +104,14 @@ async function getSongs (offset: string | number = 0) {
 
 const debouncedGetSongs = debounce(getSongs, 4000)
 
-async function getPrevious () {
+async function getPrevious() {
   if (previousLink.value) {
     const result = parser(previousLink.value)
     getSongs(result.offset)
   }
 }
 
-
-async function getNextPage () {
+async function getNextPage() {
   if (nextLink.value) {
     const result = parser(nextLink.value)
     getSongs(result.offset)

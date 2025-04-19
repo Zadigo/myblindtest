@@ -4,7 +4,7 @@
       <div class="team bg-light">
         <slot name="teamOne" />
       </div>
-      
+
       <div :style="teamStyles" class="team">
         <slot name="teamTwo" />
       </div>
@@ -18,10 +18,10 @@
 </template>
 
 <script lang="ts" setup>
-import { useSongs } from '@/stores/songs';
-import { useMediaQuery } from '@vueuse/core';
-import { useHead } from 'unhead';
-import { computed } from 'vue';
+import { useSongs } from '@/stores/songs'
+import { useMediaQuery } from '@vueuse/core'
+import { useHead } from 'unhead'
+import { computed } from 'vue'
 
 useHead({
   title: 'Blind test'
@@ -32,7 +32,7 @@ console.log('isLargeScreen', isLargeScreen.value)
 
 const songsStore = useSongs()
 
-function formatStyle (value: string | null) {
+function formatStyle(value: string | null) {
   if (value) {
     return `background-color: ${value};`
   } else {
@@ -41,7 +41,7 @@ function formatStyle (value: string | null) {
 }
 
 const teamStyles = computed(() => {
-  if( songsStore.cache) {
+  if (songsStore.cache) {
     if (songsStore.cache.teams[1].color) {
       return formatStyle(songsStore.cache.teams[1].color)
     }
@@ -69,7 +69,7 @@ const teamStyles = computed(() => {
     .team {
       padding: 1rem;
     }
-  
+
     .score {
       @extend %score;
     }

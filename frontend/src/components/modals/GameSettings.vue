@@ -19,7 +19,7 @@
         <div v-if="songsStore.cache" class="card-body">
           <label for="" class="fw-bold">Game difficulty</label>
           <v-select v-model="songsStore.cache.settings.difficultyLevel" :items="difficultyLevels" variant="solo-filled" placeholder="Blind test difficulty" flat />
-          
+
           <label for="" class="fw-bold">Song type</label>
           <v-select v-model="songsStore.cache.settings.songType" :items="songTypes" variant="solo-filled" placeholder="Blind test difficulty" flat />
         </div>
@@ -32,9 +32,9 @@
 </template>
 
 <script setup lang="ts">
-import { difficultyLevels, songTypes } from '@/data/defaults';
-import { useSongs } from '@/stores/songs';
-import { computed } from 'vue';
+import { difficultyLevels, songTypes } from '@/data/defaults'
+import { useSongs } from '@/stores/songs'
+import { computed } from 'vue'
 
 const props = defineProps<{
   modelValue: boolean

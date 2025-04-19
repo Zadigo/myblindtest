@@ -4,7 +4,7 @@ import { ChevronDown } from 'lucide-vue-next'
 import {
   NavigationMenuTrigger,
   type NavigationMenuTriggerProps,
-  useForwardProps,
+  useForwardProps
 } from 'reka-ui'
 import { computed, type HTMLAttributes } from 'vue'
 import { navigationMenuTriggerStyle } from '.'

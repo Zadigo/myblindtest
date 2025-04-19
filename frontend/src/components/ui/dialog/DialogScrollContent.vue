@@ -8,7 +8,7 @@ import {
   type DialogContentProps,
   DialogOverlay,
   DialogPortal,
-  useForwardPropsEmits,
+  useForwardPropsEmits
 } from 'reka-ui'
 import { computed, type HTMLAttributes } from 'vue'
 

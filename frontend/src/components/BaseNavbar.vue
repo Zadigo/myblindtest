@@ -8,7 +8,7 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <FontAwesomeIcon icon="bars" />
       </button>
-      
+
       <div id="navbarNav" class="collapse navbar-collapse">
         <ul class="navbar-nav">
           <li class="nav-item">

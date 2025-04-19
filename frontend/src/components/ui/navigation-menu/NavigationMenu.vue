@@ -6,7 +6,7 @@ import {
   NavigationMenuRoot,
   type NavigationMenuRootEmits,
   type NavigationMenuRootProps,
-  useForwardPropsEmits,
+  useForwardPropsEmits
 } from 'reka-ui'
 import NavigationMenuViewport from './NavigationMenuViewport.vue'
 
@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<NavigationMenuRootProps & {
   class?: HTMLAttributes['class']
   viewport?: boolean
 }>(), {
-  viewport: true,
+  viewport: true
 })
 const emits = defineEmits<NavigationMenuRootEmits>()
 

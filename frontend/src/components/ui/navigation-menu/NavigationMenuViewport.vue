@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils'
 import {
   NavigationMenuViewport,
   type NavigationMenuViewportProps,
-  useForwardProps,
+  useForwardProps
 } from 'reka-ui'
 import { computed, type HTMLAttributes } from 'vue'
 

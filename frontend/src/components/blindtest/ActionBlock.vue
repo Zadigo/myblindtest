@@ -4,7 +4,7 @@
       {{ teamName }}
     </p>
 
-    <div class="d-flex justify-content-center gap-2">      
+    <div class="d-flex justify-content-center gap-2">
       <button :disabled="!isStarted" type="button" class="btn btn-dark btn-rounded shadow-none" @click="handleAnswer">
         <FontAwesomeIcon icon="check" />
       </button>
@@ -13,13 +13,13 @@
 </template>
 
 <script lang="ts" setup>
-import { useSongs } from '@/stores/songs';
-import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
-import { toast } from 'vue-sonner';
+import { useSongs } from '@/stores/songs'
+import { storeToRefs } from 'pinia'
+import { computed } from 'vue'
+import { toast } from 'vue-sonner'
 
 const emit = defineEmits({
-  'next-song' (_data: number) {
+  'next-song'(_data: number) {
     return true
   }
 })
@@ -36,7 +36,7 @@ const { cache, isStarted } = storeToRefs(songsStore)
 
 const teamIndex = computed(() => {
   const result = props.teamId - 1
-  
+
   if (result <= 0) {
     return 0
   } else {
@@ -53,7 +53,7 @@ const team = computed(() => {
 })
 
 const teamName = computed(() => {
-  if (team.value && team.value.name !== "") {
+  if (team.value && team.value.name !== '') {
     return team.value.name
   } else {
     return `Team n°${props.teamId}`
@@ -70,7 +70,7 @@ const elementColor = computed(() => {
 
 // Adds a value to the current
 // team's score
-function handleScore () {
+function handleScore() {
   if (team.value) {
     if (cache.value.settings.matchSongDifficulty) {
       if (songsStore.currentSong) {
@@ -88,7 +88,7 @@ function handleScore () {
   }
 }
 
-function handleAnswer () {
+function handleAnswer() {
   handleScore()
   emit('next-song', props.teamId)
 }

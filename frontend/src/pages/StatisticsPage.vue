@@ -49,7 +49,7 @@ const songs = ref([
 // Compute genre data
 const genreChartData = computed<ChartData>(() => {
   const genres = [...new Set(songs.value.map(song => song.genre))]
-  const counts = genres.map(genre => 
+  const counts = genres.map(genre =>
     songs.value.filter(song => song.genre === genre).length
   )
 

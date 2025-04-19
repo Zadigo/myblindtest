@@ -16,11 +16,11 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, PropType, ref } from 'vue';
-import { RandomizerData } from '.';
+import { onMounted, PropType, ref } from 'vue'
+import { RandomizerData } from '.'
 
 const emit = defineEmits({
-  completed (_value: string | RandomizerData | undefined) {
+  completed(_value: string | RandomizerData | undefined) {
     return true
   }
 })
@@ -39,11 +39,11 @@ const props = defineProps({
 })
 
 // Audio elements
-const tickSound = ref<HTMLAudioElement | null>(null);
+const tickSound = ref<HTMLAudioElement | null>(null)
 const isSpinning = ref(false)
 const squareName = ref<string>('')
 
-function playTickSound () {
+function playTickSound() {
   if (tickSound.value) {
     tickSound.value.currentTime = 0 // Reset sound to start
     tickSound.value.play()
@@ -52,18 +52,18 @@ function playTickSound () {
 
 function runRandomizer() {
   if (isSpinning.value) {
-    return 
+    return
   }
 
   isSpinning.value = true
 
   const iterations = 20
-  const finalSelection = Math.floor(Math.random() * props.items.length);
+  const finalSelection = Math.floor(Math.random() * props.items.length)
 
   let speed = 100
   let currentIteration = 0
 
-  function animate () {
+  function animate() {
     // Animate the grid as long as the
     // iteration count is below "iterations"
     if (currentIteration < iterations) {
@@ -81,8 +81,8 @@ function runRandomizer() {
     } else {
       // Once the iteration is complete, show the final
       // selected result
-      squareName.value = props.items[finalSelection].value;
-      isSpinning.value = false;
+      squareName.value = props.items[finalSelection].value
+      isSpinning.value = false
     }
   }
 
@@ -100,7 +100,7 @@ onMounted(() => {
   tickSound.value = document.getElementById('tickSound') as HTMLAudioElement
 
   if (tickSound.value && !props.mute) {
-    tickSound.value.volume = 0.3;
+    tickSound.value.volume = 0.3
   }
 })
 

@@ -33,13 +33,12 @@
             </label>
             <v-text-field v-model="songStore.cache.settings.timeLimit" type="time" variant="solo-filled" clearable flat />
 
-
             <label for="game-difficulty" class="fw-bold">
               Time period
             </label>
 
             <p>
-              Choose a timeframe in years to select the 
+              Choose a timeframe in years to select the
               period in which the songs should be located
               for the blind test
             </p>
@@ -98,15 +97,15 @@
             </p>
 
             <p v-html="difficultyLevelPhrase" />
-              
+
             <p v-if="songStore.cache.settings.songDifficultyBonus">
               Each point will vary based on the song's difficulty. For example, if a song has a
-              <b>2 stars</b> difficuly, the points for a correct answer will be multiplied by 4. So, if 
+              <b>2 stars</b> difficuly, the points for a correct answer will be multiplied by 4. So, if
               a correct answer is normally worth 1 point, it would instead be worth <b>2 points</b>.
             </p>
-            
+
             <p v-if="useTimeLimit">
-              There is a time limit of <span class="badge badge-warning">5 minutes</span>. The team with the highest 
+              There is a time limit of <span class="badge badge-warning">5 minutes</span>. The team with the highest
               score at the end of the time wins
             </p>
           </v-card-text>
@@ -124,12 +123,12 @@
 
 <script lang="ts" setup>
 import { songTypes, difficultyLevels } from '@/data/defaults'
-import { useAxiosClient } from '@/plugins/client';
-import { useSongs } from '@/stores/songs';
-import { GenreDistribution, SettingsDataApiResponse } from '@/types';
-import { useHead } from 'unhead';
-import { computed, onBeforeMount, ref } from 'vue';
-import { toast } from 'vue-sonner';
+import { useAxiosClient } from '@/plugins/client'
+import { useSongs } from '@/stores/songs'
+import { GenreDistribution, SettingsDataApiResponse } from '@/types'
+import { useHead } from 'unhead'
+import { computed, onBeforeMount, ref } from 'vue'
+import { toast } from 'vue-sonner'
 
 useHead({
   title: 'Réglages'
@@ -167,10 +166,10 @@ async function requestSettingsData() {
 
     songStore.cache.settings.timeRange[0] = response.data.period.minimum
     songStore.cache.settings.timeRange[1] = response.data.period.maximum
-    
+
     minimumPeriod.value = response.data.period.minimum
     maximumPeriod.value = response.data.period.maximum
-    
+
     genreDistribution.value = response.data.count_by_genre
   } catch (e) {
     toast.error('Could not get settings')

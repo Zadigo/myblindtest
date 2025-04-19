@@ -17,7 +17,7 @@
         <v-btn v-if="isConnected" @click="handleDisconnect">
           Disconnect
         </v-btn>
-        
+
         <v-btn v-else @click="handleConnect">
           Connect
         </v-btn>
@@ -27,17 +27,17 @@
 </template>
 
 <script lang="ts" setup>
-import { getBaseUrl } from '@/plugins/client';
-import { WebsocketDiffusionMessage } from '@/types';
-import { useWebSocket } from '@vueuse/core';
-import { computed, ref } from 'vue';
-import { useWebsocketUtilities } from '@/composables/utils';
-import { useSongs } from '@/stores/songs';
+import { getBaseUrl } from '@/plugins/client'
+import { WebsocketDiffusionMessage } from '@/types'
+import { useWebSocket } from '@vueuse/core'
+import { computed, ref } from 'vue'
+import { useWebsocketUtilities } from '@/composables/utils'
+import { useSongs } from '@/stores/songs'
 
-import BlindTestLayout from '@/layouts/BlindTestLayout.vue';
-import TeamBlock from '@/components/blindtest/TeamBlock.vue';
-import { defaults } from '@/data/defaults';
-import { toast } from 'vue-sonner';
+import BlindTestLayout from '@/layouts/BlindTestLayout.vue'
+import TeamBlock from '@/components/blindtest/TeamBlock.vue'
+import { defaults } from '@/data/defaults'
+import { toast } from 'vue-sonner'
 
 const songStore = useSongs()
 const { parseMessage, sendMessage } = useWebsocketUtilities()
@@ -80,7 +80,7 @@ const ws = useWebSocket(getBaseUrl('/ws/connect', null, true), {
         break
 
       default:
-        break;
+        break
     }
   }
 })
