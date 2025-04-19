@@ -10,24 +10,29 @@ import utc from 'dayjs/plugin/utc';
 
 import './fontawesome';
 
-dayjs.extend(calendar)
-dayjs.extend(duration)
-dayjs.extend(utc)
-dayjs.extend(timezone)
-dayjs.extend(relativeTime)
-
-export default function installPlugins () {
-    return {
-        install(app: App) {
-            installAxiosClient(app)
-            app.config.globalProperties.$data = dayjs
+/**
+ * 
+ */
+async function autoLoadComponents(app: App) {
+    const components = import.meta.glob('../components/ui/**/*.vue')
+    Object.entries(components).forEach(([path, component]) => {
+        console.log(path, component)
+        if (path) {
+            const result = path.split('/').pop()
+            if (result) {
+                const item = result.replace(/\.\w+$/, '')
+                app.component(item, component.default);
+            }
         }
-    }
+    });
 }
 
-function useDayJs () {
+/**
+ * 
+ */
+function useDayJs() {
     const instance = dayjs
-    
+
     const currentDate = computed(() => {
         return instance()
     })
@@ -40,6 +45,22 @@ function useDayJs () {
         currentDate,
         currentYear,
         instance
+    }
+}
+
+export default function installPlugins () {
+    dayjs.extend(calendar)
+    dayjs.extend(duration)
+    dayjs.extend(utc)
+    dayjs.extend(timezone)
+    dayjs.extend(relativeTime)
+
+    return {
+        install(app: App) {
+            autoLoadComponents(app)
+            installAxiosClient(app)
+            app.config.globalProperties.$data = dayjs
+        }
     }
 }
 
