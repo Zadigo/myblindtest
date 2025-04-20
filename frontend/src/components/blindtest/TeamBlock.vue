@@ -1,54 +1,61 @@
 <template>
-  <div ref="teamBlockEl" :style="blockStyles" class="d-flex flex-column align-items-center position-relative">
-    <!-- Team Name -->
-    <div class="p-3 bg-dark text-light mt-4 mb-3 rounded-3">
-      <h1 class="h4 fw-bold m-0 d-flex align-items-center gap-2">
-        {{ teamName }}
-      </h1>
+  <div id="left" ref="teamBlockEl" class="p-5 h-screen">
+    <div id="team" :class="blockPosition" class="flex-col w-7/12">
+      <Card class="w-full text-center">
+        <CardContent>
+          <h1 class="text-5xl font-bold">
+            {{ teamScore }}
+          </h1>
+
+          <p class="font-light uppercase">
+            Points ({{ teamName }})
+          </p>
+        </CardContent>
+      </Card>
+
+      <!-- Actions -->
+      <Card class="mt-2 mb-10">
+        <CardContent>
+          <div class="flex justify-center gap-2">
+            <Button variant="secondary" @click="handleMatch('Title')">
+              <VueIcon name="fa-solid:t" />
+              Title
+            </Button>
+
+            <Button variant="secondary" @click="handleMatch('Artist')">
+              <VueIcon name="fa-solid:a" />
+              Artist
+            </Button>
+
+            <Button variant="secondary" @click="handleMatch('Both')">
+              <VueIcon name="fa-solid:t" />
+              Both
+            </Button>
+          </div>
+
+          <div class="flex justify-center mt-4 w-full">
+            <Button class="w-10/13 self-center" variant="default" @click="handleCorrectAnswer">
+              <Icon icon="fa-solid:check" />
+              Validate
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      <div class="flex gap-1 justify-center p-5 mt-3">
+        <div v-for="i in 5" :key="i" class="p-2 bg-yellow-100 rounded-md w-1/6" />
+      </div>
+
+      <!-- Consecutive Answers -->
+      <Transition class="animate__animated" enter-to-class="animate__zoomInLeft" leave-to-class="animate__fadeOutLeft">
+        <h1 v-if="hasConsecutiveAnswers" class="text-5xl font-bold text-gray-700">
+          Exceptionnel x {{ consecutiveAnswers }}
+        </h1>
+      </Transition>
+
+      <!-- Fireworks -->
+      <BaseFireworks v-show="gameStarted && hasConsecutiveAnswers" />
     </div>
-
-    <!-- Score -->
-    <div ref="scoreBoxEl" class="score p-3 rounded-3 bg-dark text-light" style="width: 200px;">
-      <h2 class="fs-1 w bold m-0">
-        {{ teamScore }}
-      </h2>
-
-      <p class="m-0 fw-light text-lowercase">
-        Points
-      </p>
-    </div>
-
-    <div v-if="!diffusionMode" class="mt-5 mb-3 d-flex justify-content-center gap-2">
-      <!-- :disabled="!songsStore.gameStarted" -->
-      <v-btn :flat="matchedElement!=='Title'" rounded @click="handleMatch('Title')">
-        <FontAwesomeIcon icon="t" class="me-2" /> Title
-      </v-btn>
-
-      <v-btn :flat="matchedElement!=='Artist'" rounded @click="handleMatch('Artist')">
-        <FontAwesomeIcon icon="a" class="me-2" /> Artist
-      </v-btn>
-
-      <v-btn :flat="matchedElement!=='Both'" rounded @click="handleMatch('Both')">
-        <FontAwesomeIcon icon="a" class="me-2" /> Both
-      </v-btn>
-    </div>
-
-    <!-- Actions -->
-    <div v-if="!diffusionMode" class="d-flex align-items-center flex-column gap-2">
-      <v-btn :disabled="!songsStore.gameStarted" size="x-large" rounded @click="handleCorrectAnswer">
-        <FontAwesomeIcon icon="check" class="me-2" /> Validate
-      </v-btn>
-    </div>
-
-    <!-- Consecutive Answers -->
-    <Transition class="animate__animated" enter-to-class="animate__zoomInLeft" leave-to-class="animate__fadeOutLeft">
-      <h1 v-if="hasConsecutiveAnswers" id="exceptional">
-        Exceptional x {{ consecutiveAnswers }}
-      </h1>
-    </Transition>
-
-    <!-- Fireworks -->
-    <BaseFireworks v-show="gameStarted && hasConsecutiveAnswers" />
   </div>
 </template>
 
@@ -83,6 +90,10 @@ const props = defineProps({
   diffusionMode: {
     type: Boolean,
     default: false
+  },
+  blockPosition: {
+    type: String,
+    default: 'me-auto'
   }
 })
 
@@ -119,13 +130,9 @@ const teamScore = computed(() => {
   }
 })
 
-const blockStyles = computed(() => {
-  return `margin-left:${props.marginLeft}rem;margin-right:${props.marginRight}rem;`
-})
-
 // Checks when a team has given multiple consecutive
 // answers (at least 2)
-const MIN_CONSECUTIVE = 2 // or whatever number you want
+const MIN_CONSECUTIVE = 2
 
 const consecutiveAnswers = computed(() => {
   if (correctAnswers.value.length < MIN_CONSECUTIVE) {
@@ -147,8 +154,10 @@ const consecutiveAnswers = computed(() => {
   return count >= MIN_CONSECUTIVE ? count : 0
 })
 
-// Flag that explicitly returns if the team has
-// answered consecutive answers
+/**
+ * Flag that explicitly returns if the team has
+ * answered consecutive answers
+ */
 const hasConsecutiveAnswers = computed(() => {
   return consecutiveAnswers.value > MIN_CONSECUTIVE
 })
@@ -158,6 +167,9 @@ whenever(hasConsecutiveAnswers, () => {
   currentBonus.value = 0
 })
 
+/**
+ *
+ */
 async function handleAnimation() {
   if (scoreBoxEl.value) {
     const animationClasses = ['animate__animated', 'animate__heartBeat', 'animate__repeat-1']
@@ -173,6 +185,9 @@ async function handleAnimation() {
   }
 }
 
+/**
+ *
+ */
 async function handleCorrectAnswer() {
   if (team.value) {
     await handleAnimation()
@@ -183,16 +198,13 @@ async function handleCorrectAnswer() {
   }
 }
 
-// Allows us to determine whether the user matched the
-// artist and/or the song title for the current given song
+/**
+ * Allows us to determine whether the user matched the
+ * artist and/or the song title for the current given song
+ * 
+ * @param match The matched element
+ */
 function handleMatch(match: MatchedElement) {
   matchedElement.value = match
 }
 </script>
-
-<style lang="scss" scoped>
-h1#exceptional {
-  font-family: "Rowdies", "Roboto", sans-serif;
-  margin-top: 4rem;
-}
-</style>

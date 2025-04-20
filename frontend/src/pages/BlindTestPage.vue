@@ -1,11 +1,11 @@
 <template>
   <BlindTestLayout>
     <template #teamOne>
-      <TeamBlock :team-index="0" :margin-right="10" @next-song="handleCorrectAnswer" @team-settings="handleTeamSelection" />
+      <TeamBlock :team-index="0" class="bg-blue-200" @next-song="handleCorrectAnswer" @team-settings="handleTeamSelection" />
     </template>
 
     <template #teamTwo>
-      <TeamBlock :team-index="1" :margin-left="10" @next-song="handleCorrectAnswer" @team-settings="handleTeamSelection" />
+      <TeamBlock :team-index="1" block-position="ms-auto" class="bg-yellow-200" @next-song="handleCorrectAnswer" @team-settings="handleTeamSelection" />
     </template>
 
     <template #video>
@@ -18,16 +18,11 @@
 import { useSongs } from '@/stores/songs'
 import { MatchedElement } from '@/types'
 import { storeToRefs } from 'pinia'
-import { useHead } from 'unhead'
 import { ref } from 'vue'
 
 import TeamBlock from '@/components/blindtest/TeamBlock.vue'
 import VideoBlock from '@/components/blindtest/VideoBlock.vue'
 import BlindTestLayout from '@/layouts/BlindTestLayout.vue'
-
-useHead({
-  title: 'Blind test'
-})
 
 const songsStore = useSongs()
 const { currentSong, correctAnswers } = storeToRefs(songsStore)
@@ -36,8 +31,10 @@ const showTeamSettings = ref(false)
 const selectedTeamId = ref<number>()
 const videoEl = ref<HTMLElement>()
 
-// Callback function that handles the correct
-// answser from a given team
+/**
+ * Callback function that handles the correct
+ * answser from a given team
+ */
 function handleCorrectAnswer(data: (number | MatchedElement)[]) {
   if (songsStore.cache) {
     if (currentSong.value && data) {

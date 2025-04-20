@@ -2,7 +2,7 @@
   <section class="h-auto relative">
     <div class="grid grid-cols-2 grid-rows-1">
       <div id="left" class="bg-blue-200 h-full p-5 h-scren">
-        <div class="flex-col justify-start w-7/12">
+        <div id="team" class="flex-col justify-start w-7/12">
           <Card class="w-full text-center">
             <CardContent>
               <h1 class="text-5xl font-bold">
