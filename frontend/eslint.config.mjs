@@ -45,6 +45,7 @@ export default typescriptEslint.config(
         }
       }],
       "vue/multi-word-component-names": ['warn'],
+      "vue/no-v-html": ['warn'],
 
       "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
       '@typescript-eslint/unified-signatures': 'error',

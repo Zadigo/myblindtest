@@ -4,8 +4,6 @@
       <component :is="Component" />
     </Transition>
   </RouterView>
-  <!-- <v-app>
-  </v-app> -->
 </template>
 
 <script setup lang="ts">
