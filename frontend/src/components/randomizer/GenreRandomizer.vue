@@ -1,10 +1,8 @@
 <template>
-  <div class="card shadow-none">
-    <div class="card-body">
-      <div class="floor" @click="runRandomizer">
-        <div v-for="detail in items" :key="detail.id" :class="{ highlight: detail.value === squareName }" class="square">
-          <span>{{ detail.value }}</span>
-        </div>
+  <div id="randomizer">
+    <div class="floor" @click="runRandomizer">
+      <div v-for="detail in items" :key="detail.id" :class="{ highlight: detail.value === squareName }" class="square">
+        <span>{{ detail.value }}</span>
       </div>
     </div>
 

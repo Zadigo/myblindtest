@@ -1,4 +1,4 @@
-import { computed, type App, defineAsyncComponent } from 'vue'
+import { computed, type App } from 'vue'
 import { installAxiosClient } from './client'
 
 import dayjs from 'dayjs'
@@ -13,31 +13,19 @@ import './fontawesome'
 /**
  *
  */
-async function autoLoadComponents(app: App) {
-  const components = import.meta.glob('../components/ui/**/*.vue')
+// async function autoLoadComponents(app: App) {
+//   const components = import.meta.glob('../components/ui/**/*.vue')
 
-  for (const [path, loader] of Object.entries(components)) {
-    const fileName = path.split('/').pop()
-    if (!fileName) {
-      continue
-    } else {
-      const componentName = fileName.replace(/\.\w+$/, '')
-      app.component(componentName, defineAsyncComponent(loader))
-    }
-  }
-
-  // Object.entries(components).forEach(([path, component]) => {
-  //     // console.log(path, component)
-  //     if (path) {
-  //         const result = path.split('/').pop()
-  //         if (result) {
-  //             const item = result.replace(/\.\w+$/, '')
-  //             console.log(item, component.default)
-  //             app.component(item, component.default)
-  //         }
-  //     }
-  // })
-}
+//   for (const [path, loader] of Object.entries(components)) {
+//     const fileName = path.split('/').pop()
+//     if (!fileName) {
+//       continue
+//     } else {
+//       const componentName = fileName.replace(/\.\w+$/, '')
+//       app.component(componentName, defineAsyncComponent(loader))
+//     }
+//   }
+// }
 
 /**
  *
@@ -69,7 +57,7 @@ export default function installPlugins() {
 
   return {
     install(app: App) {
-      autoLoadComponents(app)
+      // autoLoadComponents(app)
       installAxiosClient(app)
       app.config.globalProperties.$data = dayjs
     }

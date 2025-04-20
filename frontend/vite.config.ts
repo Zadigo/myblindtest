@@ -7,6 +7,7 @@ import tailwind from '@tailwindcss/vite'
 import UnheadVite from '@unhead/addons/vite'
 import eslint from 'vite-plugin-eslint'
 import vue from '@vitejs/plugin-vue'
+import unpluginViteComponents from 'unplugin-vue-components/vite'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -28,7 +29,17 @@ export default defineConfig(({ mode }) => {
       vue(),
       eslint(),
       UnheadVite(),
-      tailwind()
+      tailwind(),
+      unpluginViteComponents({
+        deep: true,
+        dts: 'src/types/components.d.ts',
+        dirs: [
+          'src/components/ui'
+        ],
+        extensions: [
+          'vue'
+        ]
+      })
     ],
     test: {
       globals: true,
