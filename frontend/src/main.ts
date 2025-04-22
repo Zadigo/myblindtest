@@ -11,7 +11,7 @@ import installPlugins from './plugins'
 
 import './style.scss'
 import './assets/css/main.css'
-import './assets/spinners.scss'
+// import './assets/spinners.scss'
 import 'animate.css'
 // import '@mdi/font/css/materialdesignicons.css'
 // import 'vuetify/styles'

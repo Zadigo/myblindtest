@@ -40,7 +40,7 @@ const sessionCache = useSessionStorage<CacheSession>('cache', defaults.cache, {
 const songsStore = useSongs()
 
 songsStore.$subscribe((_, state) => {
-  state.cache = sessionCache.value
+  sessionCache.value = state.cache
 })
 
 onBeforeMount(() => {

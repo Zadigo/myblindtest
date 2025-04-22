@@ -22,10 +22,12 @@
       <CardContent>
         <p class="font-bold mb-3">
           {{ songsStore.cache.currentStep }}/-
+          {{ songsStore.correctAnswers }}
         </p>
 
         <div id="video-wrapper" class="rounded-md overflow-hidden flex justify-center items-center max-w-full">
-          <iframe :src="'https://www.youtube.com/embed/CByuJoBwvbE?si=0jTKuldFoTmZYYf0'" class="max-w-full h-auto block" width="400" height="200" title="Sinéad O&#39;Connor - Nothing Compares 2 U (Official Music Video) [HD]" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" />
+          <iframe v-if="gameStarted && currentSong" :src="songsStore.currentSong.youtube" :title="songsStore.currentSong.artist.name" class="max-w-full h-auto block" width="400" height="200" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" />
+          <Spinner v-else name="loader-4" />
         </div>
       </CardContent>
 
@@ -58,6 +60,7 @@
 </template>
 
 <script lang="ts" setup>
+import { useWebsocketUtilities } from '@/composables/utils'
 import { wheelDetaults } from '@/data/defaults'
 import { getBaseUrl } from '@/plugins/client'
 import { useSongs } from '@/stores/songs'
@@ -66,8 +69,8 @@ import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import { toast } from 'vue-sonner'
 import { RandomizerData } from '../randomizer'
-import { useWebsocketUtilities } from '@/composables/utils'
 
+import Spinner from '@/components/spinner/Spinner.vue'
 import GenreRandomizer from '../randomizer/GenreRandomizer.vue'
 
 import type { MatchedElement, Song, WebsocketBlindTestMessage } from '@/types'
@@ -106,10 +109,14 @@ const ws = useWebSocket(getBaseUrl('/ws/songs', null, true), {
     toast.success('Info', {
       description: 'Started blind test'
     })
+
+    if (!gameStarted.value) {
+      gameStarted.value = true
+    }
   },
   onMessage() {
     const data = parseMessage<WebsocketBlindTestMessage>(ws.data.value)
-
+    console.log(data)
     switch (data.action) {
       case 'connection_token':
         connectionToken.value = data.token
@@ -182,8 +189,9 @@ const ws = useWebSocket(getBaseUrl('/ws/songs', null, true), {
   },
   onDisconnected() {
     gameStarted.value = false
-    toast.error('Error', {
-      description: 'Game has been disconnected'
+    toast.error('Warning', {
+      description: 'Game has been disconnected',
+      class: 'bg-yellow-100'
     })
   },
   onError() {
@@ -231,6 +239,9 @@ function handleIncorrectAnswer() {
 /**
  * Proxy function that can be used by parent elements
  * to trigger a websocket message on the team guess
+ *
+ * @param teamId The ID of the team
+ * @param match The element that was matched
  */
 function handleCorrectAnswer(teamId: string, match: MatchedElement) {
   let title_match: boolean = true

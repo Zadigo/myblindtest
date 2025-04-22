@@ -1,7 +1,7 @@
 <template>
   <div id="left" ref="teamBlockEl" class="p-5 h-screen">
     <div id="team" :class="blockPosition" class="flex-col w-7/12">
-      <Card class="w-full text-center">
+      <Card class="w-full text-center border-none">
         <CardContent>
           <h1 class="text-5xl font-bold">
             {{ teamScore }}
@@ -14,28 +14,28 @@
       </Card>
 
       <!-- Actions -->
-      <Card class="mt-2 mb-10">
+      <Card class="mt-2 mb-10 border-none">
         <CardContent>
           <div class="flex justify-center gap-2">
-            <Button variant="secondary" @click="handleMatch('Title')">
+            <Button :variant="matchedElement === 'Title' ? 'default' : 'secondary'" @click="handleMatch('Title')">
               <VueIcon name="fa-solid:t" />
               Title
             </Button>
 
-            <Button variant="secondary" @click="handleMatch('Artist')">
+            <Button :variant="matchedElement === 'Artist' ? 'default' : 'secondary'" @click="handleMatch('Artist')">
               <VueIcon name="fa-solid:a" />
               Artist
             </Button>
 
-            <Button variant="secondary" @click="handleMatch('Both')">
+            <Button :variant="matchedElement === 'Both' ? 'default' : 'secondary'" @click="handleMatch('Both')">
               <VueIcon name="fa-solid:t" />
               Both
             </Button>
           </div>
 
           <div class="flex justify-center mt-4 w-full">
-            <Button class="w-10/13 self-center" variant="default" @click="handleCorrectAnswer">
-              <Icon icon="fa-solid:check" />
+            <Button :disabled="!gameStarted" class="w-10/13 self-center" variant="default" @click="handleCorrectAnswer">
+              <VueIcon icon="fa-solid:check" />
               Validate
             </Button>
           </div>

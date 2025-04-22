@@ -119,6 +119,12 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
             artist_match = content.get('artist_match', False)
             await self.handle_guess(team_id, title_match, artist_match)
 
+            await self.send_json({
+                'action': 'last.answers',
+                'team_one': await self.team_answers(self.team_one.team_id),
+                'team_two': await self.team_answers(self.team_two.team_id)
+            })
+            
             # TODO: Use when a string guess is passed
             # guess = content.get('guess', '').strip()
             # if guess:

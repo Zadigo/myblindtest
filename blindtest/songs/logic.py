@@ -6,10 +6,10 @@ from typing import List, Union
 from channels.db import database_sync_to_async
 from django.core import exceptions
 from django.core.cache import cache
+from django.utils.crypto import get_random_string
 from songs.api import serializers
 from songs.models import Song
 from songs.processors import FuzzyMatcher
-from django.utils.crypto import get_random_string
 
 # TODO: Ability to use jokers:
 # 1. point boost (win 15 points on this specific answer)
@@ -23,29 +23,6 @@ from django.utils.crypto import get_random_string
 # TODO: Centralize the frontend cache directly in Python and dispatch
 # the updates to the frontend applications
 
-
-# // The timeline allows us to track the progression for
-# // correct and incorrect answers globally for all teams
-# // function updateScoringTimeline (action: 'add' | 'sub') {
-# //     const lastScore = scoringTimeline.value[scoringTimeline.value.length]
-
-# //     if (lastScore) {
-# //         if (action === 'add') {
-# //             scoringTimeline.value.push(lastScore + 1)
-# //         } else {
-# //             scoringTimeline.value.push(lastScore - 1)
-# //         }
-# //     } else {
-# //         if (action === 'add') {
-# //             scoringTimeline.value.push(100 + 1)
-# //         }
-
-# //         if (action === 'sub') {
-# //             scoringTimeline.value.push(100 - 1)
-# //         }
-# //     }
-
-# // }
 
 @dataclasses.dataclass
 class Team:
@@ -64,7 +41,37 @@ class Team:
 
 
 class GameGlobalStatisticsMixin:
-    pass
+    cached_answers = []
+    timeline = [100]
+
+    @property
+    def last_score(self) -> dict[str, str] | None:
+        try:
+            return self.cached_answers[-1]
+        except:
+            return None
+
+    async def team_answers(self, team_id: str):
+        """Return the last answers by the given team"""
+        return list(map(lambda x: x['team_id'] == team_id, self.cached_answers))[:5]
+
+    async def register_answer(self, team_id: str, matched: str | None):
+        """Registers the answers"""
+        self.cached_answers.append({'team_id': team_id, 'matched': matched})
+
+    async def update_timeline(self):
+        """The timeline allows us to track the progression for
+        correct and incorrect answers globally for all teams"""
+        if self.is_started:
+            matched = self.last_score['matched']
+            value = self.timeline[-1]
+
+            if matched == 'Title' or matched == 'Artist':
+                value += 1
+                self.timeline.append(value)
+            elif matched is None:
+                value -= 1
+                self.timeline.append(value)
 
 
 class GameLogicMixin(GameGlobalStatisticsMixin):
@@ -386,3 +393,11 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
 
         await self.send_json(message)
         await self.next_song()
+
+        # matched = None
+        # if title_match:
+        #     matched = 'Title'
+        # elif artist_match:
+        #     matched = 'Artist'
+        # await self.register_answer(team_id, matched)
+        # await self.update_timeline()

@@ -1,6 +1,6 @@
-import type { CacheSession } from '../types'
+import type { CacheSession, DifficultyLevels, SongGenres } from '../types'
 
-export const difficultyLevels = [
+export const difficultyLevels: DifficultyLevels[] = [
   'All',
   'Easy',
   'Medium',
@@ -9,7 +9,7 @@ export const difficultyLevels = [
   'Expert'
 ]
 
-export const songTypes = [
+export const songTypes: SongGenres[] = [
   'All',
   'Pop',
   'Electro',

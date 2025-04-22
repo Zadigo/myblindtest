@@ -1,11 +1,11 @@
 <template>
   <BlindTestLayout>
     <template #teamOne>
-      <TeamBlock :team-index="0" class="bg-blue-200" @next-song="handleCorrectAnswer" @team-settings="handleTeamSelection" />
+      <TeamBlock :team-index="0" class="bg-blue-200" @next-song="handleCorrectAnswer" />
     </template>
 
     <template #teamTwo>
-      <TeamBlock :team-index="1" block-position="ms-auto" class="bg-yellow-200" @next-song="handleCorrectAnswer" @team-settings="handleTeamSelection" />
+      <TeamBlock :team-index="1" block-position="ms-auto" class="bg-yellow-200" @next-song="handleCorrectAnswer" />
     </template>
 
     <template #video>
@@ -27,13 +27,13 @@ import BlindTestLayout from '@/layouts/BlindTestLayout.vue'
 const songsStore = useSongs()
 const { currentSong, correctAnswers } = storeToRefs(songsStore)
 
-const showTeamSettings = ref(false)
-const selectedTeamId = ref<number>()
 const videoEl = ref<HTMLElement>()
 
 /**
  * Callback function that handles the correct
  * answser from a given team
+ *
+ * @param (number | string)[]
  */
 function handleCorrectAnswer(data: (number | MatchedElement)[]) {
   if (songsStore.cache) {
@@ -44,7 +44,6 @@ function handleCorrectAnswer(data: (number | MatchedElement)[]) {
       })
 
       if (videoEl.value) {
-        // videoEl.value.handleNextSong()
         videoEl.value.handleCorrectAnswer(data[0], data[1])
       }
     }
@@ -52,21 +51,4 @@ function handleCorrectAnswer(data: (number | MatchedElement)[]) {
     console.error('handleCorrectAnswer: BlindTestPage')
   }
 }
-
-// Function that sets the team to edit
-function handleTeamSelection(teamId: number) {
-  selectedTeamId.value = teamId
-  showTeamSettings.value = true
-}
-
-// Handles updating the details for a
-// given team
-// function handleUpdateTeam (value: string) {
-//   if (songsStore.cache) {
-//     const team = songsStore.cache.teams.find(x => x.id === value)
-//     if (team) {
-//       team.name = value
-//     }
-//   }
-// }
 </script>

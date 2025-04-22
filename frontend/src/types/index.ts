@@ -77,6 +77,7 @@ export interface CopiedCreateData extends Omit<CreateData, 'featured_artists'> {
 
 export interface Answer {
   teamId: number
+  matched?: 'Title' | 'Artist' | 'Both'
   song: Song
 }
 
