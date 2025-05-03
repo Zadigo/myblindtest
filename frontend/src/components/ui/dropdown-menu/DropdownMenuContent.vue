@@ -5,15 +5,15 @@ import {
   type DropdownMenuContentEmits,
   type DropdownMenuContentProps,
   DropdownMenuPortal,
-  useForwardPropsEmits
+  useForwardPropsEmits,
 } from 'reka-ui'
 import { computed, type HTMLAttributes } from 'vue'
 
 const props = withDefaults(
   defineProps<DropdownMenuContentProps & { class?: HTMLAttributes['class'] }>(),
   {
-    sideOffset: 4
-  }
+    sideOffset: 4,
+  },
 )
 const emits = defineEmits<DropdownMenuContentEmits>()
 
