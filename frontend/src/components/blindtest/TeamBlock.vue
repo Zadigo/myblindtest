@@ -3,7 +3,7 @@
     <div id="team" :class="blockPosition" class="flex-col w-7/12">
       <Card class="w-full text-center border-none">
         <CardContent>
-          <h1 class="text-5xl font-bold">
+          <h1 ref="scoreBoxEl" class="text-5xl font-bold">
             {{ teamScore }}
           </h1>
 
@@ -201,7 +201,7 @@ async function handleCorrectAnswer() {
 /**
  * Allows us to determine whether the user matched the
  * artist and/or the song title for the current given song
- * 
+ *
  * @param match The matched element
  */
 function handleMatch(match: MatchedElement) {

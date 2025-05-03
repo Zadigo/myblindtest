@@ -2,19 +2,35 @@
   <div class="absolute my-10 left-2/6 w-4/12">
     <Card class="border-none shadow-md">
       <CardHeader>
-        <div v-if="currentSong">
-          {{ currentSong.name }}
-          {{ currentSong.genre }}
-        </div>
+        <div class="flex justify-between align-center">
+          <div v-if="currentSong">
+            <p class="font-bold">
+              {{ currentSong.name }} <span class="font-semibold">({{ currentSong.artist.name }})</span>
+            </p>
 
-        <div class="flex justify-end gap-2">
-          <Button variant="outline">
-            <VueIcon icon="fa-solid:home" size="15" />
-          </Button>
+            <div class="inline-flex gap-1 my-2">
+              <template v-for="i in 5" :key="i">
+                <VueIcon v-if="i <= currentSong.difficulty" icon="fa-solid:star" />
+                <VueIcon v-else icon="fa-solid:star" class="text-slate-50" />
+              </template>
+            </div>
 
-          <Button variant="outline" @click="showWheel=!showWheel">
-            <VueIcon icon="fa-solid:bolt" size="15" />
-          </Button>
+            <div>
+              <Badge variant="default">
+                {{ currentSong.genre }}
+              </Badge>
+            </div>
+          </div>
+
+          <div class="flex justify-end gap-2">
+            <Button variant="outline">
+              <VueIcon icon="fa-solid:home" size="15" />
+            </Button>
+
+            <Button variant="outline" @click="showWheel=!showWheel">
+              <VueIcon icon="fa-solid:bolt" size="15" />
+            </Button>
+          </div>
         </div>
       </CardHeader>
 
@@ -22,7 +38,6 @@
       <CardContent>
         <p class="font-bold mb-3">
           {{ songsStore.cache.currentStep }}/-
-          {{ songsStore.correctAnswers }}
         </p>
 
         <div id="video-wrapper" class="rounded-md overflow-hidden flex justify-center items-center max-w-full">
