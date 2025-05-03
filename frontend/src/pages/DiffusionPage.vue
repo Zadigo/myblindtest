@@ -36,7 +36,7 @@ import { useSongs } from '@/stores/songs'
 
 import BlindTestLayout from '@/layouts/BlindTestLayout.vue'
 import TeamBlock from '@/components/blindtest/TeamBlock.vue'
-import { defaults } from '@/data/defaults'
+import { defaults } from '@/data'
 import { toast } from 'vue-sonner'
 
 const songStore = useSongs()
