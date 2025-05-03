@@ -74,9 +74,9 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { useWebsocketUtilities } from '@/composables/utils'
-import { wheelDetaults } from '@/data/defaults'
+import { wheelDetaults } from '@/data'
 import { getBaseUrl } from '@/plugins/client'
 import { useSongs } from '@/stores/songs'
 import { useLocalStorage, useWebSocket } from '@vueuse/core'
