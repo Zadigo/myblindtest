@@ -111,10 +111,7 @@
 </template>
 
 <script setup lang="ts">
-import { wheelDetaults } from '@/data/defaults'
-
-import GenreRandomizer from '@/components/randomizer/GenreRandomizer.vue'
-import BaseFireworks from '@/components/BaseFireworks.vue'
+import { wheelDetaults } from '@/data'
 
 import { ref } from 'vue'
 
