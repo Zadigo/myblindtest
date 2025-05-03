@@ -20,10 +20,6 @@ import { MatchedElement } from '@/types'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 
-import TeamBlock from '@/components/blindtest/TeamBlock.vue'
-import VideoBlock from '@/components/blindtest/VideoBlock.vue'
-import BlindTestLayout from '@/layouts/BlindTestLayout.vue'
-
 const songsStore = useSongs()
 const { currentSong, correctAnswers } = storeToRefs(songsStore)
 

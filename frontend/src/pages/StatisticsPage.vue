@@ -25,9 +25,6 @@ import type { ChartData, ChartOptions } from 'chart.js'
 import { useHead } from 'unhead'
 import { computed, ref } from 'vue'
 
-import BarChart from '@/components/charts/BarChart.vue'
-import TimelineChart from '@/components/charts/TimelineChart.vue'
-
 useHead({
   title: 'Statistics',
   meta: [

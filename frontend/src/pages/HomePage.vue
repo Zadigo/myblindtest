@@ -49,10 +49,6 @@ import { GenreDistribution, SettingsDataApiResponse } from '@/types'
 import { computed, onBeforeMount, ref } from 'vue'
 import { toast } from 'vue-sonner'
 
-import GeneralSettings from '@/components/home/GeneralSettings.vue'
-import PointValues from '@/components/home/PointValues.vue'
-import GameModes from '@/components/home/GameModes.vue'
-
 const { client } = useAxiosClient()
 const songStore = useSongs()
 
