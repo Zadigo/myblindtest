@@ -18,11 +18,6 @@ const router = createRouter({
           name: 'teams'
         },
         {
-          path: 'blind-test',
-          component: async () => import('../pages/BlindTestPage.vue'),
-          name: 'blind_test'
-        },
-        {
           path: 'create',
           component: async () => import('../pages/CreateSongsPage.vue'),
           name: 'create'
@@ -58,7 +53,12 @@ const router = createRouter({
           name: 'error'
         }
       ]
-    }
+    },
+    {
+      path: '/blind-test',
+      component: async () => import('../pages/BlindTestPage.vue'),
+      name: 'blind_test'
+    },
   ]
 })
 
