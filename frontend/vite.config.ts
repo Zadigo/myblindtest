@@ -8,6 +8,7 @@ import UnheadVite from '@unhead/addons/vite'
 import eslint from 'vite-plugin-eslint'
 import vue from '@vitejs/plugin-vue'
 import unpluginViteComponents from 'unplugin-vue-components/vite'
+import autoImport from 'unplugin-auto-import/vite'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -38,6 +39,19 @@ export default defineConfig(({ mode }) => {
         ],
         extensions: [
           'vue'
+        ]
+      }),
+      autoImport({
+        dts: 'src/types/auto-imports.d.ts',
+        vueTemplate: true,
+        imports: [
+          'vue',
+          'pinia',
+          {
+            './src/stores': [
+              'useSongs'
+            ]
+          }
         ]
       })
     ],
