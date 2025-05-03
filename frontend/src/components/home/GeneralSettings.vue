@@ -36,7 +36,7 @@
             <SelectValue placeholder="All" />
           </SelectTrigger>
           <SelectContent>
-            <SelectGroup v-for="songType in songTypes" :key="songType">
+            <SelectGroup v-for="songType in songGenres" :key="songType">
               <SelectItem :value="songType">
                 {{ songType }}
               </SelectItem>
@@ -83,9 +83,8 @@
 </template>
 
 <script lang="ts" setup>
-import { songTypes, difficultyLevels } from '@/data/defaults'
+import { difficultyLevels, songGenres, type DifficultyLevels, type SongGenres } from '@/data'
 import { useSongs } from '@/stores/songs'
-import type { DifficultyLevels, SongGenres } from '@/types'
 // import { GenreDistribution } from '@/types'
 import { ref } from 'vue'
 

@@ -33,22 +33,8 @@ export default defineConfig(({ mode }) => {
       unpluginViteComponents({
         deep: true,
         dts: 'src/types/components.d.ts',
-        // directoryAsNamespace: false,
-        // resolvers: [
-        //   {
-        //     type: 'component',
-        //     resolve: (name: string) => {
-        //       console.log(name)
-        //       const importName = `Tail${name}`
-        //       return {
-        //         name: importName,
-        //         path: resolve(__dirname, 'src/components/ui', `${name}.vue`)
-        //       }
-        //     }
-        //   }
-        // ],
         dirs: [
-          'src/components/ui'
+          'src/components'
         ],
         extensions: [
           'vue'
