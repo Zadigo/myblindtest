@@ -10,10 +10,10 @@ export const useSongs = defineStore('songs', () => {
   const answers = ref<Answer[]>([])
   const correctAnswers = ref<Answer[]>([])
 
-  const scoringTimelineBase = ref(100)
+  const scoringTimelineBase = ref<number>(100)
   const scoringTimeline = ref<number[]>([])
 
-  const gameStarted = ref(false)
+  const gameStarted = ref<boolean>(false)
 
   const firstTeamScore = computed(() => cache.value.teams[0].score)
   const secondTeamScore = computed(() => cache.value.teams[1].score)

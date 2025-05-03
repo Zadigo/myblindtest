@@ -46,7 +46,6 @@
 import { useAxiosClient } from '@/plugins/client'
 import { useSongs } from '@/stores/songs'
 import { GenreDistribution, SettingsDataApiResponse } from '@/types'
-import { computed, onBeforeMount, ref } from 'vue'
 import { toast } from 'vue-sonner'
 
 const { client } = useAxiosClient()

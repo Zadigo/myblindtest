@@ -43,7 +43,6 @@ import { useAxiosClient } from '@/plugins/client'
 import { Artist, CopiedCreateData, CreateData, Song } from '@/types'
 import { useLocalStorage } from '@vueuse/core'
 import { useHead } from 'unhead'
-import { defineAsyncComponent, onMounted, provide, ref } from 'vue'
 import { toast } from 'vue-sonner'
 
 interface SongCreationApiResponse {

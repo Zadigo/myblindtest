@@ -30,7 +30,6 @@
 import { getBaseUrl } from '@/plugins/client'
 import { WebsocketDiffusionMessage } from '@/types'
 import { useWebSocket } from '@vueuse/core'
-import { computed, ref } from 'vue'
 import { useWebsocketUtilities } from '@/composables/utils'
 import { useSongs } from '@/stores/songs'
 
