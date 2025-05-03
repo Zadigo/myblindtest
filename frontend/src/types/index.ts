@@ -1,8 +1,7 @@
+import type { DifficultyLevels, SongGenres } from '../data/constants'
+
 export * from './websocket_messages'
 export * from './vue'
-
-export type DifficultyLevels = 'All' | 'Easy' | 'Medium' | 'Semi-Pro' | 'Difficult' | 'Expert'
-export type SongGenres = 'All' | 'Pop' | 'Electro' | 'Rock' | 'Rhythm and blues' | 'Rap' | 'Classical'
 
 export interface Artist {
   id: number

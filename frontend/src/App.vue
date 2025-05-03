@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { defaults, difficultyLevels, songTypes } from '@/data/defaults'
+import { defaults, difficultyLevels, songGenres } from '@/data'
 import { useSongs } from '@/stores/songs'
 import { useSessionStorage } from '@vueuse/core'
 import { onBeforeMount } from 'vue'
@@ -24,7 +24,7 @@ const sessionCache = useSessionStorage<CacheSession>('cache', defaults.cache, {
           throw new Error('Invalid difficulty level')
         }
 
-        if (!songTypes.includes(data.settings.songType)) {
+        if (!songGenres.includes(data.settings.songType)) {
           throw new Error('Invalid song type value')
         }
       }

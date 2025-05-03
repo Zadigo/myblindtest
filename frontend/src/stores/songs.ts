@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { defaults } from '../data/defaults'
+import { defaults } from '../data'
+
 import type { Answer, CacheSession } from '../types'
 
 export const useSongs = defineStore('songs', () => {

@@ -1,23 +1,6 @@
-import type { CacheSession, DifficultyLevels, SongGenres } from '../types'
+export * from './constants'
 
-export const difficultyLevels: DifficultyLevels[] = [
-  'All',
-  'Easy',
-  'Medium',
-  'Semi-Pro',
-  'Difficult',
-  'Expert'
-]
-
-export const songTypes: SongGenres[] = [
-  'All',
-  'Pop',
-  'Electro',
-  'Rock',
-  'Rhythm and blues',
-  'Rap',
-  'Classical'
-]
+import type { CacheSession } from '../types'
 
 export const addNewSongData = {
   name: '',
@@ -57,8 +40,8 @@ export const defaults: { cache: CacheSession } = {
       speedBonus: false,
       soloMode: false,
       adminPlays: false,
-      difficultyLevel: 'All' as 'All' | 'Easy' | 'Medium' | 'Semi-Pro' | 'Difficult' | 'Expert',
-      songType: 'All' as 'All' | 'Pop' | 'Electro' | 'Rock' | 'Rhythm and blues' | 'Rap' | 'Classical',
+      difficultyLevel: 'All',
+      songType: 'All',
       timeRange: []
     }
   }
