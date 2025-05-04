@@ -6,7 +6,8 @@ from songs.models import Song
 
 class SongStatistic(models.Model):
     song = models.ForeignKey(
-        Song
+        Song,
+        models.CASCADE
     )
     correct_answer = models.PositiveIntegerField(
         default=0
@@ -22,7 +23,7 @@ class SongStatistic(models.Model):
     )
 
     def __str__(self):
-        return self.song
+        return f'{self.song}'
 
     @property
     def percentage_rate(self):

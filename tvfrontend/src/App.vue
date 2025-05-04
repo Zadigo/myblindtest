@@ -1,7 +1,7 @@
 <template>
   <section id="interface" class="mx-5">
     <div class="px-5">
-      <div v-if="isConnected" class="grid grid-cols-5 grid-rows- gap-5 text-center">
+      <div v-if="isConnected" class="grid grid-cols-5 grid-rows- gap-5 text-center my-20">
         <!-- Team 1 -->
         <TeamBlock ref="teamOneEl" :team-id="1" :correct-answer="correctAnswer" class="col-span-2" />
 
@@ -43,6 +43,7 @@
 
 <script setup lang="ts">
 import 'animate.css'
+import { toast } from 'vue-sonner'
 
 interface WebsocketMessage {
   type: string
@@ -125,7 +126,9 @@ function handleOnConnected() {
  *
  */
 function handleOnError() {
-
+  toast('Failed to connect to websocket', {
+    position: 'top-center'
+  })
 }
 
 /**
@@ -136,7 +139,8 @@ function handleOnDisconnected() {
 }
 
 /**
- *
+ * @param ws Websocket
+ * @param event The incoming event
  */
 function handleOnMessage(ws: WebSocket, event: MessageEvent<WebsocketMessage>) {
   console.log(ws, event)
@@ -147,7 +151,7 @@ function handleOnMessage(ws: WebSocket, event: MessageEvent<WebsocketMessage>) {
   }
 }
 
-const ws = useWebSocket(getWebsocketUrl('/tv'), {
+const ws = useWebSocket(getWebsocketUrl('/ws/connect'), {
   immediate: false,
   onConnected: handleOnConnected,
   onError: handleOnError,
@@ -157,9 +161,14 @@ const ws = useWebSocket(getWebsocketUrl('/tv'), {
 
 const isConnected = computed(() => ws.status.value === 'OPEN')
 
+/**
+ * Connec to Django
+ *
+ * @param code The code for the current blindtest session
+ */
 function handleConnection(code: string) {
   ws.open()
-  ws.send(sendMessage<{ action: string, code: string }>({ action: 'connect', code: code }))
+  ws.send(sendMessage<{ action: string, code: string }>({ action: 'check_code', code: code }))
 }
 
 onBeforeUnmount(() => {

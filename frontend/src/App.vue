@@ -1,16 +1,18 @@
 <template>
-  <RouterView v-slot="{ Component }">
-    <Transition name="opacity">
-      <component :is="Component" />
-    </Transition>
-  </RouterView>
+  <section id="site">
+    <Toaster />
+
+    <RouterView v-slot="{ Component }">
+      <Transition name="opacity">
+        <component :is="Component" />
+      </Transition>
+    </RouterView>
+  </section>
 </template>
 
 <script setup lang="ts">
 import { defaults, difficultyLevels, songGenres } from '@/data'
-import { useSongs } from '@/stores/songs'
-import { useSessionStorage } from '@vueuse/core'
-import { onBeforeMount } from 'vue'
+import { Toaster } from 'vue-sonner'
 
 import type { CacheSession } from '@/types'
 
@@ -38,9 +40,10 @@ const sessionCache = useSessionStorage<CacheSession>('cache', defaults.cache, {
 })
 
 const songsStore = useSongs()
+const { cache } = storeToRefs(songsStore)
 
-songsStore.$subscribe((_, state) => {
-  sessionCache.value = state.cache
+watch(sessionCache, (newValue) => {
+  cache.value = newValue
 })
 
 onBeforeMount(() => {

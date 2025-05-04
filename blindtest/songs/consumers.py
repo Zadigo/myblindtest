@@ -60,7 +60,7 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
             'team_one_id': self.team_one.team_id,
             'team_two_id': self.team_two.team_id
         })
-    
+
     async def disconnect(self, code):
         # TODO: Channel make diffusion group
         await self.channel_layer.group_send(self.diffusion_group_name, {
@@ -84,6 +84,7 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
 
         if action == 'start_game':
             settings = content.get('settings', {})
+
             self.difficulty = settings.get('game_difficulty', 'All')
             self.genre = settings.get('genre', 'All')
 
@@ -124,7 +125,7 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
                 'team_one': await self.team_answers(self.team_one.team_id),
                 'team_two': await self.team_answers(self.team_two.team_id)
             })
-            
+
             # TODO: Use when a string guess is passed
             # guess = content.get('guess', '').strip()
             # if guess:
@@ -144,7 +145,7 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
             # a global genre is not selected
             temporary_genre = content.get('temporary_genre', None)
             if self.is_started:
-                self.next_song(temporary_genre=temporary_genre)
+                await self.next_song(temporary_genre=temporary_genre)
         # elif action == 'current_cache':
         #     self.channel_layer.group_send(self.diffusion_group_name, {
         #         'type': 'current.cache',
@@ -226,6 +227,8 @@ class ScreenInterfaceConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):
                 'type': 'update.device.cache',
                 'device_id': content.get('device_id')
             })
+        elif action == 'check_code':
+            print('check if there is an existing session')
         else:
             await self.send_error('No action was provided')
 

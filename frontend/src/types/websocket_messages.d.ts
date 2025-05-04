@@ -1,12 +1,7 @@
-import type { DifficultyLevels, Song, SongGenres } from '@/types'
+import type { DifficultyLevels, Song, SongGenres } from '../types'
 import type { RandomizerData } from '../components/randomizer'
 import type { CacheSession } from '.'
-
-export type MatchedElement = 'Artist' | 'Title' | 'Both' | null
-
-type DeviceActions = 'device_connected' | 'device_disconnected' | 'update_device_cache' | 'apply_cache' | 'game_updates' | 'game_disconnected' | 'initiate_connection'
-
-export type WebsocketActions = 'song_new' | 'timer_tick' | 'guess_correct' | 'error' | 'connection_token' | 'game_started' | 'song_skipped' | 'start_game' | 'submit_guess' | 'skip_song' | 'randomize_genre'
+import type { DeviceActions, WebsocketActions } from '../data/constants/websocket'
 
 export interface WebsocketMessage {
   action: WebsocketActions | DeviceActions
