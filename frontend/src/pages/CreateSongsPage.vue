@@ -6,7 +6,11 @@
       </template>
 
       <template #fallback>
-        <Skeleton class="w-[200px] h-[200px]" />
+        <section id="list">
+          <div class="mx-auto w-6/12">
+            <Skeleton class="w-[200px] h-[200px]" />
+          </div>
+        </section>
       </template>
     </Suspense>
 

@@ -1,13 +1,40 @@
 <template>
   <CardContent :data-id="index">
     <div class="flex gap-2">
-      <Input v-model="requestData.name" :rules="[rules.required]" type="text" placeholder="Name" variant="solo-filled" clearable flat />
-      <v-combobox v-model="requestData.genre" :items="genres" :loading="searching" :rules="[rules.required]" type="text" variant="solo-filled" flat />
+      <Input v-model="requestData.name" :rules="[rules.required]" type="text" placeholder="Name" />
+
+      <Combobox v-model="requestData.genre" by="label">
+        <ComboboxAnchor>
+          <div class="relative w-full max-w-sm items-center">
+            <ComboboxInput class="pl-9" placeholder="Select genre" />
+            <span class="absolute start-0 inset-y-0 flex items-center justify-center px-3">
+              <Search class="size-4 text-muted-foreground" />
+            </span>
+          </div>
+        </ComboboxAnchor>
+
+        <ComboboxList>
+          <ComboboxEmpty>
+            No genres
+          </ComboboxEmpty>
+
+          <ComboboxGroup>
+            <ComboboxItem v-for="genre in genres" :key="genre" :value="genre">
+              <ComboboxItemIndicator>
+                {{ genre }}
+                <VueIcon name="fa-solid:check" />
+              </ComboboxItemIndicator>
+            </ComboboxItem>
+          </ComboboxGroup>
+        </ComboboxList>
+      </Combobox>
+
+      <!-- <v-combobox v-model="requestData.genre" :items="genres" :loading="searching" :rules="[rules.required]" type="text" variant="solo-filled" flat /> -->
       <Input v-model.number="requestData.year" :rules="[rules.year]" type=" text" placeholder="Year" variant="solo-filled" flat />
     </div>
 
-    <div class="w-4/12 my-2">
-      <Input v-model="requestData.difficulty" :rules="[rules.difficulty]" :min="1" :max="5" type="number" placeholder="Difficulty" variant="solo-filled" flat />
+    <div class="w-9/12 my-2">
+      <Input v-model="requestData.difficulty" :rules="[rules.difficulty]" :min="1" :max="5" type="number" placeholder="Difficulty" />
     </div>
 
     <div class="flex gap-2">
@@ -16,7 +43,32 @@
     </div>
 
     <div class="w-10/12">
-      <v-combobox v-model="requestData.featured_artists" :items="featuredArtists" :return-object="false" item-title="name" item-value="name" variant="solo-filled" placeholder="Featured artists" clearable flat chips multiple />
+      <Combobox v-model="requestData.featured_artists" by="label">
+        <ComboboxAnchor>
+          <div class="relative w-full max-w-sm items-center">
+            <ComboboxInput placeholder="Select genre" />
+            <span class="absolute start-0 inset-y-0 flex items-center justify-center px-3">
+              <!-- <Search class="size-4 text-muted-foreground" /> -->
+            </span>
+          </div>
+        </ComboboxAnchor>
+
+        <ComboboxList>
+          <ComboboxEmpty>
+            No genres
+          </ComboboxEmpty>
+
+          <ComboboxGroup>
+            <ComboboxItem v-for="featuredArtist in requestData.featured_artists" :key="featuredArtist" :value="featuredArtist">
+              <ComboboxItemIndicator>
+                {{ featuredArtist }}
+                <VueIcon name="fa-solid:check" />
+              </ComboboxItemIndicator>
+            </ComboboxItem>
+          </ComboboxGroup>
+        </ComboboxList>
+      </Combobox>
+      <!-- <v-combobox v-model="requestData.featured_artists" :items="featuredArtists" :return-object="false" item-title="name" item-value="name" variant="solo-filled" placeholder="Featured artists" clearable flat chips multiple /> -->
     </div>
   </CardContent>
 </template>
@@ -148,7 +200,7 @@ const requestData = computed({
 async function handleSearchExistingArtist() {
   try {
     searching.value = true
-    const result = await client.get<Song[]>('/songs/', {
+    const result = await client.get<Song[]>('/api/v1/songs/', {
       params: {
         q: requestData.value.artist_name
       }
@@ -185,7 +237,7 @@ async function handleSearchFeaturedArtists() {
   try {
     if (featuredArtists.value.length === 0) {
       searching.value = true
-      const response = await client.get<Artist[]>('/songs/artists')
+      const response = await client.get<Artist[]>('/api/v1/songs/artists')
       featuredArtists.value = response.data
       searching.value = false
     }

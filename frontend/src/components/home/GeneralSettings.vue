@@ -59,7 +59,7 @@
       </Label>
       <Input id="game-difficulty" v-model="selectedTimeLimit" type="time" placeholder="Time limit" />
 
-      <label for="time-period" class="font-bold">
+      <label for="time-period" class="font-bold mt-5">
         Time period
       </label>
 
