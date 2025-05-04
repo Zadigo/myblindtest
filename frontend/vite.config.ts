@@ -4,7 +4,7 @@ import { defineConfig, loadEnv } from 'vite'
 import { resolve } from 'path'
 
 import tailwind from '@tailwindcss/vite'
-import UnheadVite from '@unhead/addons/vite'
+import unheadVite from '@unhead/addons/vite'
 import eslint from 'vite-plugin-eslint'
 import vue from '@vitejs/plugin-vue'
 import unpluginViteComponents from 'unplugin-vue-components/vite'
@@ -29,7 +29,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       vue(),
       eslint(),
-      UnheadVite(),
+      unheadVite(),
       tailwind(),
       unpluginViteComponents({
         deep: true,
@@ -47,6 +47,7 @@ export default defineConfig(({ mode }) => {
         imports: [
           'vue',
           'pinia',
+          '@vueuse/core',
           {
             './src/stores': [
               'useSongs'

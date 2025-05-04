@@ -1,39 +1,42 @@
 <template>
-  <section class="my-5">
-    <div class="row">
-      <div class="col-sm-12 col-md-6">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <BarChart :chart-data="genreChartData" :options="genreChartOptions" height="300px" />
-          </div>
-        </div>
-      </div>
+  <section class="my-10 px-5 md:px-20">
+    <Card class="border-none mb-5">
+      <CardContent>
+        <h1 class="font-bold text-3xl">
+          Statistics
+        </h1>
+      </CardContent>
+    </Card>
 
-      <div class="col-sm-12 col-md-6">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <TimelineChart :chart-data="timelineData" :options="timelineOptions" height="300px" />
-          </div>
-        </div>
-      </div>
+    <div class="grid grid-cols-1 grid-rows-2 gap-2 md:grid-cols-2 md:gap-5">
+      <Card class="border-none">
+        <CardContent>
+          <BarChart :chart-data="genreChartData" :options="genreChartOptions" height="300px" />
+        </CardContent>
+      </Card>
+
+      <Card class="border-none">
+        <CardContent>
+          <TimelineChart :chart-data="timelineData" :options="timelineOptions" height="300px" />
+        </CardContent>
+      </Card>
     </div>
   </section>
 </template>
 
 <script lang="ts" setup>
 import type { ChartData, ChartOptions } from 'chart.js'
-import { useHead } from 'unhead'
-import { computed, ref } from 'vue'
+// import { useHead } from 'unhead'
 
-useHead({
-  title: 'Statistics',
-  meta: [
-    {
-      name: 'description',
-      content: 'Write a description here'
-    }
-  ]
-})
+// useHead({
+//   title: 'Statistics',
+//   meta: [
+//     {
+//       name: 'description',
+//       content: 'Write a description here'
+//     }
+//   ]
+// })
 
 // Sample data - replace with your actual data
 const songs = ref([
@@ -147,9 +150,3 @@ const timelineOptions = computed<ChartOptions>(() => ({
 //   }
 // }))
 </script>
-
-<style scoped>
-.charts-dashboard {
-  padding: 1rem;
-}
-</style>

@@ -16,7 +16,7 @@
             </span>
           </div>
         </div>
-        
+
         <!-- Team 2 -->
         <TeamBlock :team-id="2" :correct-answer="correctAnswer" class="col-span-2" />
       </div>
@@ -79,26 +79,31 @@ whenever(() => showAnswer.value, () => {
   dissapearCountdown.value = setTimeout(() => {
     showAnswer.value = false
     correctAnswer.value = null
-  }, 3000);
+  }, 3000)
 })
 
+/**
+ *
+ */
 function handleResetTimer() {
   if (timerInterval) {
-    clearInterval(timerInterval);
-    timerTotalSeconds.value = 120;
-    timerMinutes.value = 2;
-    timerSeconds.value = 0;
-    timerIsRunning.value = false;
+    clearInterval(timerInterval)
+    timerTotalSeconds.value = 120
+    timerMinutes.value = 2
+    timerSeconds.value = 0
+    timerIsRunning.value = false
   }
 }
 
+/**
+ *
+ */
 function handleStartTimer() {
   if (timerIsRunning.value && timerTotalSeconds.value <= 0) {
     return
   } else {
-
     timerIsRunning.value = true
-    
+
     timerInterval = setInterval(() => {
       timerSeconds.value--
 
@@ -115,29 +120,44 @@ function handleStartTimer() {
   }
 }
 
+/**
+ *
+ */
 function handleOnConnected() {
 
 }
 
+/**
+ *
+ */
 function handleOnError() {
 
 }
 
+/**
+ *
+ */
 function handleOnDisconnected() {
 
 }
 
+/**
+ *
+ */
 function handleOnMessage(ws: WebSocket, event: MessageEvent<WebsocketMessage>) {
   console.log(ws, event)
 
-  if (event.data.type ===  'gooele') {
+  if (event.data.type === 'google') {
     // Do something
     handleStartTimer()
   }
 }
 
+/**
+ *
+ */
 function handleCorrectAnswer() {
-  correctAnswer.value = Math.floor(Math.random() * 2) + 1;
+  correctAnswer.value = Math.floor(Math.random() * 2) + 1
   showAnswer.value = true
 }
 

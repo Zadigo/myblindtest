@@ -18,7 +18,6 @@
 import { useSongs } from '@/stores/songs'
 import { MatchedElement } from '@/types'
 import { storeToRefs } from 'pinia'
-import { ref } from 'vue'
 
 import BlindTestLayout from '@/layouts/BlindTestLayout.vue'
 

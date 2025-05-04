@@ -61,12 +61,8 @@
 
 <script lang="ts" setup>
 import { useSongs } from '@/stores/songs'
-import { whenever } from '@vueuse/core'
-import { storeToRefs } from 'pinia'
-import { computed, ref } from 'vue'
-import type { MatchedElement } from '@/types'
 
-import BaseFireworks from '../BaseFireworks.vue'
+import type { MatchedElement } from '@/types'
 
 const emit = defineEmits({
   'next-song'(_data: (number | MatchedElement)[]) {
