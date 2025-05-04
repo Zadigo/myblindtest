@@ -245,3 +245,30 @@ export function useAuthenticatedAxiosClient(access?: string | null | undefined, 
     authenticatedClient
   }
 }
+
+type JsonType = Record<string, string | number>
+
+export function useWebsocketUtilities() {
+  function _readMessage<T extends Record<string, string | number | JsonType>>(data: string | undefined): T {
+    return JSON.parse(data)
+  }
+
+  /**
+   * Send a message to the websocket
+   *
+   * @param data The data to be sent to the websocket
+   */
+  function sendMessage<T>(data: T) {
+    return JSON.stringify(data)
+  }
+
+  /**
+   * Reads a message to the websocket
+   */
+  const readMessage = reactify(_readMessage)
+
+  return {
+    readMessage,
+    sendMessage
+  }
+}

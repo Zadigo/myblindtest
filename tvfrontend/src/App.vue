@@ -1,7 +1,7 @@
 <template>
   <section id="interface" class="mx-5">
-    <div class="px-5 my-10">
-      <div class="grid grid-cols-5 grid-rows- gap-5 text-center">
+    <div class="px-5">
+      <div v-if="isConnected" class="grid grid-cols-5 grid-rows- gap-5 text-center">
         <!-- Team 1 -->
         <TeamBlock ref="teamOneEl" :team-id="1" :correct-answer="correctAnswer" class="col-span-2" />
 
@@ -18,35 +18,21 @@
         <TeamBlock ref="teamTwoEl" :team-id="2" :correct-answer="correctAnswer" class="col-span-2" />
       </div>
 
-      <div v-if="isConnected">
-        Something
-      </div>
-
-      <div v-else class="w-4/12 mx-auto">
-        <Card class="border-none shadow-md">
-          <CardContent>
-            <form class="flex flex-col" @submit.prevent>
-              <Input class="bg-slate-100 rounded-sm w-full p-6 mb-4" />
-              <Button variant="secondary" class="self-end" size="lg" @click="ws.open()">
-                Se connecter
-              </Button>
-              <!-- <input type="text" class="bg-slate-100 rounded-sm w-full p-6 mb-4" placeholder="Code de connection"> -->
-              <!-- <button type="button" class="p-4 shadow-sm bg-blue-400 rounded-md place-self-end text-white uppercase font-semibold cursor-pointer transition-all hover:bg-blue-500">
-                Se connecter
-              </button> -->
-            </form>
-          </CardContent>
-        </Card>
-      </div>
+      <ConnectionBlock v-else @connect-client="handleConnection" />
     </div>
 
-    <!-- Backdrop -->
-    <div v-if="showAnswer" id="backdrop" class="absolute top-0 left-0 z-40 bg-black flex justify-center h-full w-full opacity-40 transition-all ease-in-out" @click="showAnswer=false" />
-
-    <!-- Answer -->
-    <div v-if="showAnswer" id="correct-answer" class="absolute top-1/4 left-1/4 bg-white w-auto rounded-md p-10 text-3xl font-semibold text-center z-50 shadow-md">
-      Mariah Carey - What about us
-    </div>
+    <Dialog v-model:open="showAnswer">
+      <DialogContent>
+        <div class="text-center">
+          <h1 class="font-bold text-3xl mb-3">
+            Mariah Carey
+          </h1>
+          <p class="font-light text-2xl">
+            We belong together
+          </p>
+        </div>
+      </DialogContent>
+    </Dialog>
 
     <!-- Audio -->
     <audio ref="audioEl">
@@ -57,12 +43,12 @@
 
 <script setup lang="ts">
 import 'animate.css'
-import { onBeforeUnmount, ref } from 'vue'
-import { useWebSocket, whenever } from '@vueuse/core'
 
 interface WebsocketMessage {
   type: string
 }
+
+const { sendMessage } = useWebsocketUtilities()
 
 const teamOneEl = useTemplateRef('teamOneEl')
 const teamTwoEl = useTemplateRef('teamTwoEl')
@@ -155,7 +141,7 @@ function handleOnDisconnected() {
 function handleOnMessage(ws: WebSocket, event: MessageEvent<WebsocketMessage>) {
   console.log(ws, event)
 
-  if (event.data.type === 'google') {
+  if (event.data.action === 'google') {
     // Do something
     handleStartTimer()
   }
@@ -170,6 +156,11 @@ const ws = useWebSocket(getWebsocketUrl('/tv'), {
 })
 
 const isConnected = computed(() => ws.status.value === 'OPEN')
+
+function handleConnection(code: string) {
+  ws.open()
+  ws.send(sendMessage<{ action: string, code: string }>({ action: 'connect', code: code }))
+}
 
 onBeforeUnmount(() => {
   handleResetTimer()
