@@ -1,7 +1,9 @@
 import tailwind from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
 import eslint from 'vite-plugin-eslint'
-import unhead from '@unhead/addons/vite'
+import unheadVite from '@unhead/addons/vite'
+import autoImportComponents from 'unplugin-vue-components/vite'
+import autoImport from 'unplugin-auto-import/vite'
 
 import { resolve } from 'path'
 import { defineConfig, loadEnv } from 'vite'
@@ -19,16 +21,40 @@ export default defineConfig(({ mode }) => {
       vue(),
       eslint(),
       tailwind(),
-      unhead()
+      unheadVite(),
+      autoImportComponents({
+        deep: true,
+        dts: 'src/types/components.d.ts',
+        dirs: [
+          'src/components'
+        ],
+        extensions: [
+          'vue'
+        ]
+      }),
+      autoImport({
+        dts: 'src/types/auto-imports.d.ts',
+        vueTemplate: true,
+        imports: [
+          'vue',
+          'pinia',
+          '@vueuse/core',
+          {
+            './src/stores': [
+              'useSongs'
+            ]
+          }
+        ]
+      })
     ],
     resolve: {
       alias: [
         {
-          find: "@",
-          replacement: resolve(__dirname, "src"),
+          find: '@',
+          replacement: resolve(__dirname, 'src'),
         },
         {
-          find: "src",
+          find: 'src',
           replacement: resolve(__dirname, 'src')
         }
       ],
