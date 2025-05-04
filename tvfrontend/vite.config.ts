@@ -38,21 +38,11 @@ export default defineConfig(({ mode }) => {
         imports: [
           'vue',
           'pinia',
-          '@vueuse/core',
-          {
-            '@/stores': [
-              'useSongs'
-            ]
-          },
-          {
-            '@/plugins': [
-              'useAxiosClient',
-              'useAuthenticatedAxiosClient',
-              'createSimpleClient',
-              'inProduction',
-              'getWebsocketUrl'
-            ]
-          }
+          '@vueuse/core'
+        ],
+        dirs: [
+          'src/plugins',
+          'src/stores'
         ]
       })
     ],
