@@ -1,44 +1,31 @@
 <template>
-  <div :data-id="index" class="card-body">
-    <div class="row">
-      <div class="col-4">
-        <v-text-field v-model="requestData.name" :rules="[rules.required]" type="text" placeholder="Name" variant="solo-filled" clearable flat />
-      </div>
-
-      <div class="col-4">
-        <v-combobox v-model="requestData.genre" :items="genres" :loading="searching" :rules="[rules.required]" type="text" variant="solo-filled" flat />
-      </div>
-
-      <div class="col-4">
-        <v-text-field v-model="requestData.year" :rules="[rules.year]" type=" text" placeholder="Year" variant="solo-filled" flat />
-      </div>
-
-      <div class="col-8">
-        <v-text-field v-model="requestData.difficulty" :rules="[rules.difficulty]" :min="1" :max="5" type="number" placeholder="Difficulty" variant="solo-filled" flat />
-      </div>
-
-      <div class="col-6">
-        <v-text-field v-model="requestData.artist_name" :rules="[rules.required]" type="text" placeholder="Artist" hint="Press shift+Enter to split and infer genre" variant="solo-filled" clearable flat @keypress.shift.enter="handleSplit" />
-      </div>
-
-      <div class="col-6">
-        <v-text-field v-model="requestData.youtube_id" :rules="[rules.required]" type="text" placeholder="YouTube" variant="solo-filled" clearable flat />
-      </div>
-
-      <div class="col-8">
-        <v-combobox v-model="requestData.featured_artists" :items="featuredArtists" :return-object="false" item-title="name" item-value="name" variant="solo-filled" placeholder="Featured artists" clearable flat chips multiple />
-      </div>
+  <CardContent :data-id="index">
+    <div class="flex gap-2">
+      <Input v-model="requestData.name" :rules="[rules.required]" type="text" placeholder="Name" variant="solo-filled" clearable flat />
+      <v-combobox v-model="requestData.genre" :items="genres" :loading="searching" :rules="[rules.required]" type="text" variant="solo-filled" flat />
+      <Input v-model.number="requestData.year" :rules="[rules.year]" type=" text" placeholder="Year" variant="solo-filled" flat />
     </div>
-  </div>
+
+    <div class="w-4/12 my-2">
+      <Input v-model="requestData.difficulty" :rules="[rules.difficulty]" :min="1" :max="5" type="number" placeholder="Difficulty" variant="solo-filled" flat />
+    </div>
+
+    <div class="flex gap-2">
+      <Input v-model="requestData.artist_name" :rules="[rules.required]" type="text" placeholder="Artist" hint="Press shift+Enter to split and infer genre" variant="solo-filled" clearable flat @keypress.shift.enter="handleSplit" />
+      <Input v-model="requestData.youtube_id" :rules="[rules.required]" type="text" placeholder="YouTube" variant="solo-filled" clearable flat />
+    </div>
+
+    <div class="w-10/12">
+      <v-combobox v-model="requestData.featured_artists" :items="featuredArtists" :return-object="false" item-title="name" item-value="name" variant="solo-filled" placeholder="Featured artists" clearable flat chips multiple />
+    </div>
+  </CardContent>
 </template>
 
 <script setup lang="ts">
 import { useDayJs } from '@/plugins'
-import { useAxiosClient } from '@/plugins/client'
-import type { Artist, CreateData, Song } from '@/types'
-import { useLocalStorage } from '@vueuse/core'
-import { computed, inject, PropType, reactive, ref, onBeforeMount } from 'vue'
 import { toast } from 'vue-sonner'
+
+import type { Artist, CreateData, Song } from '@/types'
 
 const { currentYear } = useDayJs()
 
@@ -68,18 +55,11 @@ const emit = defineEmits({
 })
 
 const { client } = useAxiosClient()
-const searching = ref(false)
+
+const searching = ref<boolean>(false)
 const genres = inject<string[]>('genres')
-const featuredArtists = useLocalStorage<Artist[]>('artists', null, {
-  serializer: {
-    read(raw) {
-      return JSON.parse(raw)
-    },
-    write(value) {
-      return JSON.stringify(value)
-    }
-  }
-})
+
+const featuredArtists = useStorage<Artist[]>('artists', [])
 
 const fieldErrors = reactive({
   name: '',
@@ -109,7 +89,9 @@ const rules = {
   }
 }
 
-// Validation function
+/**
+ * Validation function
+ */
 function validateData(data: CreateData) {
   const errors: Record<string, string> = {}
 
@@ -158,9 +140,11 @@ const requestData = computed({
   }
 })
 
-// Allows the user to automatically infer the
-// current genre of the song based on a pre-existing
-// songs from the same artist from the database
+/**
+ * Allows the user to automatically infer the
+ * current genre of the song based on a pre-existing
+ * songs from the same artist from the database
+ */
 async function handleSearchExistingArtist() {
   try {
     searching.value = true
@@ -182,6 +166,9 @@ async function handleSearchExistingArtist() {
   }
 }
 
+/**
+ *
+ */
 async function handleSplit() {
   if (requestData.value.artist_name.includes('-') && requestData.value.artist_name !== '') {
     const tokens = requestData.value.artist_name.split('-')
@@ -191,9 +178,12 @@ async function handleSplit() {
   }
 }
 
+/**
+ *
+ */
 async function handleSearchFeaturedArtists() {
   try {
-    if (!featuredArtists.value) {
+    if (featuredArtists.value.length === 0) {
       searching.value = true
       const response = await client.get<Artist[]>('/songs/artists')
       featuredArtists.value = response.data

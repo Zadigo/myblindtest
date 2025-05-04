@@ -4,17 +4,13 @@ import duration from 'dayjs/plugin/duration'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import timezone from 'dayjs/plugin/timezone'
 import utc from 'dayjs/plugin/utc'
-import { computed, type App } from 'vue'
+import { computed } from 'vue'
 
 dayjs.extend(calendar)
 dayjs.extend(duration)
 dayjs.extend(utc)
 dayjs.extend(timezone)
 dayjs.extend(relativeTime)
-
-export function createDayjs(vueApp: App) {
-  vueApp.config.globalProperties.$data = dayjs
-}
 
 /**
  *

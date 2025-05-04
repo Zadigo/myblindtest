@@ -42,6 +42,7 @@
     "tailwindcss": "^4.1.4",
     "tailwindcss-primeui": "^0.6.1",
     "unhead": "^2.0.8",
+    "universal-cookie": "^8.0.1",
     "unplugin-vue-components": "^28.5.0",
     "vaul-vue": "^0.4.1",
     "vite": "^6.3.2",

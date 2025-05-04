@@ -23,8 +23,10 @@
           </div>
 
           <div class="flex justify-end gap-2">
-            <Button variant="outline">
-              <VueIcon icon="fa-solid:home" size="15" />
+            <Button variant="outline" as-child>
+              <RouterLink :to="{ name: 'home' }" >
+                <VueIcon icon="fa-solid:home" size="15" />
+              </RouterLink>
             </Button>
 
             <Button variant="outline" @click="showWheel=!showWheel">
@@ -75,18 +77,12 @@
 </template>
 
 <script setup lang="ts">
-import { useWebsocketUtilities } from '@/composables/utils'
 import { wheelDetaults } from '@/data'
-import { getBaseUrl } from '@/plugins/client'
-import { useSongs } from '@/stores/songs'
-import { storeToRefs } from 'pinia'
 import { toast } from 'vue-sonner'
 import { RandomizerData } from '../randomizer'
 
-import Spinner from '@/components/spinner/Spinner.vue'
-import GenreRandomizer from '../randomizer/GenreRandomizer.vue'
-
-import type { MatchedElement, Song, WebsocketBlindTestMessage } from '@/types'
+import type { MatchedElement } from '@/data'
+import type { Song, WebsocketSendGuess, WebsocketBlindTestMessage, WebsocketRandomizeGenre, DefaultActions, WebsocketSettings } from '@/types'
 
 const songsStore = useSongs()
 const { gameStarted, currentSong } = storeToRefs(songsStore)
@@ -94,15 +90,15 @@ const { sendMessage, parseMessage } = useWebsocketUtilities()
 
 const connectionToken = useLocalStorage<string | null | undefined>('connectionToken', null)
 
-const showWheel = ref(false)
+const showWheel = ref<boolean>(false)
 const randomizerEl = ref<HTMLElement>()
 
-const ws = useWebSocket(getBaseUrl('/ws/songs', null, true), {
+const ws = useWebSocket(getWebsocketUrl('/ws/songs'), {
   immediate: false,
   onConnected() {
     const settings = songsStore.cache.settings
 
-    ws.send(sendMessage<WebsocketBlindTestMessage>({
+    const result = sendMessage<WebsocketSettings>({
       action: 'start_game',
       cache: songsStore.cache,
       // TODO: Just use and send all the cache
@@ -117,7 +113,9 @@ const ws = useWebSocket(getBaseUrl('/ws/songs', null, true), {
         solo_mode: settings.soloMode,
         admin_plays: settings.adminPlays
       }
-    }))
+    })
+
+    ws.send(result)
 
     toast.success('Info', {
       description: 'Started blind test'
@@ -129,75 +127,79 @@ const ws = useWebSocket(getBaseUrl('/ws/songs', null, true), {
   },
   onMessage() {
     const data = parseMessage<WebsocketBlindTestMessage>(ws.data.value)
+
     console.log(data)
-    switch (data.action) {
-      case 'connection_token':
-        connectionToken.value = data.token
 
-        if (data.team_one_id) {
-          songsStore.cache.teams[0].id = data.team_one_id
-        }
+    if (data) {
+      switch (data.action) {
+        case 'connection_token':
+          connectionToken.value = data.token
 
-        if (data.team_two_id) {
-          songsStore.cache.teams[1].id = data.team_two_id
-        }
-        break
+          if (data.team_one_id) {
+            songsStore.cache.teams[0].id = data.team_one_id
+          }
 
-      case 'game_started':
-        gameStarted.value = true
-        break
+          if (data.team_two_id) {
+            songsStore.cache.teams[1].id = data.team_two_id
+          }
+          break
 
-      case 'song_new':
-        songsStore.cache.songs.push(data.song as Song)
-        break
+        case 'game_started':
+          gameStarted.value = true
+          break
 
-      case 'timer_tick':
-        break
+        case 'song_new':
+          songsStore.cache.songs.push(data.song as Song)
+          break
 
-      case 'guess_correct':
-        // When we receive a message that the guess was
-        // correct by the given team, update the score
-        if (data.team_id) {
-          if (data.points) {
-            const team = songsStore.cache.teams.find(x => x.id === data.team_id)
-            if (team) {
-              team.score = data.points
+        case 'timer_tick':
+          break
+
+        case 'guess_correct':
+          // When we receive a message that the guess was
+          // correct by the given team, update the score
+          if (data.team_id) {
+            if (data.points) {
+              const team = songsStore.cache.teams.find(x => x.id === data.team_id)
+              if (team) {
+                team.score = data.points
+              }
             }
           }
-        }
-        break
+          break
 
-      case 'song_skipped':
-        break
+        case 'song_skipped':
+          break
 
-      case 'randomize_genre':
-        songsStore.cache.songs.push(data.song as Song)
-        break
+        case 'randomize_genre':
+          songsStore.cache.songs.push(data.song as Song)
+          break
 
-      case 'device_connected':
-        ws.send(sendMessage<WebsocketBlindTestMessage>({
-          action: 'update_device_cache',
-          cache: songsStore.cache
-        }))
-        toast.success('Device', {
-          description: 'Projecton device connected'
-        })
-        break
+        case 'device_connected':
+          ws.send(sendMessage<WebsocketBlindTestMessage>({
+            action: 'update_device_cache',
+            cache: songsStore.cache
+          }))
+          toast.success('Device', {
+            description: 'Projecton device connected'
+          })
+          break
 
-      case 'device_disconnected':
-        toast.success('Device', {
-          description: 'Projecton device disconnected'
-        })
-        break
+        case 'device_disconnected':
+          toast.success('Device', {
+            description: 'Projecton device disconnected'
+          })
+          break
 
-      case 'error':
-        toast.error('Error', {
-          description: data.error
-        })
-        break
+        case 'error':
+          toast.error('Error', {
+            description: data.error
+          })
+          break
 
-      default:
-        break
+        default:
+          break
+      }
     }
   },
   onDisconnected() {
@@ -225,10 +227,14 @@ function randomizerComplete(value: string | undefined | RandomizerData) {
     setTimeout(() => {
       showWheel.value = false
 
-      ws.send(sendMessage<WebsocketBlindTestMessage>({
+      const result = sendMessage<WebsocketRandomizeGenre>({
         action: 'randomize_genre',
         temporary_genre: value
-      }))
+      })
+
+      if (result) {
+        ws.send(result)
+      }
     }, 3000)
   }
 }
@@ -245,8 +251,12 @@ function handleFinalize() {
  * those that were already played
  */
 function handleIncorrectAnswer() {
-  ws.send(sendMessage<WebsocketBlindTestMessage>({ action: 'skip_song' }))
-  handleFinalize()
+  const result = sendMessage<{ action: keyof DefaultActions }>({ action: 'skip_song' })
+
+  if (result) {
+    ws.send(result)
+    handleFinalize()
+  }
 }
 
 /**
@@ -270,12 +280,16 @@ function handleCorrectAnswer(teamId: string, match: MatchedElement) {
     artist_match = true
   }
 
-  ws.send(sendMessage<WebsocketBlindTestMessage>({
+  const result = sendMessage<WebsocketSendGuess>({
     action: 'submit_guess',
     team_id: teamId,
     title_match,
     artist_match
-  }))
+  })
+
+  if (result) {
+    ws.send(result)
+  }
 
   handleFinalize()
 }

@@ -1,14 +1,14 @@
 <template>
   <section class="mx-auto px-10 relative">
-    <div class="grid grid-cols-2 my-6 gap-4">
-      <div>
+    <div class="grid grid-cols-2 my-6 gap-4 auto-cols-min">
+      <div class="">
         <GeneralSettings />
         <PointValues />
         <GameModes />
       </div>
 
-      <v-card id="panel">
-        <v-card-text>
+      <Card id="panel" class="border-none shadow-md">
+        <CardContent>
           <p>
             Guess the artist for each <span class="badge badge-success">{{ songStore.cache.settings.songType }}</span>
             songs that plays. Each correct answers worths <span class="badge badge-warning">{{ songStore.cache.settings.pointValue }} point(s)</span>.
@@ -30,22 +30,22 @@
             There is a time limit of <span class="badge badge-warning">5 minutes</span>. The team with the highest
             score at the end of the time wins
           </p>
-        </v-card-text>
+        </CardContent>
 
-        <v-card-actions>
-          <v-btn to="/teams" color="primary" variant="tonal" rounded>
-            Manage teams
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+        <CardFooter>
+          <Button as-child>
+            <RouterLink :to="{ name: 'teams' }">
+              Manage teams
+            </RouterLink>
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
   </section>
 </template>
 
 <script lang="ts" setup>
-import { useAxiosClient } from '@/plugins/client'
-import { useSongs } from '@/stores/songs'
-import { GenreDistribution, SettingsDataApiResponse } from '@/types'
+import type { GenreDistribution, SettingsDataApiResponse } from '@/types'
 import { toast } from 'vue-sonner'
 
 const { client } = useAxiosClient()

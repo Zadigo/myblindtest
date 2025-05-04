@@ -1,8 +1,28 @@
 <template>
   <section class="site">
-    <Transition name="animate__animated" enter-active-class="animate__animated animate__slideInDown" leave-active-class="animate__animated animate__slideInUp">
-      <BaseNavbar v-if="!isStarted" />
-    </Transition>
+    <Navbar>
+      <NavbarContent>
+        <template #brand>
+          <RouterLink :to="{ name: 'home' }">
+            Blindtest
+          </RouterLink>
+        </template>
+
+        <NavbarLinks>
+          <NavbarLink>
+            <RouterLink :to="{ name: 'blind_test' }">
+              Blindtest
+            </RouterLink>
+          </NavbarLink>
+
+          <NavbarLink>
+            <RouterLink :to="{ name: 'create' }">
+              Create
+            </RouterLink>
+          </NavbarLink>
+        </NavbarLinks>
+      </NavbarContent>
+    </Navbar>
 
     <Toaster position="top-right" />
 
@@ -13,9 +33,4 @@
 
 <script setup lang="ts">
 import { Toaster } from 'vue-sonner'
-
-import BaseNavbar from '@/components/BaseNavbar.vue'
-import { useSongs } from '@/stores/songs'
-
-const { isStarted } = useSongs()
 </script>

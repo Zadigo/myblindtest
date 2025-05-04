@@ -10,7 +10,7 @@
       <Input v-model="songStore.cache.settings.rounds" type="number" min="1" max="100" placeholder="Number of rounds" variant="solo-filled" clearable flat />
 
       <div>
-        <Label for="game-difficulty">
+        <Label for="game-difficulty" class="mt-3">
           Game difficulty
         </Label>
 
@@ -27,7 +27,7 @@
           </SelectContent>
         </Select>
 
-        <Label for="song-type">
+        <Label for="song-type" class="mt-3">
           Genre
         </Label>
 
@@ -54,12 +54,12 @@
         </template>
       </v-autocomplete> -->
 
-      <Label for="game-difficulty">
+      <Label for="game-difficulty" class="mt-3">
         Time limit
       </Label>
       <Input id="game-difficulty" v-model="selectedTimeLimit" type="time" placeholder="Time limit" />
 
-      <label for="time-period" class="fw-bold">
+      <label for="time-period" class="font-bold">
         Time period
       </label>
 
@@ -84,9 +84,6 @@
 
 <script lang="ts" setup>
 import { difficultyLevels, songGenres, type DifficultyLevels, type SongGenres } from '@/data'
-import { useSongs } from '@/stores/songs'
-// import { GenreDistribution } from '@/types'
-import { ref } from 'vue'
 
 const songStore = useSongs()
 const selectedTimeLimit = ref<string | number>(0)

@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
+  // Django
   readonly VITE_DJANGO_PROD_URL: string
 
   // Google

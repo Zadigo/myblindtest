@@ -82,18 +82,3 @@ export function useString() {
     plural
   }
 }
-
-export function useWebsocketUtilities() {
-  function sendMessage<T>(data: T) {
-    return JSON.stringify(data)
-  }
-
-  function parseMessage<T>(data: string): T {
-    return JSON.parse(data)
-  }
-
-  return {
-    sendMessage,
-    parseMessage
-  }
-}

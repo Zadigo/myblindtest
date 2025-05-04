@@ -1,6 +1,6 @@
-import { type App } from 'vue'
-import { installAxiosClient } from './client'
 import { createFirebase } from './firebase'
+
+import { type App } from 'vue'
 
 export * from './client'
 export * from './date'
@@ -11,7 +11,6 @@ import './fontawesome'
 export default function installPlugins() {
   return {
     install(app: App) {
-      installAxiosClient(app)
       createFirebase(app)
     }
   }

@@ -1,17 +1,17 @@
 <template>
-  <section class="my-5">
+  <section class="my-5 px-10">
     <Suspense v-if="showSongs">
       <template #default>
         <AsyncListSongs @back="showSongs=false" />
       </template>
 
       <template #fallback>
-        <span class="loader-5" />
+        <Skeleton class="w-[200px] h-[200px]" />
       </template>
     </Suspense>
 
-    <div v-else class="col-sm-12 col-md-6 offset-md-3">
-      <div class="card shadow-sm">
+    <div v-else class="w-6/12 mx-auto">
+      <Card class="border-none">
         <TransitionGroup name="opacity">
           <template v-for="(block, i) in blocks" :key="i">
             <CreateBlock :block="block" :index="i" />
@@ -19,30 +19,28 @@
           </template>
         </TransitionGroup>
 
-        <div class="card-body d-flex gap-2">
-          <v-btn variant="tonal" color="dark" @click="handleAddBlock">
-            <FontAwesomeIcon class="me-2" icon="plus" />Add block
-          </v-btn>
+        <CardFooter class="gap-2">
+          <Button @click="handleAddBlock">
+            <VueIcon icon="fa-solid:plus" />Add block
+          </Button>
 
-          <v-btn variant="tonal" color="dark" @click="handleSave">
+          <Button @click="handleSave">
             Save
-          </v-btn>
+          </Button>
 
-          <v-btn variant="tonal" color="dark" @click="showSongs=true">
+          <Button @click="showSongs=true">
+            <VueIcon icon="fa-solid:table" />Add block
             Songs
-          </v-btn>
-        </div>
-      </div>
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
 import { addNewSongData } from '@/data'
-import { useAxiosClient } from '@/plugins/client'
 import { Artist, CopiedCreateData, CreateData, Song } from '@/types'
-import { useLocalStorage } from '@vueuse/core'
-import { useHead } from 'unhead'
 import { toast } from 'vue-sonner'
 
 interface SongCreationApiResponse {
@@ -50,15 +48,15 @@ interface SongCreationApiResponse {
   items: Song[]
 }
 
-useHead({
-  title: ' Create new song',
-  meta: [
-    {
-      name: 'description',
-      content: 'Write a description here'
-    }
-  ]
-})
+// useHead({
+//   title: ' Create new song',
+//   meta: [
+//     {
+//       name: 'description',
+//       content: 'Write a description here'
+//     }
+//   ]
+// })
 
 const AsyncListSongs = defineAsyncComponent({
   loader: async () => import('@/components/creation/ListSongs.vue'),
@@ -80,37 +78,24 @@ const blocks = ref<CreateData[]>([
   }
 ])
 
-const genres = useLocalStorage<string[]>('genres', [], {
-  serializer: {
-    read(raw) {
-      return JSON.parse(raw)
-    },
-    write(value) {
-      return JSON.stringify(value)
-    }
-  }
-})
+const genres = useStorage<string[]>('genres', [])
+const featuredArtists = useStorage<Artist[]>('artists', [])
 
-const featuredArtists = useLocalStorage<Artist[]>('artists', null, {
-  serializer: {
-    read(raw) {
-      return JSON.parse(raw)
-    },
-    write(value) {
-      return JSON.stringify(value)
-    }
-  }
-})
-
+/**
+ * Search within the list of available artists
+ */
 async function handleSearchFeaturedArtists() {
   try {
     const response = await client.get<Artist[]>('/songs/artists')
     featuredArtists.value = response.data
   } catch (e) {
-    toast.error('Request failed')
+    toast.error(`Request failed: ${e}`)
   }
 }
 
+/**
+ * Save the new song to the database
+ */
 async function handleSave() {
   try {
     // Transform the list so that the featured artists
@@ -141,15 +126,15 @@ async function handleSave() {
   }
 }
 
-// Get all the available genres from
-// the backend
+/**
+ * Get all the available genres from
+ * the backend
+ */
 async function handleGetGenres() {
   try {
-    if (genres.value) {
-      if (genres.value.length === 0) {
-        const response = await client.get<string[]>('/songs/genres')
-        genres.value = response.data
-      }
+    if (genres.value.length === 0) {
+      const response = await client.get<string[]>('/songs/genres')
+      genres.value = response.data
     }
   } catch {
     toast.error('Failed to get genres')

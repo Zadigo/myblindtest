@@ -29,6 +29,9 @@ export function createFirebase(vueApp: App) {
   }
 }
 
+/**
+ *
+ */
 export function useFirebase() {
   return {
     fireDb: db,

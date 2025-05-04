@@ -47,12 +47,11 @@ export default defineConfig(({ mode }) => {
         imports: [
           'vue',
           'pinia',
-          '@vueuse/core',
-          {
-            './src/stores': [
-              'useSongs'
-            ]
-          }
+          '@vueuse/core'
+        ],
+        dirs: [
+          'src/plugins',
+          'src/stores'
         ]
       })
     ],

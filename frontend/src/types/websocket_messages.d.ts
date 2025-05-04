@@ -3,10 +3,38 @@ import type { RandomizerData } from '../components/randomizer'
 import type { CacheSession } from '.'
 import type { DeviceActions, WebsocketActions } from '../data/constants/websocket'
 
+export type DefaultActions = WebsocketActions | DeviceActions
+
 export interface WebsocketMessage {
-  action: WebsocketActions | DeviceActions
+  action: DefaultActions
 }
 
+export interface WebsocketSendGuess extends WebsocketMessage {
+  team_id: string
+  title_match: boolean
+  artist_match: boolean
+}
+
+export interface WebsocketRandomizeGenre extends WebsocketMessage {
+  temporary_genre: string | RandomizerData
+}
+
+export interface WebsocketSettings extends WebsocketMessage {
+  action: DefaultActions
+  cache: CacheSession
+  settings: {
+    point_value: number
+    game_difficulty: DifficultyLevels
+    genre: SongGenres
+    difficulty_bonus: boolean
+    time_bonus: boolean
+    number_of_rounds: number
+    solo_mode: boolean
+    admin_plays: boolean
+  }
+}
+
+// TODO: Remove
 export interface WebsocketBlindTestMessage extends WebsocketMessage {
   // Received
   token?: string | null | undefined

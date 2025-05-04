@@ -20,17 +20,17 @@ export const deviceActions = [
 export type DeviceActions = (typeof deviceActions)[number]
 
 export const websocketActions = [
+  'connection_token',
+  'error',
+  'guess_correct',
+  'game_started',
+  'randomize_genre',
   'song_new',
   'timer_tick',
-  'guess_correct',
-  'error',
-  'connection_token',
-  'game_started',
   'song_skipped',
   'start_game',
   'submit_guess',
-  'skip_song',
-  'randomize_genre'
+  'skip_song'
 ] as const
 
 export type WebsocketActions = (typeof websocketActions)[number]
