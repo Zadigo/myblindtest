@@ -40,8 +40,17 @@ export default defineConfig(({ mode }) => {
           'pinia',
           '@vueuse/core',
           {
-            './src/stores': [
+            '@/stores': [
               'useSongs'
+            ]
+          },
+          {
+            '@/plugins': [
+              'useAxiosClient',
+              'useAuthenticatedAxiosClient',
+              'createSimpleClient',
+              'inProduction',
+              'getWebsocketUrl'
             ]
           }
         ]
@@ -51,13 +60,9 @@ export default defineConfig(({ mode }) => {
       alias: [
         {
           find: '@',
-          replacement: resolve(__dirname, 'src'),
-        },
-        {
-          find: 'src',
           replacement: resolve(__dirname, 'src')
         }
-      ],
-    },
+      ]
+    }
   }
 })

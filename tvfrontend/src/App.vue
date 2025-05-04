@@ -1,10 +1,7 @@
 <template>
   <section id="interface" class="mx-5">
-    <button type="button" class="p-4 shadow-sm bg-blue-500" @click="handleCorrectAnswer">
-      Show answer
-    </button>
     <div class="px-5 my-10">
-      <div v-if="ws.status.value==='OPEN'" class="grid grid-cols-5 grid-rows- gap-5 text-center">
+      <div class="grid grid-cols-5 grid-rows- gap-5 text-center">
         <!-- Team 1 -->
         <TeamBlock ref="teamOneEl" :team-id="1" :correct-answer="correctAnswer" class="col-span-2" />
 
@@ -18,18 +15,28 @@
         </div>
 
         <!-- Team 2 -->
-        <TeamBlock :team-id="2" :correct-answer="correctAnswer" class="col-span-2" />
+        <TeamBlock ref="teamTwoEl" :team-id="2" :correct-answer="correctAnswer" class="col-span-2" />
       </div>
 
-      <div v-else class="w-full flex justify-center">
-        <div class="bg-white shadow-md rounded-md p-10 w-2/5">
-          <form class="flex flex-col" @submit.prevent>
-            <input type="text" class="bg-slate-100 rounded-sm w-full p-6 mb-4" placeholder="Code de connection">
-            <button type="button" class="p-4 shadow-sm bg-blue-400 rounded-md place-self-end text-white uppercase font-semibold cursor-pointer transition-all hover:bg-blue-500">
-              Se connecter
-            </button>
-          </form>
-        </div>
+      <div v-if="isConnected">
+        Something
+      </div>
+
+      <div v-else class="w-4/12 mx-auto">
+        <Card class="border-none shadow-md">
+          <CardContent>
+            <form class="flex flex-col" @submit.prevent>
+              <Input class="bg-slate-100 rounded-sm w-full p-6 mb-4" />
+              <Button variant="secondary" class="self-end" size="lg" @click="ws.open()">
+                Se connecter
+              </Button>
+              <!-- <input type="text" class="bg-slate-100 rounded-sm w-full p-6 mb-4" placeholder="Code de connection"> -->
+              <!-- <button type="button" class="p-4 shadow-sm bg-blue-400 rounded-md place-self-end text-white uppercase font-semibold cursor-pointer transition-all hover:bg-blue-500">
+                Se connecter
+              </button> -->
+            </form>
+          </CardContent>
+        </Card>
       </div>
     </div>
 
@@ -53,20 +60,21 @@ import 'animate.css'
 import { onBeforeUnmount, ref } from 'vue'
 import { useWebSocket, whenever } from '@vueuse/core'
 
-import TeamBlock from '@/components/TeamBlock.vue'
-
 interface WebsocketMessage {
   type: string
 }
 
-const teamOneEl = ref<HTMLElement>()
+const teamOneEl = useTemplateRef('teamOneEl')
+const teamTwoEl = useTemplateRef('teamTwoEl')
+
 const audioEl = ref<HTMLAudioElement>()
+
 const dissapearCountdown = ref()
 const correctAnswer = ref<number | null>(null)
-const showAnswer = ref(false)
+const showAnswer = ref<boolean>(false)
 
-const timerTotalSeconds = ref(120)
-const timerIsRunning = ref(false)
+const timerTotalSeconds = ref<number>(120)
+const timerIsRunning = ref<boolean>(false)
 const timerMinutes = ref<number>(2)
 const timerSeconds = ref<number>(0)
 let timerInterval: ReturnType<typeof setInterval> | null
@@ -153,21 +161,15 @@ function handleOnMessage(ws: WebSocket, event: MessageEvent<WebsocketMessage>) {
   }
 }
 
-/**
- *
- */
-function handleCorrectAnswer() {
-  correctAnswer.value = Math.floor(Math.random() * 2) + 1
-  showAnswer.value = true
-}
-
-const ws = useWebSocket('http://example.com/ws/', {
+const ws = useWebSocket(getWebsocketUrl('/tv'), {
   immediate: false,
   onConnected: handleOnConnected,
   onError: handleOnError,
   onDisconnected: handleOnDisconnected,
   onMessage: handleOnMessage
 })
+
+const isConnected = computed(() => ws.status.value === 'OPEN')
 
 onBeforeUnmount(() => {
   handleResetTimer()
