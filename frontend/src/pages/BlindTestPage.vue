@@ -26,7 +26,7 @@ const videoEl = ref<HTMLElement>()
  * Callback function that handles the correct
  * answser from a given team
  *
- * @param (number | string)[]
+ * @param data The data to push
  */
 function handleCorrectAnswer(data: (number | MatchedPart)[]) {
   if (songsStore.cache) {

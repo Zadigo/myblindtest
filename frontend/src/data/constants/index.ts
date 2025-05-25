@@ -1,4 +1,5 @@
 export * from './websocket'
+export * from './cache'
 
 export const difficultyLevels = [
   'All',

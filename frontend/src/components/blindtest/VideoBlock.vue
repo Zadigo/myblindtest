@@ -77,7 +77,6 @@
 </template>
 
 <script setup lang="ts">
-import { wheelDetaults } from '@/data'
 import { toast } from 'vue-sonner'
 import { RandomizerData } from '../randomizer'
 
@@ -115,14 +114,16 @@ const ws = useWebSocket(getWebsocketUrl('/ws/songs'), {
       }
     })
 
-    ws.send(result)
+    if (result) {
+      ws.send(result)
 
-    toast.success('Info', {
-      description: 'Started blind test'
-    })
+      toast.success('Info', {
+        description: 'Started blind test'
+      })
 
-    if (!gameStarted.value) {
-      gameStarted.value = true
+      if (!gameStarted.value) {
+        gameStarted.value = true
+      }
     }
   },
   onMessage() {
@@ -206,6 +207,7 @@ const ws = useWebSocket(getWebsocketUrl('/ws/songs'), {
     gameStarted.value = false
     toast.error('Warning', {
       description: 'Game has been disconnected',
+      unstyled: true,
       class: 'bg-yellow-100'
     })
   },
@@ -251,7 +253,7 @@ function handleFinalize() {
  * those that were already played
  */
 function handleIncorrectAnswer() {
-  const result = sendMessage<{ action: keyof DefaultActions }>({ action: 'skip_song' })
+  const result = sendMessage<{ action: DefaultActions }>({ action: 'skip_song' })
 
   if (result) {
     ws.send(result)

@@ -62,6 +62,9 @@ export interface CacheSession {
   }
 }
 
+/**
+ * The data to be created in the database
+ */
 export interface CreateData {
   name: string
   genre: string
@@ -76,6 +79,9 @@ export interface CopiedCreateData extends Omit<CreateData, 'featured_artists'> {
   featured_artists: string
 }
 
+/**
+ * The team's anwswer given the current song
+ */
 export interface Answer {
   teamId: number
   matched?: MatchedPart
