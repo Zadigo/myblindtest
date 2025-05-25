@@ -1,11 +1,10 @@
-export const matchedElement = [
+export const matchedPart = [
   'Artist',
   'Title',
-  'Both',
-  null
+  'Both'
 ] as const
 
-export type MatchedElement = (typeof matchedElement)[number]
+export type MatchedPart = (typeof matchedPart)[number]
 
 export const deviceActions = [
   'device_connected',

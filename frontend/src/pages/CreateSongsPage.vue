@@ -123,7 +123,7 @@ async function handleSave() {
       }
     })
 
-    const response = await client.post<SongCreationApiResponse>('/songs/create', transformedRequestData)
+    const response = await client.post<SongCreationApiResponse>('/api/v1/songs/create', transformedRequestData)
     blocks.value = [{ ...addNewSongData }]
 
     if (response.data.errors.length > 0) {

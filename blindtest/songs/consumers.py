@@ -83,7 +83,7 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
             return
 
         if action == 'start_game':
-            settings = content.get('settings', {})
+            settings: dict[str, str | bool | int] = content.get('settings', {})
 
             self.difficulty = settings.get('game_difficulty', 'All')
             self.genre = settings.get('genre', 'All')
@@ -214,6 +214,8 @@ class ScreenInterfaceConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):
         await self.close()
 
     async def receive_json(self, content, **kwargs):
+        print(content)
+
         action = content.get('action')
 
         if action is None:

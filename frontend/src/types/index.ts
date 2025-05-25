@@ -1,9 +1,7 @@
-import type { DifficultyLevels, SongGenres } from '../data/constants'
-
-export * from './websocket_messages'
+export * from './messages'
+export * from './create'
+export * from './game'
 export * from './vue'
-
-export type MatchedPart = 'Title' | 'Artist' | 'Both'
 
 export interface Artist {
   id: number
@@ -32,71 +30,7 @@ export interface ArtistSong extends Exclude<Artist, 'created_on'> {
   song_set: Exclude<Song, 'artist'>[]
 }
 
-interface Player {
-  name: string
-}
-
-export interface Team {
-  id: number
-  name: string
-  players: Player[]
-  score: number
-  color: string | null
-}
-
-export interface CacheSession {
-  songs: Song[]
-  currentStep: number
-  teams: Team[]
-  settings: {
-    rounds: number
-    timeLimit: string | null
-    pointValue: number
-    songDifficultyBonus: boolean
-    speedBonus: boolean
-    soloMode: boolean
-    adminPlays: boolean
-    difficultyLevel: DifficultyLevels
-    songType: SongGenres
-    timeRange: number[]
-  }
-}
-
-/**
- * The data to be created in the database
- */
-export interface CreateData {
-  name: string
-  genre: string
-  artist_name: string
-  featured_artists: string[]
-  youtube_id: string
-  year: number
-  difficulty: number
-}
-
-export interface CopiedCreateData extends Omit<CreateData, 'featured_artists'> {
-  featured_artists: string
-}
-
-/**
- * The team's anwswer given the current song
- */
-export interface Answer {
-  teamId: number
-  matched?: MatchedPart
-  song: Song
-}
-
 export interface GenreDistribution {
   genre: string
   count: number
-}
-
-export interface SettingsDataApiResponse {
-  count_by_genre: GenreDistribution[]
-  period: {
-    minimum: number
-    maximum: number
-  }
 }

@@ -80,8 +80,8 @@
 import { toast } from 'vue-sonner'
 import { RandomizerData } from '../randomizer'
 
-import type { MatchedElement } from '@/data'
-import type { Song, WebsocketSendGuess, WebsocketBlindTestMessage, WebsocketRandomizeGenre, DefaultActions, WebsocketSettings } from '@/types'
+import type { MatchedPart } from '@/data'
+import type { Song, WebsocketSendGuess, WebsocketBlindTestMessage, WebsocketRandomizeGenre, DefaultActions, WebsocketSettings, VideoBlockExposedMethods } from '@/types'
 
 const songsStore = useSongs()
 const { gameStarted, currentSong } = storeToRefs(songsStore)
@@ -133,7 +133,7 @@ const ws = useWebSocket(getWebsocketUrl('/ws/songs'), {
 
     if (data) {
       switch (data.action) {
-        case 'connection_token':
+        case 'connection_token': {
           connectionToken.value = data.token
 
           if (data.team_one_id) {
@@ -144,19 +144,23 @@ const ws = useWebSocket(getWebsocketUrl('/ws/songs'), {
             songsStore.cache.teams[1].id = data.team_two_id
           }
           break
+        }
 
-        case 'game_started':
+        case 'game_started': {
           gameStarted.value = true
           break
+        }
 
-        case 'song_new':
+        case 'song_new': {
           songsStore.cache.songs.push(data.song as Song)
           break
+        }
 
-        case 'timer_tick':
+        case 'timer_tick': {
           break
+        }
 
-        case 'guess_correct':
+        case 'guess_correct': {
           // When we receive a message that the guess was
           // correct by the given team, update the score
           if (data.team_id) {
@@ -168,38 +172,50 @@ const ws = useWebSocket(getWebsocketUrl('/ws/songs'), {
             }
           }
           break
+        }
 
-        case 'song_skipped':
+        case 'song_skipped': {
           break
+        }
 
-        case 'randomize_genre':
+        case 'randomize_genre': {
           songsStore.cache.songs.push(data.song as Song)
           break
+        }
 
-        case 'device_connected':
-          ws.send(sendMessage<WebsocketBlindTestMessage>({
+        case 'device_connected': {
+          const message = sendMessage<WebsocketBlindTestMessage>({
             action: 'update_device_cache',
             cache: songsStore.cache
-          }))
-          toast.success('Device', {
-            description: 'Projecton device connected'
           })
-          break
 
-        case 'device_disconnected':
+          if (message) {
+            ws.send(message)
+
+            toast.success('Device', {
+              description: 'Projecton device connected'
+            })
+          }
+          break
+        }
+
+        case 'device_disconnected': {
           toast.success('Device', {
             description: 'Projecton device disconnected'
           })
           break
+        }
 
-        case 'error':
+        case 'error': {
           toast.error('Error', {
             description: data.error
           })
           break
+        }
 
-        default:
+        default: {
           break
+        }
       }
     }
   },
@@ -242,7 +258,8 @@ function randomizerComplete(value: string | undefined | RandomizerData) {
 }
 
 /**
- *
+ * Callback function used after a correct or
+ * incorrect answer was triggered
  */
 function handleFinalize() {
   songsStore.cache.currentStep += 1
@@ -268,7 +285,7 @@ function handleIncorrectAnswer() {
  * @param teamId The ID of the team
  * @param match The element that was matched
  */
-function handleCorrectAnswer(teamId: string, match: MatchedElement) {
+function handleCorrectAnswer(teamId: string, match: MatchedPart) {
   let title_match: boolean = true
   let artist_match: boolean = true
 
@@ -289,11 +306,12 @@ function handleCorrectAnswer(teamId: string, match: MatchedElement) {
     artist_match
   })
 
+  console.log('handleCorrectAnswer', result)
+
   if (result) {
     ws.send(result)
+    handleFinalize()
   }
-
-  handleFinalize()
 }
 
 /**
@@ -321,7 +339,7 @@ function handleStop() {
   }
 }
 
-defineExpose({
+defineExpose<VideoBlockExposedMethods>({
   handleCorrectAnswer,
   handleIncorrectAnswer
 })

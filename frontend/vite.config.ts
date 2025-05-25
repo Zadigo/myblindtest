@@ -5,7 +5,6 @@ import { defineConfig, loadEnv } from 'vite'
 import { resolve } from 'path'
 
 import tailwind from '@tailwindcss/vite'
-import unheadVite from '@unhead/addons/vite'
 import eslint from 'vite-plugin-eslint'
 import vue from '@vitejs/plugin-vue'
 import autoImportComponents from 'unplugin-vue-components/vite'
@@ -30,7 +29,6 @@ export default defineConfig(({ mode }) => {
     plugins: [
       vue(),
       eslint(),
-      unheadVite(),
       tailwind(),
       autoImportComponents({
         deep: true,

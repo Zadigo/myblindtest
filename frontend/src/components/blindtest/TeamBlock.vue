@@ -62,10 +62,10 @@
 </template>
 
 <script lang="ts" setup>
-import type { MatchedPart } from '@/types'
+import type { MatchedPart } from '@/data'
 
 const emit = defineEmits({
-  'next-song'(_data: (number | MatchedElement)[]) {
+  'next-song'(_data: [ teamId: string, match: MatchedPart ]) {
     return true
   }
 })
@@ -96,10 +96,10 @@ const props = defineProps({
 const songsStore = useSongs()
 const { cache, correctAnswers, gameStarted, answers } = storeToRefs(songsStore)
 
-const teamBlockEl = ref<HTMLElement>()
-const scoreBoxEl = ref<HTMLElement>()
-const currentBonus = ref<number>(0)
+const teamBlockEl = useTemplateRef<HTMLElement>('teamBlockEl')
+const scoreBoxEl = useTemplateRef<HTMLElement>('scoreBoxEl')
 
+const currentBonus = ref<number>(0)
 const matchedElement = ref<MatchedPart>('Both')
 
 const team = computed(() => {
@@ -188,6 +188,7 @@ async function handleAnimation() {
 async function handleCorrectAnswer() {
   if (team.value) {
     await handleAnimation()
+    console.log('Correct answer', team.value)
     emit('next-song', [team.value.id, matchedElement.value])
     matchedElement.value = 'Both'
   } else {
@@ -201,7 +202,7 @@ async function handleCorrectAnswer() {
  *
  * @param match The matched element
  */
-function handleMatch(match: MatchedElement) {
+function handleMatch(match: MatchedPart) {
   matchedElement.value = match
 }
 </script>

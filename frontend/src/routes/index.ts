@@ -33,11 +33,6 @@ const router = createRouter({
           name: 'registration'
         },
         {
-          path: 'diffusion',
-          component: async () => import('../pages/DiffusionPage.vue'),
-          name: 'diffusion'
-        },
-        {
           path: 'test',
           component: async () => import('../pages/TestPage.vue'),
           name: 'test'
@@ -58,7 +53,7 @@ const router = createRouter({
       path: '/blind-test',
       component: async () => import('../pages/BlindTestPage.vue'),
       name: 'blind_test'
-    },
+    }
   ]
 })
 

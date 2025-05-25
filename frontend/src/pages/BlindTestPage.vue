@@ -15,12 +15,14 @@
 </template>
 
 <script setup lang="ts">
-import type { MatchedPart } from '@/types'
+import VideoBlock from '@/components/blindtest/VideoBlock.vue'
+import type { MatchedPart } from '@/data'
+import type { VideoBlockExposedMethods } from '@/types'
 
 const songsStore = useSongs()
 const { currentSong, correctAnswers } = storeToRefs(songsStore)
 
-const videoEl = ref<HTMLElement>()
+const videoEl = useTemplateRef<InstanceType<typeof VideoBlock> & VideoBlockExposedMethods>('videoEl')
 
 /**
  * Callback function that handles the correct
@@ -28,20 +30,16 @@ const videoEl = ref<HTMLElement>()
  *
  * @param data The data to push
  */
-function handleCorrectAnswer(data: (number | MatchedPart)[]) {
-  if (songsStore.cache) {
-    if (currentSong.value && data) {
-      correctAnswers.value.push({
-        teamId: data[0],
-        song: currentSong.value
-      })
-
-      if (videoEl.value) {
-        videoEl.value.handleCorrectAnswer(data[0], data[1])
-      }
+function handleCorrectAnswer(data: [ teamId: string, match: MatchedPart ]) {
+  if (currentSong.value) {
+    correctAnswers.value.push({
+      teamId: data[0],
+      song: currentSong.value
+    })
+    console.log(videoEl.value)
+    if (videoEl.value) {
+      videoEl.value.handleCorrectAnswer(data[0], data[1])
     }
-  } else {
-    console.error('handleCorrectAnswer: BlindTestPage')
   }
 }
 </script>

@@ -1,7 +1,7 @@
 import asyncio
 import dataclasses
 import random
-from typing import List, Union
+from typing import List, Union, Optional
 
 from channels.db import database_sync_to_async
 from django.core import exceptions
@@ -27,8 +27,8 @@ from songs.processors import FuzzyMatcher
 @dataclasses.dataclass
 class Team:
     team_id: str
-    name: str = None
-    color: str = None
+    name: Optional[str] = None
+    color: Optional[str] = None
     points: int = 0
     correct_answers: List[int] = dataclasses.field(default_factory=list)
     answer_times: List[int] = dataclasses.field(default_factory=list)
@@ -106,8 +106,8 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
         self.team_two_score = 0
 
         self.is_started = False
-        self.current_song: dict[str, Union[str, int]] = None
-        self.timer_task: asyncio.Task = None
+        self.current_song: Optional[dict[str, Union[str, int]]] = None
+        self.timer_task: Optional[asyncio.Task] = None
 
         # Solo mode is a mode where the
         # user tries to guess the songs
@@ -164,7 +164,7 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
         return cache
 
     @database_sync_to_async
-    def get_songs(self, temporary_genre: str = None, exclude: List[int] = []) -> List[int]:
+    def get_songs(self, temporary_genre: Optional[str] = None, exclude: List[int] = []) -> List[int]:
         cache_key = f'songs_{self.difficulty}_{self.genre}'
         cached_songs = cache.get(cache_key)
 
@@ -386,7 +386,7 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
             message['points'] = self.team_one_score if team_id == self.team_one else self.team_two_score
 
         await self.channel_layer.group_send(self.diffusion_group_name, {
-            'type': 'game_updates',
+            'type': 'game_updates', #FIXME: game.updates
             'sender': 'blind_test',
             'updates': message
         })

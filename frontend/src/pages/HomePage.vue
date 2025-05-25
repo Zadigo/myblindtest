@@ -36,7 +36,7 @@ const genreDistribution = ref<GenreDistribution[]>([])
  */
 async function requestSettingsData() {
   try {
-    const response = await client.get<SettingsDataApiResponse>('/songs/settings')
+    const response = await client.get<SettingsDataApiResponse>('/api/v1/songs/settings')
 
     songStore.cache.settings.timeRange[0] = response.data.period.minimum
     songStore.cache.settings.timeRange[1] = response.data.period.maximum

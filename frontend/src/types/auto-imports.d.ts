@@ -39,7 +39,7 @@ declare global {
   const debouncedRef: typeof import('@vueuse/core')['debouncedRef']
   const debouncedWatch: typeof import('@vueuse/core')['debouncedWatch']
   const defaultOptions: typeof import('../plugins/chartjs')['defaultOptions']
-  const defaults: typeof import('../data/index')['defaults']
+  const defaults: typeof import('../data/constants/cache')['defaults']
   const defineAsyncComponent: typeof import('vue')['defineAsyncComponent']
   const defineComponent: typeof import('vue')['defineComponent']
   const defineStore: typeof import('pinia')['defineStore']
@@ -74,6 +74,7 @@ declare global {
   const mapWritableState: typeof import('pinia')['mapWritableState']
   const markRaw: typeof import('vue')['markRaw']
   const matchedElement: typeof import('../data/constants/websocket')['matchedElement']
+  const matchedPart: typeof import('../data/constants/websocket')['matchedPart']
   const nextTick: typeof import('vue')['nextTick']
   const onActivated: typeof import('vue')['onActivated']
   const onBeforeMount: typeof import('vue')['onBeforeMount']
@@ -346,7 +347,7 @@ declare global {
   export type { LoginApiResponse, JWTPayload, RefreshApiResposne } from '../plugins/client'
   import('../plugins/client')
   // @ts-ignore
-  export type { MatchedElement, DeviceActions, WebsocketActions } from '../data/constants/websocket'
+  export type { MatchedPart, DeviceActions, WebsocketActions } from '../data/constants/websocket'
   import('../data/constants/websocket')
   // @ts-ignore
   export type { DifficultyLevels, SongGenres } from '../data/constants/index'
@@ -392,7 +393,7 @@ declare module 'vue' {
     readonly debouncedRef: UnwrapRef<typeof import('@vueuse/core')['debouncedRef']>
     readonly debouncedWatch: UnwrapRef<typeof import('@vueuse/core')['debouncedWatch']>
     readonly defaultOptions: UnwrapRef<typeof import('../plugins/chartjs')['defaultOptions']>
-    readonly defaults: UnwrapRef<typeof import('../data/index')['defaults']>
+    readonly defaults: UnwrapRef<typeof import('../data/constants/cache')['defaults']>
     readonly defineAsyncComponent: UnwrapRef<typeof import('vue')['defineAsyncComponent']>
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
     readonly defineStore: UnwrapRef<typeof import('pinia')['defineStore']>
@@ -424,7 +425,7 @@ declare module 'vue' {
     readonly mapStores: UnwrapRef<typeof import('pinia')['mapStores']>
     readonly mapWritableState: UnwrapRef<typeof import('pinia')['mapWritableState']>
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
-    readonly matchedElement: UnwrapRef<typeof import('../data/constants/websocket')['matchedElement']>
+    readonly matchedPart: UnwrapRef<typeof import('../data/constants/websocket')['matchedPart']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
     readonly onBeforeMount: UnwrapRef<typeof import('vue')['onBeforeMount']>
