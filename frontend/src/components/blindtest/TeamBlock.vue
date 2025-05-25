@@ -60,9 +60,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useSongs } from '@/stores/songs'
-
-import type { MatchedElement } from '@/types'
+import type { MatchedPart } from '@/types'
 
 const emit = defineEmits({
   'next-song'(_data: (number | MatchedElement)[]) {
@@ -100,7 +98,7 @@ const teamBlockEl = ref<HTMLElement>()
 const scoreBoxEl = ref<HTMLElement>()
 const currentBonus = ref<number>(0)
 
-const matchedElement = ref<MatchedElement>('Both')
+const matchedElement = ref<MatchedPart>('Both')
 
 const team = computed(() => {
   return cache.value.teams[props.teamIndex]

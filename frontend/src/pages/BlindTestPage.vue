@@ -14,12 +14,8 @@
   </BlindTestLayout>
 </template>
 
-<script lang="ts" setup>
-import { useSongs } from '@/stores/songs'
-import { MatchedElement } from '@/types'
-import { storeToRefs } from 'pinia'
-
-import BlindTestLayout from '@/layouts/BlindTestLayout.vue'
+<script setup lang="ts">
+import type { MatchedPart } from '@/types'
 
 const songsStore = useSongs()
 const { currentSong, correctAnswers } = storeToRefs(songsStore)
@@ -32,7 +28,7 @@ const videoEl = ref<HTMLElement>()
  *
  * @param (number | string)[]
  */
-function handleCorrectAnswer(data: (number | MatchedElement)[]) {
+function handleCorrectAnswer(data: (number | MatchedPart)[]) {
   if (songsStore.cache) {
     if (currentSong.value && data) {
       correctAnswers.value.push({

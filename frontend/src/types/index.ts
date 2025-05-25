@@ -3,6 +3,8 @@ import type { DifficultyLevels, SongGenres } from '../data/constants'
 export * from './websocket_messages'
 export * from './vue'
 
+export type MatchedPart = 'Title' | 'Artist' | 'Both'
+
 export interface Artist {
   id: number
   name: string
@@ -76,7 +78,7 @@ export interface CopiedCreateData extends Omit<CreateData, 'featured_artists'> {
 
 export interface Answer {
   teamId: number
-  matched?: 'Title' | 'Artist' | 'Both'
+  matched?: MatchedPart
   song: Song
 }
 
