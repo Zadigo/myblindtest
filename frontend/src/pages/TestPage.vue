@@ -35,10 +35,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
 import { useWebSocket } from '@vueuse/core'
-import { getBaseUrl } from '@/plugins/client'
-import { useWebsocketUtilities } from '@/composables/utils'
 
 interface Card {
   name: string

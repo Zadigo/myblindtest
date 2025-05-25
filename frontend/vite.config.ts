@@ -1,5 +1,6 @@
 /// <reference types="vitest" />
 
+import { unheadVueComposablesImports } from '@unhead/vue'
 import { defineConfig, loadEnv } from 'vite'
 import { resolve } from 'path'
 
@@ -46,11 +47,13 @@ export default defineConfig(({ mode }) => {
         dts: 'src/types/auto-imports.d.ts',
         vueTemplate: true,
         imports: [
+          unheadVueComposablesImports,
           'vue',
           'pinia',
           '@vueuse/core'
         ],
         dirs: [
+          'src/composables',
           'src/plugins',
           'src/stores',
           'src/data'

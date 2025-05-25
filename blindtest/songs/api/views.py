@@ -11,6 +11,7 @@ from rest_framework.mixins import Response
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import AllowAny
 from songs import tasks
+from urllib.parse import parse_qs, urlparse
 from songs.api import serializers
 from songs.choices import MusicGenre
 from songs.models import Artist, Song
@@ -19,6 +20,29 @@ from songs.models import Artist, Song
 class BasePagination(LimitOffsetPagination):
     default_limit = 100
     max_limit = 100
+
+    def get_paginated_response(self, data):
+        previous_link = urlparse(self.get_previous_link())
+        next_link = urlparse(self.get_next_link())
+
+        q1 = previous_link.query
+        q2 = next_link.query
+
+        previous = parse_qs(q1).get('offset')
+        next = parse_qs(q2).get('offset')
+
+        if previous:
+            previous = int(previous[0])
+
+        if next:
+            next = int(next[0])
+
+        return Response({
+            'count': self.count,
+            'previous': previous,
+            'next': next,
+            'results': data
+        })
 
 
 class AllSongs(generics.ListAPIView):

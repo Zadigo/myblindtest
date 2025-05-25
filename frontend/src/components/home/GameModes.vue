@@ -7,8 +7,19 @@
     </CardHeader>
 
     <CardContent>
-      <v-switch v-model="songStore.cache.settings.soloMode" label="Run in solo mode" inset hide-details />
-      <v-switch v-model="songStore.cache.settings.adminPlays" label="Admin is registered in a team" inset hide-details />
+      <div class="py-3">
+        <Label>
+          <Switch v-model="songStore.cache.settings.soloMode" />
+          Run in solo mode
+        </Label>
+      </div>
+
+      <div class="py-3">
+        <Label>
+          <Switch v-model="songStore.cache.settings.adminPlays" />
+          Admin is registered in a team
+        </Label>
+      </div>
     </CardContent>
   </Card>
 </template>

@@ -1,12 +1,12 @@
 <template>
   <Card class="border-0 shadow-md">
-    <CardHeader>
-      <CardTitle>
-        General settings
-      </CardTitle>
-    </CardHeader>
-
     <CardContent>
+      <CardHeader>
+        <CardTitle>
+          General settings
+        </CardTitle>
+      </CardHeader>
+
       <Input v-model="songStore.cache.settings.rounds" type="number" min="1" max="100" placeholder="Number of rounds" variant="solo-filled" clearable flat />
 
       <div>
@@ -15,7 +15,7 @@
         </Label>
 
         <Select id="game-difficulty" v-model="selectedDifficulty">
-          <SelectTrigger>
+          <SelectTrigger class="w-full">
             <SelectValue placeholder="All" />
           </SelectTrigger>
           <SelectContent>
@@ -32,9 +32,10 @@
         </Label>
 
         <Select id="song-type" v-model="selectedSongType">
-          <SelectTrigger>
+          <SelectTrigger class="w-full">
             <SelectValue placeholder="All" />
           </SelectTrigger>
+
           <SelectContent>
             <SelectGroup v-for="songType in songGenres" :key="songType">
               <SelectItem :value="songType">
@@ -45,6 +46,30 @@
         </Select>
       </div>
 
+      <!-- <Combobox>
+        <ComboboxTrigger>
+          <Input />
+        </ComboboxTrigger>
+
+        <ComboboxContent>
+          <ComboboxItem v-for="genre in genreDistribution" :key="genre" :value="genre">
+            {{ genre }}
+          </ComboboxItem>
+        </ComboboxContent>
+      </Combobox> -->
+
+      <!-- <Select v-model="songStore.cache.settings.songType">
+        <SelectTrigger class="w-full">
+          <SelectValue />
+        </SelectTrigger>
+
+        <SelectContent>
+          <SelectItem v-for="songType in songGenres" :key="songType" :value="songType">
+            {{ songType }}
+          </SelectItem>
+        </SelectContent>
+      </Select> -->
+
       <!-- <v-select id="song-type" v-model="songStore.cache.settings.songType" :items="songTypes" variant="solo-filled" flat /> -->
       <!-- <v-autocomplete :items="genreDistribution" item-value="genre" auto-select-first solo>
         <template #item="{ props, item }">
@@ -54,14 +79,16 @@
         </template>
       </v-autocomplete> -->
 
-      <Label for="game-difficulty" class="mt-3">
-        Time limit
-      </Label>
-      <Input id="game-difficulty" v-model="selectedTimeLimit" type="time" placeholder="Time limit" />
+      <div class="mt-3">
+        <Label for="game-difficulty" class="mb-2">
+          Time limit
+        </Label>
+        <Input id="game-difficulty" v-model="selectedTimeLimit" type="time" placeholder="Time limit" />
+      </div>
 
-      <label for="time-period" class="font-bold mt-5">
+      <p for="time-period" class="font-bold mt-10">
         Time period
-      </label>
+      </p>
 
       <p class="font-light">
         Choose a timeframe in years to select the
@@ -69,7 +96,7 @@
         for the blind test
       </p>
 
-      <v-range-slider v-model="songStore.cache.settings.timeRange" :min="minimumPeriod" :max="maximumPeriod" :step="1" class="align-center" hide-details>
+      <!-- <v-range-slider v-model="songStore.cache.settings.timeRange" :min="minimumPeriod" :max="maximumPeriod" :step="1" class="align-center" hide-details>
         <template #prepend>
           <v-text-field v-model="songStore.cache.settings.timeRange[0]" :min="0" density="compact" style="width: 70px" type="number" variant="outlined" hide-details single-line />
         </template>
@@ -77,20 +104,20 @@
         <template #append>
           <v-text-field v-model="songStore.cache.settings.timeRange[1]" :min="0" density="compact" style="width: 70px" type="number" variant="outlined" hide-details single-line />
         </template>
-      </v-range-slider>
+      </v-range-slider> -->
     </CardContent>
   </Card>
 </template>
 
-<script lang="ts" setup>
-import { difficultyLevels, songGenres, type DifficultyLevels, type SongGenres } from '@/data'
-
+<script setup lang="ts">
 const songStore = useSongs()
+
 const selectedTimeLimit = ref<string | number>(0)
 const selectedDifficulty = ref<DifficultyLevels>('All')
 const selectedSongType = ref<SongGenres>('All')
-const minimumPeriod = ref<number>(0)
-const maximumPeriod = ref<number>(100)
+
+// const minimumPeriod = ref<number>(0)
+// const maximumPeriod = ref<number>(100)
 
 // const selectedTimeRane = ref<number[]>([0, 0])
 // const genreDistribution = ref<GenreDistribution[]>([])

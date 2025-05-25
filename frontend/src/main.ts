@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { createUnhead } from 'unhead'
+import { createHead } from '@unhead/vue/client'
 import { Icon } from '@iconify/vue'
 
 import App from './App.vue'
@@ -11,15 +11,16 @@ import installPlugins from './plugins'
 import './style.scss'
 import './assets/css/main.css'
 // import './assets/spinners.scss'
-import 'animate.css'
+// import 'animate.css'
 
-createUnhead()
+const head = createHead()
 
 const app = createApp(App)
 const pinia = createPinia()
 
 app.use(pinia)
 app.use(router)
+app.use(head)
 app.use(installPlugins())
 app.component('VueIcon', Icon)
 app.component('FontAwesomeIcon', FontAwesomeIcon)

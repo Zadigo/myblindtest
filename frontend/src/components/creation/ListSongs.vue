@@ -3,18 +3,20 @@
     <div class="mx-auto w-6/12">
       <Card class="mb-2 border-none">
         <CardContent>
-          <div class="flex gap-2 mb-3 w-full">
-            <Button @click="emit('back')">
-              <Icon icon="fa-solid:arrow-left" /> Back
+          <div class="flex items-center gap-2 mb-3 w-full">
+            <Button @click="handleBack">
+              <VueIcon icon="fa-solid:arrow-left" /> Back
             </Button>
 
-            <div class="self-end">
+            <div class="ml-auto space-x-2 flex items-center">
               <Button @click="getPrevious">
+                <VueIcon icon="fa-solid:caret-left" />
                 Previous
               </Button>
 
               <Button @click="getNextPage">
                 Next
+                <VueIcon icon="fa-solid:caret-right" />
               </Button>
             </div>
           </div>
@@ -71,7 +73,6 @@
 </template>
 
 <script setup lang="ts">
-import { useDebounce, useLimitOffeset, useString } from '@/composables/utils'
 import { ArtistSong } from '@/types'
 import { toast } from 'vue-sonner'
 
@@ -80,8 +81,8 @@ import { toast } from 'vue-sonner'
 // is very confusing
 interface ApiResponse {
   count: number
-  next: string
-  previous: string
+  next: number
+  previous: number
   results: ArtistSong[]
 }
 
@@ -92,31 +93,32 @@ const emit = defineEmits({
 })
 
 const { plural } = useString()
-const { parser } = useLimitOffeset()
 const { client } = useAxiosClient()
 const { debounce } = useDebounce()
+
 const searchParam = useUrlSearchParams('history', {
   initialValue: {
     q: null,
     limit: 100,
-    offset: 0
+    offset: 0,
+    v: 'l'
   } as {
     q: string | null
     limit: number
     offset: number
+    v: 'l' | 'c'
   }
 })
 
 const search = ref<string>('')
-const previousLink = ref<string>()
-const nextLink = ref<string>()
 const apiResult = ref<ApiResponse>()
 
 /**
- * 
+ * Return all the songs in the database
+ *
  * @param offset The next offset page to get
  */
-async function getSongs(offset: string | number = 0) {
+async function getSongs(offset: number = 0) {
   try {
     const response = await client.get<ApiResponse>('/api/v1/songs/by-artists', {
       params: {
@@ -128,9 +130,6 @@ async function getSongs(offset: string | number = 0) {
     searchParam.q = search.value
     searchParam.offset = offset
     apiResult.value = response.data
-
-    previousLink.value = response.data.previous
-    nextLink.value = response.data.next
   } catch {
     toast.error('Could not get songs')
   }
@@ -142,9 +141,9 @@ const debouncedGetSongs = debounce(getSongs, 4000)
  * Get the previous page
  */
 async function getPrevious() {
-  if (previousLink.value) {
-    const result = parser(previousLink.value)
-    getSongs(result.offset)
+  if (apiResult.value) {
+    searchParam.offset = apiResult.value.previous
+    getSongs(apiResult.value.previous)
   }
 }
 
@@ -152,11 +151,23 @@ async function getPrevious() {
  * Get the next page
  */
 async function getNextPage() {
-  if (nextLink.value) {
-    const result = parser(nextLink.value)
-    getSongs(result.offset)
+  if (apiResult.value) {
+    searchParam.offset = apiResult.value.next
+    getSongs(apiResult.value.next)
   }
 }
+
+/**
+ *
+ */
+function handleBack() {
+  searchParam.v = 'c'
+  emit('back')
+}
+
+onBeforeMount(() => {
+  searchParam.v = 'l'
+})
 
 await getSongs()
 </script>

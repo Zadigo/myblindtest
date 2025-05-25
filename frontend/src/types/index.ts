@@ -66,7 +66,7 @@ export interface CreateData {
   artist_name: string
   featured_artists: string[]
   youtube_id: string
-  year: string | number | null
+  year: number
   difficulty: number
 }
 

@@ -3,7 +3,7 @@
     <Toaster />
 
     <RouterView v-slot="{ Component }">
-      <Transition name="opacity">
+      <Transition name="fade" mode="in-out">
         <component :is="Component" />
       </Transition>
     </RouterView>
@@ -49,3 +49,12 @@ onBeforeMount(() => {
   songsStore.cache = sessionCache.value
 })
 </script>
+
+<style lang="scss" scoped>
+.fade-enter-active {
+  @apply animate__animated animate__fadeIn;
+}
+.fade-leave-active {
+  @apply animate__animated animate__fadeOut;
+}
+</style>

@@ -1,15 +1,12 @@
 <template>
   <CardContent :data-id="index">
-    <div class="flex gap-2">
+    <div class="grid grid-cols-3 gap-2">
       <Input v-model="requestData.name" :rules="[rules.required]" type="text" placeholder="Name" />
 
-      <Combobox v-model="requestData.genre" by="label">
+      <Combobox v-model="requestData.genre">
         <ComboboxAnchor>
           <div class="relative w-full max-w-sm items-center">
             <ComboboxInput class="pl-9" placeholder="Select genre" />
-            <span class="absolute start-0 inset-y-0 flex items-center justify-center px-3">
-              <Search class="size-4 text-muted-foreground" />
-            </span>
           </div>
         </ComboboxAnchor>
 
@@ -43,13 +40,10 @@
     </div>
 
     <div class="w-10/12">
-      <Combobox v-model="requestData.featured_artists" by="label">
+      <Combobox v-model="requestData.featured_artists">
         <ComboboxAnchor>
           <div class="relative w-full max-w-sm items-center">
             <ComboboxInput placeholder="Select genre" />
-            <span class="absolute start-0 inset-y-0 flex items-center justify-center px-3">
-              <!-- <Search class="size-4 text-muted-foreground" /> -->
-            </span>
           </div>
         </ComboboxAnchor>
 

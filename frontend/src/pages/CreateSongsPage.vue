@@ -23,8 +23,8 @@
           </template>
         </TransitionGroup>
 
-        <CardFooter class="gap-2">
-          <Button @click="handleAddBlock">
+        <CardFooter class="space-x-2">
+          <Button class="ms-auto" @click="handleAddBlock">
             <VueIcon icon="fa-solid:plus" />Add block
           </Button>
 
@@ -69,7 +69,15 @@ const AsyncListSongs = defineAsyncComponent({
 
 const { client } = useAxiosClient()
 
-const showSongs = ref(false)
+const searchParam = useUrlSearchParams('history', {
+  initialValue: {
+    v: 'c'
+  } as {
+    v: 'l' | 'c'
+  }
+})
+
+const showSongs = ref<boolean>(false)
 const blocks = ref<CreateData[]>([
   {
     name: '',
@@ -153,5 +161,9 @@ provide('genres', genres)
 
 onMounted(async () => {
   await handleGetGenres()
+
+  if (searchParam.v === 'l') {
+    showSongs.value = true
+  }
 })
 </script>

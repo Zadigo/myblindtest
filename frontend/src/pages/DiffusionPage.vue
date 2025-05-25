@@ -30,7 +30,7 @@
 import { getBaseUrl } from '@/plugins/client'
 import { WebsocketDiffusionMessage } from '@/types'
 import { useWebSocket } from '@vueuse/core'
-import { useWebsocketUtilities } from '@/composables/utils'
+import { useWebsocketUtilities } from '@/composables'
 import { useSongs } from '@/stores/songs'
 
 import BlindTestLayout from '@/layouts/BlindTestLayout.vue'
