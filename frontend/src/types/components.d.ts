@@ -22,6 +22,8 @@ declare module 'vue' {
     Base: typeof import('../components/ui/navbar/Navbar.vue')['default']
     BaseFireworks: typeof import('./../components/BaseFireworks.vue')['default']
     BaseNavbar: typeof import('./../components/BaseNavbar.vue')['default']
+    BaseSite: typeof import('./../layouts/BaseSite.vue')['default']
+    BlindTestLayout: typeof import('./../layouts/BlindTestLayout.vue')['default']
     Breadcrumb: typeof import('./../components/ui/breadcrumb/Breadcrumb.vue')['default']
     BreadcrumbEllipsis: typeof import('./../components/ui/breadcrumb/BreadcrumbEllipsis.vue')['default']
     BreadcrumbItem: typeof import('./../components/ui/breadcrumb/BreadcrumbItem.vue')['default']

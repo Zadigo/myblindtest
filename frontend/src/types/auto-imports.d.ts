@@ -7,7 +7,10 @@
 export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
+  const Settings: typeof import('../data/schemas/index')['Settings']
+  const Team: typeof import('../data/schemas/index')['Team']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
+  const addNewSongData: typeof import('../data/schemas/index')['addNewSongData']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
   const autoResetRef: typeof import('@vueuse/core')['autoResetRef']
   const client: typeof import('../plugins/client')['default']
@@ -36,9 +39,12 @@ declare global {
   const debouncedRef: typeof import('@vueuse/core')['debouncedRef']
   const debouncedWatch: typeof import('@vueuse/core')['debouncedWatch']
   const defaultOptions: typeof import('../plugins/chartjs')['defaultOptions']
+  const defaults: typeof import('../data/index')['defaults']
   const defineAsyncComponent: typeof import('vue')['defineAsyncComponent']
   const defineComponent: typeof import('vue')['defineComponent']
   const defineStore: typeof import('pinia')['defineStore']
+  const deviceActions: typeof import('../data/constants/websocket')['deviceActions']
+  const difficultyLevels: typeof import('../data/constants/index')['difficultyLevels']
   const eagerComputed: typeof import('@vueuse/core')['eagerComputed']
   const effectScope: typeof import('vue')['effectScope']
   const extendRef: typeof import('@vueuse/core')['extendRef']
@@ -66,6 +72,7 @@ declare global {
   const mapStores: typeof import('pinia')['mapStores']
   const mapWritableState: typeof import('pinia')['mapWritableState']
   const markRaw: typeof import('vue')['markRaw']
+  const matchedElement: typeof import('../data/constants/websocket')['matchedElement']
   const nextTick: typeof import('vue')['nextTick']
   const onActivated: typeof import('vue')['onActivated']
   const onBeforeMount: typeof import('vue')['onBeforeMount']
@@ -106,11 +113,13 @@ declare global {
   const resolveComponent: typeof import('vue')['resolveComponent']
   const resolveRef: typeof import('@vueuse/core')['resolveRef']
   const resolveUnref: typeof import('@vueuse/core')['resolveUnref']
+  const sessionData: typeof import('../data/schemas/index')['sessionData']
   const setActivePinia: typeof import('pinia')['setActivePinia']
   const setMapStoreSuffix: typeof import('pinia')['setMapStoreSuffix']
   const shallowReactive: typeof import('vue')['shallowReactive']
   const shallowReadonly: typeof import('vue')['shallowReadonly']
   const shallowRef: typeof import('vue')['shallowRef']
+  const songGenres: typeof import('../data/constants/index')['songGenres']
   const storeToRefs: typeof import('pinia')['storeToRefs']
   const syncRef: typeof import('@vueuse/core')['syncRef']
   const syncRefs: typeof import('@vueuse/core')['syncRefs']
@@ -316,6 +325,8 @@ declare global {
   const watchThrottled: typeof import('@vueuse/core')['watchThrottled']
   const watchTriggerable: typeof import('@vueuse/core')['watchTriggerable']
   const watchWithFilter: typeof import('@vueuse/core')['watchWithFilter']
+  const websocketActions: typeof import('../data/constants/websocket')['websocketActions']
+  const wheelDetaults: typeof import('../data/index')['wheelDetaults']
   const whenever: typeof import('@vueuse/core')['whenever']
 }
 // for type re-export
@@ -326,6 +337,15 @@ declare global {
   // @ts-ignore
   export type { LoginApiResponse, JWTPayload, RefreshApiResposne } from '../plugins/client'
   import('../plugins/client')
+  // @ts-ignore
+  export type { MatchedElement, DeviceActions, WebsocketActions } from '../data/constants/websocket'
+  import('../data/constants/websocket')
+  // @ts-ignore
+  export type { DifficultyLevels, SongGenres } from '../data/constants/index'
+  import('../data/constants/index')
+  // @ts-ignore
+  export type { AddNewSongData, SessionData } from '../data/schemas/index'
+  import('../data/schemas/index')
 }
 
 // for vue template auto import
@@ -334,7 +354,10 @@ declare module 'vue' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly Settings: UnwrapRef<typeof import('../data/schemas/index')['Settings']>
+    readonly Team: UnwrapRef<typeof import('../data/schemas/index')['Team']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
+    readonly addNewSongData: UnwrapRef<typeof import('../data/schemas/index')['addNewSongData']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
@@ -361,9 +384,12 @@ declare module 'vue' {
     readonly debouncedRef: UnwrapRef<typeof import('@vueuse/core')['debouncedRef']>
     readonly debouncedWatch: UnwrapRef<typeof import('@vueuse/core')['debouncedWatch']>
     readonly defaultOptions: UnwrapRef<typeof import('../plugins/chartjs')['defaultOptions']>
+    readonly defaults: UnwrapRef<typeof import('../data/index')['defaults']>
     readonly defineAsyncComponent: UnwrapRef<typeof import('vue')['defineAsyncComponent']>
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
     readonly defineStore: UnwrapRef<typeof import('pinia')['defineStore']>
+    readonly deviceActions: UnwrapRef<typeof import('../data/constants/websocket')['deviceActions']>
+    readonly difficultyLevels: UnwrapRef<typeof import('../data/constants/index')['difficultyLevels']>
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
@@ -389,6 +415,7 @@ declare module 'vue' {
     readonly mapStores: UnwrapRef<typeof import('pinia')['mapStores']>
     readonly mapWritableState: UnwrapRef<typeof import('pinia')['mapWritableState']>
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
+    readonly matchedElement: UnwrapRef<typeof import('../data/constants/websocket')['matchedElement']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
     readonly onBeforeMount: UnwrapRef<typeof import('vue')['onBeforeMount']>
@@ -429,11 +456,13 @@ declare module 'vue' {
     readonly resolveComponent: UnwrapRef<typeof import('vue')['resolveComponent']>
     readonly resolveRef: UnwrapRef<typeof import('@vueuse/core')['resolveRef']>
     readonly resolveUnref: UnwrapRef<typeof import('@vueuse/core')['resolveUnref']>
+    readonly sessionData: UnwrapRef<typeof import('../data/schemas/index')['sessionData']>
     readonly setActivePinia: UnwrapRef<typeof import('pinia')['setActivePinia']>
     readonly setMapStoreSuffix: UnwrapRef<typeof import('pinia')['setMapStoreSuffix']>
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
+    readonly songGenres: UnwrapRef<typeof import('../data/constants/index')['songGenres']>
     readonly storeToRefs: UnwrapRef<typeof import('pinia')['storeToRefs']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>
@@ -639,6 +668,8 @@ declare module 'vue' {
     readonly watchThrottled: UnwrapRef<typeof import('@vueuse/core')['watchThrottled']>
     readonly watchTriggerable: UnwrapRef<typeof import('@vueuse/core')['watchTriggerable']>
     readonly watchWithFilter: UnwrapRef<typeof import('@vueuse/core')['watchWithFilter']>
+    readonly websocketActions: UnwrapRef<typeof import('../data/constants/websocket')['websocketActions']>
+    readonly wheelDetaults: UnwrapRef<typeof import('../data/index')['wheelDetaults']>
     readonly whenever: UnwrapRef<typeof import('@vueuse/core')['whenever']>
   }
 }

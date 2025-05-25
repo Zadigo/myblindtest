@@ -7,7 +7,7 @@ import tailwind from '@tailwindcss/vite'
 import unheadVite from '@unhead/addons/vite'
 import eslint from 'vite-plugin-eslint'
 import vue from '@vitejs/plugin-vue'
-import unpluginViteComponents from 'unplugin-vue-components/vite'
+import autoImportComponents from 'unplugin-vue-components/vite'
 import autoImport from 'unplugin-auto-import/vite'
 
 // https://vite.dev/config/
@@ -31,11 +31,12 @@ export default defineConfig(({ mode }) => {
       eslint(),
       unheadVite(),
       tailwind(),
-      unpluginViteComponents({
+      autoImportComponents({
         deep: true,
         dts: 'src/types/components.d.ts',
         dirs: [
-          'src/components'
+          'src/components',
+          'src/layouts'
         ],
         extensions: [
           'vue'
@@ -51,7 +52,8 @@ export default defineConfig(({ mode }) => {
         ],
         dirs: [
           'src/plugins',
-          'src/stores'
+          'src/stores',
+          'src/data'
         ]
       })
     ],

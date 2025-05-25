@@ -1,13 +1,13 @@
 <template>
-  <section class="mx-auto px-10 relative">
-    <div class="grid grid-cols-2 my-6 gap-4 auto-cols-min">
+  <section class="w-5xl mx-auto px-10 relative">
+    <div class="grid grid-cols-2 my-6 gap-4 auto-rows-fr auto-cols-min">
       <div class="">
         <GeneralSettings />
         <PointValues />
         <GameModes />
       </div>
 
-      <Card id="panel" class="border-none shadow-md">
+      <Card class="border-none shadow-md h-auto">
         <CardContent>
           <p>
             Guess the artist for each <span class="badge badge-success">{{ songStore.cache.settings.songType }}</span>

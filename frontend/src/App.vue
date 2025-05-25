@@ -11,7 +11,6 @@
 </template>
 
 <script setup lang="ts">
-import { defaults, difficultyLevels, songGenres } from '@/data'
 import { Toaster } from 'vue-sonner'
 
 import type { CacheSession } from '@/types'
