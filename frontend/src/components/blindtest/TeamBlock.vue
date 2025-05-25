@@ -16,8 +16,6 @@
       <!-- Actions -->
       <Card class="mt-2 mb-10 border-none">
         <CardContent>
-          {{ answers }}
-
           <div class="flex justify-center gap-2">
             <Button :variant="matchedElement === 'Title' ? 'default' : 'secondary'" @click="handleMatch('Title')">
               <VueIcon name="fa-solid:t" />
@@ -94,7 +92,7 @@ const props = defineProps({
 })
 
 const songsStore = useSongs()
-const { cache, correctAnswers, gameStarted, answers } = storeToRefs(songsStore)
+const { cache, correctAnswers, gameStarted } = storeToRefs(songsStore)
 
 const teamBlockEl = useTemplateRef<HTMLElement>('teamBlockEl')
 const scoreBoxEl = useTemplateRef<HTMLElement>('scoreBoxEl')

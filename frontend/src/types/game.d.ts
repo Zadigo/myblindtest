@@ -14,7 +14,8 @@ export interface Team {
 }
 
 export interface CacheSession {
-  songs: Song[]
+  songs: Song[] // TODO: Rename to previous_songs or songs_played
+
   currentStep: number
   teams: Team[]
   settings: {
