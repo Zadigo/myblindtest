@@ -40,29 +40,31 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-brand-shade-1: var(--color-brand-shade-1);
+  --color-brand-shade-2: var(--color-brand-shade-2);
   --font-sans: var(--font-body);
   --font-title: var(--font-title);
 }
 
 :root {
   --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --foreground: oklch(0.3007 0.0103 17.74);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
+  --primary: oklch(0.5196 0.1877 26.79);
+  --primary-foreground: oklch(0.9474 0.0282 95.9);
+  --secondary: oklch(0.4724 0.0781 151.64);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --accent: oklch(0.9474 0.0282 95.9);
+  --accent-foreground: oklch(0.3007 0.0103 17.74);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
+  --border: oklch(0.9474 0.0282 95.9);
+  --input: oklch(0.9474 0.0282 95.9);
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
@@ -80,14 +82,16 @@
   --sidebar-ring: oklch(0.708 0 0);
   --font-body: 'Inria Sans';
   --font-title: 'Raleway';
+  --color-brand-shade-1: oklch(0.6197 0.1912 27.79);
+  --color-brand-shade-2: oklch(0.7076 0.1847 28.38);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
+  --background: oklch(0.3007 0.0103 17.74);
   --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
+  --card: oklch(0.3007 0.0103 17.74);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
+  --popover: oklch(0.3007 0.0103 17.74);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.985 0 0);
   --primary-foreground: oklch(0.205 0 0);
