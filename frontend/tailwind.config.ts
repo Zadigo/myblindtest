@@ -1,7 +1,3 @@
-import animate from 'tw-animate-css'
-
-import type { Config } from 'tailwindcss'
-
 export default {
   content: [
     './components/**/*.{js,vue,ts}',
@@ -17,8 +13,6 @@ export default {
       screens: {}
     }
   },
-  plugins: [
-    animate
-  ], 
+  plugins: [], 
   darkMode: 'class'
-} as Config
+}
