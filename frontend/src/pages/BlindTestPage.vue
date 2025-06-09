@@ -19,6 +19,10 @@ import VideoBlock from '@/components/blindtest/VideoBlock.vue'
 import type { MatchedPart } from '@/data'
 import type { VideoBlockExposedMethods } from '@/types'
 
+useHead({
+  title: 'Blindtest'
+})
+
 const songsStore = useSongs()
 const { currentSong, correctAnswers, answers } = storeToRefs(songsStore)
 
