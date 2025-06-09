@@ -1,13 +1,15 @@
 <template>
-  <Card class="border-0 shadow-md">
-    <CardContent>
-      <CardHeader>
-        <CardTitle>
+  <Card class="border-0 bg-brand-shade-3/30 shadow-none">
+    <CardHeader>
+      <CardTitle>
+        <h3 class="font-bold">
           General settings
-        </CardTitle>
-      </CardHeader>
+        </h3>
+      </CardTitle>
+    </CardHeader>
 
-      <Input v-model="songStore.cache.settings.rounds" type="number" min="1" max="100" placeholder="Number of rounds" variant="solo-filled" clearable flat />
+    <CardContent>
+      <Input v-model="songStore.cache.settings.rounds" type="number" min="1" max="100" placeholder="Number of rounds" />
 
       <div>
         <Label for="game-difficulty" class="mt-3">

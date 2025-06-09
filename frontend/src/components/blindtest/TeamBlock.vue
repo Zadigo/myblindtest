@@ -18,17 +18,17 @@
         <CardContent>
           <div class="flex justify-center gap-2">
             <Button :variant="matchedElement === 'Title' ? 'default' : 'secondary'" @click="handleMatch('Title')">
-              <VueIcon name="fa-solid:t" />
+              <VueIcon icon="fa-solid:star-half" />
               Title
             </Button>
 
             <Button :variant="matchedElement === 'Artist' ? 'default' : 'secondary'" @click="handleMatch('Artist')">
-              <VueIcon name="fa-solid:a" />
+              <VueIcon icon="fa-solid:star-half" />
               Artist
             </Button>
 
             <Button :variant="matchedElement === 'Both' ? 'default' : 'secondary'" @click="handleMatch('Both')">
-              <VueIcon name="fa-solid:t" />
+              <VueIcon icon="fa-solid:star" />
               Both
             </Button>
           </div>
@@ -43,7 +43,7 @@
       </Card>
 
       <div class="flex gap-1 justify-center p-5 mt-3">
-        <div v-for="i in 5" :key="i" class="p-2 bg-yellow-100 rounded-md w-1/6" />
+        <div v-for="i in 5" :key="i" class="p-2 bg-brand-shade-5/50 rounded-md w-1/6" />
       </div>
 
       <!-- Consecutive Answers -->

@@ -42,6 +42,9 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --color-brand-shade-1: var(--color-brand-shade-1);
   --color-brand-shade-2: var(--color-brand-shade-2);
+  --color-brand-shade-3: var(--color-brand-shade-3);
+  --color-brand-shade-4: var(--color-brand-shade-4);
+  --color-brand-shade-5: var(--color-brand-shade-5);
   --font-sans: var(--font-body);
   --font-title: var(--font-title);
 }
@@ -56,7 +59,7 @@
   --primary: oklch(0.5196 0.1877 26.79);
   --primary-foreground: oklch(0.9474 0.0282 95.9);
   --secondary: oklch(0.4724 0.0781 151.64);
-  --secondary-foreground: oklch(0.205 0 0);
+  --secondary-foreground: oklch(0.9474 0.0282 95.9);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
   --accent: oklch(0.9474 0.0282 95.9);
@@ -84,6 +87,9 @@
   --font-title: 'Raleway';
   --color-brand-shade-1: oklch(0.6197 0.1912 27.79);
   --color-brand-shade-2: oklch(0.7076 0.1847 28.38);
+  --color-brand-shade-3: oklch(0.4181 0.059 16.82);
+  --color-brand-shade-4: oklch(0.6198 0.0287 248.29);
+  --color-brand-shade-5: oklch(0.9474 0.0282 95.9);
 }
 
 .dark {
@@ -128,7 +134,7 @@
   body {
     @apply bg-background text-foreground;
   }
-  h1 {
+  h1, h2, h3, h4, h5, h6 {
     @apply font-title;
   }
 }

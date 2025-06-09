@@ -1,12 +1,13 @@
 <template>
-  <section class="w-5xl mx-auto px-10 relative">
+  <section class="w-4xl mx-auto px-10 my-20 relative">
     <div class="grid grid-cols-12 gap-2 my-10">
       <div class="col-span-12">
         <Card>
           <CardContent>
-            <div class="space-x-2">
-              <Button class="ml-auto rounded-full" as-child>
+            <div class="space-x-2 flex justify-between">
+              <Button class="rounded-full" as-child>
                 <RouterLink :to="{ name: 'home' }">
+                  <VueIcon icon="fa-solid:arrow-left" />
                   Back to settings
                 </RouterLink>
               </Button>
@@ -14,6 +15,7 @@
               <Button class="rounded-full" as-child>
                 <RouterLink :to="{ name: 'blind_test' }">
                   Go to blindtest
+                  <VueIcon icon="fa-solid:arrow-right" />
                 </RouterLink>
               </Button>
             </div>

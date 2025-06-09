@@ -1,11 +1,11 @@
 <template>
   <BlindTestLayout>
     <template #teamOne>
-      <TeamBlock :team-index="0" class="bg-blue-200" @next-song="handleCorrectAnswer" />
+      <TeamBlock :team-index="0" class="bg-brand-shade-4/30" @next-song="handleCorrectAnswer" />
     </template>
 
     <template #teamTwo>
-      <TeamBlock :team-index="1" block-position="ms-auto" class="bg-yellow-200" @next-song="handleCorrectAnswer" />
+      <TeamBlock :team-index="1" block-position="ms-auto" class="bg-brand-shade-5/30" @next-song="handleCorrectAnswer" />
     </template>
 
     <template #video>

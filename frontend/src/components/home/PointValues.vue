@@ -1,8 +1,10 @@
 <template>
-  <Card class="border-0 shadow-md">
+  <Card class="border-0 bg-brand-shade-3/30 shadow-none">
     <CardHeader>
       <CardTitle>
-        Point value and bonuses
+        <h3 class="font-bold">
+          Point value and bonuses
+        </h3>
       </CardTitle>
     </CardHeader>
 

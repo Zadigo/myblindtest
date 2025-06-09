@@ -1,13 +1,15 @@
 <template>
-  <section class="w-5xl mx-auto px-10 relative">
-    <Card class="mt-10 mb-5">
+  <section class="w-5xl mx-auto px-10 my-20 relative">
+    <Card class="mt-10 mb-5 bg-brand-shade-3/30 shadow-none">
       <CardContent>
-        <Button class="ml-auto rounded-full" as-child>
-          <RouterLink :to="{ name: 'teams' }">
-            Manage teams
-            <VueIcon icon="fa-solid:arrow-right" />
-          </RouterLink>
-        </Button>
+        <div class="flex">
+          <Button class="self-end rounded-full" as-child>
+            <RouterLink :to="{ name: 'teams' }">
+              Manage teams
+              <VueIcon icon="fa-solid:arrow-right" />
+            </RouterLink>
+          </Button>
+        </div>
       </CardContent>
     </Card>
 
@@ -49,8 +51,6 @@ async function requestSettingsData() {
     toast.error('Could not get settings')
   }
 }
-
-onMounted(() => document.body.classList.add('bg-primary/50'))
 
 onBeforeMount(requestSettingsData)
 </script>

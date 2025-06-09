@@ -33,4 +33,6 @@
 
 <script setup lang="ts">
 import { Toaster } from 'vue-sonner'
+
+onMounted(() => document.body.classList.add('bg-primary/40'))
 </script>
