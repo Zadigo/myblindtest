@@ -9,6 +9,12 @@
     "resolveJsonModule": true,
     "allowJs": true,
     "noEmit": false,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,

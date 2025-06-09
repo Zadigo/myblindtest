@@ -8,10 +8,9 @@ import App from './App.vue'
 import router from './routes'
 import installPlugins from './plugins'
 
+import 'animate.css'
 import './style.scss'
 import './assets/css/main.css'
-// import './assets/spinners.scss'
-import 'animate.css'
 
 const head = createHead()
 

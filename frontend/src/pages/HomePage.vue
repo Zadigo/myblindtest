@@ -50,6 +50,8 @@ async function requestSettingsData() {
   }
 }
 
+onMounted(() => document.body.classList.add('bg-primary/50'))
+
 onBeforeMount(requestSettingsData)
 </script>
 
