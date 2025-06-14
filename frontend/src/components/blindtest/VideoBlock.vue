@@ -1,8 +1,8 @@
 <template>
-  <div class="absolute my-10 left-2/6 w-4/12">
+  <div class="absolute my-10 left-2/6 w-4/12 bg-secondary">
     <VoltCard class="border-none shadow-md">
       <template #content>
-        <div class="flex justify-between align-center">
+        <div class="flex justify-between items-center">
           <div v-if="currentSong">
             <p class="font-bold">
               {{ currentSong.name }} <span class="font-semibold">({{ currentSong.artist.name }})</span>

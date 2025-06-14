@@ -8,11 +8,11 @@ export default {
   ],
   theme: {
     extend: {
-      fontFamily: {},
+      fontFamily: {
+        title: 'Raleway '
+      },
       colors: {
-        bg: {
-          primary: 'var(--p-primary-color);'
-        }
+        secondary: 'var(--p-primary-300)'
       },
       screens: {}
     }
