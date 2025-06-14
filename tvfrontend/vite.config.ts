@@ -5,6 +5,7 @@ import unheadVite from '@unhead/addons/vite'
 import autoImportComponents from 'unplugin-vue-components/vite'
 import autoImport from 'unplugin-auto-import/vite'
 
+import { PrimeVueResolver } from 'unplugin-vue-components/resolvers'
 import { resolve } from 'path'
 import { defineConfig, loadEnv } from 'vite'
 // import eslint from 'vite-plugin-eslint2'
@@ -27,6 +28,11 @@ export default defineConfig(({ mode }) => {
         dts: 'src/types/components.d.ts',
         dirs: [
           'src/components'
+        ],
+        resolvers: [
+          PrimeVueResolver({
+            prefix: 'Volt'
+          })
         ],
         extensions: [
           'vue'

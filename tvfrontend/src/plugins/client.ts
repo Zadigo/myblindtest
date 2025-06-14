@@ -246,11 +246,17 @@ export function useAuthenticatedAxiosClient(access?: string | null | undefined, 
   }
 }
 
-type JsonType = Record<string, string | number>
-
 export function useWebsocketUtilities() {
-  function _readMessage<T extends Record<string, string | number | JsonType>>(data: string | undefined): T {
-    return JSON.parse(data)
+  function parseMessage<T = unknown>(data: string | undefined): T | null {
+    if (!data) {
+      return null
+    } else {
+      try {
+        return JSON.parse(data)
+      } catch {
+        return null
+      }
+    }
   }
 
   /**
@@ -258,16 +264,21 @@ export function useWebsocketUtilities() {
    *
    * @param data The data to be sent to the websocket
    */
-  function sendMessage<T>(data: T) {
-    return JSON.stringify(data)
+  function sendMessage<T>(data: T): string | null {
+    try {
+      return JSON.stringify(data)
+    } catch {
+      return null
+    }
   }
 
   /**
    * Reads a message to the websocket
    */
-  const readMessage = reactify(_readMessage)
+  const readMessage = reactify(parseMessage)
 
   return {
+    parseMessage,
     readMessage,
     sendMessage
   }

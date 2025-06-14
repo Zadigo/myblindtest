@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ 'bg-yellow-50': hasAnsweredCorrectly }" class="w-full shadow-md rounded-md p-10 flex flex-col justify-center relative">
+  <div :class="{ 'bg-primary/20': hasAnsweredCorrectly }" class="w-full shadow-md rounded-md p-10 flex flex-col justify-center relative">
     <h1 class="text-2xl font-semibold mb-5">
       Team name {{ teamId }}
     </h1>
@@ -11,6 +11,7 @@
     <p class="font-bold text-center mb-3">
       Consecutive answers
     </p>
+
     <div class="consecutive-answers w-2/4 h-auto self-center flex justify-around gap-2">
       <div v-for="i in 5" :key="i" :class="{ 'bg-green-300': i <= consecutiveAnswers, 'bg-gray-100': i > consecutiveAnswers }" class="answer p-4 rounded-md w-10" />
     </div>
@@ -18,18 +19,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-
-const props = defineProps({
-  correctAnswer: {
-    type: [Number, null],
-    default: null
-  },
-  teamId: {
-    type: Number,
-    required: true
-  }
-})
+const props = defineProps<{
+  correctAnswer?: number
+  teamId: number
+}>()
 
 const consecutiveAnswers = ref(3)
 

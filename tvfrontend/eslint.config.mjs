@@ -10,7 +10,7 @@ export default typescriptEslint.config(
       '*.d.ts', 
       '**/coverage', 
       '**/dist', 
-      '**/src/volt/**',
+      '**/src/components/volt/**',
       '**/src/components/ui/**'
     ]
   },

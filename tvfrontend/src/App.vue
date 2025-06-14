@@ -21,18 +21,18 @@
       <ConnectionBlock v-else @connect-client="handleConnection" />
     </div>
 
-    <Dialog v-model:open="showAnswer">
-      <DialogContent>
+    <Teleport to="body">
+      <VoltDialog v-model:visible="showAnswer" :modal="true" class="w-[400px]">
         <div class="text-center">
-          <h1 class="font-bold text-3xl mb-3">
+          <h1 class="font-bold text-3xl mb-1">
             Mariah Carey
           </h1>
           <p class="font-light text-2xl">
             We belong together
           </p>
         </div>
-      </DialogContent>
-    </Dialog>
+      </VoltDialog>
+    </Teleport>
 
     <!-- Audio -->
     <audio ref="audioEl">
