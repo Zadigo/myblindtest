@@ -1,8 +1,8 @@
 <template>
   <div id="left" ref="teamBlockEl" class="p-5 h-screen">
     <div id="team" :class="blockPosition" class="flex-col w-7/12">
-      <Card class="w-full text-center border-none">
-        <CardContent>
+      <VoltCard class="w-full text-center border-none">
+        <template #content>
           <h1 ref="scoreBoxEl" class="text-5xl font-bold">
             {{ teamScore }}
           </h1>
@@ -10,37 +10,37 @@
           <p class="font-light uppercase">
             Points ({{ teamName }})
           </p>
-        </CardContent>
-      </Card>
+        </template>
+      </VoltCard>
 
       <!-- Actions -->
-      <Card class="mt-2 mb-10 border-none">
-        <CardContent>
+      <VoltCard class="mt-2 mb-10 border-none">
+        <template #content>
           <div class="flex justify-center gap-2">
-            <Button :variant="matchedElement === 'Title' ? 'default' : 'secondary'" @click="handleMatch('Title')">
+            <VoltButton :variant="matchedElement === 'Title' ? '' : 'outlined'" size="small" @click="handleMatch('Title')">
               <VueIcon icon="fa-solid:star-half" />
               Title
-            </Button>
+            </VoltButton>
 
-            <Button :variant="matchedElement === 'Artist' ? 'default' : 'secondary'" @click="handleMatch('Artist')">
+            <VoltButton :variant="matchedElement === 'Artist' ? '' : 'outlined'" size="small" @click="handleMatch('Artist')">
               <VueIcon icon="fa-solid:star-half" />
               Artist
-            </Button>
+            </VoltButton>
 
-            <Button :variant="matchedElement === 'Both' ? 'default' : 'secondary'" @click="handleMatch('Both')">
+            <VoltButton :variant="matchedElement === 'Both' ? '' : 'outlined'" size="small" @click="handleMatch('Both')">
               <VueIcon icon="fa-solid:star" />
               Both
-            </Button>
+            </VoltButton>
           </div>
 
           <div class="flex justify-center mt-4 w-full">
-            <Button :disabled="!gameStarted" class="w-10/13 self-center" variant="default" @click="handleCorrectAnswer">
+            <VoltButton :disabled="!gameStarted" class="w-10/13 self-center" variant="default" @click="handleCorrectAnswer">
               <VueIcon icon="fa-solid:check" />
               Validate
-            </Button>
+            </VoltButton>
           </div>
-        </CardContent>
-      </Card>
+        </template>
+      </VoltCard>
 
       <div class="flex gap-1 justify-center p-5 mt-3">
         <div v-for="i in 5" :key="i" class="p-2 bg-brand-shade-5/50 rounded-md w-1/6" />

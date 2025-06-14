@@ -230,6 +230,7 @@ declare module 'vue' {
     VoltInputNumber: typeof import('./../components/volt/VoltInputNumber.vue')['default']
     VoltInputText: typeof import('./../components/volt/VoltInputText.vue')['default']
     VoltLabel: typeof import('./../components/volt/VoltLabel.vue')['default']
+    VoltSecondaryButton: typeof import('./../components/volt/VoltSecondaryButton.vue')['default']
     VoltSelect: typeof import('./../components/volt/VoltSelect.vue')['default']
     VoltSwitch: typeof import('./../components/volt/VoltSwitch.vue')['default']
   }

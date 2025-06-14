@@ -1,7 +1,7 @@
 <template>
   <div class="absolute my-10 left-2/6 w-4/12">
-    <Card class="border-none shadow-md">
-      <CardHeader>
+    <VoltCard class="border-none shadow-md">
+      <template #content>
         <div class="flex justify-between align-center">
           <div v-if="currentSong">
             <p class="font-bold">
@@ -23,21 +23,19 @@
           </div>
 
           <div class="flex justify-end gap-2">
-            <Button variant="outline" as-child>
-              <RouterLink :to="{ name: 'home' }" >
+            <VoltButton variant="outline">
+              <RouterLink :to="{ name: 'home' }">
                 <VueIcon icon="fa-solid:home" size="15" />
               </RouterLink>
-            </Button>
+            </VoltButton>
 
-            <Button variant="outline" @click="showWheel=!showWheel">
+            <VoltButton variant="outline" @click="showWheel=!showWheel">
               <VueIcon icon="fa-solid:bolt" size="15" />
-            </Button>
+            </VoltButton>
           </div>
         </div>
-      </CardHeader>
 
-      <!-- Video -->
-      <CardContent>
+        <!-- Video -->
         <p class="font-bold mb-3">
           {{ songsStore.cache.currentStep }}/-
         </p>
@@ -46,33 +44,33 @@
           <iframe v-if="gameStarted && currentSong" :src="songsStore.currentSong.youtube" :title="songsStore.currentSong.artist.name" class="max-w-full h-auto block" width="400" height="200" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" />
           <Spinner v-else name="loader-4" />
         </div>
-      </CardContent>
 
-      <!-- Wheel -->
-      <Transition mode="out-in" name="animate__animated" enter-active-class="animate__animated animate__fadeInDown" leave-active-class="animate__animated animate__fadeOutDown">
-        <CardContent v-if="showWheel">
-          <GenreRandomizer ref="randomizerEl" :items="wheelDetaults" @completed="randomizerComplete" />
-        </CardContent>
-      </Transition>
+        <!-- Wheel -->
+        <Transition mode="out-in" name="animate__animated" enter-active-class="animate__animated animate__fadeInDown" leave-active-class="animate__animated animate__fadeOutDown">
+          <CardContent v-if="showWheel">
+            <GenreRandomizer ref="randomizerEl" :items="wheelDetaults" @completed="randomizerComplete" />
+          </CardContent>
+        </Transition>
+      </template>
 
-      <CardFooter>
+      <template #footer>
         <div class="inline-flex justify-center w-full gap-1">
-          <Button v-if="gameStarted" variant="outline" @click="handleStop">
+          <VoltButton v-if="gameStarted" @click="handleStop">
             <VueIcon icon="fa-solid:stop" size="15" />
             Stop
-          </Button>
-          <Button v-else variant="outline" @click="handleStart">
+          </VoltButton>
+          <VoltButton v-else variant="outlined" @click="handleStart">
             <VueIcon icon="fa-solid:play" size="15" />
             Start
-          </Button>
+          </VoltButton>
 
-          <Button :disabled="!gameStarted" variant="destructive" @click="handleIncorrectAnswer">
+          <VoltButton :disabled="!gameStarted" variant="destructive" @click="handleIncorrectAnswer">
             <VueIcon icon="fa-solid:exclamation" size="15" />
             Wrong answer
-          </Button>
+          </VoltButton>
         </div>
-      </CardFooter>
-    </Card>
+      </template>
+    </VoltCard>
   </div>
 </template>
 
