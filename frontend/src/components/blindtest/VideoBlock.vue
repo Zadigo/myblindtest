@@ -42,7 +42,7 @@
 
         <div id="video-wrapper" class="rounded-md overflow-hidden flex justify-center items-center max-w-full">
           <iframe v-if="gameStarted && currentSong" :src="songsStore.currentSong.youtube" :title="songsStore.currentSong.artist.name" class="max-w-full h-auto block" width="400" height="200" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" />
-          <Spinner v-else name="loader-4" />
+          <Spinner v-else name="loader-12" />
         </div>
 
         <!-- Wheel -->
