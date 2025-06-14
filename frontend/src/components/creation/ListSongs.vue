@@ -1,72 +1,70 @@
 <template>
   <section id="list">
     <div class="mx-auto w-6/12">
-      <Card class="mb-2 border-none">
-        <CardContent>
+      <VoltCard class="mb-2 border-none">
+        <template #content>
           <div class="flex items-center gap-2 mb-3 w-full">
-            <Button @click="handleBack">
+            <VoltButton @click="handleBack">
               <VueIcon icon="fa-solid:arrow-left" /> Back
-            </Button>
+            </VoltButton>
 
             <div class="ml-auto space-x-2 flex items-center">
-              <Button @click="getPrevious">
+              <VoltButton @click="getPrevious">
                 <VueIcon icon="fa-solid:caret-left" />
                 Previous
-              </Button>
+              </VoltButton>
 
-              <Button @click="getNextPage">
+              <VoltButton @click="getNextPage">
                 Next
                 <VueIcon icon="fa-solid:caret-right" />
-              </Button>
+              </VoltButton>
             </div>
           </div>
 
-          <Input v-model="search" type="search" placeholder="Search" @input="debouncedGetSongs" />
-        </CardContent>
-      </Card>
+          <VoltInputText v-model="search" type="search" placeholder="Search" @input="debouncedGetSongs" />
+        </template>
+      </VoltCard>
 
       <div v-if="apiResult" id="results">
-        <Accordion type="single" collapsible>
-          <AccordionItem v-for="artist in apiResult.results" :key="artist.name" :value="artist.name">
-            <AccordionTrigger>
-              <div class="flex justify-start gap-5 items-center">
-                <HoverCard class="border-none shadow-lg">
-                  <HoverCardTrigger>
-                    <Avatar>
-                      <AvatarImage :src="artist.spotify_avatar" :alt="artist.name" />
-                      <AvatarFallback>{{ artist.name }}</AvatarFallback>
-                    </Avatar>
-                  </HoverCardTrigger>
+        <VoltCard>
+          <template #content>
+            <VoltAccordion>
+              <VoltAccordionPanel v-for="artist in apiResult.results" :key="artist.name" :value="artist.name">
+                <VoltAccordionHeader>
+                  <div class="flex justify-start gap-5 items-center">
+                    <VoltAvatar :image="artist.spotify_avatar" :alt="artist.name" @mouseenter="showPopover" />
 
-                  <HoverCardContent>
-                    <img :src="artist.spotify_avatar" class="aspect-square object-contain rounded-md">
-                  </HoverCardContent>
-                </HoverCard>
+                    <VoltPopover ref="popoverEl">
+                      <img :src="artist.spotify_avatar" class="aspect-square object-contain rounded-md">
+                    </VoltPopover>
 
-                <div class="flex flex-col items-start">
-                  <span>{{ artist.name }}</span>
-                  <Badge variant="secondary">
-                    {{ artist.song_set.length }} {{ plural(artist.song_set, 'song') }}
-                  </Badge>
-                </div>
-              </div>
-            </AccordionTrigger>
-            <AccordionContent>
-              <div v-for="song in artist.song_set" :key="song.id" :aria-label="song.name" class="p-3 rounded-md bg-blue-200 my-1">
-                <div class="inline-flex gap-3 items-center">
-                  <span>{{ song.name }}</span>
-
-                  <div class="inline-flex items-center gap-1">
-                    <template v-for="i in 5" :key="i">
-                      <VueIcon v-if="i <= song.difficulty" icon="fa-solid:star" />
-                      <VueIcon v-else icon="fa-solid:star" class="text-slate-100" />
-                    </template>
+                    <div class="flex flex-col items-start">
+                      <span>{{ artist.name }}</span>
+                      <Badge variant="secondary">
+                        {{ artist.song_set.length }} {{ plural(artist.song_set, 'song') }}
+                      </Badge>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
+                </VoltAccordionHeader>
+
+                <VoltAccordionContent>
+                  <div v-for="song in artist.song_set" :key="song.id" :aria-label="song.name" class="p-3 rounded-md bg-blue-200 my-1">
+                    <div class="inline-flex gap-3 items-center">
+                      <span>{{ song.name }}</span>
+
+                      <div class="inline-flex items-center gap-1">
+                        <template v-for="i in 5" :key="i">
+                          <VueIcon v-if="i <= song.difficulty" icon="fa-solid:star" />
+                          <VueIcon v-else icon="fa-solid:star" class="text-slate-100" />
+                        </template>
+                      </div>
+                    </div>
+                  </div>
+                </VoltAccordionContent>
+              </VoltAccordionPanel>
+            </VoltAccordion>
+          </template>
+        </VoltCard>
       </div>
     </div>
   </section>
@@ -94,7 +92,6 @@ const emit = defineEmits({
 
 const { plural } = useString()
 const { client } = useAxiosClient()
-const { debounce } = useDebounce()
 
 const searchParam = useUrlSearchParams('history', {
   initialValue: {
@@ -110,6 +107,7 @@ const searchParam = useUrlSearchParams('history', {
   }
 })
 
+const popoverEl = useTemplateRef('popoverEl')
 const search = ref<string>('')
 const apiResult = ref<ApiResponse>()
 
@@ -135,7 +133,7 @@ async function getSongs(offset: number = 0) {
   }
 }
 
-const debouncedGetSongs = debounce(getSongs, 4000)
+const debouncedGetSongs = useDebounceFn(async () => await getSongs(), 2000)
 
 /**
  * Get the previous page
@@ -163,6 +161,10 @@ async function getNextPage() {
 function handleBack() {
   searchParam.v = 'c'
   emit('back')
+}
+
+function showPopover(e: Event) {
+  popoverEl.value.toggle(e)
 }
 
 onBeforeMount(() => {

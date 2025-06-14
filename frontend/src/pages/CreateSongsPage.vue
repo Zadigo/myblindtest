@@ -8,36 +8,41 @@
       <template #fallback>
         <section id="list">
           <div class="mx-auto w-6/12">
-            <Skeleton class="w-[200px] h-[200px]" />
+            <VoltSkeleton class="w-[200px] h-[200px]" />
           </div>
         </section>
       </template>
     </Suspense>
 
     <div v-else class="w-6/12 mx-auto">
-      <Card class="border-none">
-        <TransitionGroup name="opacity">
-          <template v-for="(block, i) in blocks" :key="i">
-            <CreateBlock :block="block" :index="i" />
-            <hr v-if="blocks.length > 1 && i !== blocks.length - 1" class="my-5">
-          </template>
-        </TransitionGroup>
+      <VoltCard class="border-none">
+        <template #content>
+          <TransitionGroup name="opacity">
+            <template v-for="(block, i) in blocks" :key="i">
+              <CreateBlock :block="block" :index="i" />
+              <VoltDivider v-if="blocks.length > 1 && i !== blocks.length - 1" class="my-5" />
+            </template>
+          </TransitionGroup>
+        </template>
 
-        <CardFooter class="space-x-2">
-          <Button class="ms-auto" @click="handleAddBlock">
-            <VueIcon icon="fa-solid:plus" />Add block
-          </Button>
+        <template #footer>
+          <div class="space-x-2">
+            <VoltButton class="ms-auto" @click="handleAddBlock">
+              <VueIcon icon="fa-solid:plus" />Add block
+            </VoltButton>
 
-          <Button @click="handleSave">
-            Save
-          </Button>
+            <VoltButton @click="handleSave">
+              <VueIcon icon="fa-solid:save" />
+              Save
+            </VoltButton>
 
-          <Button @click="showSongs=true">
-            <VueIcon icon="fa-solid:table" />Add block
-            Songs
-          </Button>
-        </CardFooter>
-      </Card>
+            <VoltButton @click="showSongs=true">
+              <VueIcon icon="fa-solid:table" />
+              Songs
+            </VoltButton>
+          </div>
+        </template>
+      </VoltCard>
     </div>
   </section>
 </template>
@@ -69,6 +74,10 @@ const AsyncListSongs = defineAsyncComponent({
 
 const { client } = useAxiosClient()
 
+/**
+ * c: Create
+ * l: List of songs
+ */
 const searchParam = useUrlSearchParams('history', {
   initialValue: {
     v: 'c'
@@ -145,7 +154,7 @@ async function handleSave() {
 async function handleGetGenres() {
   try {
     if (genres.value.length === 0) {
-      const response = await client.get<string[]>('/songs/genres')
+      const response = await client.get<string[]>('/api/v1/songs/genres')
       genres.value = response.data
     }
   } catch {

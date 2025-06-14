@@ -1,70 +1,24 @@
 <template>
-  <CardContent :data-id="index">
+  <div :data-id="index">
     <div class="grid grid-cols-3 gap-2">
-      <Input v-model="requestData.name" :rules="[rules.required]" type="text" placeholder="Name" />
-
-      <Combobox v-model="requestData.genre">
-        <ComboboxAnchor>
-          <div class="relative w-full max-w-sm items-center">
-            <ComboboxInput class="pl-9" placeholder="Select genre" />
-          </div>
-        </ComboboxAnchor>
-
-        <ComboboxList>
-          <ComboboxEmpty>
-            No genres
-          </ComboboxEmpty>
-
-          <ComboboxGroup>
-            <ComboboxItem v-for="genre in genres" :key="genre" :value="genre">
-              <ComboboxItemIndicator>
-                {{ genre }}
-                <VueIcon name="fa-solid:check" />
-              </ComboboxItemIndicator>
-            </ComboboxItem>
-          </ComboboxGroup>
-        </ComboboxList>
-      </Combobox>
-
-      <!-- <v-combobox v-model="requestData.genre" :items="genres" :loading="searching" :rules="[rules.required]" type="text" variant="solo-filled" flat /> -->
-      <Input v-model.number="requestData.year" :rules="[rules.year]" type=" text" placeholder="Year" variant="solo-filled" flat />
+      <VoltInputText v-model="requestData.name" placeholder="Name" />
+      <VoltAutocomplete v-model="requestData.genre" :options="genres?.map(x => ({ name: x }))" placeholder="Genre" option-label="name" option-value="name" />
+      <VoltInputNumber v-model.number="requestData.year" placeholder="Year" variant="solo-filled" flat />
     </div>
 
     <div class="w-9/12 my-2">
-      <Input v-model="requestData.difficulty" :rules="[rules.difficulty]" :min="1" :max="5" type="number" placeholder="Difficulty" />
+      <VoltInputNumber v-model="requestData.difficulty" :rules="[rules.difficulty]" :min="1" :max="5" placeholder="Difficulty" />
     </div>
 
     <div class="flex gap-2">
-      <Input v-model="requestData.artist_name" :rules="[rules.required]" type="text" placeholder="Artist" hint="Press shift+Enter to split and infer genre" variant="solo-filled" clearable flat @keypress.shift.enter="handleSplit" />
-      <Input v-model="requestData.youtube_id" :rules="[rules.required]" type="text" placeholder="YouTube" variant="solo-filled" clearable flat />
+      <VoltInputText v-model="requestData.artist_name" placeholder="Artist" hint="Press shift+Enter to split and infer genre" variant="solo-filled" clearable flat @keypress.shift.enter="handleSplit" />
+      <VoltInputText v-model="requestData.youtube_id" placeholder="YouTube" variant="solo-filled" clearable flat />
     </div>
 
     <div class="w-10/12">
-      <Combobox v-model="requestData.featured_artists">
-        <ComboboxAnchor>
-          <div class="relative w-full max-w-sm items-center">
-            <ComboboxInput placeholder="Select genre" />
-          </div>
-        </ComboboxAnchor>
-
-        <ComboboxList>
-          <ComboboxEmpty>
-            No genres
-          </ComboboxEmpty>
-
-          <ComboboxGroup>
-            <ComboboxItem v-for="featuredArtist in requestData.featured_artists" :key="featuredArtist" :value="featuredArtist">
-              <ComboboxItemIndicator>
-                {{ featuredArtist }}
-                <VueIcon name="fa-solid:check" />
-              </ComboboxItemIndicator>
-            </ComboboxItem>
-          </ComboboxGroup>
-        </ComboboxList>
-      </Combobox>
-      <!-- <v-combobox v-model="requestData.featured_artists" :items="featuredArtists" :return-object="false" item-title="name" item-value="name" variant="solo-filled" placeholder="Featured artists" clearable flat chips multiple /> -->
+      <VoltAutocomplete v-model="requestData.featured_artists" :options="requestData.featured_artists.map(x => ({ name: x }))" placeholder="Featured artists" option-label="name" option-value="name" />
     </div>
-  </CardContent>
+  </div>
 </template>
 
 <script setup lang="ts">
