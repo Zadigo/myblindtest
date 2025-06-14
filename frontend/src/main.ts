@@ -8,6 +8,7 @@ import App from './App.vue'
 import router from './routes'
 import installPlugins from './plugins'
 import PrimeVue from 'primevue/config'
+import AnimateOnScroll from 'primevue/animateonscroll'
 
 import 'animate.css'
 import './style.css'
@@ -30,6 +31,7 @@ app.use(router)
 app.use(head)
 app.use(installPlugins())
 app.use(PrimeVue, { unstyled: true })
+app.directive('animateonscroll', AnimateOnScroll)
 app.component('VueIcon', Icon)
 app.component('FontAwesomeIcon', FontAwesomeIcon)
 app.mount('#app')
