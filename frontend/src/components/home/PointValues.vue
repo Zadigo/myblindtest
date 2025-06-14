@@ -1,31 +1,29 @@
 <template>
-  <Card class="border-0 bg-brand-shade-3/30 shadow-none">
-    <CardHeader>
-      <CardTitle>
-        <h3 class="font-bold">
-          Point value and bonuses
-        </h3>
-      </CardTitle>
-    </CardHeader>
+  <VoltCard class="border-0 bg-brand-shade-3/30 shadow-none">
+    <template #title>
+      <h3 class="font-bold">
+        Point value and bonuses
+      </h3>
+    </template>
 
-    <CardContent>
-      <Input v-model.number="songStore.cache.settings.pointValue" type="number" min="1" placeholder="Point value" />
+    <template #content>
+      <VoltInputNumber v-model="songStore.cache.settings.pointValue" :min="1" :step="1" :max="50" />
 
       <div class="py-3">
-        <Label>
-          <Switch v-model="songStore.cache.settings.songDifficultyBonus" />
-          Use song difficulty bonus
-        </Label>
+        <VoltLabel>
+          <VoltSwitch v-model="songStore.cache.settings.songDifficultyBonus" />
+          <label>Use song difficulty bonus</label>
+        </VoltLabel>
       </div>
 
       <div class="py-3">
-        <Label>
-          <Switch v-model="songStore.cache.settings.speedBonus" />
+        <VoltLabel>
+          <VoltSwitch v-model="songStore.cache.settings.speedBonus" />
           Use answering speed bonus
-        </Label>
+        </VoltLabel>
       </div>
-    </CardContent>
-  </Card>
+    </template>
+  </VoltCard>
 </template>
 
 <script setup lang="ts">

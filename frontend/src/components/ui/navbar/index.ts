@@ -6,13 +6,14 @@ export { default as NavbarLinks } from './NavbarLinks.vue'
 export { default as NavbarLink } from './NavbarLink.vue'
 
 export const navbarVariants = cva(
-  `block w-full mx-auto top-0 z-50
-  dark:bg-gray-800 dark:has-[a]:text-white`,
+  `block w-full mx-auto top-0 z-50 bg-primary
+  dark:bg-primary dark:has-[a]:text-primary-foreground`,
   {
     variants: {
       variant: {
-        default: 'text-white bg-white shadow-md sticky',
-        dark: 'text-white bg-slate-700'
+        default: 'text-primary-foreground shadow-md sticky',
+        dark: 'text-primary-foreground bg-primary',
+        transparent: 'bg-transparent shadow-none has-[a]:text-2xl has-[a]:text-primary-foreground'
       },
       size: {
         default: 'px-4 py-2 lg:px-8 lg:py-3',
@@ -20,7 +21,7 @@ export const navbarVariants = cva(
       }
     },
     defaultVariants: {
-      variant: 'default',
+      variant: 'transparent',
       size: 'default'
     }
   }

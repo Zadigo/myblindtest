@@ -4,12 +4,16 @@ export default {
     './layouts/**/*.vue',
     './pages/**/*.vue',
     './plugins/**/*.{js,ts}',
-    './app.vue'
+    './src/App.vue'
   ],
   theme: {
     extend: {
       fontFamily: {},
-      colors: {},
+      colors: {
+        bg: {
+          primary: 'var(--p-primary-color);'
+        }
+      },
       screens: {}
     }
   },

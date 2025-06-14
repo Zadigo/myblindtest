@@ -17,6 +17,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/vue-fontawesome": "^3.0.8",
+    "@primevue/icons": "^4.3.5",
     "@tailwindcss/vite": "^4.1.4",
     "@unhead/addons": "^2.0.8",
     "@unhead/schema-org": "^2.0.8",

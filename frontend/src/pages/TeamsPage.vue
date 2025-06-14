@@ -2,54 +2,54 @@
   <section class="w-4xl mx-auto px-10 my-20 relative">
     <div class="grid grid-cols-12 gap-2 my-10">
       <div class="col-span-12">
-        <Card>
-          <CardContent>
+        <VoltCard>
+          <template #content>
             <div class="space-x-2 flex justify-between">
-              <Button class="rounded-full" as-child>
+              <VoltButton rounded>
+                <VueIcon icon="fa-solid:arrow-left" />
                 <RouterLink :to="{ name: 'home' }">
-                  <VueIcon icon="fa-solid:arrow-left" />
                   Back to settings
                 </RouterLink>
-              </Button>
+              </VoltButton>
 
-              <Button class="rounded-full" as-child>
+              <VoltButton rounded>
                 <RouterLink :to="{ name: 'blind_test' }">
                   Go to blindtest
-                  <VueIcon icon="fa-solid:arrow-right" />
                 </RouterLink>
-              </Button>
+                <VueIcon icon="fa-solid:arrow-right" />
+              </VoltButton>
             </div>
-          </CardContent>
-        </Card>
+          </template>
+        </VoltCard>
       </div>
 
       <div class="col-span-6">
-        <Card>
-          <CardContent>
-            <Input v-model="teamOne.name" placeholder="Team name" />
-          </CardContent>
-        </Card>
+        <VoltCard>
+          <template #content>
+            <VoltInputText v-model="teamOne.name" placeholder="Team name" />
+          </template>
+        </VoltCard>
       </div>
 
       <div class="col-span-6">
-        <Card>
-          <CardContent>
-            <Input v-model="teamTwo.name" placeholder="Team name" />
-          </CardContent>
-        </Card>
+        <VoltCard>
+          <template #content>
+            <VoltInputText v-model="teamTwo.name" placeholder="Team name" />
+          </template>
+        </VoltCard>
       </div>
 
       <div class="col-span-12">
-        <Card>
-          <CardContent class="card-body">
+        <VoltCard>
+          <template #content>
             <div class="flex gap-2">
-              <Button :active="selectedTeam===1" @click="selectedTeam=1">
+              <VoltButton :active="selectedTeam===1" @click="selectedTeam=1">
                 Team 1
-              </Button>
+              </VoltButton>
 
-              <Button :active="selectedTeam===2" @click="selectedTeam=2">
+              <VoltButton :active="selectedTeam===2" @click="selectedTeam=2">
                 Team 2
-              </Button>
+              </VoltButton>
             </div>
 
             <div class="flex justify-center my-10">
@@ -57,9 +57,9 @@
               <VueColorWheel v-model:color="wheelColor" wheel="aurora" harmony="complementary" :radius="160" :default-color="wheelColor" @change="handleChangeColor" />
             </div>
 
-            <Input v-model="wheelColor" />
-          </CardContent>
-        </Card>
+            <VoltInputText v-model="wheelColor" />
+          </template>
+        </VoltCard>
       </div>
     </div>
   </section>

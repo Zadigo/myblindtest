@@ -1,51 +1,20 @@
 <template>
-  <Card class="border-0 bg-brand-shade-3/30 shadow-none">
-    <CardHeader>
-      <CardTitle>
-        <h3 class="font-bold">
-          General settings
-        </h3>
-      </CardTitle>
-    </CardHeader>
+  <VoltCard class="border-0 bg-brand-shade-3/30 shadow-none">
+    <template #title>
+      <h3 class="font-bold">
+        General settings
+      </h3>
+    </template>
 
-    <CardContent>
-      <Input v-model="songStore.cache.settings.rounds" type="number" min="1" max="100" placeholder="Number of rounds" />
+    <template #content>
+      <VoltInputNumber v-model="songStore.cache.settings.rounds" :min="1" :max="100" class="w-full" placeholder="Number of rounds" />
 
       <div>
-        <Label for="game-difficulty" class="mt-3">
-          Game difficulty
-        </Label>
+        <label>Game difficulty</label>
+        <VoltSelect v-model="selectedDifficulty" :options="difficultyLevels.map(x => ({ name: x }))" option-label="name" option-value="name" />
 
-        <Select id="game-difficulty" v-model="selectedDifficulty">
-          <SelectTrigger class="w-full">
-            <SelectValue placeholder="All" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup v-for="difficultyLevel in difficultyLevels" :key="difficultyLevel">
-              <SelectItem :value="difficultyLevel">
-                {{ difficultyLevel }}
-              </SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-
-        <Label for="song-type" class="mt-3">
-          Genre
-        </Label>
-
-        <Select id="song-type" v-model="selectedSongType">
-          <SelectTrigger class="w-full">
-            <SelectValue placeholder="All" />
-          </SelectTrigger>
-
-          <SelectContent>
-            <SelectGroup v-for="songType in songGenres" :key="songType">
-              <SelectItem :value="songType">
-                {{ songType }}
-              </SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+        <label>Genre</label>
+        <VoltSelect v-model="selectedSongType" :options="songGenres.map(x => ({ name: x }))" option-label="name" option-value="name" />
       </div>
 
       <!-- <Combobox>
@@ -85,7 +54,7 @@
         <Label for="game-difficulty" class="mb-2">
           Time limit
         </Label>
-        <Input id="game-difficulty" v-model="selectedTimeLimit" type="time" placeholder="Time limit" />
+        <VoltInputText id="game-difficulty" v-model="selectedTimeLimit" type="time" placeholder="Time limit" />
       </div>
 
       <p for="time-period" class="font-bold mt-10">
@@ -107,8 +76,8 @@
           <v-text-field v-model="songStore.cache.settings.timeRange[1]" :min="0" density="compact" style="width: 70px" type="number" variant="outlined" hide-details single-line />
         </template>
       </v-range-slider> -->
-    </CardContent>
-  </Card>
+    </template>
+  </VoltCard>
 </template>
 
 <script setup lang="ts">

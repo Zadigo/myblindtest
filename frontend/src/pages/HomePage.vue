@@ -1,17 +1,17 @@
 <template>
   <section class="w-5xl mx-auto px-10 my-20 relative">
-    <Card class="mt-10 mb-5 bg-brand-shade-3/30 shadow-none">
-      <CardContent>
+    <VoltCard class="mt-10 mb-5 shadow-none">
+      <template #content>
         <div class="flex">
-          <Button class="self-end rounded-full" as-child>
-            <RouterLink :to="{ name: 'teams' }">
+          <VoltButton class="self-end rounded-full">
+            <RouterLink :to="{ name: 'teams' }" class="inline-flex gap-2 items-center">
               Manage teams
               <VueIcon icon="fa-solid:arrow-right" />
             </RouterLink>
-          </Button>
+          </VoltButton>
         </div>
-      </CardContent>
-    </Card>
+      </template>
+    </VoltCard>
 
     <div class="grid grid-cols-2 gap-2">
       <GeneralSettings />

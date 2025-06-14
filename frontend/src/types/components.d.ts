@@ -225,5 +225,12 @@ declare module 'vue' {
     TextareaTextarea: typeof import('./../components/ui/textarea/Textarea.vue')['default']
     TimelineChart: typeof import('./../components/charts/TimelineChart.vue')['default']
     VideoBlock: typeof import('./../components/blindtest/VideoBlock.vue')['default']
+    VoltButton: typeof import('./../components/volt/VoltButton.vue')['default']
+    VoltCard: typeof import('./../components/volt/VoltCard.vue')['default']
+    VoltInputNumber: typeof import('./../components/volt/VoltInputNumber.vue')['default']
+    VoltInputText: typeof import('./../components/volt/VoltInputText.vue')['default']
+    VoltLabel: typeof import('./../components/volt/VoltLabel.vue')['default']
+    VoltSelect: typeof import('./../components/volt/VoltSelect.vue')['default']
+    VoltSwitch: typeof import('./../components/volt/VoltSwitch.vue')['default']
   }
 }

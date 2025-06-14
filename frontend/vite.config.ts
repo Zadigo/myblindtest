@@ -3,6 +3,7 @@
 import { unheadVueComposablesImports } from '@unhead/vue'
 import { defineConfig, loadEnv } from 'vite'
 import { resolve } from 'path'
+import { PrimeVueResolver } from 'unplugin-vue-components/resolvers'
 
 import tailwind from '@tailwindcss/vite'
 import eslint from 'vite-plugin-eslint'
@@ -36,6 +37,14 @@ export default defineConfig(({ mode }) => {
         dirs: [
           'src/components',
           'src/layouts'
+        ],
+        exclude: [
+          'src/components/ui/'
+        ],
+        resolvers: [
+          PrimeVueResolver({
+            prefix: 'Volt'
+          })
         ],
         extensions: [
           'vue'
