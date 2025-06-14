@@ -1,22 +1,29 @@
 <template>
   <div :data-id="index">
+    <div class="flex justify-end mb-5">
+      <VoltSecondaryButton rounded>
+        <VueIcon icon="fa-solid:trash" />
+      </VoltSecondaryButton>
+    </div>
+
     <div class="grid grid-cols-3 gap-2">
-      <VoltInputText v-model="requestData.name" placeholder="Name" />
-      <VoltAutocomplete v-model="requestData.genre" :options="genres?.map(x => ({ name: x }))" placeholder="Genre" option-label="name" option-value="name" />
-      <VoltInputNumber v-model.number="requestData.year" placeholder="Year" variant="solo-filled" flat />
+      <VoltInputText v-model="requestData.name" placeholder="Song name" />
+      <VoltAutocomplete v-model="requestData.genre" :suggestions="filteredGenres" :virtual-scroller-options="{ itemSize: 50 }" option-label="label" placeholder="Genre" dropdown @complete="searchGenres" />
+      <VoltInputNumber v-model.number="requestData.year" placeholder="Year" />
     </div>
 
     <div class="w-9/12 my-2">
-      <VoltInputNumber v-model="requestData.difficulty" :rules="[rules.difficulty]" :min="1" :max="5" placeholder="Difficulty" />
+      <VoltInputNumber v-model="requestData.difficulty" :min="1" :max="5" placeholder="Difficulty" />
     </div>
 
     <div class="flex gap-2">
-      <VoltInputText v-model="requestData.artist_name" placeholder="Artist" hint="Press shift+Enter to split and infer genre" variant="solo-filled" clearable flat @keypress.shift.enter="handleSplit" />
-      <VoltInputText v-model="requestData.youtube_id" placeholder="YouTube" variant="solo-filled" clearable flat />
+      <VoltInputText v-model="requestData.artist_name" placeholder="Artist" hint="Press shift+Enter to split and infer genre" @keypress.shift.enter="handleSplit" />
+      <VoltInputText v-model="requestData.youtube_id" placeholder="YouTube" />
     </div>
 
     <div class="w-10/12">
-      <VoltAutocomplete v-model="requestData.featured_artists" :options="requestData.featured_artists.map(x => ({ name: x }))" placeholder="Featured artists" option-label="name" option-value="name" />
+      {{ requestData }}
+      <VoltAutocomplete v-model="requestData.featured_artists" :suggestions="filteredArtists" :virtual-scroller-options="{ itemSize: 50 }" option-label="name" placeholder="Featured artists" multiple fluid dropdown @complete="searchArtists" />
     </div>
   </div>
 </template>
@@ -27,37 +34,39 @@ import { toast } from 'vue-sonner'
 
 import type { Artist, CreateData, Song } from '@/types'
 
-const { currentYear } = useDayJs()
+interface SearchEvent extends Event {
+  query: string
+}
 
-const props = defineProps({
-  block: {
-    type: Object as PropType<CreateData>,
-    default: () => ({
+const props = withDefaults(defineProps<{
+  block?: CreateData
+  index: number
+}>(), {
+  block() {
+    return {
       name: '',
       genre: '',
       artist_name: '',
       featured_artists: [],
       youtube_id: '',
-      year: null,
+      year: 2025,
       difficulty: 1
-    })
-  },
-  index: {
-    type: Number,
-    required: true
+    }
   }
 })
 
-const emit = defineEmits({
-  'update:block'(_data: CreateData) {
-    return true
-  }
-})
+const emit = defineEmits<{
+  'update:block': [block: CreateData]
+}>()
 
+const { currentYear } = useDayJs()
 const { client } = useAxiosClient()
 
+const genres = inject<Ref<string[]>>('genres')
+
 const searching = ref<boolean>(false)
-const genres = inject<string[]>('genres')
+const filteredArtists = ref<Artist[]>([])
+const filteredGenres = ref<{ label: string, value: string }[]>([])
 
 const featuredArtists = useStorage<Artist[]>('artists', [])
 
@@ -111,15 +120,8 @@ function validateData(data: CreateData) {
     errors.artist = 'Artist is required'
   }
 
-  // YouTube URL validation
-  // if (!data.youtube) {
-  //   errors.youtube = 'YouTube video ID is required';
-  // } else if (!rules.youtubeUrl(data.youtube_id)) {
-  //   errors.youtube = 'Please enter a valid YouTube URL';
-  // }
-
   // Year validation (optional but must be valid if provided)
-  if (data.year !== null && !rules.year(data.year)) {
+  if (!rules.year(data.year)) {
     errors.year = `Year must be between 1900 and ${currentYear}`
   }
 
@@ -136,7 +138,21 @@ const requestData = computed({
   set: (value) => {
     const errors = validateData(value)
     console.log(errors)
-    emit('update:block', value)
+
+    // Transform the block to only contain strings
+    // of the artist's names
+    const newBlock = { ...value }
+    newBlock.featured_artists = value.featured_artists.map(x => x.name)
+
+    emit('update:block', newBlock)
+  }
+})
+
+const dictGenres = computed(() => {
+  if (genres) {
+    return genres.value.map(x => ({ label: x, value: x }))
+  } else {
+    return []
   }
 })
 
@@ -193,6 +209,26 @@ async function handleSearchFeaturedArtists() {
     toast.error('Request failed')
     searching.value = false
   }
+}
+
+/**
+ * Search genres in the database
+ */
+function searchGenres(e: SearchEvent) {
+  filteredGenres.value = dictGenres.value.filter((x) => {
+    const query = e.query
+    return x.label.toLowerCase().includes(query.toLowerCase())
+  })
+}
+
+/**
+ * Search for existing artists in the database
+ */
+function searchArtists(e: SearchEvent) {
+  filteredArtists.value = featuredArtists.value.filter((x) => {
+    const query = e.query
+    return x.name.toLowerCase().includes(query.toLowerCase())
+  })
 }
 
 onBeforeMount(async () => {

@@ -5,11 +5,10 @@
 </template>
 
 <script setup lang="ts">
-defineProps({
-  name: {
-    type: String,
-    default: 'loader-1'
-  }
+withDefaults(defineProps<{
+  name?: string
+}>(), {
+  name: 'loader-1'
 })
 </script>
 

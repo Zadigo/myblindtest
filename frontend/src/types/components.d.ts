@@ -62,6 +62,7 @@ declare module 'vue' {
     ComboboxTrigger: typeof import('./../components/ui/combobox/ComboboxTrigger.vue')['default']
     ComboboxViewport: typeof import('./../components/ui/combobox/ComboboxViewport.vue')['default']
     CreateBlock: typeof import('./../components/creation/CreateBlock.vue')['default']
+    CreatedBlock: typeof import('./../components/creation/CreatedBlock.vue')['default']
     Dialog: typeof import('./../components/ui/dialog/Dialog.vue')['default']
     DialogClose: typeof import('./../components/ui/dialog/DialogClose.vue')['default']
     DialogContent: typeof import('./../components/ui/dialog/DialogContent.vue')['default']

@@ -4,17 +4,18 @@
       <ChevronDownIcon />
     </template>
     
-    <template v-for="(_, slotName) in $slots" v-slot:[slotName]="slotProps">
+    <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
       <slot :name="slotName" v-bind="slotProps ?? {}" />
     </template>
   </AutoComplete>
 </template>
 
 <script setup lang="ts">
-import ChevronDownIcon from '@primevue/icons/chevrondown'
-import AutoComplete, { type AutoCompletePassThroughOptions, type AutoCompleteProps } from 'primevue/autocomplete'
 import { ref } from 'vue'
 import { ptViewMerge } from './utils'
+
+import ChevronDownIcon from '@primevue/icons/chevrondown'
+import AutoComplete, { type AutoCompletePassThroughOptions, type AutoCompleteProps } from 'primevue/autocomplete'
 
 interface Props extends /* @vue-ignore */ AutoCompleteProps {}
 defineProps<Props>()
