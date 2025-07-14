@@ -66,6 +66,7 @@
     "@typescript-eslint/eslint-plugin": "^8.30.1",
     "@typescript-eslint/parser": "^8.30.1",
     "@vitejs/plugin-vue": "^5.2.3",
+    "@vue/devtools-api": "^7.7.7",
     "@vue/tsconfig": "^0.7.0",
     "eslint": "^9.25.0",
     "happy-dom": "^17.4.4",

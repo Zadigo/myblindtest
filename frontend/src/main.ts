@@ -3,6 +3,7 @@ import { createPinia } from 'pinia'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { createHead } from '@unhead/vue/client'
 import { Icon } from '@iconify/vue'
+import { createVueAxiosManager } from './plugins/client3'
 
 import App from './App.vue'
 import router from './routes'
@@ -26,6 +27,17 @@ const head = createHead({
 const app = createApp(App)
 const pinia = createPinia()
 
+const axiosManager = createVueAxiosManager({
+  endpoints: [
+    {
+      name: 'django',
+      label: 'Django',
+      dev: import.meta.env.VITE_DJANGO_PROD_URL
+    }
+  ]
+})
+
+app.use(axiosManager)
 app.use(pinia)
 app.use(router)
 app.use(head)

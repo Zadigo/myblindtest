@@ -1,5 +1,7 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
+export * from './use'
+
 export function useCustomDebounce() {
   function debounce<T extends (...args: any[]) => void>(func: T, wait: number, immediate: boolean = false) {
     let timeout: ReturnType<typeof setTimeout> | null = null

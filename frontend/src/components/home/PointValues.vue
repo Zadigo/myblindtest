@@ -12,14 +12,14 @@
       <div class="py-3">
         <VoltLabel>
           <VoltSwitch v-model="songStore.cache.settings.songDifficultyBonus" />
-          <label>Use song difficulty bonus</label>
+          <label for="">Use song difficulty bonus</label>
         </VoltLabel>
       </div>
 
       <div class="py-3">
         <VoltLabel>
           <VoltSwitch v-model="songStore.cache.settings.speedBonus" />
-          Use answering speed bonus
+          <label for="">Use answering speed bonus</label>
         </VoltLabel>
       </div>
     </template>
