@@ -15,14 +15,14 @@ export type RequestStatus = 'idle' | 'pending' | 'success' | 'error'
  * tokens obtained for authenticating the user
  * @param request The request configuration
  */
-function requestInterceptor(options: PluginOptions | undefined, endpoint: InternalEnpointOptions | null | undefined) {
+function requestInterceptor(options: PluginOptions | undefined, endpoint: InternalEnpointOptions) {
   return (request: InternalAxiosRequestConfig) => {
     const { get } = useCookies()
 
-    const bearer = endpoint?.bearer || options?.bearer || 'Token'
-    const access = get(endpoint?.accessKey || 'access')
+    const bearer = endpoint.bearer || options?.bearer || 'Token'
+    const access = get(endpoint.accessKey || 'access')
 
-    if (access) {
+    if (access && !endpoint.disableAccess) {
       request.headers.Authorization = `${bearer} ${access}`
     }
 
@@ -51,9 +51,14 @@ async function responseInterceptor(response: AxiosResponse) {
  * access tokens created via authentication for users
  * @param domain The url domain for the request
  */
-function responseErrorInterceptor(domain: string | undefined, endpoint: InternalEnpointOptions | null | undefined) {
+function responseErrorInterceptor(domain: string | undefined, endpoint: InternalEnpointOptions) {
   return async (error: unknown) => {
     if (error && error instanceof AxiosError) {
+      // console.log('responseErrorInterceptor: endpoint.disableAuth', endpoint.disableRefresh)
+      if (endpoint.disableRefresh) {
+        return Promise.reject(error)
+      }
+
       if (error.response) {
         const originalRequest = error.config as ExtendedInternalAxiosRequestConfig
 
@@ -61,8 +66,8 @@ function responseErrorInterceptor(domain: string | undefined, endpoint: Internal
           originalRequest._retry = true
 
           try {
-            const accessTokenKey = endpoint?.accessKey || 'access'
-            const refreshTokenKey = endpoint?.refreshKey || 'refresh'
+            const accessTokenKey = endpoint.accessKey || 'access'
+            const refreshTokenKey = endpoint.refreshKey || 'refresh'
 
             const { get, set } = useCookies([accessTokenKey, refreshTokenKey])
             const refresh = get<string | undefined>(refreshTokenKey)
@@ -70,7 +75,7 @@ function responseErrorInterceptor(domain: string | undefined, endpoint: Internal
             // console.log('responseErrorInterceptor: Refresh', refresh)
 
             const refreshClient = axios.create({ baseURL: domain })
-            const refreshTokenEndpoint = endpoint?.refreshEnpoint || '/auth/v1/token/refresh/'
+            const refreshTokenEndpoint = endpoint.refreshEnpoint || '/auth/v1/token/refresh/'
             const response = await refreshClient.post<RefreshApiResponse>(refreshTokenEndpoint, { refresh })
 
             set(accessTokenKey, response.data.access, { secure: true, sameSite: 'strict' })
@@ -92,7 +97,7 @@ function responseErrorInterceptor(domain: string | undefined, endpoint: Internal
  * @param path The path to get on the client's domain
  * @param params Additional options for the composable
  */
-export function useRequest<T>(name: string, path: string, params?: ComposableOptions<T>) {
+export function useRequest<T, W = unknown>(name: string, path: string, params?: ComposableOptions<T, W>) {
   const app = getCurrentInstance()
   const isAppContext = computed(() => app !== null)
 
@@ -132,6 +137,8 @@ export function useRequest<T>(name: string, path: string, params?: ComposableOpt
     // internal debug tracking
   }
 
+  // console.log('useRequest: RequestStore', store)
+
   const responseData = ref<T>()
   const status = ref<RequestStatus>('idle')
 
@@ -151,8 +158,6 @@ export function useRequest<T>(name: string, path: string, params?: ComposableOpt
       let response: AxiosResponse<T>
 
       status.value = 'pending'
-
-      // console.log('useRequest.execute.client', client)
 
       if (method === 'get') {
         response = await client.get(path, { params: params?.query })
@@ -189,7 +194,6 @@ export function useRequest<T>(name: string, path: string, params?: ComposableOpt
       responseData.value = response.data
     } catch (e) {
       status.value = 'error'
-      console.log('useRequest.execute: other error', e)
 
       if (e && e instanceof AxiosError) {
         console.log('useRequest: Bubbled up error', e)
@@ -255,11 +259,7 @@ export async function useAsyncRequest<T>(name: string, path: string, params?: As
   const debouncedExecute = useDebounceFn(execute, params?.debounce || 0)
 
   if (params?.immediate) {
-    try {
-      await debouncedExecute()
-    } catch (e) {
-      console.log(e)
-    }
+    await debouncedExecute()
   }
 
   const completed = computed(() => status.value === 'success')

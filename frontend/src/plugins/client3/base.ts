@@ -169,12 +169,27 @@ export function createAxiosInstance(pluginOptions: PluginOptions, endpoint: Endp
     ...axiosOptions
   })
 
-  return {
+  const finalOptions = {
     ...endpoint,
     internalName: createInternalEndpointName(endpoint.name),
     endpointDomain: baseDomain,
     instance
   }
+
+  if (finalOptions.disableAccess === undefined) {
+    finalOptions.disableAccess = false
+  }
+
+  if (finalOptions.disableRefresh === undefined) {
+    finalOptions.disableRefresh = false
+  }
+
+  if (pluginOptions.disableAuth) {
+    finalOptions.disableAccess = true
+    finalOptions.disableRefresh = true
+  }
+
+  return finalOptions
 }
 
 /**

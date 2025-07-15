@@ -17,6 +17,14 @@ interface SharedOptions {
    * @default "Token"
    */
   bearer?: string
+  /**
+   * Disables both access and refresh token verification and workflow. This option
+   * will override the `disableAccess` and `disableRefresh` options regardless of
+   * what they are set to `true` or `false`.
+   * @description This is useful for endpoints that do not require authentication
+   * @default false
+   */
+  disableAuth?: boolean
 }
 
 export interface EndpointOptions extends SharedOptions {
@@ -70,6 +78,16 @@ export interface EndpointOptions extends SharedOptions {
    * @default "refresh"
    */
   refreshKey?: string
+  /**
+   * Disables the access token verification
+   * @default false
+   */
+  disableAccess?: boolean
+  /**
+   * Disables the refresh token refresh workflow
+   * @default false
+   */
+  disableRefresh?: boolean
 }
 
 export interface PluginOptions extends SharedOptions {
@@ -108,7 +126,7 @@ export interface InternalEnpointOptions extends EndpointOptions {
 
 export type InternalEndpointOptionKeys = keyof InternalEnpointOptions
 
-export interface ComposableOptions<T> {
+export interface ComposableOptions<T, W = unknown> {
   /**
    * Provide a url to use which will supersede
    * the endpoint provided
@@ -128,7 +146,7 @@ export interface ComposableOptions<T> {
   /**
    * Request body
    */
-  body?: Record<string, unknown>
+  body?: Record<string, unknown> | Record<string, unknown>[]
   /**
    * Request query
    */
@@ -145,7 +163,7 @@ export interface ComposableOptions<T> {
   /**
    * Watch and trigger requests based on a parameter
    */
-  watch?: Ref<T>
+  watch?: Ref<W> | (() => W)
 }
 
 export interface AsyncComposableOptions<T> extends ComposableOptions<T> {
