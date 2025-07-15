@@ -1,3 +1,7 @@
+import json
+from urllib.parse import parse_qs, urlparse
+
+from django.conf import settings
 from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
@@ -11,7 +15,6 @@ from rest_framework.mixins import Response
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import AllowAny
 from songs import tasks
-from urllib.parse import parse_qs, urlparse
 from songs.api import serializers
 from songs.choices import MusicGenre
 from songs.models import Artist, Song
@@ -165,14 +168,30 @@ class CreateSongs(generics.GenericAPIView):
 class SongGenres(generics.GenericAPIView):
     permission_classes = [AllowAny]
 
-    def get(self, request):
-        genres = cache.get('genres', None)
+    def read_file(self) -> list[dict[str, str | list[dict[str, str]]]]:
+        path = settings.MEDIA_PATH / 'genres.json'
+        with open(path, mode='r', encoding='utf-8') as f:
+            data = json.load(f)
 
-        if genres is None:
-            data = MusicGenre.choices()
-            values = sorted([x[0] for x in data])
-            cache.add('genres', values, (24 * 60))
-        return Response(data=values, status=status.HTTP_200_OK)
+            main_categories = data.keys()
+            genres = []
+
+            for category in main_categories:
+                template = {'category': None, 'items': []}
+                template['category'] = category
+                template['items'] = list(
+                    map(lambda x: {'label': x}, data[category]))
+                genres.append(template)
+            return genres
+
+    def get(self, request):
+        genres: list[dict[str, str | list[dict[str, str]]]
+                     ] = cache.get('genres', {})
+
+        if not genres:
+            genres = self.read_file()
+            cache.set('genres', genres, timeout=24 * 60 * 60)
+        return Response(data=genres, status=status.HTTP_200_OK)
 
 
 class GameSettings(generics.GenericAPIView):
