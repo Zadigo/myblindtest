@@ -28,6 +28,7 @@ const app = createApp(App)
 const pinia = createPinia()
 
 const axiosManager = createVueAxiosManager({
+  disableAuth: true,
   endpoints: [
     {
       name: 'django',
