@@ -51,9 +51,9 @@
       </v-autocomplete> -->
 
       <div class="mt-3">
-        <Label for="game-difficulty" class="mb-2">
+        <VoltLabel for="game-difficulty" class="mb-2">
           Time limit
-        </Label>
+        </VoltLabel>
         <VoltInputText id="game-difficulty" v-model="selectedTimeLimit" type="time" placeholder="Time limit" />
       </div>
 
