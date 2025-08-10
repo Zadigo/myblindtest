@@ -1,15 +1,15 @@
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { createHead } from '@unhead/vue/client'
 import { Icon } from '@iconify/vue'
+import { createHead } from '@unhead/vue/client'
+import { createPinia } from 'pinia'
+import { createApp } from 'vue'
 import { createVueAxiosManager } from './plugins/client3'
 
-import App from './App.vue'
-import router from './routes'
-import installPlugins from './plugins'
-import PrimeVue from 'primevue/config'
+
 import AnimateOnScroll from 'primevue/animateonscroll'
+import PrimeVue from 'primevue/config'
+import App from './App.vue'
+import installPlugins from './plugins'
+import router from './routes'
 
 import 'animate.css'
 import './style.css'
@@ -46,5 +46,4 @@ app.use(installPlugins())
 app.use(PrimeVue, { unstyled: true })
 app.directive('animateonscroll', AnimateOnScroll)
 app.component('VueIcon', Icon)
-app.component('FontAwesomeIcon', FontAwesomeIcon)
 app.mount('#app')

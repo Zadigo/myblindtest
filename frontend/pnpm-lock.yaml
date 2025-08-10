@@ -92,6 +92,9 @@ importers:
       vue:
         specifier: ^3.5.18
         version: 3.5.18(typescript@5.9.2)
+      vue-axios-manager:
+        specifier: ^1.0.0
+        version: 1.0.0(@vueuse/core@13.6.0(vue@3.5.18(typescript@5.9.2)))(@vueuse/integrations@13.6.0(axios@1.11.0)(universal-cookie@8.0.1)(vue@3.5.18(typescript@5.9.2)))(axios@1.11.0)(typescript@5.9.2)(universal-cookie@8.0.1)(vue@3.5.18(typescript@5.9.2))
       vue-color-wheel:
         specifier: ^0.1.1
         version: 0.1.1
@@ -110,6 +113,9 @@ importers:
       vue3-fortune-wheel:
         specifier: ^2.1.2
         version: 2.1.2(vue@3.5.18(typescript@5.9.2))
+      vuefire:
+        specifier: ^3.2.2
+        version: 3.2.2(firebase@12.1.0)(vue@3.5.18(typescript@5.9.2))
       zod:
         specifier: ^4.0.17
         version: 4.0.17
@@ -3101,6 +3107,16 @@ packages:
   vscode-uri@3.1.0:
     resolution: {integrity: sha512-/BpdSx+yCQGnCvecbyXdxHDkuk55/G3xwnC0GqY4gmQ3j+A+g8kzzgB4Nk/SINjqn6+waqw3EgbVF2QKExkRxQ==}
 
+  vue-axios-manager@1.0.0:
+    resolution: {integrity: sha512-Y7DWfF4u75ZRLLHhdumvD7NNsO2XE2GUNsUKrfuQ+jhaWtJfKm4d6MaqRz2AfeX6K8WdCZTJkYte4Ze5JK3XeQ==}
+    peerDependencies:
+      '@vueuse/core': ^13.5.0
+      '@vueuse/integrations': ^13.5.0
+      axios: ^1.10.0
+      typescript: ^5.8.3
+      universal-cookie: ^8.0.1
+      vue: ^3.5.17
+
   vue-color-wheel@0.1.1:
     resolution: {integrity: sha512-FOZztY9puZM+cVWMd9JdOMDHQKCeOoD8qUeJOeSxw4FheOXuuaKpr9Kep2qSX2gTiLEpTgwiFaUkRQnSCVInAQ==}
 
@@ -3164,6 +3180,22 @@ packages:
       typescript: '*'
     peerDependenciesMeta:
       typescript:
+        optional: true
+
+  vuefire@3.2.2:
+    resolution: {integrity: sha512-JARgY9HhLs7xrdotQ4QA1SAmFDfSvAwUmOjx9e9lRJnmrsSW7H8ddfCQTVEHhU5NPyPJ/qKBv18Y5N13L60TGg==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      '@vue/composition-api': '*'
+      consola: ^3.2.3
+      firebase: ^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0
+      vue: ^2.7.0 || ^3.2.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      consola:
+        optional: true
+      firebase:
         optional: true
 
   web-vitals@4.2.4:
@@ -6371,6 +6403,15 @@ snapshots:
 
   vscode-uri@3.1.0: {}
 
+  vue-axios-manager@1.0.0(@vueuse/core@13.6.0(vue@3.5.18(typescript@5.9.2)))(@vueuse/integrations@13.6.0(axios@1.11.0)(universal-cookie@8.0.1)(vue@3.5.18(typescript@5.9.2)))(axios@1.11.0)(typescript@5.9.2)(universal-cookie@8.0.1)(vue@3.5.18(typescript@5.9.2)):
+    dependencies:
+      '@vueuse/core': 13.6.0(vue@3.5.18(typescript@5.9.2))
+      '@vueuse/integrations': 13.6.0(axios@1.11.0)(universal-cookie@8.0.1)(vue@3.5.18(typescript@5.9.2))
+      axios: 1.11.0
+      typescript: 5.9.2
+      universal-cookie: 8.0.1
+      vue: 3.5.18(typescript@5.9.2)
+
   vue-color-wheel@0.1.1:
     dependencies:
       colord: 2.9.3
@@ -6438,6 +6479,13 @@ snapshots:
       '@vue/shared': 3.5.18
     optionalDependencies:
       typescript: 5.9.2
+
+  vuefire@3.2.2(firebase@12.1.0)(vue@3.5.18(typescript@5.9.2)):
+    dependencies:
+      vue: 3.5.18(typescript@5.9.2)
+      vue-demi: 0.14.10(vue@3.5.18(typescript@5.9.2))
+    optionalDependencies:
+      firebase: 12.1.0
 
   web-vitals@4.2.4: {}
 

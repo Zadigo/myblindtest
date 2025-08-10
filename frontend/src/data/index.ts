@@ -1,16 +1,6 @@
 export * from './constants'
 export * from './schemas'
 
-export const addNewSongData = {
-  name: '',
-  genre: '',
-  artist_name: '',
-  featured_artists: [],
-  youtube_id: '',
-  year: 0,
-  difficulty: 1
-}
-
 export const wheelDetaults = [
   { id: 1, value: 'Pop', bgColor: '#7d7db3', color: '#ffffff' },
   { id: 2, value: 'Rock', bgColor: '#ffffff', color: '#000000' },

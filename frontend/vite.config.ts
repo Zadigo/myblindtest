@@ -55,6 +55,7 @@ export default defineConfig(({ mode }) => {
           'vue',
           'pinia',
           '@vueuse/core'
+          // 'vuefire'
         ],
         dirs: [
           'src/composables',

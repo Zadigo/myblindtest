@@ -15,7 +15,8 @@
     "skipLibCheck": true
   },
   "include": [
-    "src"
+    "src",
+    "src/vite-env.d.ts"
   ],
   "references": [
     { "path": "./tsconfig.app.json" },

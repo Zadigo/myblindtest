@@ -5,7 +5,7 @@ import { getFirestore } from 'firebase/firestore'
 import type { App } from 'vue'
 
 const env = import.meta.env
-const app = initializeApp({
+export const firebaseApp = initializeApp({
   apiKey: env.VITE_FIREBASE_API_KEY,
   authDomain: env.VITE_FIREBASE_AUTH_DOMAIN,
   databaseURL: env.VITE_FIREBASE_DB_URL,
@@ -16,8 +16,8 @@ const app = initializeApp({
   messagingSenderId: env.VITE_FIREBASE_MESSAGE_SENDER_ID
 })
 
-const db = getDatabase(app)
-const store = getFirestore(app)
+const db = getDatabase(firebaseApp)
+const store = getFirestore(firebaseApp)
 
 export function createFirebase(vueApp: App) {
   vueApp.config.globalProperties.$fireDb = db
@@ -26,15 +26,5 @@ export function createFirebase(vueApp: App) {
   return {
     db,
     store
-  }
-}
-
-/**
- *
- */
-export function useFirebase() {
-  return {
-    fireDb: db,
-    fireStore: store
   }
 }
