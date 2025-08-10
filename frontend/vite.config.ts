@@ -38,9 +38,6 @@ export default defineConfig(({ mode }) => {
           'src/components',
           'src/layouts'
         ],
-        exclude: [
-          'src/components/ui/'
-        ],
         resolvers: [
           PrimeVueResolver({
             prefix: 'Volt'

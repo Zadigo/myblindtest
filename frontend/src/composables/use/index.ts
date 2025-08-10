@@ -1,5 +1,7 @@
 import type { GenreDistribution, SettingsDataApiResponse } from '@/types'
 
+export * from './songs'
+
 /**
  * Loads autocomplete data for the minimum and maximum time
  * period for the songs, the count by genre

@@ -15,37 +15,21 @@ import { Toaster } from 'vue-sonner'
 
 import type { CacheSession } from '@/types'
 
-const sessionCache = useSessionStorage<CacheSession>('cache', defaults.cache, {
-  serializer: {
-    read(raw) {
-      const data = JSON.parse(raw) as CacheSession
-
-      if (data) {
-        if (!difficultyLevels.includes(data.settings.difficultyLevel)) {
-          throw new Error('Invalid difficulty level')
-        }
-
-        if (!songGenres.includes(data.settings.songType)) {
-          throw new Error('Invalid song type value')
-        }
-      }
-
-      return data
-    },
-    write(value) {
-      return JSON.stringify(value)
-    }
-  }
-})
+const sessionCache = useStorage<CacheSession>('cache', defaults.cache)
 
 const songsStore = useSongs()
 const { cache } = storeToRefs(songsStore)
 
+const teamsStore = useTeamsStore()
+const { teams } = storeToRefs(teamsStore)
+
 watch(sessionCache, (newValue) => {
   cache.value = newValue
+  teams.value = newValue.teams
 })
 
 onBeforeMount(() => {
   songsStore.cache = sessionCache.value
+  teams.value = sessionCache.value.teams
 })
 </script>

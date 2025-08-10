@@ -16,9 +16,9 @@
             </div>
 
             <div>
-              <Badge variant="default">
+              <VoltBadge variant="default">
                 {{ currentSong.genre }}
-              </Badge>
+              </VoltBadge>
             </div>
           </div>
 
@@ -47,9 +47,9 @@
 
         <!-- Wheel -->
         <Transition mode="out-in" name="animate__animated" enter-active-class="animate__animated animate__fadeInDown" leave-active-class="animate__animated animate__fadeOutDown">
-          <CardContent v-if="showWheel">
+          <div v-if="showWheel">
             <GenreRandomizer ref="randomizerEl" :items="wheelDetaults" @completed="randomizerComplete" />
-          </CardContent>
+          </div>
         </Transition>
       </template>
 

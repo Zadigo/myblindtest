@@ -358,6 +358,9 @@ declare global {
   export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
   // @ts-ignore
+  export type { SearchedGenreApiResponse } from '../composables/use/songs'
+  import('../composables/use/songs')
+  // @ts-ignore
   export type { LoginApiResponse, JWTPayload, RefreshApiResposne } from '../plugins/client'
   import('../plugins/client')
   // @ts-ignore
