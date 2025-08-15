@@ -2,7 +2,7 @@ import { Icon } from '@iconify/vue'
 import { createHead } from '@unhead/vue/client'
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
-import { createVueAxiosManager } from './plugins/client3'
+import { createVueAxiosManager } from 'vue-axios-manager'
 
 
 import AnimateOnScroll from 'primevue/animateonscroll'
