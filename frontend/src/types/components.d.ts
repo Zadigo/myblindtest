@@ -153,7 +153,7 @@ declare module 'vue' {
     VoltAccordionPanel: typeof import('./../components/volt/VoltAccordionPanel.vue')['default']
     VoltAutocomplete: typeof import('./../components/volt/VoltAutocomplete.vue')['default']
     VoltAvatar: typeof import('./../components/volt/VoltAvatar.vue')['default']
-    VoltBadge: typeof import('primevue/badge')['default']
+    VoltBadge: typeof import('./../components/volt/VoltBadge.vue')['default']
     VoltButton: typeof import('./../components/volt/VoltButton.vue')['default']
     VoltCard: typeof import('./../components/volt/VoltCard.vue')['default']
     VoltDivider: typeof import('./../components/volt/VoltDivider.vue')['default']

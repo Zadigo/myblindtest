@@ -6,7 +6,7 @@ import { resolve } from 'path'
 import { PrimeVueResolver } from 'unplugin-vue-components/resolvers'
 
 import tailwind from '@tailwindcss/vite'
-import eslint from 'vite-plugin-eslint'
+import eslint from 'vite-plugin-eslint2'
 import vue from '@vitejs/plugin-vue'
 import autoImportComponents from 'unplugin-vue-components/vite'
 import autoImport from 'unplugin-auto-import/vite'
@@ -29,7 +29,6 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       vue(),
-      eslint(),
       tailwind(),
       autoImportComponents({
         deep: true,
@@ -50,6 +49,11 @@ export default defineConfig(({ mode }) => {
       autoImport({
         dts: 'src/types/auto-imports.d.ts',
         vueTemplate: true,
+        eslintrc: {
+          enabled: true,
+          filepath: '.eslintrc-auto-import.json',
+          globalsPropValue: true
+        },
         imports: [
           unheadVueComposablesImports,
           'vue',
@@ -63,7 +67,8 @@ export default defineConfig(({ mode }) => {
           'src/stores',
           'src/data'
         ]
-      })
+      }),
+      eslint(),
     ],
     test: {
       globals: true,

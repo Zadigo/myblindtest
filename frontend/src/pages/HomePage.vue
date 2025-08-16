@@ -2,11 +2,11 @@
   <section class="w-5xl mx-auto px-10 my-20 relative">
     <VoltCard class="mt-10 mb-5 shadow-none">
       <template #content>
-        <div class="flex">
-          <VoltButton class="self-end rounded-full">
+        <div class="flex justify-end">
+          <VoltButton class="rounded-full">
             <RouterLink :to="{ name: 'teams' }" class="inline-flex gap-2 items-center">
-              Manage teams
-              <VueIcon icon="fa-solid:arrow-right" />
+              Manage teamsa
+              <VueIcon icon="i-fa7-solid:arrow-right" />
             </RouterLink>
           </VoltButton>
         </div>

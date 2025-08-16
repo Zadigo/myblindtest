@@ -15,8 +15,13 @@
     "skipLibCheck": true
   },
   "include": [
-    "src",
-    "src/vite-env.d.ts"
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "src/**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
   ],
   "references": [
     { "path": "./tsconfig.app.json" },

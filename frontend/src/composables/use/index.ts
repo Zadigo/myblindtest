@@ -8,7 +8,7 @@ export * from './songs'
  */
 export async function useLoadAutocompleteData(fromCache: boolean = false) {
   const autocomplete = useStorage<SettingsDataApiResponse>('autocomplete', null)
-  
+
   if (!fromCache) {
     const { responseData } = await useAsyncRequest<SettingsDataApiResponse>('django', '/api/v1/songs/settings', { method: 'get', immediate: true })
     syncRef(autocomplete, responseData, { direction: 'ltr' })

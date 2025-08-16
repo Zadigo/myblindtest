@@ -9,11 +9,12 @@ declare global {
   const EffectScope: typeof import('vue')['EffectScope']
   const Settings: typeof import('../data/schemas/index')['Settings']
   const Team: typeof import('../data/schemas/index')['Team']
-  const VueAxiosManager: typeof import('../plugins/client3/base')['VueAxiosManager']
+  const VueAxiosManager: typeof import('../plugins/client/index')['VueAxiosManager']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
   const addNewSongData: typeof import('../data/schemas/index')['addNewSongData']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
   const autoResetRef: typeof import('@vueuse/core')['autoResetRef']
+  const checkDomain: typeof import('../plugins/client/index')['checkDomain']
   const client: typeof import('../plugins/client')['default']
   const computed: typeof import('vue')['computed']
   const computedAsync: typeof import('@vueuse/core')['computedAsync']
@@ -23,12 +24,13 @@ declare global {
   const controlledComputed: typeof import('@vueuse/core')['controlledComputed']
   const controlledRef: typeof import('@vueuse/core')['controlledRef']
   const createApp: typeof import('vue')['createApp']
-  const createAxiosInstance: typeof import('../plugins/client3/base')['createAxiosInstance']
+  const createAxiosInstance: typeof import('../plugins/client/index')['createAxiosInstance']
   const createDayjs: typeof import('../plugins/date')['createDayjs']
   const createEventHook: typeof import('@vueuse/core')['createEventHook']
   const createFirebase: typeof import('../plugins/firebase')['createFirebase']
   const createGlobalState: typeof import('@vueuse/core')['createGlobalState']
   const createInjectionState: typeof import('@vueuse/core')['createInjectionState']
+  const createInternalEndpointName: typeof import('../plugins/client/index')['createInternalEndpointName']
   const createPinia: typeof import('pinia')['createPinia']
   const createReactiveFn: typeof import('@vueuse/core')['createReactiveFn']
   const createRef: typeof import('@vueuse/core')['createRef']
@@ -37,7 +39,7 @@ declare global {
   const createSimpleClient: typeof import('../plugins/client')['createSimpleClient']
   const createTemplatePromise: typeof import('@vueuse/core')['createTemplatePromise']
   const createUnrefFn: typeof import('@vueuse/core')['createUnrefFn']
-  const createVueAxiosManager: typeof import('../plugins/client3/base')['createVueAxiosManager']
+  const createVueAxiosManager: typeof import('../plugins/client/index')['createVueAxiosManager']
   const customRef: typeof import('vue')['customRef']
   const debouncedRef: typeof import('@vueuse/core')['debouncedRef']
   const debouncedWatch: typeof import('@vueuse/core')['debouncedWatch']
@@ -61,7 +63,7 @@ declare global {
   const getWebsocketUrl: typeof import('../plugins/client')['getWebsocketUrl']
   const h: typeof import('vue')['h']
   const ignorableWatch: typeof import('@vueuse/core')['ignorableWatch']
-  const inProduction: typeof import('../plugins/client')['inProduction']
+  const inProduction: typeof import('../plugins/client/index')['inProduction']
   const inject: typeof import('vue')['inject']
   const injectHead: typeof import('@unhead/vue')['injectHead']
   const injectLocal: typeof import('@vueuse/core')['injectLocal']
@@ -163,12 +165,12 @@ declare global {
   const useArraySome: typeof import('@vueuse/core')['useArraySome']
   const useArrayUnique: typeof import('@vueuse/core')['useArrayUnique']
   const useAsyncQueue: typeof import('@vueuse/core')['useAsyncQueue']
-  const useAsyncRequest: typeof import('../plugins/client3/composables')['useAsyncRequest']
+  const useAsyncRequest: typeof import('../plugins/client/index')['useAsyncRequest']
   const useAsyncState: typeof import('@vueuse/core')['useAsyncState']
   const useAttrs: typeof import('vue')['useAttrs']
   const useAuthenticatedAxiosClient: typeof import('../plugins/client')['useAuthenticatedAxiosClient']
   const useAxiosClient: typeof import('../plugins/client')['useAxiosClient']
-  const useAxiosLogin: typeof import('../plugins/client3/composables')['useAxiosLogin']
+  const useAxiosLogin: typeof import('../plugins/client/index')['useAxiosLogin']
   const useBase64: typeof import('@vueuse/core')['useBase64']
   const useBattery: typeof import('@vueuse/core')['useBattery']
   const useBluetooth: typeof import('@vueuse/core')['useBluetooth']
@@ -275,7 +277,7 @@ declare global {
   const usePrevious: typeof import('@vueuse/core')['usePrevious']
   const useRafFn: typeof import('@vueuse/core')['useRafFn']
   const useRefHistory: typeof import('@vueuse/core')['useRefHistory']
-  const useRequest: typeof import('../plugins/client3/composables')['useRequest']
+  const useRequest: typeof import('../plugins/client/index')['useRequest']
   const useResizeObserver: typeof import('@vueuse/core')['useResizeObserver']
   const useSSRWidth: typeof import('@vueuse/core')['useSSRWidth']
   const useScreenOrientation: typeof import('@vueuse/core')['useScreenOrientation']
@@ -335,7 +337,7 @@ declare global {
   const useWindowFocus: typeof import('@vueuse/core')['useWindowFocus']
   const useWindowScroll: typeof import('@vueuse/core')['useWindowScroll']
   const useWindowSize: typeof import('@vueuse/core')['useWindowSize']
-  const vueAxiosManager: typeof import('../plugins/client3/base')['vueAxiosManager']
+  const vueAxiosManager: typeof import('../plugins/client/index')['vueAxiosManager']
   const watch: typeof import('vue')['watch']
   const watchArray: typeof import('@vueuse/core')['watchArray']
   const watchAtMost: typeof import('@vueuse/core')['watchAtMost']
@@ -364,8 +366,8 @@ declare global {
   export type { SearchedGenreApiResponse } from '../composables/use/songs'
   import('../composables/use/songs')
   // @ts-ignore
-  export type { LoginApiResponse, JWTPayload, RefreshApiResposne } from '../plugins/client'
-  import('../plugins/client')
+  export type { ExtendedInternalAxiosRequestConfig, EndpointOptions, PluginOptions, EndpointOptionKeys, InternalEnpointOptions, InternalEndpointOptionKeys, ComposableOptions, AsyncComposableOptions, LoginComposableOptions, Methods, Credentials, RequestsContainer, _DevtoolsTimelineObject, RequestStoreClass, RefreshApiResponse, _VueAxiosManager } from '../plugins/client/types'
+  import('../plugins/client/types')
   // @ts-ignore
   export type { MatchedPart, DeviceActions, WebsocketActions } from '../data/constants/websocket'
   import('../data/constants/websocket')
@@ -385,10 +387,12 @@ declare module 'vue' {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly Settings: UnwrapRef<typeof import('../data/schemas/index')['Settings']>
     readonly Team: UnwrapRef<typeof import('../data/schemas/index')['Team']>
+    readonly VueAxiosManager: UnwrapRef<typeof import('../plugins/client/index')['VueAxiosManager']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly addNewSongData: UnwrapRef<typeof import('../data/schemas/index')['addNewSongData']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
+    readonly checkDomain: UnwrapRef<typeof import('../plugins/client/index')['checkDomain']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly computedAsync: UnwrapRef<typeof import('@vueuse/core')['computedAsync']>
     readonly computedEager: UnwrapRef<typeof import('@vueuse/core')['computedEager']>
@@ -397,18 +401,20 @@ declare module 'vue' {
     readonly controlledComputed: UnwrapRef<typeof import('@vueuse/core')['controlledComputed']>
     readonly controlledRef: UnwrapRef<typeof import('@vueuse/core')['controlledRef']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
+    readonly createAxiosInstance: UnwrapRef<typeof import('../plugins/client/index')['createAxiosInstance']>
     readonly createEventHook: UnwrapRef<typeof import('@vueuse/core')['createEventHook']>
     readonly createFirebase: UnwrapRef<typeof import('../plugins/firebase')['createFirebase']>
     readonly createGlobalState: UnwrapRef<typeof import('@vueuse/core')['createGlobalState']>
     readonly createInjectionState: UnwrapRef<typeof import('@vueuse/core')['createInjectionState']>
+    readonly createInternalEndpointName: UnwrapRef<typeof import('../plugins/client/index')['createInternalEndpointName']>
     readonly createPinia: UnwrapRef<typeof import('pinia')['createPinia']>
     readonly createReactiveFn: UnwrapRef<typeof import('@vueuse/core')['createReactiveFn']>
     readonly createRef: UnwrapRef<typeof import('@vueuse/core')['createRef']>
     readonly createReusableTemplate: UnwrapRef<typeof import('@vueuse/core')['createReusableTemplate']>
     readonly createSharedComposable: UnwrapRef<typeof import('@vueuse/core')['createSharedComposable']>
-    readonly createSimpleClient: UnwrapRef<typeof import('../plugins/client')['createSimpleClient']>
     readonly createTemplatePromise: UnwrapRef<typeof import('@vueuse/core')['createTemplatePromise']>
     readonly createUnrefFn: UnwrapRef<typeof import('@vueuse/core')['createUnrefFn']>
+    readonly createVueAxiosManager: UnwrapRef<typeof import('../plugins/client/index')['createVueAxiosManager']>
     readonly customRef: UnwrapRef<typeof import('vue')['customRef']>
     readonly debouncedRef: UnwrapRef<typeof import('@vueuse/core')['debouncedRef']>
     readonly debouncedWatch: UnwrapRef<typeof import('@vueuse/core')['debouncedWatch']>
@@ -427,11 +433,9 @@ declare module 'vue' {
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly getCurrentWatcher: UnwrapRef<typeof import('vue')['getCurrentWatcher']>
-    readonly getDomain: UnwrapRef<typeof import('../plugins/client')['getDomain']>
-    readonly getWebsocketUrl: UnwrapRef<typeof import('../plugins/client')['getWebsocketUrl']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
-    readonly inProduction: UnwrapRef<typeof import('../plugins/client')['inProduction']>
+    readonly inProduction: UnwrapRef<typeof import('../plugins/client/index')['inProduction']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly injectHead: UnwrapRef<typeof import('@unhead/vue')['injectHead']>
     readonly injectLocal: UnwrapRef<typeof import('@vueuse/core')['injectLocal']>
@@ -531,10 +535,10 @@ declare module 'vue' {
     readonly useArraySome: UnwrapRef<typeof import('@vueuse/core')['useArraySome']>
     readonly useArrayUnique: UnwrapRef<typeof import('@vueuse/core')['useArrayUnique']>
     readonly useAsyncQueue: UnwrapRef<typeof import('@vueuse/core')['useAsyncQueue']>
+    readonly useAsyncRequest: UnwrapRef<typeof import('../plugins/client/index')['useAsyncRequest']>
     readonly useAsyncState: UnwrapRef<typeof import('@vueuse/core')['useAsyncState']>
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
-    readonly useAuthenticatedAxiosClient: UnwrapRef<typeof import('../plugins/client')['useAuthenticatedAxiosClient']>
-    readonly useAxiosClient: UnwrapRef<typeof import('../plugins/client')['useAxiosClient']>
+    readonly useAxiosLogin: UnwrapRef<typeof import('../plugins/client/index')['useAxiosLogin']>
     readonly useBase64: UnwrapRef<typeof import('@vueuse/core')['useBase64']>
     readonly useBattery: UnwrapRef<typeof import('@vueuse/core')['useBattery']>
     readonly useBluetooth: UnwrapRef<typeof import('@vueuse/core')['useBluetooth']>
@@ -639,6 +643,7 @@ declare module 'vue' {
     readonly usePrevious: UnwrapRef<typeof import('@vueuse/core')['usePrevious']>
     readonly useRafFn: UnwrapRef<typeof import('@vueuse/core')['useRafFn']>
     readonly useRefHistory: UnwrapRef<typeof import('@vueuse/core')['useRefHistory']>
+    readonly useRequest: UnwrapRef<typeof import('../plugins/client/index')['useRequest']>
     readonly useResizeObserver: UnwrapRef<typeof import('@vueuse/core')['useResizeObserver']>
     readonly useSSRWidth: UnwrapRef<typeof import('@vueuse/core')['useSSRWidth']>
     readonly useScreenOrientation: UnwrapRef<typeof import('@vueuse/core')['useScreenOrientation']>
@@ -694,10 +699,10 @@ declare module 'vue' {
     readonly useWebSocket: UnwrapRef<typeof import('@vueuse/core')['useWebSocket']>
     readonly useWebWorker: UnwrapRef<typeof import('@vueuse/core')['useWebWorker']>
     readonly useWebWorkerFn: UnwrapRef<typeof import('@vueuse/core')['useWebWorkerFn']>
-    readonly useWebsocketUtilities: UnwrapRef<typeof import('../plugins/client')['useWebsocketUtilities']>
     readonly useWindowFocus: UnwrapRef<typeof import('@vueuse/core')['useWindowFocus']>
     readonly useWindowScroll: UnwrapRef<typeof import('@vueuse/core')['useWindowScroll']>
     readonly useWindowSize: UnwrapRef<typeof import('@vueuse/core')['useWindowSize']>
+    readonly vueAxiosManager: UnwrapRef<typeof import('../plugins/client/index')['vueAxiosManager']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
     readonly watchArray: UnwrapRef<typeof import('@vueuse/core')['watchArray']>
     readonly watchAtMost: UnwrapRef<typeof import('@vueuse/core')['watchAtMost']>
