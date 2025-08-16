@@ -69,18 +69,18 @@ export class VueAxiosManager implements _VueAxiosManager {
    * Register a new request
    * @param options The options for the request
    */
-  public _registerRequest(method: string, endpoint: EndpointOptions | undefined, params: RequestsContainer, timelineLayerId?: string, isError: boolean = false) {
+  public _registerRequest(method: string, endpoint: EndpointOptions | undefined, params: RequestsContainer, timelineLayerId?: string, isError = false) {
     if (!endpoint) {
       return
     }
 
     if (!inProduction()) {
       if (this.api) {
-        // @ts-expect-error no export
+        // @ts-expect-error "no export"
         this.api.addTimelineEvent({
           layerId: timelineLayerId || 'axios-manager',
           event: {
-            // @ts-expect-error no export
+            // @ts-expect-error "no export"
             time: this.api.now(),
             title: method,
             subtitle: 'Axios Request',
@@ -150,7 +150,7 @@ export function createAxiosInstance(pluginOptions: PluginOptions, endpoint: Endp
 
   checkDomain(devDomain, endpoint)
 
-  let baseDomain: string = `${protocole}://${devDomain}`
+  let baseDomain = `${protocole}://${devDomain}`
 
   if (inProduction()) {
     if (!endpoint.domain) {

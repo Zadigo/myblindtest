@@ -36,7 +36,7 @@ export function useCustomDebounce() {
   return {
     debounce
   }
-}
+};
 
 export function useString() {
   function plural(items: (string | number | object)[], word: string) {

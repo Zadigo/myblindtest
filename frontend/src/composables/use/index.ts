@@ -6,7 +6,7 @@ export * from './songs'
  * Loads autocomplete data for the minimum and maximum time
  * period for the songs, the count by genre
  */
-export async function useLoadAutocompleteData(fromCache: boolean = false) {
+export async function useLoadAutocompleteData(fromCache = false) {
   const autocomplete = useStorage<SettingsDataApiResponse>('autocomplete', null)
 
   if (!fromCache) {
