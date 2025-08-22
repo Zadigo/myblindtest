@@ -35,4 +35,5 @@
 import { Toaster } from 'vue-sonner'
 
 onMounted(() => document.body.classList.add('bg-primary/30'))
+onUnmounted(() => document.body.classList.remove('bg-primary/30'))
 </script>

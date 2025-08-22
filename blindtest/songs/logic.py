@@ -29,14 +29,14 @@ class Team:
     team_id: str
     name: Optional[str] = None
     color: Optional[str] = None
-    points: int = 0
+    points: Optional[int] = 0
     correct_answers: List[int] = dataclasses.field(default_factory=list)
     answer_times: List[int] = dataclasses.field(default_factory=list)
 
     def __hash__(self):
         return hash((self.team_id))
 
-    def __eq__(self, value):
+    def __eq__(self, value: str):
         return self.team_id == value
 
 
@@ -98,12 +98,10 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
         self.difficulty_bonus = False
         self.time_bonus = False
 
-        team_one_id = f'team_{get_random_string(length=12)}'
-        team_two_id = f'team_{get_random_string(length=12)}'
-        self.team_one = Team(team_one_id)
-        self.team_two = Team(team_two_id)
-        self.team_one_score = 0
-        self.team_two_score = 0
+        # team_one_id = f'team_{get_random_string(length=12)}'
+        # team_two_id = f'team_{get_random_string(length=12)}'
+        self.team_one = Team('fake_id_1')
+        self.team_two = Team('fake_id_2')
 
         self.is_started = False
         self.current_song: Optional[dict[str, Union[str, int]]] = None
@@ -132,14 +130,14 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
             {
                 "id": self.team_one.team_id,
                 "name": self.team_one.name,
-                "score": self.team_one_score,
+                "score": self.team_one.score,
                 "players": [],
                 "color": self.team_two.color
             },
             {
                 "id": self.team_one.team_id,
                 "name": self.team_two.name,
-                "score": self.team_two_score,
+                "score": self.team_two.score,
                 "players": [],
                 "color": self.team_two.color
             }
@@ -257,8 +255,8 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
                     'action': 'game_complete',
                     'message': 'Final round complete',
                     'final_scores': {
-                        'team1': self.team_one_score,
-                        'team2': self.team_two_score
+                        'team1': self.team_one.score,
+                        'team2': self.team_two.score
                     },
                     'songs_played': len(self.played_songs)
                 })
@@ -273,9 +271,8 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
         """Calculate points based on match type and remaining time"""
         base_points = 0
 
-        # Use the song's difficulty level to calculate
-        # the amount of points that will be used  to
-        # add to team's final score
+        # Use the song's difficulty level
+        # for the total score
         def factor(value: int):
             if self.difficulty_bonus:
                 factor = int(self.current_song['difficulty'])
@@ -365,28 +362,31 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
             'points': 0
         }
 
+        ids = [self.team_one.team_id, self.team_two.team_id]
+        if team_id not in ids:
+            await self.send_error(f'Team not found: {team_id}')
+            return
+
         if title_match or artist_match:
             result = await self.calculate_points(title_match, artist_match)
 
             message['action'] = 'guess_correct'
 
             if team_id == self.team_one:
-                self.team_one_score += result
-                # TODO: Fully implement the dataclass
                 self.team_one.points += result
-                message['points'] = self.team_one_score
+                message['points'] = self.team_one.points
 
             if team_id == self.team_two:
-                self.team_two_score += result
-                # TODO: Fully implement the dataclass
                 self.team_two.points += result
-                message['points'] = self.team_two_score
+                message['points'] = self.team_two.points
         else:
             message['action'] = 'guess_incorrect'
-            message['points'] = self.team_one_score if team_id == self.team_one else self.team_two_score
+            message['points'] = self.team_one.points if team_id == self.team_one else self.team_two.points
+
+        print('handle_guess', message)
 
         await self.channel_layer.group_send(self.diffusion_group_name, {
-            'type': 'game_updates', #FIXME: game.updates
+            'type': 'game.updates',
             'sender': 'blind_test',
             'updates': message
         })

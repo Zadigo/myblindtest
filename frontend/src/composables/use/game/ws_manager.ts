@@ -1,28 +1,6 @@
-import { useSessionStore, useSongs } from '@/stores'
 import { toast } from 'vue-sonner'
 
 import type { WebsocketMessage, WebsocketInitializationMessage } from '@/types'
-
-export function useWebsocketMessage() {
-  function parse<T>(data: string): T | undefined {
-    try {
-      const parsedData = JSON.parse(data) as T
-      return parsedData
-    } catch (e) {
-      console.error("Failed to parse websocket message", e)
-      return undefined
-    }
-  }
-
-  function send<T>(data: T): string {
-    return JSON.stringify(data)
-  }
-
-  return {
-    parse,
-    send
-  }
-}
 
 function onConnected(ws: WebSocket) {
   const sessionStore = useSessionStore()
@@ -110,9 +88,12 @@ export function useGameWebsocket() {
 
           case 'guess_correct':
             if (data.team_id && data.points) {
-              const team = teamsStore.getTeam(data.team_id)
-              if (team && team.value) {
-                team.value.score += data.points
+              const team = teamsStore.getTeamById(ref(data.team_id))
+              
+              if (team.value) {
+                team.value.score = data.points
+              } else {
+                console.error("Team not found in 'guess_correct'")
               }
             }
             break

@@ -84,11 +84,11 @@ const matchedElement = ref<MatchedPart>('Both')
 const teamStore = useTeamsStore()
 const { teams } = storeToRefs(teamStore)
 
-const team = teamStore.getTeam(teamIndex)
+const team = teamStore.getTeamByIndex(teamIndex)
 
 const teamName = computed(() => {
   if (team.value) {
-    return team.value.name === '' ? 'Team XYZ' : team.value.name
+    return team.value.name === '' ? team.value.id : team.value.name
   } else {
     return 'Team XYZ'
   }

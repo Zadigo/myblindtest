@@ -1,4 +1,4 @@
-import type { CacheSession } from '../../types'
+import type { CacheSession } from '@/types'
 
 export const defaults: CacheSession = {
   songs_played: [],

@@ -2,9 +2,28 @@ import type { RandomizerData } from '@/components/randomizer'
 import type { Ref } from 'vue'
 import type { WebsocketRandomizeGenre } from '@/types'
 
-export { useGameWebsocket, useWebsocketMessage } from './ws_manager'
-
 export * from './ws_manager'
+
+export function useWebsocketMessage() {
+  function parse<T>(data: string): T | undefined {
+    try {
+      const parsedData = JSON.parse(data) as T
+      return parsedData
+    } catch (e) {
+      console.error("Failed to parse websocket message", e)
+      return undefined
+    }
+  }
+
+  function send<T>(data: T): string {
+    return JSON.stringify(data)
+  }
+
+  return {
+    parse,
+    send
+  }
+}
 
 /**
  * Composable that triggers and runs the

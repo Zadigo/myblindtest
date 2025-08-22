@@ -52,14 +52,15 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
         await self.accept()
         # TODO: Channel make diffusion group
         await self.channel_layer.group_add(self.diffusion_group_name, self.channel_name)
-        self.connection_token = create_token()
 
-        await self.send_json({
-            'action': 'connection_token',
-            'token': self.connection_token,
-            'team_one_id': self.team_one.team_id,
-            'team_two_id': self.team_two.team_id
-        })
+        # self.connection_token = create_token()
+
+        # await self.send_json({
+        #     'action': 'connection_token',
+        #     'token': self.connection_token,
+        #     'team_one_id': self.team_one.team_id,
+        #     'team_two_id': self.team_two.team_id
+        # })
 
     async def disconnect(self, code):
         # TODO: Channel make diffusion group
@@ -83,7 +84,9 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
             return
 
         if action == 'start_game':
-            settings: dict[str, str | bool | int] = content.get('settings', {})
+            self.connection_token = content.get('firebase_key', None)
+
+            settings: dict[str, str | bool | int] = content.get('session', {})
 
             self.difficulty = settings.get('game_difficulty', 'All')
             self.genre = settings.get('genre', 'All')
@@ -95,9 +98,12 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
             self.solo_mode = settings.get('solo_mode', False)
             self.admin_plays = settings.get('admin_plays', False)
 
-            self.team_one_score = 0
-            self.team_two_score = 0
-            # TODO: Fully implement the dataclass
+            team_one = settings['teams'][0]
+            team_two = settings['teams'][1]
+
+            self.team_one.team_id = team_one['id']
+            self.team_two.team_id = team_two['id']
+
             self.team_one.points = 0
             self.team_two.points = 0
             self.played_songs.clear()
@@ -146,6 +152,7 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
             temporary_genre = content.get('temporary_genre', None)
             if self.is_started:
                 await self.next_song(temporary_genre=temporary_genre)
+
         # elif action == 'current_cache':
         #     self.channel_layer.group_send(self.diffusion_group_name, {
         #         'type': 'current.cache',
@@ -214,8 +221,6 @@ class ScreenInterfaceConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):
         await self.close()
 
     async def receive_json(self, content, **kwargs):
-        print(content)
-
         action = content.get('action')
 
         if action is None:

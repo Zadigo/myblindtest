@@ -40,7 +40,7 @@ function handleCorrectAnswer(data: [ teamId: string, match: MatchedPart ]) {
       song: currentSong.value
     })
 
-    console.log('handleCorrectAnswer', videoEl.value)
+    console.log('BlindTestPage.handleCorrectAnswer', videoEl.value)
 
     if (videoEl.value) {
       videoEl.value.sendCorrectAnswer(data[0], data[1])

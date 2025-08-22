@@ -3,6 +3,12 @@
     <volt-card class="mt-10 mb-5 shadow-none">
       <template #content>
         <div class="flex justify-end">
+          <!-- {{ hasExistingSession }} -->
+          <!-- v-if="hasExistingSession" -->
+          <volt-button @click="() => sessionStore.reset()">
+            Reset
+          </volt-button>
+
           <volt-button class="rounded-full">
             <router-link :to="{ name: 'teams' }" class="inline-flex gap-2 items-center">
               Manage teams
@@ -22,12 +28,9 @@
 </template>
 
 <script setup lang="ts">
-import { useSessionStore } from '@/stores/session'
-
 useLoadAutocompleteData()
 
 const sessionStore = useSessionStore()
-const { sessionId } = storeToRefs(sessionStore)
 
 onBeforeMount(async () => {
   await sessionStore.create()
