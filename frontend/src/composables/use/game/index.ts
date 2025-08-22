@@ -1,5 +1,4 @@
 import type { RandomizerData } from '@/components/randomizer'
-import { useWebsocketMessage } from './ws_manager'
 import type { Ref } from 'vue'
 import type { WebsocketRandomizeGenre } from '@/types'
 

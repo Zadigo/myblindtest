@@ -64,7 +64,7 @@
             Start
           </volt-button>
 
-          <volt-button :disabled="!gameStarted" variant="destructive" @click="() => handleIncorrectAnswer()">
+          <volt-button :disabled="!gameStarted" variant="destructive" @click="() => sendIncorrectAnswer()">
             <vue-icon icon="fa-solid:exclamation" size="15" />
             Wrong answer
           </volt-button>
@@ -76,7 +76,6 @@
 
 <script setup lang="ts">
 import { useSessionStore } from '@/stores/session'
-import { useWebsocketMessage } from '@/utils'
 import { toast } from 'vue-sonner'
 
 import type { MatchedPart } from '@/data'
@@ -104,7 +103,7 @@ function handleFinalize() {
  * Returns the next song by excluding
  * those that were already played
  */
-function handleIncorrectAnswer() {
+function sendIncorrectAnswer() {
   const result = send<{ action: DefaultActions }>({ action: 'skip_song' })
 
   if (result) {
@@ -120,7 +119,7 @@ function handleIncorrectAnswer() {
  * @param teamId The ID of the team
  * @param match The element that was matched
  */
-function handleCorrectAnswer(teamId: string, match: MatchedPart) {
+function sendCorrectAnswer(teamId: string, match: MatchedPart) {
   let title_match: boolean = true
   let artist_match: boolean = true
 
@@ -178,7 +177,7 @@ function handleStop() {
 const { showWheel, randomizerEl, randomizerComplete } = useWheelRandomizer(wsObject.ws)
 
 defineExpose<VideoBlockExposedMethods>({
-  handleCorrectAnswer,
-  handleIncorrectAnswer
+  sendCorrectAnswer,
+  sendIncorrectAnswer
 })
 </script>

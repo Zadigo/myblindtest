@@ -43,7 +43,7 @@ function handleCorrectAnswer(data: [ teamId: string, match: MatchedPart ]) {
     console.log('handleCorrectAnswer', videoEl.value)
 
     if (videoEl.value) {
-      videoEl.value.handleCorrectAnswer(data[0], data[1])
+      videoEl.value.sendCorrectAnswer(data[0], data[1])
 
       answers.value.push({
         teamId: data[0],

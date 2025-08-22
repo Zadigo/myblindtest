@@ -1,5 +1,3 @@
-import { Artist } from '@/types'
-
 /**
  * The data to be created in the database
  * @todo Rename to NewSong

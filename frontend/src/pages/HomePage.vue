@@ -26,9 +26,11 @@ import { useSessionStore } from '@/stores/session'
 
 useLoadAutocompleteData()
 
-const { sessionId, create } = useSessionStore()
+const sessionStore = useSessionStore()
+const { sessionId } = storeToRefs(sessionStore)
+
 onBeforeMount(async () => {
-  await create()
+  await sessionStore.create()
 })
 </script>
 

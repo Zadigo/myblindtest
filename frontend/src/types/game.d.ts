@@ -49,6 +49,6 @@ export interface SettingsDataApiResponse {
 }
 
 export interface VideoBlockExposedMethods {
-  handleCorrectAnswer: (teamId: string, match: MatchedPart) => void
-  handleIncorrectAnswer: () => void
+  sendCorrectAnswer: (teamId: string, match: MatchedPart) => void
+  sendIncorrectAnswer: () => void
 }

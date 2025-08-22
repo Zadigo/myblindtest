@@ -1,12 +1,12 @@
 // @ts-check
-import eslintjs from '@eslint/js'
-import stylistic from '@stylistic/eslint-plugin'
-import vueEslint from 'eslint-plugin-vue'
+// import eslintjs from '@eslint/js'
+// import stylistic from '@stylistic/eslint-plugin'
+// import vueEslint from 'eslint-plugin-vue'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 import autoImportGlobals from './.eslintrc-auto-import.json' with { type: 'json' }
 
-import { defineConfig } from 'eslint/config'
+// import { defineConfig } from 'eslint/config'
 
 export default tseslint.config(
   {

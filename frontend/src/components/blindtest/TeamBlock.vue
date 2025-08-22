@@ -132,7 +132,7 @@ whenever(hasConsecutiveAnswers, () => {
 })
 
 /**
- *
+ * Handles the different animations on the page
  */
 async function handleAnimation() {
   if (scoreBoxEl.value) {
@@ -156,7 +156,9 @@ async function handleAnimation() {
 async function handleCorrectAnswer() {
   if (team.value) {
     await handleAnimation()
+    
     console.log('Correct answer', team.value)
+
     emit('next-song', [team.value.id, matchedElement.value])
     matchedElement.value = 'Both'
   } else {
