@@ -1,7 +1,7 @@
 import type { CacheSession } from '@/types'
 
 export const defaults: CacheSession = {
-  songs_played: [],
+  songsPlayed: [],
   currentStep: 0,
   teams: [
     {

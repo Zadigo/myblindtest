@@ -14,7 +14,7 @@ export interface Team {
 }
 
 export interface CacheSession {
-  songs_played: Song[]
+  songsPlayed: Song[]
   currentStep: number
   teams: Team[]
   settings: {
