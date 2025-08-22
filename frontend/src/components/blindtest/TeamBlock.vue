@@ -1,7 +1,7 @@
 <template>
   <div id="left" ref="teamBlockEl" class="p-5 h-screen">
     <div id="team" :class="blockPosition" class="flex-col w-7/12">
-      <VoltCard class="w-full text-center border-none">
+      <volt-card class="w-full text-center border-none">
         <template #content>
           <h1 ref="scoreBoxEl" class="text-5xl font-bold">
             {{ teamScore }}
@@ -11,36 +11,36 @@
             Points ({{ teamName }})
           </p>
         </template>
-      </VoltCard>
+      </volt-card>
 
       <!-- Actions -->
-      <VoltCard class="mt-2 mb-10 border-none">
+      <volt-card class="mt-2 mb-10 border-none">
         <template #content>
           <div class="flex justify-center gap-2">
-            <VoltButton :variant="matchedElement === 'Title' ? '' : 'outlined'" size="small" @click="handleMatch('Title')">
-              <VueIcon icon="fa-solid:star-half" />
+            <volt-button :variant="matchedElement === 'Title' ? '' : 'outlined'" size="small" @click="handleMatch('Title')">
+              <vue-icon icon="fa-solid:star-half" />
               Title
-            </VoltButton>
+            </volt-button>
 
-            <VoltButton :variant="matchedElement === 'Artist' ? '' : 'outlined'" size="small" @click="handleMatch('Artist')">
-              <VueIcon icon="fa-solid:star-half" />
+            <volt-button :variant="matchedElement === 'Artist' ? '' : 'outlined'" size="small" @click="handleMatch('Artist')">
+              <vue-icon icon="fa-solid:star-half" />
               Artist
-            </VoltButton>
+            </volt-button>
 
-            <VoltButton :variant="matchedElement === 'Both' ? '' : 'outlined'" size="small" @click="handleMatch('Both')">
-              <VueIcon icon="fa-solid:star" />
+            <volt-button :variant="matchedElement === 'Both' ? '' : 'outlined'" size="small" @click="handleMatch('Both')">
+              <vue-icon icon="fa-solid:star" />
               Both
-            </VoltButton>
+            </volt-button>
           </div>
 
           <div class="flex justify-center mt-4 w-full">
-            <VoltButton :disabled="!gameStarted" class="w-10/13 self-center" variant="default" @click="handleCorrectAnswer">
-              <VueIcon icon="fa-solid:check" />
+            <volt-button :disabled="!gameStarted" class="w-10/13 self-center" variant="default" @click="handleCorrectAnswer">
+              <vue-icon icon="fa-solid:check" />
               Validate
-            </VoltButton>
+            </volt-button>
           </div>
         </template>
-      </VoltCard>
+      </volt-card>
 
       <div class="flex gap-1 justify-center p-5 mt-3">
         <div v-for="i in 5" :key="i" class="p-2 bg-brand-shade-5/50 rounded-md w-1/6" />
@@ -54,7 +54,7 @@
       </Transition>
 
       <!-- Fireworks -->
-      <BaseFireworks v-show="gameStarted && hasConsecutiveAnswers" />
+      <base-fireworks v-show="gameStarted && hasConsecutiveAnswers" />
     </div>
   </div>
 </template>
@@ -62,37 +62,18 @@
 <script lang="ts" setup>
 import type { MatchedPart } from '@/data'
 
-const emit = defineEmits({
-  'next-song'(_data: [ teamId: string, match: MatchedPart ]) {
-    return true
-  }
-})
+const emit = defineEmits<{ 'next-song': [data: [ teamId: string, match: MatchedPart]] }>()
 
-const props = defineProps({
-  teamIndex: {
-    type: Number,
-    default: 1
-  },
-  marginRight: {
-    type: Number,
-    default: 0
-  },
-  marginLeft: {
-    type: Number,
-    default: 0
-  },
-  diffusionMode: {
-    type: Boolean,
-    default: false
-  },
-  blockPosition: {
-    type: String,
-    default: 'me-auto'
-  }
-})
+const { teamIndex = 1, marginRight = 0, marginLeft = 0, diffusionMode = false, blockPosition = 'me-auto' } = defineProps<{ 
+  teamIndex: number, 
+  marginRight?: number, 
+  marginLeft?: number, 
+  diffusionMode?: boolean, 
+  blockPosition?: string 
+}>()
 
 const songsStore = useSongs()
-const { cache, correctAnswers, gameStarted } = storeToRefs(songsStore)
+const { correctAnswers, gameStarted } = storeToRefs(songsStore)
 
 const teamBlockEl = useTemplateRef<HTMLElement>('teamBlockEl')
 const scoreBoxEl = useTemplateRef<HTMLElement>('scoreBoxEl')
@@ -100,29 +81,20 @@ const scoreBoxEl = useTemplateRef<HTMLElement>('scoreBoxEl')
 const currentBonus = ref<number>(0)
 const matchedElement = ref<MatchedPart>('Both')
 
-const team = computed(() => {
-  return cache.value.teams[props.teamIndex]
-})
+const teamStore = useTeamsStore()
+const { teams } = storeToRefs(teamStore)
+
+const team = teamStore.getTeam(teamIndex)
 
 const teamName = computed(() => {
   if (team.value) {
-    if (team.value.name !== '') {
-      return team.value.name
-    } else {
-      return team.value.id
-    }
+    return team.value.name === '' ? 'Team XYZ' : team.value.name
   } else {
-    return 'Team'
+    return 'Team XYZ'
   }
 })
 
-const teamScore = computed(() => {
-  if (team.value) {
-    return team.value.score
-  } else {
-    return 0
-  }
-})
+const teamScore = computed(() => team.value ? team.value.score : 0)
 
 // Checks when a team has given multiple consecutive
 // answers (at least 2)
@@ -138,7 +110,7 @@ const consecutiveAnswers = computed(() => {
   for (let i = correctAnswers.value.length - 1; i >= 0; i--) {
     const answer = correctAnswers.value[i]
 
-    if (answer.teamId === team.value.id) {
+    if (answer && (answer.teamId === (team.value && team.value.id))) {
       count++
     } else {
       break
@@ -152,9 +124,7 @@ const consecutiveAnswers = computed(() => {
  * Flag that explicitly returns if the team has
  * answered consecutive answers
  */
-const hasConsecutiveAnswers = computed(() => {
-  return consecutiveAnswers.value > MIN_CONSECUTIVE
-})
+const hasConsecutiveAnswers = computed(() => consecutiveAnswers.value > MIN_CONSECUTIVE)
 
 whenever(hasConsecutiveAnswers, () => {
   // Do something

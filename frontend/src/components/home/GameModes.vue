@@ -6,20 +6,24 @@
       </h3>
     </template>
 
-    <template #content>
+    <template v-if="currentSettings" #content>
       <div class="py-3">
         <volt-label>
-          <volt-switch v-model="currentSettings.cache.settings.soloMode" />
+          <volt-switch v-model="currentSettings.settings.soloMode" />
           <label>Run in solo mode</label>
         </volt-label>
       </div>
 
       <div class="py-3">
         <volt-label>
-          <volt-switch v-model="currentSettings.cache.settings.adminPlays" />
+          <volt-switch v-model="currentSettings.settings.adminPlays" />
           <label>Admin is registered in a team</label>
         </volt-label>
       </div>
+    </template>
+
+    <template v-else #content>
+      <volt-skeleton class="h-96" />
     </template>
   </VoltCard>
 </template>

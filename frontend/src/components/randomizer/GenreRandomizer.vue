@@ -17,8 +17,8 @@
 import { onMounted, ref } from 'vue'
 import type { RandomizerData } from '.'
 
-const emit = defineEmits<{ value: string | RandomizerData | undefined }>()
-const props = defineProps<{ items: RandomizerData[], returnObject: boolean, mute: boolean }>()
+const { items, returnObject = false, mute = false  } = defineProps<{ items: RandomizerData[], returnObject?: boolean, mute?: boolean }>()
+const emit = defineEmits<{ completed: [value: string | RandomizerData | undefined] }>()
 
 // Audio elements
 const tickSound = ref<HTMLAudioElement | null>(null)
@@ -47,7 +47,7 @@ function runRandomizer() {
   isSpinning.value = true
 
   const iterations = 20
-  const finalSelection = Math.floor(Math.random() * props.items.length)
+  const finalSelection = Math.floor(Math.random() * items.length)
 
   let speed = 100
   let currentIteration = 0
@@ -58,8 +58,8 @@ function runRandomizer() {
     if (currentIteration < iterations) {
       // Ensures that we loop back to a square if the count goes
       // over the total number of available squares
-      const currentIndex = currentIteration % props.items.length
-      squareName.value = props.items[currentIndex].value
+      const currentIndex = currentIteration % items.length
+      squareName.value = items[currentIndex].value
 
       playTickSound()
 
@@ -70,25 +70,25 @@ function runRandomizer() {
     } else {
       // Once the iteration is complete, show the final
       // selected result
-      squareName.value = props.items[finalSelection].value
+      squareName.value = items[finalSelection].value
       isSpinning.value = false
     }
   }
 
   animate()
 
-  if (props.returnObject) {
-    const item = props.items.find(x => x.value === squareName.value)
+  if (returnObject) {
+    const item = items.find(x => x.value === squareName.value)
     emit('completed', item)
   } else {
-    emit('completed', props.items[finalSelection].value)
+    emit('completed', items[finalSelection].value)
   }
 }
 
 onMounted(() => {
   tickSound.value = document.getElementById('tickSound') as HTMLAudioElement
 
-  if (tickSound.value && !props.mute) {
+  if (tickSound.value && !mute) {
     tickSound.value.volume = 0.3
   }
 })

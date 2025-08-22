@@ -1,12 +1,11 @@
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
-import { defaults } from '../data'
 
-import type { Answer, CacheSession } from '../types'
+import type { Answer, Song } from '@/types'
 
+/**
+ * A store that manages the songs (songs played, current song...)
+ */
 export const useSongs = defineStore('songs', () => {
-  const cache = ref<CacheSession>(defaults.cache)
-
   const answers = ref<Answer[]>([])
   const correctAnswers = ref<Answer[]>([])
 
@@ -14,25 +13,61 @@ export const useSongs = defineStore('songs', () => {
   const scoringTimeline = ref<number[]>([])
 
   const gameStarted = ref<boolean>(false)
-
-  const firstTeamScore = computed(() => cache.value.teams[0].score)
-  const secondTeamScore = computed(() => cache.value.teams[1].score)
-
-  /**
-   * Returns the currect song on which the
-   * players will be trying to guess
-   */
-  const currentSong = computed(() => cache.value.songs[cache.value.songs.length - 1])
-
+  const toggleGameStarted = useToggle(gameStarted)
+  
+  const { inc: incrementStep, reset: resetStep, count: currentStep } = useCounter(0, { min: 0 })
+  
+  const songsPlayed = ref<Song[]>([])
+  const currentSong = computed(() => songsPlayed.value.at(-1))
+  
   return {
-    cache,
+    /**
+     * The current step in the game. This is used
+     * specifically when the user has limited the game
+     * to a certain number of rounds
+     */
+    currentStep,
+    /**
+     * All the answers of the game
+     */
     answers,
+    /**
+     * Whether the game was started
+     */
     gameStarted,
+    /**
+     * The base score for the scoring timeline
+     */
     scoringTimelineBase,
+    /**
+     * The current scoring timeline
+     */
     scoringTimeline,
-    firstTeamScore,
-    secondTeamScore,
+    /**
+     * All the correct answers
+     */
     correctAnswers,
-    currentSong
+    /**
+     * Songs that were randomly selected
+     * to be played in the game
+     */
+    songsPlayed,
+    /**
+     * The currently playing song which corresponds
+     * to the last song in the list of songs played
+     */
+    currentSong,
+    /**
+     * Toggles the game started state
+     */
+    toggleGameStarted,
+    /**
+     * Increments the current step
+     */
+    incrementStep,
+    /**
+     * Resets the current step
+     */
+    resetStep
   }
 })

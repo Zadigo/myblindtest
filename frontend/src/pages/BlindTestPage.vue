@@ -1,17 +1,17 @@
 <template>
-  <BlindTestLayout>
+  <blind-test-layout>
     <template #teamOne>
-      <TeamBlock :team-index="0" class="bg-primary/40" @next-song="handleCorrectAnswer" />
+      <team-block :team-index="0" class="bg-primary/40" @next-song="handleCorrectAnswer" />
     </template>
 
     <template #teamTwo>
-      <TeamBlock :team-index="1" block-position="ms-auto" class="bg-primary/20" @next-song="handleCorrectAnswer" />
+      <team-block :team-index="1" block-position="ms-auto" class="bg-primary/20" @next-song="handleCorrectAnswer" />
     </template>
 
     <template #video>
-      <VideoBlock ref="videoEl" />
+      <video-block ref="videoEl" />
     </template>
-  </BlindTestLayout>
+  </blind-test-layout>
 </template>
 
 <script setup lang="ts">
@@ -31,7 +31,6 @@ const videoEl = useTemplateRef<InstanceType<typeof VideoBlock> & VideoBlockExpos
 /**
  * Callback function that handles the correct
  * answser from a given team
- *
  * @param data The data to push
  */
 function handleCorrectAnswer(data: [ teamId: string, match: MatchedPart ]) {

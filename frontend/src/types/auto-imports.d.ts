@@ -226,7 +226,9 @@ declare global {
   const useFocusWithin: typeof import('@vueuse/core')['useFocusWithin']
   const useFps: typeof import('@vueuse/core')['useFps']
   const useFullscreen: typeof import('@vueuse/core')['useFullscreen']
+  const useGameAnswering: typeof import('../composables/use/game/index')['useGameAnswering']
   const useGameStore: typeof import('../stores/game')['useGameStore']
+  const useGameWebsocket: typeof import('../composables/use/game/ws_manager')['useGameWebsocket']
   const useGamepad: typeof import('@vueuse/core')['useGamepad']
   const useGeolocation: typeof import('@vueuse/core')['useGeolocation']
   const useGetGenres: typeof import('../composables/use/songs')['useGetGenres']
@@ -292,6 +294,7 @@ declare global {
   const useServerHeadSafe: typeof import('@unhead/vue')['useServerHeadSafe']
   const useServerSeoMeta: typeof import('@unhead/vue')['useServerSeoMeta']
   const useSessionStorage: typeof import('@vueuse/core')['useSessionStorage']
+  const useSessionStore: typeof import('../stores/session')['useSessionStore']
   const useShare: typeof import('@vueuse/core')['useShare']
   const useSlots: typeof import('vue')['useSlots']
   const useSongs: typeof import('../stores/songs')['useSongs']
@@ -336,7 +339,9 @@ declare global {
   const useWebSocket: typeof import('@vueuse/core')['useWebSocket']
   const useWebWorker: typeof import('@vueuse/core')['useWebWorker']
   const useWebWorkerFn: typeof import('@vueuse/core')['useWebWorkerFn']
+  const useWebsocketMessage: typeof import('../utils/index')['useWebsocketMessage']
   const useWebsocketUtilities: typeof import('../plugins/client')['useWebsocketUtilities']
+  const useWheelRandomizer: typeof import('../composables/use/game/index')['useWheelRandomizer']
   const useWindowFocus: typeof import('@vueuse/core')['useWindowFocus']
   const useWindowScroll: typeof import('@vueuse/core')['useWindowScroll']
   const useWindowSize: typeof import('@vueuse/core')['useWindowSize']
@@ -561,8 +566,6 @@ declare module 'vue' {
     readonly useCssVar: UnwrapRef<typeof import('@vueuse/core')['useCssVar']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
     readonly useCurrentElement: UnwrapRef<typeof import('@vueuse/core')['useCurrentElement']>
-    readonly useCurrentSession: UnwrapRef<typeof import('../composables/use/index')['useCurrentSession']>
-    readonly useCustomDebounce: UnwrapRef<typeof import('../composables/index')['useCustomDebounce']>
     readonly useCycleList: UnwrapRef<typeof import('@vueuse/core')['useCycleList']>
     readonly useDark: UnwrapRef<typeof import('@vueuse/core')['useDark']>
     readonly useDateFormat: UnwrapRef<typeof import('@vueuse/core')['useDateFormat']>
@@ -596,7 +599,9 @@ declare module 'vue' {
     readonly useFocusWithin: UnwrapRef<typeof import('@vueuse/core')['useFocusWithin']>
     readonly useFps: UnwrapRef<typeof import('@vueuse/core')['useFps']>
     readonly useFullscreen: UnwrapRef<typeof import('@vueuse/core')['useFullscreen']>
+    readonly useGameAnswering: UnwrapRef<typeof import('../composables/use/game/index')['useGameAnswering']>
     readonly useGameStore: UnwrapRef<typeof import('../stores/game')['useGameStore']>
+    readonly useGameWebsocket: UnwrapRef<typeof import('../composables/use/game/ws_manager')['useGameWebsocket']>
     readonly useGamepad: UnwrapRef<typeof import('@vueuse/core')['useGamepad']>
     readonly useGeolocation: UnwrapRef<typeof import('@vueuse/core')['useGeolocation']>
     readonly useGetGenres: UnwrapRef<typeof import('../composables/use/songs')['useGetGenres']>
@@ -661,6 +666,7 @@ declare module 'vue' {
     readonly useServerHeadSafe: UnwrapRef<typeof import('@unhead/vue')['useServerHeadSafe']>
     readonly useServerSeoMeta: UnwrapRef<typeof import('@unhead/vue')['useServerSeoMeta']>
     readonly useSessionStorage: UnwrapRef<typeof import('@vueuse/core')['useSessionStorage']>
+    readonly useSessionStore: UnwrapRef<typeof import('../stores/session')['useSessionStore']>
     readonly useShare: UnwrapRef<typeof import('@vueuse/core')['useShare']>
     readonly useSlots: UnwrapRef<typeof import('vue')['useSlots']>
     readonly useSongs: UnwrapRef<typeof import('../stores/songs')['useSongs']>
@@ -705,6 +711,8 @@ declare module 'vue' {
     readonly useWebSocket: UnwrapRef<typeof import('@vueuse/core')['useWebSocket']>
     readonly useWebWorker: UnwrapRef<typeof import('@vueuse/core')['useWebWorker']>
     readonly useWebWorkerFn: UnwrapRef<typeof import('@vueuse/core')['useWebWorkerFn']>
+    readonly useWebsocketMessage: UnwrapRef<typeof import('../utils/index')['useWebsocketMessage']>
+    readonly useWheelRandomizer: UnwrapRef<typeof import('../composables/use/game/index')['useWheelRandomizer']>
     readonly useWindowFocus: UnwrapRef<typeof import('@vueuse/core')['useWindowFocus']>
     readonly useWindowScroll: UnwrapRef<typeof import('@vueuse/core')['useWindowScroll']>
     readonly useWindowSize: UnwrapRef<typeof import('@vueuse/core')['useWindowSize']>

@@ -1,6 +1,7 @@
 import type { GenreDistribution, SettingsDataApiResponse } from '@/types'
 
 export * from './songs'
+export * from './game'
 
 /**
  * Loads autocomplete data for the minimum and maximum time

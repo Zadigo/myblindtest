@@ -12,19 +12,18 @@ export interface BaseWebsocketMessage {
 /**
  * Sends the settings from the cache to Django
  */
-export interface WebsocketSettings extends BaseWebsocketMessage {
+export interface WebsocketInitializationMessage extends BaseWebsocketMessage {
   action: DefaultActions
-  cache: CacheSession
-  settings: {
-    point_value: number
-    game_difficulty: DifficultyLevels
-    genre: SongGenres
-    difficulty_bonus: boolean
-    time_bonus: boolean
-    number_of_rounds: number
-    solo_mode: boolean
-    admin_plays: boolean
-  }
+  /**
+   * The Firebase key for other clients to
+   * be able to connect to the database session
+   */
+  firebase_key: string
+  /**
+   * The session as registered in the Firebase
+   * database and stored on Django
+   */
+  session: CacheSession
 }
 
 export interface WebsocketSendGuess extends BaseWebsocketMessage {
@@ -37,9 +36,7 @@ export interface WebsocketRandomizeGenre extends BaseWebsocketMessage {
   temporary_genre: string | RandomizerData
 }
 
-// TODO: Remove
-export interface WebsocketBlindTestMessage extends BaseWebsocketMessage {
-  // Received
+export type WebsocketReceiveMessage = BaseWebsocketMessage & {
   token?: string | null | undefined
   song?: Song
   team?: number
@@ -47,9 +44,9 @@ export interface WebsocketBlindTestMessage extends BaseWebsocketMessage {
   error?: string
   team_one_id?: string
   team_two_id?: string
+}
 
-  // Send
-  cache?: CacheSession
+export type WebsocketSendMessage = BaseWebsocketMessage & {
   exclude?: number[]
   genre?: SongGenres
   temporary_genre?: string | null | undefined | RandomizerData
@@ -77,6 +74,8 @@ export interface WebsocketBlindTestMessage extends BaseWebsocketMessage {
     }
   }
 }
+
+export type WebsocketMessage = WebsocketReceiveMessage & WebsocketSendMessage
 
 export interface WebsocketDiffusionMessage {
   action: DeviceActions
