@@ -7,54 +7,19 @@
     </template>
 
     <template #content>
-      <VoltInputNumber v-model="songStore.cache.settings.rounds" :min="1" :max="100" class="w-full" placeholder="Number of rounds" />
+      <volt-input-number v-model="currentSettings.cache.settings.rounds" :min="1" :max="100" class="w-full" placeholder="Number of rounds" />
 
       <div>
         <label>Game difficulty</label>
-        <VoltSelect v-model="selectedDifficulty" :options="difficultyLevels.map(x => ({ name: x }))" option-label="name" option-value="name" />
+        <volt-select v-model="currentSettings.cache.settings.difficultyLevel" :options="difficultyLevels.map(x => ({ name: x }))" option-label="name" option-value="name" />
 
         <label>Genre</label>
-        <VoltSelect v-model="selectedSongType" :options="songGenres.map(x => ({ name: x }))" option-label="name" option-value="name" />
+        <volt-select v-model="currentSettings.cache.settings.songType" :options="songGenres.map(x => ({ name: x }))" option-label="name" option-value="name" />
       </div>
-
-      <!-- <Combobox>
-        <ComboboxTrigger>
-          <Input />
-        </ComboboxTrigger>
-
-        <ComboboxContent>
-          <ComboboxItem v-for="genre in genreDistribution" :key="genre" :value="genre">
-            {{ genre }}
-          </ComboboxItem>
-        </ComboboxContent>
-      </Combobox> -->
-
-      <!-- <Select v-model="songStore.cache.settings.songType">
-        <SelectTrigger class="w-full">
-          <SelectValue />
-        </SelectTrigger>
-
-        <SelectContent>
-          <SelectItem v-for="songType in songGenres" :key="songType" :value="songType">
-            {{ songType }}
-          </SelectItem>
-        </SelectContent>
-      </Select> -->
-
-      <!-- <v-select id="song-type" v-model="songStore.cache.settings.songType" :items="songTypes" variant="solo-filled" flat /> -->
-      <!-- <v-autocomplete :items="genreDistribution" item-value="genre" auto-select-first solo>
-        <template #item="{ props, item }">
-          <v-list-item v-bind="props" :title="item.raw.genre">
-            <v-chip>{{ item.raw.count }}</v-chip>
-          </v-list-item>
-        </template>
-      </v-autocomplete> -->
-
+      
       <div class="mt-3">
-        <VoltLabel for="game-difficulty" class="mb-2">
-          Time limit
-        </VoltLabel>
-        <VoltInputText id="game-difficulty" v-model="selectedTimeLimit" type="time" placeholder="Time limit" />
+        <volt-label for="game-difficulty" class="mb-2">Time limit</volt-label>
+        <volt-input-text id="game-difficulty" v-model="currentSettings.cache.settings.timeLimit" type="time" placeholder="Time limit" />
       </div>
 
       <p for="time-period" class="font-bold mt-10">
@@ -81,15 +46,8 @@
 </template>
 
 <script setup lang="ts">
-const songStore = useSongs()
+import { useSessionStore } from '@/stores/session'
 
-const selectedTimeLimit = ref<string | number>(0)
-const selectedDifficulty = ref<DifficultyLevels>('All')
-const selectedSongType = ref<SongGenres>('All')
-
-// const minimumPeriod = ref<number>(0)
-// const maximumPeriod = ref<number>(100)
-
-// const selectedTimeRane = ref<number[]>([0, 0])
-// const genreDistribution = ref<GenreDistribution[]>([])
+const sessionStore = useSessionStore()
+const { currentSettings } = storeToRefs(sessionStore)
 </script>

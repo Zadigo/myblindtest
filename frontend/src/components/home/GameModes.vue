@@ -8,24 +8,25 @@
 
     <template #content>
       <div class="py-3">
-        <VoltLabel>
-          <VoltSwitch v-model="songStore.cache.settings.soloMode" />
+        <volt-label>
+          <volt-switch v-model="currentSettings.cache.settings.soloMode" />
           <label>Run in solo mode</label>
-        </VoltLabel>
+        </volt-label>
       </div>
 
       <div class="py-3">
-        <VoltLabel>
-          <VoltSwitch v-model="songStore.cache.settings.adminPlays" />
+        <volt-label>
+          <volt-switch v-model="currentSettings.cache.settings.adminPlays" />
           <label>Admin is registered in a team</label>
-        </VoltLabel>
+        </volt-label>
       </div>
     </template>
   </VoltCard>
 </template>
 
 <script setup lang="ts">
-import { useSongs } from '@/stores/songs'
+import { useSessionStore } from '@/stores/session'
 
-const songStore = useSongs()
+const sessionStore = useSessionStore()
+const { currentSettings } = storeToRefs(sessionStore)
 </script>

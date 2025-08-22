@@ -54,7 +54,7 @@ const router = createRouter({
       component: async () => import('../pages/BlindTestPage.vue'),
       name: 'blind_test'
     }
-    ]
+  ]
 })
 
 export default router

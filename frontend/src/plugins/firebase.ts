@@ -5,6 +5,7 @@ import { getFirestore } from 'firebase/firestore'
 import type { App } from 'vue'
 
 const env = import.meta.env
+
 export const firebaseApp = initializeApp({
   apiKey: env.VITE_FIREBASE_API_KEY,
   authDomain: env.VITE_FIREBASE_AUTH_DOMAIN,

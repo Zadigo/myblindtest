@@ -59,13 +59,13 @@ export default defineConfig(({ mode }) => {
           'vue',
           'pinia',
           '@vueuse/core'
-          // 'vuefire'
         ],
         dirs: [
           'src/composables',
           'src/plugins',
           'src/stores',
-          'src/data'
+          'src/data',
+          'src/utils'
         ]
       }),
       eslint(),

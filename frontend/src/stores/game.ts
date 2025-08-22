@@ -12,7 +12,7 @@ export const useGameStore = defineStore('game', () => {
   const answers = reactive<Answer[]>([])
   const correctAnswers = reactive<Answer[]>([])
   const incorrectAnswers = reactive<Answer[]>([])
-  
+
   return {
     /**
      * Returns whether the game has started

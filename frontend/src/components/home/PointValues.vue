@@ -7,25 +7,28 @@
     </template>
 
     <template #content>
-      <VoltInputNumber v-model="songStore.cache.settings.pointValue" :min="1" :step="1" :max="50" />
+      <volt-input-number v-model="currentSettings.cache.settings.pointValue" :min="1" :step="1" :max="50" />
 
       <div class="py-3">
-        <VoltLabel>
-          <VoltSwitch v-model="songStore.cache.settings.songDifficultyBonus" />
+        <volt-label>
+          <volt-switch v-model="currentSettings.cache.settings.songDifficultyBonus" />
           <label for="">Use song difficulty bonus</label>
-        </VoltLabel>
+        </volt-label>
       </div>
 
       <div class="py-3">
-        <VoltLabel>
-          <VoltSwitch v-model="songStore.cache.settings.speedBonus" />
+        <volt-label>
+          <volt-switch v-model="currentSettings.cache.settings.speedBonus" />
           <label for="">Use answering speed bonus</label>
-        </VoltLabel>
+        </volt-label>
       </div>
     </template>
   </VoltCard>
 </template>
 
 <script setup lang="ts">
-const songStore = useSongs()
+import { useSessionStore } from '@/stores/session'
+
+const sessionStore = useSessionStore()
+const { currentSettings } = storeToRefs(sessionStore)
 </script>

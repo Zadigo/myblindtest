@@ -1,17 +1,17 @@
 <template>
   <section class="w-5xl mx-auto px-10 my-20 relative">
-    <VoltCard class="mt-10 mb-5 shadow-none">
+    <volt-card class="mt-10 mb-5 shadow-none">
       <template #content>
         <div class="flex justify-end">
-          <VoltButton class="rounded-full">
-            <RouterLink :to="{ name: 'teams' }" class="inline-flex gap-2 items-center">
-              Manage teamsa
-              <VueIcon icon="i-fa7-solid:arrow-right" />
-            </RouterLink>
-          </VoltButton>
+          <volt-button class="rounded-full">
+            <router-link :to="{ name: 'teams' }" class="inline-flex gap-2 items-center">
+              Manage teams
+              <vue-icon icon="i-fa7-solid:arrow-right" />
+            </router-link>
+          </volt-button>
         </div>
       </template>
-    </VoltCard>
+    </volt-card>
 
     <div class="grid grid-cols-2 gap-2">
       <GeneralSettings />
@@ -22,7 +22,14 @@
 </template>
 
 <script setup lang="ts">
+import { useSessionStore } from '@/stores/session'
+
 useLoadAutocompleteData()
+
+const { sessionId, create } = useSessionStore()
+onBeforeMount(async () => {
+  await create()
+})
 </script>
 
 <style lang="scss">
