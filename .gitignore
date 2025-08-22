@@ -1,6 +1,7 @@
 # Logs
 logs
 *.log
+log.txt
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -23,9 +24,7 @@ dist-ssr
 *.sln
 *.sw?
 
-.env
 *.sqlite3
-
 node_modules
 
 # Translations
@@ -33,7 +32,6 @@ node_modules
 *.pot
 
 # Django stuff:
-*.log
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
@@ -80,8 +78,6 @@ ENV/
 env.bak/
 venv.bak/
 
-.DS_Store
-
 # local env files
 .env.local
 .env.*.local
@@ -113,7 +109,6 @@ __pycache__/
 
 # Specifies intentionally untracked files to ignore when using Git
 # http://git-scm.com/docs/gitignore
-
 *~
 *.sw[mnpcod]
 .tmp
@@ -121,25 +116,16 @@ __pycache__/
 *.tmp.*
 *.sublime-project
 *.sublime-workspace
-.DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate
 $RECYCLE.BIN/
 
-*.log
-log.txt
-npm-debug.log*
-
-/.idea
+# Project-specific
 /.ionic
 /.sass-cache
 /.sourcemaps
 /.versions
-/.vscode/*
-!/.vscode/extensions.json
 /coverage
-/dist
-/node_modules
 /platforms
 /plugins
 /www
@@ -147,3 +133,4 @@ npm-debug.log*
 # Vite Auto-Imports
 auto-imports.d.ts
 components.d.ts
+.eslintrc-auto-import.json
