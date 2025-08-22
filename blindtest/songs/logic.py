@@ -362,11 +362,6 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
             'points': 0
         }
 
-        ids = [self.team_one.team_id, self.team_two.team_id]
-        if team_id not in ids:
-            await self.send_error(f'Team not found: {team_id}')
-            return
-
         if title_match or artist_match:
             result = await self.calculate_points(title_match, artist_match)
 

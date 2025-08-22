@@ -86,26 +86,32 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
         if action == 'start_game':
             self.connection_token = content.get('firebase_key', None)
 
-            settings: dict[str, str | bool | int] = content.get('session', {})
+            session: dict[str, str | bool | int] = content.get('session', {})
 
-            self.difficulty = settings.get('game_difficulty', 'All')
-            self.genre = settings.get('genre', 'All')
-
-            self.point_value = settings.get('point_value', 1)
-            self.difficulty_bonus = settings.get('difficulty_bonus', False)
-            self.time_bonus = settings.get('time_bonus', False)
-            self.number_of_rounds = content.get('number_of_rounds', None)
-            self.solo_mode = settings.get('solo_mode', False)
-            self.admin_plays = settings.get('admin_plays', False)
-
-            team_one = settings['teams'][0]
-            team_two = settings['teams'][1]
+            team_one = session['teams'][0]
+            team_two = session['teams'][1]
 
             self.team_one.team_id = team_one['id']
             self.team_two.team_id = team_two['id']
 
             self.team_one.points = 0
             self.team_two.points = 0
+
+            settings: dict[str, str | bool | int] = session.get('settings', {})
+
+            self.difficulty = settings.get('difficultyLevel', 'All')
+            self.genre = settings.get('songType', 'All')
+
+            self.point_value = settings.get('pointValue', 1)
+            self.difficulty_bonus = settings.get('songDifficultyBonus', False)
+            self.time_bonus = settings.get('timeBonus', False)
+            self.number_of_rounds = content.get('rounds', None)
+            self.solo_mode = settings.get('soloMode', False)
+            self.admin_plays = settings.get('adminPlays', False)
+            # self.time_range = settings.get('timeRange', [])
+            # self.speed_bonus = settings.get('speedBonus', 0)
+            # self.time_limit = settings.get('timeLimit', 0)
+
             self.played_songs.clear()
 
             self.is_started = True
@@ -120,6 +126,11 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
             team_id = content.get('team_id', None)
             if team_id is None:
                 await self.send_error('No team was provided')
+                return
+
+            ids = [self.team_one.team_id, self.team_two.team_id]
+            if team_id not in ids:
+                await self.send_error(f'Team not found: {team_id}')
                 return
 
             title_match = content.get('title_match', False)
