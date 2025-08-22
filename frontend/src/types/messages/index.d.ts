@@ -1,25 +1,18 @@
-import type { DifficultyLevels, Song, SongGenres } from '../types'
-import type { RandomizerData } from '../components/randomizer'
-import type { CacheSession } from '.'
-import type { DeviceActions, WebsocketActions } from '../data/constants/websocket'
+import type { RandomizerData } from '@/components/randomizer'
+import type { DeviceActions, WebsocketActions } from '@/data/constants/websocket'
+import type { DifficultyLevels, Song, SongGenres } from '@/types'
+import type { CacheSession } from '../game'
 
 export type DefaultActions = WebsocketActions | DeviceActions
 
-export interface WebsocketMessage {
+export interface BaseWebsocketMessage {
   action: DefaultActions
 }
 
-export interface WebsocketSendGuess extends WebsocketMessage {
-  team_id: string
-  title_match: boolean
-  artist_match: boolean
-}
-
-export interface WebsocketRandomizeGenre extends WebsocketMessage {
-  temporary_genre: string | RandomizerData
-}
-
-export interface WebsocketSettings extends WebsocketMessage {
+/**
+ * Sends the settings from the cache to Django
+ */
+export interface WebsocketSettings extends BaseWebsocketMessage {
   action: DefaultActions
   cache: CacheSession
   settings: {
@@ -34,8 +27,18 @@ export interface WebsocketSettings extends WebsocketMessage {
   }
 }
 
+export interface WebsocketSendGuess extends BaseWebsocketMessage {
+  team_id: string
+  title_match: boolean
+  artist_match: boolean
+}
+
+export interface WebsocketRandomizeGenre extends BaseWebsocketMessage {
+  temporary_genre: string | RandomizerData
+}
+
 // TODO: Remove
-export interface WebsocketBlindTestMessage extends WebsocketMessage {
+export interface WebsocketBlindTestMessage extends BaseWebsocketMessage {
   // Received
   token?: string | null | undefined
   song?: Song

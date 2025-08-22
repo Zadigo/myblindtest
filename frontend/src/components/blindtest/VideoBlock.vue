@@ -1,6 +1,6 @@
 <template>
   <div class="absolute my-10 left-2/6 w-4/12 bg-secondary">
-    <VoltCard class="border-none shadow-md">
+    <volt-card class="border-none shadow-md">
       <template #content>
         <div class="flex justify-between items-center">
           <div v-if="currentSong">
@@ -10,28 +10,28 @@
 
             <div class="inline-flex gap-1 my-2">
               <template v-for="i in 5" :key="i">
-                <VueIcon v-if="i <= currentSong.difficulty" icon="fa-solid:star" />
-                <VueIcon v-else icon="fa-solid:star" class="text-slate-50" />
+                <vue-icon v-if="i <= currentSong.difficulty" icon="fa-solid:star" />
+                <vue-icon v-else icon="fa-solid:star" class="text-slate-50" />
               </template>
             </div>
 
             <div>
-              <VoltBadge variant="default">
+              <volt-badge variant="default">
                 {{ currentSong.genre }}
-              </VoltBadge>
+              </volt-badge>
             </div>
           </div>
 
           <div class="flex justify-end gap-2">
-            <VoltButton variant="outline">
-              <RouterLink :to="{ name: 'home' }">
-                <VueIcon icon="fa-solid:home" size="15" />
-              </RouterLink>
-            </VoltButton>
+            <volt-button variant="outline">
+              <router-link :to="{ name: 'home' }">
+                <vue-icon icon="fa-solid:home" size="15" />
+              </router-link>
+            </volt-button>
 
-            <VoltButton variant="outline" @click="showWheel=!showWheel">
-              <VueIcon icon="fa-solid:bolt" size="15" />
-            </VoltButton>
+            <volt-button variant="outline" @click="showWheel=!showWheel">
+              <vue-icon icon="fa-solid:bolt" size="15" />
+            </volt-button>
           </div>
         </div>
 
@@ -48,54 +48,57 @@
         <!-- Wheel -->
         <Transition mode="out-in" name="animate__animated" enter-active-class="animate__animated animate__fadeInDown" leave-active-class="animate__animated animate__fadeOutDown">
           <div v-if="showWheel">
-            <GenreRandomizer ref="randomizerEl" :items="wheelDetaults" @completed="randomizerComplete" />
+            <genre-randomizer ref="randomizerEl" :items="wheelDetaults" @completed="randomizerComplete" />
           </div>
         </Transition>
       </template>
 
       <template #footer>
         <div class="inline-flex justify-center w-full gap-1">
-          <VoltButton v-if="gameStarted" @click="handleStop">
-            <VueIcon icon="fa-solid:stop" size="15" />
+          <volt-button v-if="gameStarted" @click="handleStop">
+            <vue-icon icon="fa-solid:stop" size="15" />
             Stop
-          </VoltButton>
-          <VoltButton v-else variant="outlined" @click="handleStart">
-            <VueIcon icon="fa-solid:play" size="15" />
+          </volt-button>
+          <volt-button v-else variant="outlined" @click="handleStart">
+            <vue-icon icon="fa-solid:play" size="15" />
             Start
-          </VoltButton>
+          </volt-button>
 
-          <VoltButton :disabled="!gameStarted" variant="destructive" @click="handleIncorrectAnswer">
-            <VueIcon icon="fa-solid:exclamation" size="15" />
+          <volt-button :disabled="!gameStarted" variant="destructive" @click="handleIncorrectAnswer">
+            <vue-icon icon="fa-solid:exclamation" size="15" />
             Wrong answer
-          </VoltButton>
+          </volt-button>
         </div>
       </template>
-    </VoltCard>
+    </volt-card>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useSessionStore } from '@/stores/session'
+import { useWebsocketMessage } from '@/utils'
 import { toast } from 'vue-sonner'
-import { RandomizerData } from '../randomizer'
 
 import type { MatchedPart } from '@/data'
-import type { Song, WebsocketSendGuess, WebsocketBlindTestMessage, WebsocketRandomizeGenre, DefaultActions, WebsocketSettings, VideoBlockExposedMethods } from '@/types'
+import type { DefaultActions, Song, VideoBlockExposedMethods, WebsocketBlindTestMessage, WebsocketRandomizeGenre, WebsocketSendGuess, WebsocketSettings } from '@/types'
+import type { RandomizerData } from '../randomizer'
 
+const sessionStore = useSessionStore()
 const songsStore = useSongs()
 const { gameStarted, currentSong } = storeToRefs(songsStore)
-const { sendMessage, parseMessage } = useWebsocketUtilities()
+const { send, parse } = useWebsocketMessage()
 
 const connectionToken = useLocalStorage<string | null | undefined>('connectionToken', null)
 
 const showWheel = ref<boolean>(false)
 const randomizerEl = ref<HTMLElement>()
 
-const ws = useWebSocket(getWebsocketUrl('/ws/songs'), {
+const ws = useWebSocket('ws://127.0.0.1:8000/ws/songs', {
   immediate: false,
-  onConnected() {
+  onConnected(ws) {
     const settings = songsStore.cache.settings
 
-    const result = sendMessage<WebsocketSettings>({
+    const result = send<WebsocketSettings>({
       action: 'start_game',
       cache: songsStore.cache,
       // TODO: Just use and send all the cache
@@ -124,8 +127,8 @@ const ws = useWebSocket(getWebsocketUrl('/ws/songs'), {
       }
     }
   },
-  onMessage() {
-    const data = parseMessage<WebsocketBlindTestMessage>(ws.data.value)
+  onMessage(_ws, event: MessageEvent<string>) {
+    const data = parse<WebsocketBlindTestMessage>(event.data)
 
     console.log(data)
 
@@ -182,7 +185,7 @@ const ws = useWebSocket(getWebsocketUrl('/ws/songs'), {
         }
 
         case 'device_connected': {
-          const message = sendMessage<WebsocketBlindTestMessage>({
+          const message = send<WebsocketBlindTestMessage>({
             action: 'update_device_cache',
             cache: songsStore.cache
           })
@@ -243,7 +246,7 @@ function randomizerComplete(value: string | undefined | RandomizerData) {
     setTimeout(() => {
       showWheel.value = false
 
-      const result = sendMessage<WebsocketRandomizeGenre>({
+      const result = send<WebsocketRandomizeGenre>({
         action: 'randomize_genre',
         temporary_genre: value
       })
@@ -268,7 +271,7 @@ function handleFinalize() {
  * those that were already played
  */
 function handleIncorrectAnswer() {
-  const result = sendMessage<{ action: DefaultActions }>({ action: 'skip_song' })
+  const result = send<{ action: DefaultActions }>({ action: 'skip_song' })
 
   if (result) {
     ws.send(result)
@@ -297,7 +300,7 @@ function handleCorrectAnswer(teamId: string, match: MatchedPart) {
     artist_match = true
   }
 
-  const result = sendMessage<WebsocketSendGuess>({
+  const result = send<WebsocketSendGuess>({
     action: 'submit_guess',
     team_id: teamId,
     title_match,

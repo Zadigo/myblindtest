@@ -1,7 +1,7 @@
-export * from './messages'
-export * from './create'
-export * from './game'
-export * from './vue'
+export type * from './messages'
+export type * from './create'
+export type * from './game'
+export type * from './vue'
 
 export interface Artist {
   id: number

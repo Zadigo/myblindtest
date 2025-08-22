@@ -14,33 +14,18 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, PropType, ref } from 'vue'
-import { RandomizerData } from '.'
+import { onMounted, ref } from 'vue'
+import type { RandomizerData } from '.'
 
-const emit = defineEmits({
-  completed(_value: string | RandomizerData | undefined) {
-    return true
-  }
-})
-
-const props = defineProps({
-  items: {
-    type: Object as PropType<RandomizerData[]>,
-    required: true
-  },
-  returnObject: {
-    type: Boolean
-  },
-  mute: {
-    type: Boolean
-  }
-})
+const emit = defineEmits<{ value: string | RandomizerData | undefined }>()
+const props = defineProps<{ items: RandomizerData[], returnObject: boolean, mute: boolean }>()
 
 // Audio elements
 const tickSound = ref<HTMLAudioElement | null>(null)
-const isSpinning = ref(false)
-const squareName = ref<string>('')
 
+/**
+ * 
+ */
 function playTickSound() {
   if (tickSound.value) {
     tickSound.value.currentTime = 0 // Reset sound to start
@@ -48,6 +33,12 @@ function playTickSound() {
   }
 }
 
+const isSpinning = ref(false)
+ const squareName = ref<string>('')
+
+/**
+ * Runs the randomizer animation
+ */
 function runRandomizer() {
   if (isSpinning.value) {
     return
@@ -115,7 +106,7 @@ $highlight_color: #7d7db3;
 .floor {
   display: grid;
   grid-template-columns: repeat($grid_size, 1fr);
-  border: 5px rgba(0, 0, 0, 1) solid;
+  border: 5px var(--color-border) solid;
 
   .square {
     transition: all .14s ease-in-out;
@@ -130,8 +121,8 @@ $highlight_color: #7d7db3;
     // border: 1px black solid;
     cursor: pointer;
 
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
+    border-right: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
 
     // Remove right border for every 3rd square (last in row)
     &:nth-child(3n) {
