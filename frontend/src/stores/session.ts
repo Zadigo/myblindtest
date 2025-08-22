@@ -1,14 +1,14 @@
-import type { CacheSession } from '@/types'
+// import type { CacheSession } from '@/types'
 
-import { defaults } from '@/data/constants/cache'
+// import { defaults } from '@/data/constants/cache'
 import { addDoc, collection, doc, updateDoc } from 'firebase/firestore'
-import { useFirestore } from 'vuefire'
+import { useDocument, useFirestore } from 'vuefire'
 
 export const useSessionStore = defineStore('session', () => {
   const fireStore = useFirestore()
   const sessionId = useSessionStorage<string>('sessionId', null)
 
-  const currentSettings = ref<{ cache: CacheSession }>(defaults)
+  const currentSettings = useDocument(doc(fireStore, 'blindtests', sessionId.value), { once: true })
 
   /**
    * Creates a new session by saving the default settings
@@ -26,7 +26,9 @@ export const useSessionStore = defineStore('session', () => {
   watchDebounced(currentSettings, async (newValue) => {
     if (sessionId.value) {
       const docRef = doc(fireStore, 'blindtests', sessionId.value)
-      await updateDoc(docRef, newValue)
+      if (newValue) {
+        await updateDoc(docRef, newValue)
+      }
     }
   }, {
     debounce: 2000,

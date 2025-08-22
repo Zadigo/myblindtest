@@ -14,9 +14,9 @@
     </volt-card>
 
     <div class="grid grid-cols-2 gap-2">
-      <GeneralSettings />
-      <PointValues />
-      <GameModes />
+      <general-settings />
+      <point-values />
+      <game-modes />
     </div>
   </section>
 </template>
