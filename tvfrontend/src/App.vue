@@ -33,8 +33,12 @@
     </div> -->
 
     <!-- Audio -->
-    <audio ref="audioEl">
-      <source src="/win.mp3" type="audio/mpeg">
+    <audio ref="winAudioEl" id="win-audio" class="hidden">
+      <source src="/win2.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio ref="loseAudioEl" id="lose-audio" class="hidden">
+      <source src="/lost.mp3" type="audio/mpeg">
     </audio>
   </section>
 </template>
@@ -52,11 +56,12 @@ const { canDiffuse, showAnswer, answer } = storeToRefs(connectionStore)
 provide('showAnswer', showAnswer)
 provide('answer', answer)
 
-const audioEl = useTemplateRef<HTMLAudioElement>('audioEl')
+const winAudioEl = useTemplateRef<HTMLAudioElement>('winAudioEl')
+const lostAudioEl = useTemplateRef<HTMLAudioElement>('lostAudioEl')
 
 whenever(showAnswer, () => {
-  if (audioEl.value) {
-    audioEl.value.play()
+  if (winAudioEl.value) {
+    winAudioEl.value.play()
   }
 })
 

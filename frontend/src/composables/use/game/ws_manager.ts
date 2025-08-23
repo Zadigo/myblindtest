@@ -149,7 +149,10 @@ export function useGameWebsocket() {
     callback()
   }
 
+  const isConnected = computed(() => wsObject.status.value === 'OPEN')
+
   return {
+    isConnected,
     /**
      * WebSocket object used to communicate with the server
      */

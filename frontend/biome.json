@@ -1,0 +1,132 @@
+{
+    "$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
+    "vcs": {
+        "enabled": false,
+        "clientKind": "git",
+        "useIgnoreFile": false
+    },
+    "files": {
+        "ignoreUnknown": false,
+        "includes": [
+            "src/**/*"
+        ]
+    },
+    "formatter": {
+        "enabled": true,
+        "indentStyle": "tab",
+        "indentWidth": 2
+    },
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "recommended": true,
+            "complexity": {
+                "noExcessiveCognitiveComplexity": "error",
+                "noExcessiveNestedTestSuites": "info",
+                "noForEach": "error",
+                "noImplicitCoercions": "warn",
+                "noUselessStringConcat": "warn",
+                "useSimplifiedLogicExpression": "error"
+            },
+            "correctness": {
+                "noPrivateImports": "warn"
+            },
+            "nursery": {
+                "noFloatingPromises": "error",
+                "noImportCycles": "warn",
+                "noMisusedPromises": "error",
+                "noNonNullAssertedOptionalChain": "error",
+                "noSecrets": "error",
+                "noShadow": "error",
+                "noUnnecessaryConditions": "error",
+                "noUnresolvedImports": "error",
+                "noUselessUndefined": "error",
+                "noVueDataObjectDeclaration": "error",
+                "noVueReservedKeys": "error",
+                "noVueReservedProps": "error",
+                "useAnchorHref": "error",
+                "useConsistentTypeDefinitions": "error",
+                "useExhaustiveSwitchCases": "info",
+                "useExplicitType": "error",
+                "useImageSize": "info",
+                "useMaxParams": {
+                    "level": "error",
+                    "options": {
+                        "max": 5
+                    }
+                }
+            },
+            "performance": {
+                "noAwaitInLoops": "error",
+                "noBarrelFile": "info",
+                "noDelete": "warn",
+                "noReExportAll": "warn"
+            },
+            "style": {
+                "noCommonJs": "error",
+                "noDoneCallback": "info",
+                "noInferrableTypes": "error",
+                "noMagicNumbers": "error",
+                "noNamespace": "error",
+                "noNegationElse": "error",
+                "noNestedTernary": "error",
+                "noNonNullAssertion": "warn",
+                "noParameterAssign": "error",
+                "noParameterProperties": "error",
+                "noShoutyConstants": "error",
+                "noSubstr": "error",
+                "noUnusedTemplateLiteral": "error",
+                "noUselessElse": "error",
+                "noYodaExpression": "error",
+                "useAsConstAssertion": "warn",
+                "useAtIndex": "error",
+                "useBlockStatements": "error",
+                "useCollapsedElseIf": "error",
+                "useCollapsedIf": "error",
+                "useConsistentArrayType": "info",
+                "useConsistentBuiltinInstantiation": "error",
+                "useConsistentMemberAccessibility": "warn",
+                "useConsistentObjectDefinitions": "warn",
+                "useDefaultParameterLast": "error",
+                "useDefaultSwitchClause": "error",
+                "useExplicitLengthCheck": "error",
+                "useExportsLast": "info",
+                "useForOf": "error",
+                "useGroupedAccessorPairs": "warn",
+                "useNumberNamespace": "info",
+                "useNumericSeparators": "info",
+                "useObjectSpread": "error",
+                "useReadonlyClassProperties": "error",
+                "useSelfClosingElements": "error",
+                "useShorthandAssign": "warn",
+                "useSingleVarDeclarator": "error",
+                "useSymbolDescription": "error",
+                "useThrowNewError": "error",
+                "useThrowOnlyError": "error",
+                "useUnifiedTypeSignatures": "error"
+            },
+            "suspicious": {
+                "noAlert": "error",
+                "noBitwiseOperators": "error",
+                "noDuplicateTestHooks": "error",
+                "noEvolvingTypes": "error",
+                "noExportsInTest": "error",
+                "noMisplacedAssertion": "error",
+                "noVar": "error"
+            }
+        }
+    },
+    "javascript": {
+        "formatter": {
+            "quoteStyle": "single"
+        }
+    },
+    "assist": {
+        "enabled": true,
+        "actions": {
+            "source": {
+                "organizeImports": "on"
+            }
+        }
+    }
+}

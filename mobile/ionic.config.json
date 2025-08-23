@@ -1,7 +1,5 @@
 {
-  "name": "mobile",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "vue-vite"
+  "name": "nuxt-app",
+  "integrations": {},
+  "type": "vue"
 }

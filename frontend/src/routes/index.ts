@@ -33,16 +33,6 @@ const router = createRouter({
           name: 'registration'
         },
         {
-          path: 'test',
-          component: async () => import('../pages/TestPage.vue'),
-          name: 'test'
-        },
-        {
-          path: 'design',
-          component: async () => import('../pages/DesignPage.vue'),
-          name: 'design'
-        },
-        {
           path: '(.*)',
           component: async () => import('../pages/ErrorPage.vue'),
           name: 'error'

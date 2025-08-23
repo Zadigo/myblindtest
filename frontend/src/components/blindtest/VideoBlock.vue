@@ -1,5 +1,25 @@
 <template>
-  <div class="absolute my-10 left-2/6 w-4/12 bg-secondary">
+  <div class="absolute my-10 left-2/6 w-4/12 bg-secondary space-y-2">
+    <!-- Code. State -->
+    <volt-card>
+      <template #content>
+
+        <div class="flex justify-between items-center">
+          <volt-badge v-if="isConnected">Connected</volt-badge>
+          <volt-badge v-else class="cursor-pointer" @click="wsObject.open()">Disconnected: {{ isConnected }}</volt-badge>
+
+          <div class="py-2 px-5 rounded-md bg-primary-100 flex justify-start items-center gap-5 cursor-pointer ease-in-out hover:bg-primary-200" @click="() => copy()">
+            <p class="text-primary-600">{{ sessionId }}</p>
+
+            <div class="p-1 bg-primary-50 rounded-lg">
+              <vue-icon icon="fa-solid:copy" />
+            </div>
+          </div>
+        </div>
+      </template>
+    </volt-card>
+
+    <!-- Manager -->
     <volt-card class="border-none shadow-md">
       <template #content>
         <div class="flex justify-between items-center">
@@ -23,25 +43,15 @@
           </div>
 
           <div class="flex justify-end gap-2 items-center">
-            <volt-button variant="outline">
+            <volt-secondary-button variant="outline">
               <router-link :to="{ name: 'home' }">
                 <vue-icon icon="fa-solid:home" size="15" />
               </router-link>
-            </volt-button>
+            </volt-secondary-button>
 
             <volt-button variant="outline" @click="showWheel=!showWheel">
               <vue-icon icon="fa-solid:bolt" size="15" />
             </volt-button>
-
-            <volt-badge v-if="isConnected">Connected: {{ isConnected }}</volt-badge>
-            <volt-badge v-else class="cursor-pointer" @click="wsObject.open()">Disconnected: {{ isConnected }}</volt-badge>
-            
-            <div class="py-1 px-2 rounded-md bg-primary-100">
-              {{ sessionId }}
-              <volt-button @click="() => copy()">
-                <icon name="fa-solid:copy" />
-              </volt-button>
-            </div>
           </div>
         </div>
 
@@ -52,7 +62,9 @@
 
         <div id="video-wrapper" class="rounded-md overflow-hidden flex justify-center items-center max-w-full">
           <iframe v-if="gameStarted && currentSong" :src="currentSong.youtube" :title="currentSong.artist.name" class="max-w-full h-auto block" width="400" height="200" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" />
-          <Spinner v-else name="loader-12" />
+          <div v-else class="py-15">
+            <Spinner name="loader-12" />
+          </div>
         </div>
 
         <!-- Wheel -->
@@ -65,10 +77,10 @@
 
       <template #footer>
         <div class="inline-flex justify-center w-full gap-1">
-          <volt-button v-if="gameStarted" @click="() => stopGame(stopGameCallback)">
+          <volt-secondary-button v-if="gameStarted" @click="() => stopGame(stopGameCallback)">
             <vue-icon icon="fa-solid:stop" size="15" />
             Stop
-          </volt-button>
+          </volt-secondary-button>
           <volt-button v-else variant="outlined" @click="() => startGame()">
             <vue-icon icon="fa-solid:play" size="15" />
             Start

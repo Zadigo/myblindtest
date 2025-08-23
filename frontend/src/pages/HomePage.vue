@@ -1,20 +1,21 @@
 <template>
-  <section class="w-5xl mx-auto px-10 my-20 relative">
+  <section class="w-5xl mx-auto my-20 relative">
     <volt-card class="mt-10 mb-5 shadow-none">
       <template #content>
-        <div class="flex justify-end">
+        <div class="flex justify-end gap-2">
           <!-- {{ hasExistingSession }} -->
           <!-- v-if="hasExistingSession" -->
-          <volt-button @click="() => sessionStore.reset()">
+          <volt-secondary-button rounded @click="() => sessionStore.reset()">
+            <vue-icon icon="fa7-solid:clock-rotate-left" />
             Reset
-          </volt-button>
+          </volt-secondary-button>
 
-          <volt-button class="rounded-full">
+          <volt-secondary-button rounded class="rounded-full">
             <router-link :to="{ name: 'teams' }" class="inline-flex gap-2 items-center">
               Manage teams
-              <vue-icon icon="i-fa7-solid:arrow-right" />
+              <vue-icon icon="fa7-solid:arrow-right" />
             </router-link>
-          </volt-button>
+          </volt-secondary-button>
         </div>
       </template>
     </volt-card>

@@ -1,20 +1,20 @@
 <template>
-  <div id="left" ref="teamBlockEl" class="p-5 h-screen">
-    <div id="team" :class="blockPosition" class="flex-col w-7/12">
-      <volt-card class="w-full text-center border-none">
+  <div ref="teamBlockEl" class="p-5 h-screen relative">
+    <div id="team" :class="blockPosition" class="flex-col w-7/12 absolute top-7/20 left-4/20">
+      <volt-card class="w-full text-center border-none shadow-none">
         <template #content>
-          <h1 ref="scoreBoxEl" class="text-5xl font-bold">
+          <h1 ref="scoreBoxEl" class="text-6xl font-bold">
             {{ teamScore }}
           </h1>
 
-          <p class="font-light uppercase">
+          <p class="font-light uppercase text-sm">
             Points ({{ teamName }})
           </p>
         </template>
       </volt-card>
 
       <!-- Actions -->
-      <volt-card class="mt-2 mb-10 border-none">
+      <volt-card class="mt-2 mb-10 border-none shadow-none">
         <template #content>
           <div class="flex justify-center gap-2">
             <volt-button :variant="matchedElement === 'Title' ? '' : 'outlined'" size="small" @click="handleMatch('Title')">
@@ -34,10 +34,10 @@
           </div>
 
           <div class="flex justify-center mt-4 w-full">
-            <volt-button :disabled="!gameStarted" class="w-10/13 self-center" variant="default" @click="handleCorrectAnswer">
+            <volt-contrast-button :disabled="!gameStarted" class="w-10/13 self-center" @click="handleCorrectAnswer">
               <vue-icon icon="fa-solid:check" />
               Validate
-            </volt-button>
+            </volt-contrast-button>
           </div>
         </template>
       </volt-card>

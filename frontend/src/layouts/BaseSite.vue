@@ -1,39 +1,51 @@
 <template>
-  <section class="site">
-    <Navbar>
-      <NavbarContent>
+  <section class="h-screen">
+    <navbar>
+      <navbar-content>
         <template #brand>
-          <RouterLink :to="{ name: 'home' }">
+          <router-link :to="{ name: 'home' }">
             Blindtest
-          </RouterLink>
+          </router-link>
         </template>
 
-        <NavbarLinks>
-          <NavbarLink>
-            <RouterLink :to="{ name: 'blind_test' }">
-              Blindtest
-            </RouterLink>
-          </NavbarLink>
+        <navbar-links>
+          <navbar-link>
+            <router-link :to="{ name: 'home' }">
+              Home
+            </router-link>
+          </navbar-link>
 
-          <NavbarLink>
-            <RouterLink :to="{ name: 'create' }">
+          <navbar-link>
+            <router-link :to="{ name: 'create' }">
               Create
-            </RouterLink>
-          </NavbarLink>
-        </NavbarLinks>
-      </NavbarContent>
-    </Navbar>
+            </router-link>
+          </navbar-link>
+
+          <navbar-link>
+            <router-link :to="{ name: 'create' }">
+              About
+            </router-link>
+          </navbar-link>
+        </navbar-links>
+      </navbar-content>
+    </navbar>
 
     <Toaster position="top-right" />
 
     <!-- Main -->
-    <RouterView />
+    <router-view />
   </section>
 </template>
 
 <script setup lang="ts">
 import { Toaster } from 'vue-sonner'
 
-onMounted(() => document.body.classList.add('bg-primary/30'))
-onUnmounted(() => document.body.classList.remove('bg-primary/30'))
+const bgTheme = ref<string[]>(['bg-no-repeat', 'bg-center', 'bg-gradient-to-tl', 'from-primary/30', 'via-primary-20', 'to-primary/10'])
+
+onMounted(() => {
+  document.documentElement.classList.add(...bgTheme.value)
+})
+onUnmounted(() => {
+  document.documentElement.classList.remove(...bgTheme.value)
+})
 </script>

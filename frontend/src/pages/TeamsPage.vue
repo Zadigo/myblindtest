@@ -5,19 +5,19 @@
         <volt-card>
           <template #content>
             <div class="space-x-2 flex justify-between">
-              <volt-button rounded>
+              <volt-secondary-button rounded>
                 <vue-icon icon="fa-solid:arrow-left" />
                 <router-link :to="{ name: 'home' }">
                   Back to settings
                 </router-link>
-              </volt-button>
+              </volt-secondary-button>
 
-              <volt-button rounded>
+              <volt-secondary-button rounded>
                 <router-link :to="{ name: 'blind_test' }">
                   Go to blindtest
                 </router-link>
                 <vue-icon icon="fa-solid:arrow-right" />
-              </volt-button>
+              </volt-secondary-button>
             </div>
           </template>
         </volt-card>
@@ -26,7 +26,7 @@
       <div class="col-span-6">
         <volt-card>
           <template #content>
-            <volt-input-text v-if="teamOne" v-model="teamOne.name" placeholder="Team name" />
+            <volt-input-text v-if="teamOne" v-model="teamOne.name" class="w-full" placeholder="Team name" />
           </template>
         </volt-card>
       </div>
@@ -34,7 +34,7 @@
       <div class="col-span-6">
         <volt-card>
           <template #content>
-            <volt-input-text v-if="teamTwo" v-model="teamTwo.name" placeholder="Team name" />
+            <volt-input-text v-if="teamTwo" v-model="teamTwo.name" class="w-full" placeholder="Team name" />
           </template>
         </volt-card>
       </div>
