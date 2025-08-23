@@ -18,7 +18,8 @@ class ChannelEventsMixin:
     waiting_room_name: str = 'blind_test_waiting_room'
 
     def base_room_message(self, **kwargs: str | int):
-        base_message = {'device_name': self.device_name, 'device_id': self.device_id, 'action': None}
+        base_message = {'device_name': self.device_name,
+                        'device_id': self.device_id, 'action': None}
         base_message.update(kwargs)
         return base_message
 
@@ -235,9 +236,9 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
             return
 
         if code == self.connection_token:
+            await self.send_json({'action': 'device_accepted', 'message': origin})
             message = self.base_room_message(**{'type': 'device.accepted'})
             await self.channel_layer.group_send(self.waiting_room_name, message)
-            await self.send_json({'action': 'device_accepted', 'message': origin})
 
 
 class TelevisionConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):
@@ -288,18 +289,21 @@ class TelevisionConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):
             return
 
         if action == 'idle_connect':
-            await self.send_json({
-                'action': 'idle_connect',
-                'message': self.device_id
-            })
 
             # Subscribe to the waiting room
             await self.channel_layer.group_add(self.waiting_room_name, self.channel_name)
-            
+
             # Notify the waiting room that a device has connected. There can be instances
             # where the room does not exist (it is created by the admin device)
-            message = self.base_room_message(**{'type': 'device.connected', 'thread': 'waiting_room'})
+            message = self.base_room_message(
+                **{
+                    'type': 'device.connected', 
+                    'thread': 'waiting_room'
+                }
+            )
+            
             await self.channel_layer.group_send(self.waiting_room_name, message)
+            await self.send_json({'action': 'idle_connect', 'message': self.device_id})
         elif action == 'check_code':
             code = content.get('pinCode', None)
 
@@ -309,7 +313,8 @@ class TelevisionConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):
 
             # Get the admin device to integrate this device
             # into the game room
-            message = self.base_room_message(**{'type': 'check.pin.code', 'code': code})
+            message = self.base_room_message(
+                **{'type': 'check.pin.code', 'code': code})
             await self.channel_layer.group_send(self.waiting_room_name, message)
         else:
             await self.send_error(f'No action was provided: {action}')
@@ -343,9 +348,9 @@ class TelevisionConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):
 
         if self.is_admin_device('blind_test', origin):
             self.admin_device = origin
+            await self.send_json({'action': 'device_accepted'})
             await self.channel_layer.group_add(self.diffusion_group_name, self.channel_name)
             await self.channel_layer.group_discard(self.waiting_room_name, self.channel_name)
-            await self.send_json({'action': 'device_accepted', **content})
 
 
 class SmartphoneConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):

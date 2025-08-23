@@ -1,11 +1,10 @@
-import type { WebsocketReceiveMessage } from '@/types'
 import { toast } from 'vue-sonner'
 import { useWebsocketMessage } from '.'
 
 /**
  *
  */
-function handleOnError() {
+function onError() {
   toast('Failed to connect to websocket', {
     position: 'top-center'
   })
@@ -23,32 +22,42 @@ function onDisconnected() {
  * @param ws Websocket
  * @param event The incoming event
  */
-function onMessage(ws: WebSocket, event: MessageEvent<WebsocketReceiveMessage>) {
+function onMessage(ws: WebSocket, event: MessageEvent<string>) {
   const connectionStore = useConnectionStore()
   
-  console.log(ws)
+  const { parse } = useWebsocketMessage()
+  const parsedData = parse(event.data)
+  
+  console.log(ws, parsedData)
 
-  switch (event.data.action) { 
-    case 'idle_connect':
-      console.log('Connected')
-      toast.info('Device ID', { description: event.data.message })
-      break
-
-    case 'device_accepted':
-      toast.info('Device accepted')
-      connectionStore.toggleIsAccepted()
-      break
-      
+  if (parsedData) {
+    switch (parsedData.action) {
+      case 'idle_connect':
+        console.log('Idle connect')
+        toast.info('Device ID', { description: parsedData.message })
+        connectionStore.toggleIsConnected()
+        break
+        
+      case 'device_accepted':
+        toast.info('Device accepted')
+        connectionStore.toggleIsAccepted()
+        console.log('Device accepted', connectionStore)
+        break
+        
       case 'game_disconnected':
-      connectionStore.toggleIsConnected()
-      break
-
-    case 'game_updates':
-      // Handle game_updates action
-      break
-
-    default:
-      break
+        connectionStore.toggleIsConnected()
+        break
+  
+      case 'game_updates':
+        // Handle game_updates action
+        break
+  
+      default:
+        console.log('No action provided', parsedData)
+        break
+    }
+  } else {
+    console.error('No data was provided')
   }
 }
 
@@ -61,9 +70,9 @@ export function useGameWebsocket() {
   
   const ws = useWebSocket('ws://127.0.0.1:8000/ws/tv/connect', {
     immediate: false,
-    onError: handleOnError,
+    onError,
     onDisconnected,
-    onMessage
+    onMessage: onMessage
   })
 
   const isConnected = computed(() => ws.status.value === 'OPEN')
