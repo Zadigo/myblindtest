@@ -4,11 +4,12 @@
       <template #content>
         <form class="flex-col justify-center space-y-5 text-center" @submit.prevent>
           <div class="mx-auto">
-            <volt-input-otp v-model="code" />
+            <!-- <volt-input-otp v-model="code" /> -->
+             <volt-input-text v-model="code" placeholder="Connection code" />
           </div>
 
           <div class="w-auto">
-            <volt-button variant="secondary" class="self-end" size="lg" @click="emit('check-code', code)">
+            <volt-button :disabled="code === '' || code === null" variant="secondary" class="self-end" size="lg" @click="emit('check-code', code)">
               Se connecter
             </volt-button>
           </div>

@@ -1,11 +1,11 @@
-import type { RandomizerData } from '@/components/randomizer'
 import type { Song, GlobalSongGenres } from '../songs'
-import type { CacheSession } from '../game'
+import type { CacheSession } from '../session'
 
 export type CommonActions = 'error' | 'idle_connect' | 'check_code'
 
 export type GroupActions = 'device_connected'
   | 'device_disconnected'
+  | 'update_device_cache'
   | 'device_accepted'
   | 'game_updates'
   | 'game_disconnected'
@@ -38,7 +38,7 @@ export interface WebsocketGroupDiffusionMessage {
   cache: CacheSession
   device_id: string
   updates: {
-    action: Pick<WebsocketMessageTypes, 'guess_correct'>
+    action: 'guess_correct'
     team_id: number
     points: number
   }
@@ -64,7 +64,7 @@ export interface WebsocketGameComplete {
  * Template messages that used to receive messages from Django
  */
 export type WebsocketReceiveMessage = BaseWebsocketMessage & WebsocketGameComplete & {
-  code: number
+  code: string
   /**
    * Whether the code check was valid
    */
@@ -110,20 +110,13 @@ export interface WebsocketSendGuess {
 }
 
 /**
- * Template message used to ask for a random music
- * based on the provided genre
- */
-export interface WebsocketRandomizeGenre {
-  temporary_genre: string | null | undefined | RandomizerData
-}
-
-/**
  * Template messages for messages that are sent from the client
  * to the Django
  */
-export type WebsocketSendMessage = BaseWebsocketMessage | WebsocketRandomizeGenre | WebsocketInitializationMessage | WebsocketSendGuess | {
+export type WebsocketSendMessage = BaseWebsocketMessage & WebsocketInitializationMessage & WebsocketSendGuess & {
   exclude: number[]
   genre: GlobalSongGenres
+  pinCode: string | number
 }
 
 /**

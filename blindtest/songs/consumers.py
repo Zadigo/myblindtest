@@ -17,34 +17,55 @@ class ChannelEventsMixin:
     diffusion_group_name: str = 'blind_test_updates'
     waiting_room_name: str = 'blind_test_waiting_room'
 
-    async def send_error(self, message, error_type='error'):
+    def base_room_message(self, **kwargs: str | int):
+        base_message = {'device_name': self.device_name, 'device_id': self.device_id, 'action': None}
+        base_message.update(kwargs)
+        return base_message
+
+    def is_admin_device(self, expected: str, origin: str | int):
+        """Check if the device is an admin device. The admin device is
+        considered the one that started the blindtest connection"""
+        if isinstance(origin, str) and origin.startswith('blind_test'):
+            return origin.startswith(expected)
+        return False
+
+    async def send_error(self, message: str, error_type: str = 'error'):
         await self.send_json({
             'action': error_type,
             'message': message
         })
 
-    async def device_connected(self, content):
+    async def device_connected(self, content: dict[str, str | int]):
         """Channels handler for the devices that are connecting
         to the current blind test game"""
 
-    async def device_disconnected(self, content):
+    async def device_disconnected(self, content: dict[str, str | int]):
         """Channels handler for the devices that have been disconnected
         from the current blind test game"""
 
-    async def game_disconnected(self, content):
+    async def device_accepted(self, content: dict[str, str | int]):
+        """Channels handler for devices that have been accepted
+        in a blind test room once the code that room has been verified"""
+
+    async def device_pending(self, content: dict[str, str | int]):
+        """Channels handler for devices that are pending
+        in the wait room. These devices have to send a confirmation
+        code (pin code) for the correct blind test room to accept them"""
+
+    async def game_disconnected(self, content: dict[str, str | int]):
         """Channels handler to indicate to devices that game has either
         disconnected or simply over"""
 
-    async def game_updates(self, content):
+    async def game_updates(self, content: dict[str, str | int]):
         """Channels handler for receiving messages on score updates
         on the current blindtest"""
 
-    async def setup_firebase(self, content):
-        """Channels handler that receives and sets the firebase key
-        used for all the devices to read from for the game"""
+    async def check_pin_code(self, content: dict[str, str | int]):
+        """Channels handler for authenticating a pin code to
+        a blind test game"""
 
-    async def pin_code(self, content):
-        """Channels handler for receiving the pin code"""
+    async def accept_device(self, content: dict[str, str | int]):
+        """Channels handler for accepting a device into the game"""
 
 
 class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsumer):
@@ -56,15 +77,6 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
             return f"{self.diffusion_group_name}_{self.connection_token}"
         return self.diffusion_group_name
 
-    @property
-    def waiting_room(self):
-        """Returns the waiting room name which corresponds
-        to a room containing devices which have not yet
-        been accepted to the blind test"""
-        if self.connection_token:
-            return f"blind_test_waiting_room_{self.connection_token}"
-        return 'blind_test_waiting_room'
-
     async def connect(self):
         # Create a diffusion group that will allow other
         # devices to get updates on blind test actual state
@@ -74,10 +86,8 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
 
     async def disconnect(self, code):
         # TODO: Channel make diffusion group
-        await self.channel_layer.group_send(self.diffusion_group_name, {
-            'type': 'game.disconnected',
-            'origin': 'blind_test'
-        })
+        message = self.base_room_message(**{'type': 'game.disconnected'})
+        await self.channel_layer.group_send(self.diffusion_group_name, message)
         await self.channel_layer.group_discard(self.diffusion_group_name, self.channel_name)
 
         if self.timer_task:
@@ -93,20 +103,22 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
             await self.send_error('No action was provided')
             return
 
-        # steps: idle_connect -> start_game -> game_started
-
+        # frontend -> onConnected -> idle_connect
         if action == 'idle_connect':
+            self.connection_token = content.get('firebase_key', None)
+            # Connect to the waiting room which is seperate from the
+            # game room and allows us to send messages to pending connections
+            await self.channel_layer.group_add(self.waiting_room_name, self.channel_name)
+
             # The action waits passively
             # waits for other devices to connect
             await self.send_json({
                 'action': 'idle_connect',
-                'code': self.code_pin
+                'code': self.pin_code
             })
 
             # Setup the different parameters for
             # actual coming game
-            self.connection_token = content.get('firebase_key', None)
-
             session: dict[str, str | bool | int] = content.get('session', {})
 
             team_one = session['teams'][0]
@@ -129,6 +141,7 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
             self.number_of_rounds = content.get('rounds', None)
             self.solo_mode = settings.get('soloMode', False)
             self.admin_plays = settings.get('adminPlays', False)
+
             # self.time_range = settings.get('timeRange', [])
             # self.speed_bonus = settings.get('speedBonus', 0)
             # self.time_limit = settings.get('timeLimit', 0)
@@ -191,19 +204,21 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
     async def device_connected(self, content):
         origin = content['device_id']
 
+        thread = content['thread']
+
         await self.send_json({
             'action': 'device_connected',
             'device_id': origin
         })
 
-        # Send the pin code to the devices connected
-        # to the diffusion group
-        await self.channel_layer.group_send(self.diffusion_group_name, {
-            'type': 'pin.code',
-            'origin': 'blind_test',
-            'receiver': origin,
-            'code': self.code_pin
-        })
+        if thread == 'waiting_room':
+            action = content['action']
+
+            if action is None:
+                # Recognize that a device was connected
+                message = self.base_room_message(**{'type': 'device.pending'})
+                await self.channel_layer.group_send(self.waiting_room_name, message)
+                self.pending_devices.append(origin)
 
     async def device_disconnected(self, content):
         await self.send_json({
@@ -211,25 +226,18 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
             'device_id': content['device_id']
         })
 
-    async def check_code(self, content):
-        code = content.get('code', None)
-        origin = content.get('origin', None)
+    async def check_pin_code(self, content):
+        origin = content['device_id']
+        code = content['code']
 
         if code is None:
-            await self.send_error('No code pin was provided')
+            await self.send_error(f'Connection failed for: {origin}')
             return
 
-        if not self.current_otp_code:
-            await self.send_error('No OTP code is active')
-            return
-
-        result = self.current_otp_code.verify(code)
-        await self.send_json({'action': 'check_code', 'valid': result})
-        await self.channel_layer.group_send(self.diffusion_group_name, {
-            'type': 'check.code',
-            'origin': self.device,
-            'code': code
-        })
+        if code == self.connection_token:
+            message = self.base_room_message(**{'type': 'device.accepted'})
+            await self.channel_layer.group_send(self.waiting_room_name, message)
+            await self.send_json({'action': 'device_accepted', 'message': origin})
 
 
 class TelevisionConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):
@@ -240,35 +248,35 @@ class TelevisionConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        self.device_name = 'projection_screen'
         self.device_id = f'tv_{get_random_string(length=20)}'
-        self.device = 'projection_screen'
-        self.initial_pin_code: int | None = None
+        # The admin device that accepted the code
+        # and to which this device is linked to
+        self.admin_device: str | None = None
 
     async def connect(self):
         await self.accept()
+
         # Register this consumer to the diffusion group in order for
         # it to be able to receive messages from the main blind test game
-        await self.channel_layer.group_add(self.diffusion_group_name, self.channel_name)
+        # await self.channel_layer.group_add(self.diffusion_group_name, self.channel_name)
 
-        await self.send_json({
-            'action': 'idle_connect',
-            'device_id': self.device_id
-        })
+        # await self.send_json({
+        #     'action': 'idle_connect',
+        #     'device_id': self.device_id
+        # })
 
-        # TODO: Channel make diffusion group
-        await self.channel_layer.group_send(self.diffusion_group_name, {
-            'type': 'device.connected',
-            'origin': self.device,
-            'device_id': self.device_id
-        })
+        # # TODO: Channel make diffusion group
+        # await self.channel_layer.group_send(self.diffusion_group_name, {
+        #     'type': 'device.connected',
+        #     'origin': self.device,
+        #     'device_id': self.device_id
+        # })
 
     async def disconnect(self, code):
         # TODO: Channel make diffusion group
-        await self.channel_layer.group_send(self.diffusion_group_name, {
-            'type': 'device.disconnected',
-            'origin': self.device,
-            'device_id': self.device_id
-        })
+        message = self.base_room_message(**{'type': 'device.disconnected'})
+        await self.channel_layer.group_send(self.diffusion_group_name, message)
         await self.channel_layer.group_discard(self.diffusion_group_name, self.channel_name)
         await self.close()
 
@@ -280,7 +288,18 @@ class TelevisionConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):
             return
 
         if action == 'idle_connect':
-            print(content)
+            await self.send_json({
+                'action': 'idle_connect',
+                'message': self.device_id
+            })
+
+            # Subscribe to the waiting room
+            await self.channel_layer.group_add(self.waiting_room_name, self.channel_name)
+            
+            # Notify the waiting room that a device has connected. There can be instances
+            # where the room does not exist (it is created by the admin device)
+            message = self.base_room_message(**{'type': 'device.connected', 'thread': 'waiting_room'})
+            await self.channel_layer.group_send(self.waiting_room_name, message)
         elif action == 'check_code':
             code = content.get('pinCode', None)
 
@@ -288,34 +307,45 @@ class TelevisionConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):
                 await self.send_error('No code was provided')
                 return
 
-            state = code == self.initial_pin_code
-            await self.send_json({'action': 'check_code', 'valid': state})
-
-            if state:
-                pass
+            # Get the admin device to integrate this device
+            # into the game room
+            message = self.base_room_message(**{'type': 'check.pin.code', 'code': code})
+            await self.channel_layer.group_send(self.waiting_room_name, message)
         else:
             await self.send_error(f'No action was provided: {action}')
 
     async def game_updates(self, content):
-        origin = content.get('origin', None)
-        if origin == 'blind_test':
+        origin = content['device_id']
+
+        if self.is_admin_device('blind_test', origin):
             await self.send_json({
                 'action': 'game_updates',
                 **content
             })
 
     async def game_disconnected(self, content):
-        origin = content.get('origin', None)
-        if origin == 'blind_test':
+        origin = content['device_id']
+
+        if self.is_admin_device('blind_test', origin):
             await self.send_json({
                 'action': 'game_disconnected',
                 **content
             })
 
-    async def pin_code(self, content):
-        origin = content.get('origin', None)
-        if origin == 'blind_test':
-            self.initial_pin_code = content['code']
+    async def device_pending(self, content):
+        origin = content['device_id']
+
+        if self.is_admin_device('blind_test', origin):
+            pass
+
+    async def device_accepted(self, content):
+        origin = content['device_id']
+
+        if self.is_admin_device('blind_test', origin):
+            self.admin_device = origin
+            await self.channel_layer.group_add(self.diffusion_group_name, self.channel_name)
+            await self.channel_layer.group_discard(self.waiting_room_name, self.channel_name)
+            await self.send_json({'action': 'device_accepted', **content})
 
 
 class SmartphoneConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):

@@ -1,5 +1,5 @@
-$base: #263238;
-$lite: #FFF;
+$base: var(--p-primary-800);
+$lite: var(--p-primary-50);
 $brand: var(--p-primary-500);
 $size: 48px;
 
@@ -185,8 +185,8 @@ $size: 48px;
     left: 0;
     top: 0;
     background: $brand;
-    width: $size/3;
-    height: $size/3;
+    width: calc($size / 3);
+    height: calc($size / 3);
     transform: translate(-50%, 50%);
     border-radius: 50%;
   }
@@ -208,8 +208,8 @@ $size: 48px;
     left: 4px;
     top: 4px;
     border: 2px solid $lite;
-    width: $size/4;
-    height: $size/4;
+    width: calc($size / 4);
+    height: calc($size / 4);
     border-radius: 50%;
   }
 }
@@ -236,8 +236,8 @@ $size: 48px;
     margin: auto;
     border: 3px solid;
     border-color: transparent $brand $brand;
-    width: $size/2;
-    height: $size/2;
+    width: calc($size / 2);
+    height: calc($size / 2);
     border-radius: 50%;
     animation: rotationBack 0.5s linear infinite;
     transform-origin: center center;
@@ -301,8 +301,8 @@ $size: 48px;
     margin: auto;
     border: 3px dotted $brand;
     border-style: solid solid dotted;
-    width: $size/2;
-    height: $size/2;
+    width: calc($size / 2);
+    height: calc($size / 2);
     border-radius: 50%;
     animation: rotationBack 1s linear infinite;
     transform-origin: center center;
@@ -325,7 +325,7 @@ $size: 48px;
     top: 0;
     background: $brand;
     width: 3px;
-    height: $size/2;
+    height: calc($size / 2);
     transform: translateX(-50%);
   }
 }
@@ -589,7 +589,7 @@ $size: 48px;
 }
 
 .loader-29 {
-  border: $size/2 solid $lite;
+  border: calc($size/2) solid $lite;
   border-bottom-color: $brand;
   border-radius: 50%;
   display: inline-block;
@@ -612,7 +612,7 @@ $size: 48px;
     position: absolute;
     left: 50%;
     top: 50%;
-    border: $size/2 solid;
+    border: calc($size/2) solid;
     border-color: transparent $lite;
     border-radius: 50%;
     transform: translate(-50%, -50%);
@@ -634,8 +634,8 @@ $size: 48px;
     position: absolute;
     left: 6px;
     top: 10px;
-    width: $size/4;
-    height: $size/4;
+    width: calc($size / 4);
+    height: calc($size / 4);
     color: $brand;
     background: currentColor;
     border-radius: 50%;
@@ -659,7 +659,7 @@ $size: 48px;
     position: absolute;
     left: 50%;
     top: 50%;
-    border: $size/4 solid;
+    border: calc($size / 4) solid;
     border-color: transparent $brand $brand transparent;
     transform: translate(-50%, -50%);
     border-radius: 50%;
@@ -681,7 +681,7 @@ $size: 48px;
     position: absolute;
     left: 50%;
     top: 50%;
-    border: $size/2 solid;
+    border: calc($size/2) solid;
     border-color: transparent rgba($lite, 0.15);
     border-radius: 50%;
     transform: translate(-50%, -50%);
@@ -689,7 +689,7 @@ $size: 48px;
 }
 
 .loader-34 {
-  border: $size/2 solid;
+  border: calc($size/2) solid;
   border-color: rgba($lite, 0.15) rgba($lite, 0.25) rgba($lite, 0.35) rgba($lite, 0.5);
   border-radius: 50%;
   display: inline-block;
@@ -711,8 +711,8 @@ $size: 48px;
     left: 0;
     top: 0;
     background: $brand;
-    width: $size/3;
-    height: $size/3;
+    width: calc($size/3);
+    height: calc($size/3);
     transform: translate(-50%, 50%);
     border-radius: 50%;
   }
@@ -740,8 +740,8 @@ $size: 48px;
     left: 0;
     top: 0;
     background: $brand;
-    width: $size/3;
-    height: $size/3;
+    width: calc($size/3);
+    height: calc($size/3);
     transform: translate(-50%, 50%);
     border-radius: 50%;
   }
@@ -812,8 +812,8 @@ $size: 48px;
 
 
 .loader-39 {
-  width: $size/3;
-  height: $size/3;
+  width: calc($size/3);
+  height: calc($size/3);
   border-radius: 50%;
   display: inline-block;
   position: relative;
@@ -823,32 +823,32 @@ $size: 48px;
 
 
 .loader-40 {
-  width: $size/3;
-  height: $size/3;
+  width: calc($size/3);
+  height: calc($size/3);
   border-radius: 50%;
   display: inline-block;
   position: relative;
   background: $lite;
-  box-shadow: -$size/2 0 $lite, $size/2 0 $lite;
+  box-shadow: -calc($size/2) 0 $lite, calc($size/2) 0 $lite;
   animation: shadowPulse 2s linear infinite;
 }
 
 
 .loader-41 {
-  width: $size/3;
-  height: $size/3;
+  width: calc($size/3);
+  height: calc($size/3);
   border-radius: 50%;
   display: inline-block;
   position: relative;
   background: $brand;
   color: $lite;
-  box-shadow: -$size/2 0, $size/2 0;
+  box-shadow: -calc($size/2) 0, calc($size/2) 0;
   animation: rotation 2s ease-in-out infinite;
 }
 
 .loader-42 {
-  width: $size/4;
-  height: $size/4;
+  width: calc($size / 4);
+  height: calc($size / 4);
   border-radius: 50%;
   display: inline-block;
   position: relative;
@@ -870,8 +870,8 @@ $size: 48px;
 }
 
 .loader-44 {
-  width: $size/4;
-  height: $size/4;
+  width: calc($size / 4);
+  height: calc($size / 4);
   border-radius: 50%;
   display: inline-block;
   position: relative;
@@ -880,8 +880,8 @@ $size: 48px;
 }
 
 .loader-45 {
-  width: $size/4;
-  height: $size/4;
+  width: calc($size / 4);
+  height: calc($size / 4);
   border-radius: 50%;
   display: inline-block;
   position: relative;
@@ -1093,8 +1093,8 @@ $size: 48px;
 }
 
 .loader-56 {
-  width: $size/2;
-  height: $size/2;
+  width: calc($size/2);
+  height: calc($size/2);
   display: inline-block;
   position: relative;
   background: $lite;
@@ -1109,8 +1109,8 @@ $size: 48px;
 
   &::after {
     content: '';
-    width: $size/2;
-    height: $size/2;
+    width: calc($size/2);
+    height: calc($size/2);
     position: absolute;
     left: 0;
     top: 0;
@@ -1129,8 +1129,8 @@ $size: 48px;
 
   &::before {
     content: '';
-    width: $size/2;
-    height: $size/2;
+    width: calc($size/2);
+    height: calc($size/2);
     position: absolute;
     left: 0;
     top: -($size/2);
@@ -1142,8 +1142,8 @@ $size: 48px;
     position: absolute;
     left: 0;
     top: 0;
-    width: $size/2;
-    height: $size/2;
+    width: calc($size/2);
+    height: calc($size/2);
     background: rgba($lite, 0.85);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
     animation: animloader58m 2s linear infinite alternate;
@@ -1159,8 +1159,8 @@ $size: 48px;
 
   &::before {
     content: '';
-    width: $size/2;
-    height: $size/2;
+    width: calc($size/2);
+    height: calc($size/2);
     position: absolute;
     left: 0;
     top: -($size/2);
@@ -1172,8 +1172,8 @@ $size: 48px;
     position: absolute;
     left: 0;
     top: 0;
-    width: $size/2;
-    height: $size/2;
+    width: calc($size/2);
+    height: calc($size/2);
     background: rgba($lite, 0.85);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
     animation: animloader56 2s ease infinite;
@@ -1182,8 +1182,8 @@ $size: 48px;
 
 
 .loader-60 {
-  width: $size/3;
-  height: $size/3;
+  width: calc($size/3);
+  height: calc($size/3);
   box-shadow: 0 30px, 0 -30px;
   border-radius: 4px;
   background: currentColor;
@@ -1196,8 +1196,8 @@ $size: 48px;
   &::after,
   &::before {
     content: '';
-    width: $size/3;
-    height: $size/3;
+    width: calc($size/3);
+    height: calc($size/3);
     box-shadow: 0 30px, 0 -30px;
     border-radius: 4px;
     background: currentColor;
@@ -1320,8 +1320,8 @@ $size: 48px;
 }
 
 .loader-66 {
-  width: $size/10;
-  height: $size / 10;
+  width: calc($size/10);
+  height: calc($size / 10);
   display: inline-block;
   position: relative;
   border-radius: 4px;
@@ -1332,8 +1332,8 @@ $size: 48px;
   &::after,
   &::before {
     content: '';
-    width: $size/10;
-    height: $size / 10;
+    width: calc($size/10);
+    height: calc($size / 10);
     border-radius: 4px;
     background: currentColor;
     position: absolute;
@@ -1818,7 +1818,7 @@ $size: 48px;
 
 .loader-86 {
   width: $size;
-  height: $size/4;
+  height: calc($size / 4);
   background: $lite;
   display: inline-block;
   position: relative;
@@ -1850,7 +1850,7 @@ $size: 48px;
 
 .loader-87 {
   width: $size;
-  height: $size/4;
+  height: calc($size / 4);
   background: $lite;
   display: inline-block;
   position: relative;
@@ -1883,7 +1883,7 @@ $size: 48px;
 
 .loader-88 {
   width: $size;
-  height: $size/2;
+  height: calc($size / 2);
   display: inline-block;
   position: relative;
   color: $lite;
@@ -1904,7 +1904,7 @@ $size: 48px;
 
 .loader-89 {
   width: $size;
-  height: $size/2;
+  height: calc($size / 2);
   display: inline-block;
   position: relative;
   border: 1px solid $lite;
@@ -1956,8 +1956,8 @@ $size: 48px;
 }
 
 .loader-91 {
-  width: $size/ 1.5;
-  height: $size * 1.5;
+  width: calc($size / 1.5);
+  height: calc($size * 1.5);
   display: inline-block;
   position: relative;
   border: 2px solid $lite;
@@ -2010,9 +2010,9 @@ $size: 48px;
   &::after {
     content: '';
     position: absolute;
-    width: $size /2;
-    height: $size /4;
-    border-radius: $size/2 $size/2 0 0;
+    width: calc($size / 2);
+    height: calc($size / 4);
+    border-radius: calc($size / 2) calc($size / 2) 0 0;
     background: $brand;
     left: 50%;
     transform: translateX(-50%);
@@ -3039,7 +3039,7 @@ $size: 48px;
   }
 
   100% {
-    box-shadow: -$size/2 0, $size/2 0;
+    box-shadow: -calc($size/2) 0, calc($size/2) 0;
     color: rgba($lite, .8)
   }
 }
@@ -3047,17 +3047,17 @@ $size: 48px;
 @keyframes shadowPulse {
   33% {
     background: $lite;
-    box-shadow: -$size/2 0 $brand, $size/2 0 $lite;
+    box-shadow: -calc($size/2) 0 $brand, calc($size/2) 0 $lite;
   }
 
   66% {
     background: $brand;
-    box-shadow: -$size/2 0 $lite, $size/2 0 $lite;
+    box-shadow: -calc($size/2) 0 $lite, calc($size/2) 0 $lite;
   }
 
   100% {
     background: $lite;
-    box-shadow: -$size/2 0 $lite, $size/2 0 $brand;
+    box-shadow: -calc($size/2) 0 $lite, calc($size/2) 0 $brand;
   }
 
 }
@@ -3637,7 +3637,7 @@ $size: 48px;
 
 @keyframes animloader66 {
   0% {
-    width: $size/10;
+    width: calc($size/10);
   }
 
   100% {

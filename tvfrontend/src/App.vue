@@ -1,23 +1,7 @@
 <template>
   <section id="interface" class="mx-5">
     <div class="px-5">
-      <div v-if="isConnected && isVerified" class="grid grid-cols-5 grid-rows- gap-5 text-center my-20">
-        <!-- Team 1 -->
-        <team-block ref="teamOneEl" :team-id="1" :correct-answer="correctAnswer" class="col-span-2" />
-
-        <!-- Timer -->
-        <div class="grid grid-flow-col grid-rows-3 gap-1">
-          <div id="timer" class="shadow-none bg-black rounded-md flex justify-center place-items-center row-start-1">
-            <span class="font-semibold text-3xl text-white block text-center">
-              {{ timerMinutes }}:{{ timerSeconds }}
-            </span>
-          </div>
-        </div>
-
-        <!-- Team 2 -->
-        <team-block ref="teamTwoEl" :team-id="2" :correct-answer="correctAnswer" class="col-span-2" />
-      </div>
-
+      <game-block v-if="canDiffuse" />
       <connection-block v-else @check-code="(code) => checkPinCode(code)" />
     </div>
 
@@ -41,14 +25,14 @@
 </template>
 
 <script setup lang="ts">
-import { useGameTimer, useGameWebsocket } from '@/composables'
 import 'animate.css'
 
-const teamOneEl = useTemplateRef('teamOneEl')
-const teamTwoEl = useTemplateRef('teamTwoEl')
+import { useGameWebsocket } from '@/composables'
 
-const { connect, checkPinCode, showAnswer, isConnected, wsObject, isVerified } = useGameWebsocket()
-const { timerMinutes, timerSeconds } = useGameTimer()
+const { connect, checkPinCode, showAnswer } = useGameWebsocket()
+
+const connectionStore = useConnectionStore()
+const { canDiffuse } = storeToRefs(connectionStore)
 
 onMounted(() => {
   connect()

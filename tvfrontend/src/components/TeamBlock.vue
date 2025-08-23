@@ -4,7 +4,7 @@
       Team name {{ teamId }}
     </h1>
 
-    <div :class="{ 'animate__heartBeat': hasAnsweredCorrectly }" class="animate__animated bg-blue-100 w-2/4 p-10 rounded-xl font-bold self-center mb-10 animate__animated">
+    <div :class="{ 'animate__heartBeat': hasAnsweredCorrectly }" class="animate__animated bg-blue-100 w-2/4 p-10 rounded-xl font-bold self-center mb-10">
       <span class="text-5xl">300</span>
     </div>
 

@@ -10,6 +10,7 @@ function onConnected(ws: WebSocket) {
 
   const { stringify } = useWebsocketMessage()
 
+  
   if (sessionStore.currentSettings) {
     const result = stringify({
       action: 'idle_connect',
@@ -73,8 +74,7 @@ export function useGameWebsocket() {
         switch (data.action) {
           case 'idle_connect':
             if (data.code) {
-              // Handle the idle connect message
-              console.log('OTP code', data.code)
+              toast.success('Pin code', { description: `Pin code is ${data.code}` })
             }
             break
 
@@ -118,11 +118,15 @@ export function useGameWebsocket() {
           // Group actions
 
           case 'device_connected':
-            toast.success('Device', { description: 'Projecton device connected' })
+            toast.success('Device', { description: 'Projecton device pending connection' })
             break
 
           case 'device_disconnected':
             toast.warning('Device', { description: 'Projecton device disconnected' })
+            break
+
+          case 'device_accepted':
+            toast.success('Device', { description: 'Projecton device accepted' })
             break
 
           default:

@@ -1,13 +1,12 @@
 import asyncio
 import dataclasses
 import random
-from typing import List, Union, Optional
+from typing import List, Optional, Union
 
 from channels.db import database_sync_to_async
 from django.core import exceptions
 from django.core.cache import cache
 from django.utils.crypto import get_random_string
-import pyotp
 from songs.api import serializers
 from songs.models import Song
 from songs.processors import FuzzyMatcher
@@ -82,12 +81,6 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        # This is the session cache that frontend
-        # uses to update the scores, team colors,
-        # team names etc saved here
-        # self.game_cache = {}
-
         self.difficulty = 'All'
         self.genre = 'All'
 
@@ -119,50 +112,14 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
         self.admin_plays = False
 
         self.played_songs: set[int] = set()
-        self.connection_token = None
-
         self.fuzzy_matcher = FuzzyMatcher()
 
-        self.code_pin = random.randint(1000, 9999)
-
-    @property
-    def game_cache(self):
-        """Returns a live update of the current data
-        present in the current game"""
-        teams = [
-            {
-                "id": self.team_one.team_id,
-                "name": self.team_one.name,
-                "score": self.team_one.score,
-                "players": [],
-                "color": self.team_two.color
-            },
-            {
-                "id": self.team_one.team_id,
-                "name": self.team_two.name,
-                "score": self.team_two.score,
-                "players": [],
-                "color": self.team_two.color
-            }
-        ]
-
-        cache = {
-            "songs": [],
-            "currentStep": 0,
-            "teams": teams,
-            "settings": {
-                "rounds": 1,
-                "timeLimit": None,
-                "pointValue": self.point_value,
-                "songDifficultyBonus": self.difficulty_bonus,
-                "speedBonus": self.time_bonus,
-                "soloMode": self.solo_mode,
-                "adminPlays": self.admin_plays,
-                "difficultyLevel": self.difficulty,
-                "songType": self.genre
-            }
-        }
-        return cache
+        self.device_name = 'blind_test'
+        self.device_id = f'blind_test_{get_random_string(length=12)}'
+        self.connection_token = None
+        # Pin code for the game
+        self.pin_code = random.randint(1000, 9999)
+        self.pending_devices: List[str] = []
 
     @database_sync_to_async
     def get_songs(self, temporary_genre: Optional[str] = None, exclude: List[int] = []) -> List[int]:

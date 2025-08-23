@@ -5,11 +5,7 @@
 </template>
 
 <script setup lang="ts">
-withDefaults(defineProps<{
-  name?: string
-}>(), {
-  name: 'loader-1'
-})
+const { name = 'loader-1' } = defineProps<{ name: string }>()
 </script>
 
 <style lang="scss" scoped>

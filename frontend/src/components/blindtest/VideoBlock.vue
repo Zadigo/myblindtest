@@ -22,7 +22,7 @@
             </div>
           </div>
 
-          <div class="flex justify-end gap-2">
+          <div class="flex justify-end gap-2 items-center">
             <volt-button variant="outline">
               <router-link :to="{ name: 'home' }">
                 <vue-icon icon="fa-solid:home" size="15" />
@@ -32,6 +32,16 @@
             <volt-button variant="outline" @click="showWheel=!showWheel">
               <vue-icon icon="fa-solid:bolt" size="15" />
             </volt-button>
+
+            <volt-badge v-if="isConnected">Connected: {{ isConnected }}</volt-badge>
+            <volt-badge v-else class="cursor-pointer" @click="wsObject.open()">Disconnected: {{ isConnected }}</volt-badge>
+            
+            <div class="py-1 px-2 rounded-md bg-primary-100">
+              {{ sessionId }}
+              <volt-button @click="() => copy()">
+                <icon name="fa-solid:copy" />
+              </volt-button>
+            </div>
           </div>
         </div>
 
@@ -80,7 +90,7 @@ import { toast } from 'vue-sonner'
 import type { MatchedPart } from '@/data'
 import type { VideoBlockExposedMethods } from '@/types'
 
-const { wsObject, startGame, stopGame } = useGameWebsocket()
+const { wsObject, startGame, stopGame, isConnected } = useGameWebsocket()
 const { stringify } = useWebsocketMessage()
 
 onMounted(() => { wsObject.open() })
@@ -177,4 +187,11 @@ defineExpose<VideoBlockExposedMethods>({
   sendCorrectAnswer,
   sendIncorrectAnswer
 })
+
+/**
+ * Session
+ */
+const sessionStore = useSessionStore()
+const { sessionId } = storeToRefs(sessionStore)
+const { copy } = useClipboard({ source: sessionId })
 </script>
