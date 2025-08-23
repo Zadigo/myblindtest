@@ -8,6 +8,7 @@ function onError() {
   toast('Failed to connect to websocket', {
     position: 'top-center'
   })
+  console.log('Failed to connect')
 }
 
 /**
@@ -24,7 +25,8 @@ function onDisconnected() {
  */
 function onMessage(ws: WebSocket, event: MessageEvent<string>) {
   const connectionStore = useConnectionStore()
-  
+  const { showAnswer, answer } = storeToRefs(connectionStore)
+
   const { parse } = useWebsocketMessage()
   const parsedData = parse(event.data)
   
@@ -47,9 +49,24 @@ function onMessage(ws: WebSocket, event: MessageEvent<string>) {
       case 'game_disconnected':
         connectionStore.toggleIsConnected()
         break
+
+      case 'guess_correct':
+        showAnswer.value = true
+        
+        if (parsedData.song) {
+          answer.value = parsedData.song
+        }
+        break
+
+      case 'song_skipped':
+        showAnswer.value = true
+
+        if (parsedData.song) {
+          answer.value = parsedData.song
+        }
+        break
   
       case 'game_updates':
-        // Handle game_updates action
         break
   
       default:
@@ -66,8 +83,7 @@ function onMessage(ws: WebSocket, event: MessageEvent<string>) {
  */
 export function useGameWebsocket() {
   const { stringify } = useWebsocketMessage()
-  const showAnswer = refAutoReset(false, 5000)
-  
+
   const ws = useWebSocket('ws://127.0.0.1:8000/ws/tv/connect', {
     immediate: false,
     onError,
@@ -97,10 +113,6 @@ export function useGameWebsocket() {
      * within the list of accepted devices
      */
     checkPinCode,
-    /**
-     * Show the answer to the blindtest
-     */
-    showAnswer,
     /**
      * Check if the websocket is connected
      */

@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@iconify/vue':
+        specifier: ^5.0.0
+        version: 5.0.0(vue@3.5.19(typescript@5.9.2))
       '@primevue/icons':
         specifier: ^4.3.7
         version: 4.3.7(vue@3.5.19(typescript@5.9.2))
@@ -92,6 +95,9 @@ importers:
       vue-sonner:
         specifier: ^2.0.8
         version: 2.0.8(@netlify/blobs@9.1.2)(@parcel/watcher@2.5.1)(@types/node@24.3.0)(@vue/compiler-sfc@3.5.19)(db0@0.3.2)(eslint@9.34.0(jiti@2.5.1))(ioredis@5.7.0)(lightningcss@1.30.1)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.47.1)(sass@1.90.0)(terser@5.43.1)(typescript@5.9.2)(vite@7.1.3(@types/node@24.3.0)(jiti@2.5.1)(lightningcss@1.30.1)(sass@1.90.0)(terser@5.43.1)(yaml@2.8.1))(vue-tsc@3.0.6(typescript@5.9.2))(yaml@2.8.1)
+      vuefire:
+        specifier: ^3.2.2
+        version: 3.2.2(consola@3.4.2)(firebase@12.1.0)(vue@3.5.19(typescript@5.9.2))
       zod:
         specifier: ^4.0.17
         version: 4.0.17
@@ -893,6 +899,14 @@ packages:
   '@humanwhocodes/retry@0.4.3':
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
+
+  '@iconify/types@2.0.0':
+    resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
+
+  '@iconify/vue@5.0.0':
+    resolution: {integrity: sha512-C+KuEWIF5nSBrobFJhT//JS87OZ++QDORB6f2q2Wm6fl2mueSTpFBeBsveK0KW9hWiZ4mNiPjsh6Zs4jjdROSg==}
+    peerDependencies:
+      vue: '>=3'
 
   '@internationalized/date@3.8.2':
     resolution: {integrity: sha512-/wENk7CbvLbkUvX1tu0mwq49CVkkWpkXubGel6birjRPyo6uQ4nQpnq5xZu823zRCwwn82zgHrvgF1vZyvmVgA==}
@@ -5106,6 +5120,22 @@ packages:
       typescript:
         optional: true
 
+  vuefire@3.2.2:
+    resolution: {integrity: sha512-JARgY9HhLs7xrdotQ4QA1SAmFDfSvAwUmOjx9e9lRJnmrsSW7H8ddfCQTVEHhU5NPyPJ/qKBv18Y5N13L60TGg==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      '@vue/composition-api': '*'
+      consola: ^3.2.3
+      firebase: ^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0
+      vue: ^2.7.0 || ^3.2.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      consola:
+        optional: true
+      firebase:
+        optional: true
+
   web-streams-polyfill@3.3.3:
     resolution: {integrity: sha512-d2JWLCivmZYTSIoge9MsgFCZrt571BikcWGYkjC1khllbTeDlGqZ2D8vD8E/lJa8WGWbb7Plm8/XJYV7IJHZZw==}
     engines: {node: '>= 8'}
@@ -6020,6 +6050,13 @@ snapshots:
   '@humanwhocodes/retry@0.3.1': {}
 
   '@humanwhocodes/retry@0.4.3': {}
+
+  '@iconify/types@2.0.0': {}
+
+  '@iconify/vue@5.0.0(vue@3.5.19(typescript@5.9.2))':
+    dependencies:
+      '@iconify/types': 2.0.0
+      vue: 3.5.19(typescript@5.9.2)
 
   '@internationalized/date@3.8.2':
     dependencies:
@@ -10711,6 +10748,14 @@ snapshots:
       '@vue/shared': 3.5.19
     optionalDependencies:
       typescript: 5.9.2
+
+  vuefire@3.2.2(consola@3.4.2)(firebase@12.1.0)(vue@3.5.19(typescript@5.9.2)):
+    dependencies:
+      vue: 3.5.19(typescript@5.9.2)
+      vue-demi: 0.14.10(vue@3.5.19(typescript@5.9.2))
+    optionalDependencies:
+      consola: 3.4.2
+      firebase: 12.1.0
 
   web-streams-polyfill@3.3.3: {}
 

@@ -154,7 +154,7 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
         return song_ids
 
     @database_sync_to_async
-    def get_song(self, song_id):
+    def get_song(self, song_id: int):
         try:
             song = Song.objects.get(id=song_id)
             serializer = serializers.SongSerializer(instance=song)
@@ -338,13 +338,12 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
             message['action'] = 'guess_incorrect'
             message['points'] = self.team_one.points if team_id == self.team_one else self.team_two.points
 
+        message['song'] = self.current_song
+
         print('handle_guess', message)
 
-        await self.channel_layer.group_send(self.diffusion_group_name, {
-            'type': 'game.updates',
-            'sender': 'blind_test',
-            'updates': message
-        })
+        group_message = self.base_room_message(**{'type': 'game.updates', 'message': message})
+        await self.channel_layer.group_send(self.diffusion_group_name, group_message)
 
         await self.send_json(message)
         await self.next_song()

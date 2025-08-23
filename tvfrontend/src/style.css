@@ -33,9 +33,10 @@
   --p-surface-500: #71717a;
   --p-surface-600: #52525b;
   --p-surface-700: #4d081d;
-  --p-surface-800: #370615;
-  --p-surface-900: #21030c;
-  --p-surface-950: #0b0104;
+  --p-surface-800: #680b27;
+  --p-surface-900: #2a0410;
+  --p-surface-950: #150208;
+
   --p-content-border-radius: 6px;
 }
 
