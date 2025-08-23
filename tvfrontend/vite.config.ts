@@ -1,14 +1,13 @@
 import tailwind from '@tailwindcss/vite'
-import vue from '@vitejs/plugin-vue'
-import eslint from 'vite-plugin-eslint'
 import unheadVite from '@unhead/addons/vite'
-import autoImportComponents from 'unplugin-vue-components/vite'
+import vue from '@vitejs/plugin-vue'
 import autoImport from 'unplugin-auto-import/vite'
+import autoImportComponents from 'unplugin-vue-components/vite'
+import eslint from 'vite-plugin-eslint2'
 
-import { PrimeVueResolver } from 'unplugin-vue-components/resolvers'
 import { resolve } from 'path'
+import { PrimeVueResolver } from 'unplugin-vue-components/resolvers'
 import { defineConfig, loadEnv } from 'vite'
-// import eslint from 'vite-plugin-eslint2'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -18,6 +17,14 @@ export default defineConfig(({ mode }) => {
 
   return {
     root,
+    resolve: {
+      alias: [
+        {
+          find: '@',
+          replacement: resolve(__dirname, 'src')
+        }
+      ]
+    },
     plugins: [
       vue(),
       eslint(),
@@ -27,7 +34,8 @@ export default defineConfig(({ mode }) => {
         deep: true,
         dts: 'src/types/components.d.ts',
         dirs: [
-          'src/components'
+          'src/components',
+          'src/layouts'
         ],
         resolvers: [
           PrimeVueResolver({
@@ -41,6 +49,11 @@ export default defineConfig(({ mode }) => {
       autoImport({
         dts: 'src/types/auto-imports.d.ts',
         vueTemplate: true,
+        eslintrc: {
+          enabled: true,
+          filepath: '.eslintrc-auto-import.json',
+          globalsPropValue: true
+        },
         imports: [
           'vue',
           'pinia',
@@ -51,14 +64,6 @@ export default defineConfig(({ mode }) => {
           'src/stores'
         ]
       })
-    ],
-    resolve: {
-      alias: [
-        {
-          find: '@',
-          replacement: resolve(__dirname, 'src')
-        }
-      ]
-    }
+    ]
   }
 })

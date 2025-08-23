@@ -1,27 +1,43 @@
 import type { RandomizerData } from '@/components/randomizer'
+import type { WebsocketReceiveMessage, WebsocketSendMessage } from '@/types'
 import type { Ref } from 'vue'
-import type { WebsocketRandomizeGenre } from '@/types'
 
 export * from './ws_manager'
 
-export function useWebsocketMessage() {
-  function parse<T>(data: string): T | undefined {
+/**
+ * Composable used to handle websocket messages
+ */
+export function useWebsocketMessage<S = Partial<WebsocketSendMessage>, R = Partial<WebsocketReceiveMessage>>() {
+  function parse(data: string): R | undefined {
     try {
-      const parsedData = JSON.parse(data) as T
-      return parsedData
+      return JSON.parse(data) as R
     } catch (e) {
       console.error("Failed to parse websocket message", e)
       return undefined
     }
   }
 
-  function send<T>(data: T): string {
+  function stringify(data: S): string {
     return JSON.stringify(data)
   }
 
+  function parseToRef(data: string): Ref<R | undefined> {
+    return toRef(parse(data)) as Ref<R | undefined>
+  }
+
   return {
+    /**
+     * Parses the given data received from the websocket
+     */
     parse,
-    send
+    /**
+     * Parses the given data received from the websocket and returns a ref
+     */
+    parseToRef,
+    /**
+     * Stringifies the given data for sending over the websocket
+     */
+    stringify
   }
 }
 
@@ -29,11 +45,11 @@ export function useWebsocketMessage() {
  * Composable that triggers and runs the
  * wheel randomizer
  */
-export function useWheelRandomizer(ws: Ref<WebSocket>) {
+export function useWheelRandomizer(ws: Ref<WebSocket | undefined>) {
   const showWheel = ref<boolean>(false)
   const randomizerEl = ref<HTMLElement>()
 
-  const { send } = useWebsocketMessage()
+  const { stringify } = useWebsocketMessage()
 
   /**
    * Function that gets called once the
@@ -46,12 +62,12 @@ export function useWheelRandomizer(ws: Ref<WebSocket>) {
       setTimeout(() => {
         showWheel.value = false
 
-        const result = send<WebsocketRandomizeGenre>({
+        const result = stringify({
           action: 'randomize_genre',
           temporary_genre: value
         })
 
-        if (result) {
+        if (result && ws.value) {
           ws.value.send(result)
         }
       }, 3000)

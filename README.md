@@ -39,3 +39,12 @@ This project combines Django’s robust database management with Daphne’s real
 https://vuejsexamples.com/one-time-passcode-input-for-vue/
 https://vuejsexamples.com/page-speed-dev-simplifying-web-performance-sharing/
 https://vuejsexamples.com/a-javascript-consent-script-that-interacts-directly-with-google-tag-manager-consent-overview/
+
+## Connection process
+
+The admin of the database connects to the blindtest admin `frontend` and establishes a WebSocket connection which creates a new Firebase ID. 
+This connection allows real-time communication between the admin interface and the game instances, enabling features like live updates and player interactions.
+
+The Firebase ID is used to uniquely identify each game session and its associated players, ensuring that all interactions are properly routed and managed.
+
+https://example.com/blind-test -> UNIQUE_ID_123 -> https://example.com/tv/ -> Enters unique ID 

@@ -7,6 +7,7 @@ from channels.db import database_sync_to_async
 from django.core import exceptions
 from django.core.cache import cache
 from django.utils.crypto import get_random_string
+import pyotp
 from songs.api import serializers
 from songs.models import Song
 from songs.processors import FuzzyMatcher
@@ -121,6 +122,8 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
         self.connection_token = None
 
         self.fuzzy_matcher = FuzzyMatcher()
+
+        self.code_pin = random.randint(1000, 9999)
 
     @property
     def game_cache(self):

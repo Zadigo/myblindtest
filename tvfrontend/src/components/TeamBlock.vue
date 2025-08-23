@@ -19,12 +19,9 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
-  correctAnswer?: number
-  teamId: number
-}>()
+const props = defineProps<{ correctAnswer?: number, teamId: number }>()
 
-const consecutiveAnswers = ref(3)
+const consecutiveAnswers = ref<number>(3)
 
 const hasAnsweredCorrectly = computed(() => {
   if (props.correctAnswer) {

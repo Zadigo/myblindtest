@@ -55,11 +55,11 @@
 
       <template #footer>
         <div class="inline-flex justify-center w-full gap-1">
-          <volt-button v-if="gameStarted" @click="() => handleStop()">
+          <volt-button v-if="gameStarted" @click="() => stopGame(stopGameCallback)">
             <vue-icon icon="fa-solid:stop" size="15" />
             Stop
           </volt-button>
-          <volt-button v-else variant="outlined" @click="() => handleStart()">
+          <volt-button v-else variant="outlined" @click="() => startGame()">
             <vue-icon icon="fa-solid:play" size="15" />
             Start
           </volt-button>
@@ -75,21 +75,18 @@
 </template>
 
 <script setup lang="ts">
-import { useSessionStore } from '@/stores/session'
 import { toast } from 'vue-sonner'
 
 import type { MatchedPart } from '@/data'
-import type { DefaultActions, VideoBlockExposedMethods, WebsocketSendGuess } from '@/types'
+import type { VideoBlockExposedMethods } from '@/types'
 
-const sessionStore = useSessionStore()
-const { currentSettings } = storeToRefs(sessionStore)
+const { wsObject, startGame, stopGame } = useGameWebsocket()
+const { stringify } = useWebsocketMessage()
+
+onMounted(() => { wsObject.open() })
 
 const songsStore = useSongs()
-
 const { gameStarted, currentSong, currentStep, correctAnswers } = storeToRefs(songsStore)
-const { wsObject } = useGameWebsocket()
-
-const { send, parse } = useWebsocketMessage()
 
 /**
  * Callback function used after a correct or
@@ -99,12 +96,12 @@ function handleFinalize() {
   songsStore.incrementStep()
 }
 
-/**
+ /**
  * Returns the next song by excluding
  * those that were already played
  */
 function sendIncorrectAnswer() {
-  const result = send<{ action: DefaultActions }>({ action: 'skip_song' })
+  const result = stringify({ action: 'skip_song' })
 
   if (result) {
     wsObject.send(result)
@@ -133,7 +130,7 @@ function sendCorrectAnswer(teamId: string, match: MatchedPart) {
     artist_match = true
   }
 
-  const result = send<WebsocketSendGuess>({
+  const result = stringify({
     action: 'submit_guess',
     team_id: teamId,
     title_match,
@@ -148,31 +145,31 @@ function sendCorrectAnswer(teamId: string, match: MatchedPart) {
   }
 }
 
-/**
- * Starts the game
- */
-function handleStart() {
-  wsObject.open()
-}
-
 const teamStore = useTeamsStore()
 const { teamOne, teamTwo } = storeToRefs(teamStore)
 
 /**
  * Stops the game
  */
-function handleStop() {
+function stopGameCallback() {
   toast.success('Stopped blind test')
   
   correctAnswers.value = []
-  
-  teamOne.value.score = 0
-  teamTwo.value.score = 0
+
+  if (teamOne.value) {
+    teamOne.value.score = 0
+  }
+
+  if (teamTwo.value) {
+    teamTwo.value.score = 0
+  }
 
   songsStore.resetStep()
-
-  wsObject.close()
 }
+
+/**
+ * Wheel Randomizer
+ */
 
 const { showWheel, randomizerEl, randomizerComplete } = useWheelRandomizer(wsObject.ws)
 

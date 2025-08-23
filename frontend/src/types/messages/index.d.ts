@@ -1,19 +1,93 @@
 import type { RandomizerData } from '@/components/randomizer'
-import type { DeviceActions, WebsocketActions } from '@/data/constants/websocket'
-import type { DifficultyLevels, Song, SongGenres } from '@/types'
+import type { Song, SongGenres } from '@/types'
 import type { CacheSession } from '../game'
 
-export type DefaultActions = WebsocketActions | DeviceActions
+export type CommonActions = 'error' | 'idle_connect' | 'check_code'
+
+export type GroupActions = 'device_connected'
+  | 'device_disconnected'
+  | 'update_device_cache'
+  | 'game_updates'
+  | 'game_disconnected'
+  
+
+export type GameActions = 'start_game'
+  | 'game_started'
+  | 'game_complete'
+  | 'song_new'
+  | 'guess_correct'
+  | 'guess_incorrect'
+  | 'randomize_genre'
+  | 'timer_tick'
+  | 'song_skipped'
+  | 'submit_guess'
+  | 'skip_song'
+
+export type DefaultActions = CommonActions | GameActions | GroupActions
 
 export interface BaseWebsocketMessage {
   action: DefaultActions
+  message: string
+}
+
+/**
+ * Template message used to group diffusion messages
+ */
+export interface WebsocketGroupDiffusionMessage {
+  action: GroupActions
+  cache: CacheSession
+  device_id: string
+  updates: {
+    action: Pick<WebsocketMessageTypes, 'guess_correct'>
+    team_id: number
+    points: number
+  }
+}
+
+export interface WebsocketGameComplete {
+  /**
+   * Final scores for each team when
+   * "game_complete" action is received
+   */
+  final_scores: {
+    team_one: number
+    team_two: number
+  }
+  /**
+   * Songs played during the game when
+   * "game_complete" action is received
+   */
+  songs_played: Song[]
+}
+
+/**
+ * Template messages that used to receive messages from Django
+ */
+export type WebsocketReceiveMessage = BaseWebsocketMessage & WebsocketGameComplete & {
+  code: string
+  /**
+   * Whether the code check was valid
+   */
+  valid: boolean
+  /**
+   * New song to guess
+   */
+  song: Song
+  team: number // TODO: Remove
+  /**
+   * Updated team points
+   */
+  points: number
+  /**
+   * ID of the team being updated
+   */
+  team_id: string
 }
 
 /**
  * Sends the settings from the cache to Django
  */
-export interface WebsocketInitializationMessage extends BaseWebsocketMessage {
-  action: DefaultActions
+export interface WebsocketInitializationMessage {
   /**
    * The Firebase key for other clients to
    * be able to connect to the database session
@@ -26,64 +100,33 @@ export interface WebsocketInitializationMessage extends BaseWebsocketMessage {
   session: CacheSession
 }
 
-export interface WebsocketSendGuess extends BaseWebsocketMessage {
+/**
+ * Template message used to send a guess to a song
+ */
+export interface WebsocketSendGuess {
   team_id: string
-  title_match: boolean
-  artist_match: boolean
+  title_match: string | boolean | null
+  artist_match: string | boolean | null
 }
 
-export interface WebsocketRandomizeGenre extends BaseWebsocketMessage {
-  temporary_genre: string | RandomizerData
+/**
+ * Template message used to ask for a random music
+ * based on the provided genre
+ */
+export interface WebsocketRandomizeGenre {
+  temporary_genre: string | null | undefined | RandomizerData
 }
 
-export type WebsocketReceiveMessage = BaseWebsocketMessage & {
-  token?: string | null | undefined
-  song?: Song
-  team?: number
-  points?: number
-  error?: string
-  team_one_id?: string
-  team_two_id?: string
+/**
+ * Template messages for messages that are sent from the client
+ * to the Django
+ */
+export type WebsocketSendMessage = BaseWebsocketMessage | WebsocketRandomizeGenre | WebsocketInitializationMessage | WebsocketSendGuess | {
+  exclude: number[]
+  genre: SongGenres
 }
 
-export type WebsocketSendMessage = BaseWebsocketMessage & {
-  exclude?: number[]
-  genre?: SongGenres
-  temporary_genre?: string | null | undefined | RandomizerData
-
-  team_id?: string
-  title_match?: string | boolean | null
-  artist_match?: string | boolean | null
-
-  settings?: {
-    point_value: number
-    game_difficulty: DifficultyLevels
-    genre: SongGenres
-    difficulty_bonus: boolean
-    time_bonus: boolean
-    number_of_rounds: number
-    solo_mode: boolean
-    admin_plays: boolean
-    teams?: {
-      one: {
-        name: string
-      }
-      two: {
-        name: string
-      }
-    }
-  }
-}
-
+/**
+ * Send and receive messages over the websocket
+ */
 export type WebsocketMessage = WebsocketReceiveMessage & WebsocketSendMessage
-
-export interface WebsocketDiffusionMessage {
-  action: DeviceActions
-  cache?: CacheSession
-  device_id?: string
-  updates?: {
-    action: Pick<WebsocketMessageTypes, 'guess_correct'>
-    team_id: number
-    points: number
-  }
-}

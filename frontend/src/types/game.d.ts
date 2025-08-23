@@ -1,5 +1,5 @@
 import type { Song } from '.'
-import type { DifficultyLevels, MatchedPart, SongGenres } from '../data/constants'
+import type { DifficultyLevels, MatchedPart, SongGenres } from '@/data/constants'
 
 interface Player {
   name: string

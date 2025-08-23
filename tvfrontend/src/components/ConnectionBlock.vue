@@ -1,23 +1,24 @@
 <template>
   <div class="w-4/12 mx-auto mt-20">
-    <VoltCard>
+    <volt-card>
       <template #content>
-        <form class="flex-col justify-center items-center space-y-5 w-full" @submit.prevent>
-          <VoltInputOtp v-model="code" />
+        <form class="flex-col justify-center space-y-5 text-center" @submit.prevent>
+          <div class="mx-auto">
+            <volt-input-otp v-model="code" />
+          </div>
 
-          <VoltButton variant="secondary" class="self-end" size="lg" @click="emit('connect-client', code)">
-            Se connecter
-          </VoltButton>
+          <div class="w-auto">
+            <volt-button variant="secondary" class="self-end" size="lg" @click="emit('check-code', code)">
+              Se connecter
+            </volt-button>
+          </div>
         </form>
       </template>
-    </VoltCard>
+    </volt-card>
   </div>
 </template>
 
 <script setup lang="ts">
+const emit = defineEmits<{ 'check-code': [value: string] }>()
 const code = ref<string>('')
-
-const emit = defineEmits<{
-  'connect-client': [value: string]
-}>()
 </script>

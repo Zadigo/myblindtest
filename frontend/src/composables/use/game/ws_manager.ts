@@ -1,27 +1,31 @@
 import { toast } from 'vue-sonner'
 
-import type { WebsocketMessage, WebsocketInitializationMessage } from '@/types'
-
+/**
+ * Hook called when the WebSocket is connected
+ * @param ws WebSocket
+ */
 function onConnected(ws: WebSocket) {
   const sessionStore = useSessionStore()
   const { sessionId } = storeToRefs(sessionStore)
-  const { send } = useWebsocketMessage()
+
+  const { stringify } = useWebsocketMessage()
 
   if (sessionStore.currentSettings) {
-    const result = send<WebsocketInitializationMessage>({
-      action: 'start_game',
+    const result = stringify({
+      action: 'idle_connect',
       firebase_key: sessionId.value,
       session: sessionStore.currentSettings
     })
 
     ws.send(result)
-
-    toast.success('Info', {
-      description: 'Started blind test'
-    })
+    toast.success('Info', { description: 'Waiting for players' })
   }
 }
 
+/**
+ * Hook called when the WebSocket is disconnected
+ * @param store Store used for managing song state
+ */
 function onDisconnected(store: ReturnType<typeof useSongs>) {
   return () => {
     toast.error('Warning', {
@@ -33,6 +37,10 @@ function onDisconnected(store: ReturnType<typeof useSongs>) {
   }
 }
 
+/**
+ * Hook called when the WebSocket encounters an error
+ * @param store Store used for managing song state
+ */
 function onError(store: ReturnType<typeof useSongs>) {
   return () => {
     toast.error('Error', {
@@ -42,18 +50,13 @@ function onError(store: ReturnType<typeof useSongs>) {
   }
 }
 
-function handleConnectionToken(data: WebsocketMessage) {
-  // Handle the connection token message
-  console.log(data)
-}
-
 /**
  * Composable used to a connect to the Django websocket
  * in order to start, stop etc. the blindtest game
  */
 export function useGameWebsocket() {
   const songStore = useSongs()
-  const { gameStarted, songsPlayed } = storeToRefs(songStore)
+  const { songsPlayed } = storeToRefs(songStore)
 
   const teamsStore = useTeamsStore()
 
@@ -64,26 +67,26 @@ export function useGameWebsocket() {
     onError: onError(songStore),
     onMessage(_ws, event: MessageEvent<string>) {
       const { parse } = useWebsocketMessage()
-      const data = parse<WebsocketMessage>(event.data)
+      const data = parse(event.data)
 
       if (data) {
         switch (data.action) {
-          case 'connection_token':
-            handleConnectionToken(data)
+          case 'idle_connect':
+            if (data.code) {
+              // Handle the idle connect message
+              console.log('OTP code', data.code)
+            }
             break
 
           case 'game_started':
             songStore.toggleGameStarted()
             break
-
-          case 'game_complete':
-            break
-
+            
           case 'song_new':
             if (data.song) songsPlayed.value.push(data.song)
             break
 
-          case 'timer_tick':
+          case 'game_complete':
             break
 
           case 'guess_correct':
@@ -98,37 +101,62 @@ export function useGameWebsocket() {
             }
             break
 
+          case 'timer_tick':
+            break
+
           case 'song_skipped':
             break
 
           case 'randomize_genre':
             if (data.song) songsPlayed.value.push(data.song)
             break
+          
+          case 'error':
+            toast.error('Error', { description: `An error has occurred: ${data.message}` })
+            break
+
+          // Group actions
 
           case 'device_connected':
-            toast.success('Device', {
-              description: 'Projecton device connected'
-            })
+            toast.success('Device', { description: 'Projecton device connected' })
             break
 
           case 'device_disconnected':
-            toast.success('Device', {
-              description: 'Projecton device disconnected'
-            })
-            break
-
-          case 'error':
-            gameStarted.value = false
+            toast.warning('Device', { description: 'Projecton device disconnected' })
             break
 
           default:
+            console.warn('Unknown websocket action', data)
             break
         }
       }
     }
   })
 
+  function startGame() {
+    const { stringify } = useWebsocketMessage()
+    const result = stringify({ action: 'start_game' })
+    
+    wsObject.send(result)
+  }
+
+  function stopGame(callback: () => void) {
+    wsObject.close()
+    callback()
+  }
+
   return {
-    wsObject
+    /**
+     * WebSocket object used to communicate with the server
+     */
+    wsObject,
+    /**
+     * Starts the blindtest
+     */
+    startGame,
+    /**
+     * Stops the blindtest
+     */
+    stopGame
   }
 }
