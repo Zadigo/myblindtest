@@ -61,8 +61,8 @@ class ChannelEventsMixin:
         disconnected or simply over"""
 
     async def game_updates(self, content: dict[str, str | int]):
-        """Channels handler for receiving messages on score updates
-        on the current blindtest"""
+        """Channels handler for connected devices to receive updates on
+        the current game: scores, correct answer, song skipped etc"""
 
     async def check_pin_code(self, content: dict[str, str | int]):
         """Channels handler for authenticating a pin code to
@@ -188,10 +188,12 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
             #     await self.handle_guess(team_id, title_match, artist_match)
         elif action == 'skip_song':
             if self.is_started and self.current_song:
-                await self.send_json({
-                    'action': 'song_skipped',
-                    'song': self.current_song
-                })
+                message = {'action': 'song_skipped', 'song': self.current_song}
+                await self.send_json(message)
+
+                group_message = self.base_room_message(**{'type': 'game.updates', 'message': message})
+                await self.channel_layer.group_send(self.diffusion_group_name, group_message)
+                
                 await self.next_song()
         elif action == 'randomize_genre':
             # Select a temporary genre within songs, if and only if
