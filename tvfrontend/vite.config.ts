@@ -61,6 +61,7 @@ export default defineConfig(({ mode }) => {
         ],
         dirs: [
           'src/plugins',
+          'src/composables',
           'src/stores'
         ]
       })
