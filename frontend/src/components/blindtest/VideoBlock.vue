@@ -3,9 +3,8 @@
     <!-- Code. State -->
     <volt-card>
       <template #content>
-
         <div class="flex justify-between items-center">
-          <volt-badge v-if="isConnected">Connected</volt-badge>
+          <volt-badge v-if="isConnected" class="animate-pulse animation-duration-5000">Connected</volt-badge>
           <volt-badge v-else class="cursor-pointer" @click="wsObject.open()">Disconnected: {{ isConnected }}</volt-badge>
 
           <div class="py-2 px-5 rounded-md bg-primary-100 flex justify-start items-center gap-5 cursor-pointer ease-in-out hover:bg-primary-200" @click="() => copy()">
@@ -22,44 +21,14 @@
     <!-- Manager -->
     <volt-card class="border-none shadow-md">
       <template #content>
-        <div class="flex justify-between items-center">
-          <div v-if="currentSong">
-            <p class="font-bold">
-              {{ currentSong.name }} <span class="font-semibold">({{ currentSong.artist.name }})</span>
-            </p>
+        <!-- Song Info -->
+        <video-block-song-info :currentSong="currentSong" @show:wheel="showWheel = !showWheel" />
 
-            <div class="inline-flex gap-1 my-2">
-              <template v-for="i in 5" :key="i">
-                <vue-icon v-if="i <= currentSong.difficulty" icon="fa-solid:star" />
-                <vue-icon v-else icon="fa-solid:star" class="text-slate-50" />
-              </template>
-            </div>
-
-            <div>
-              <volt-badge variant="default">
-                {{ currentSong.genre }}
-              </volt-badge>
-            </div>
-          </div>
-
-          <div class="flex justify-end gap-2 items-center">
-            <volt-secondary-button variant="outline">
-              <router-link :to="{ name: 'home' }">
-                <vue-icon icon="fa-solid:home" size="15" />
-              </router-link>
-            </volt-secondary-button>
-
-            <volt-button variant="outline" @click="showWheel=!showWheel">
-              <vue-icon icon="fa-solid:bolt" size="15" />
-            </volt-button>
-          </div>
-        </div>
-
-        <!-- Video -->
-        <p class="font-bold mb-3">
+        <p class="font-bold py-3">
           {{ currentStep }}/-
         </p>
-
+        
+        <!-- Video -->
         <div id="video-wrapper" class="rounded-md overflow-hidden flex justify-center items-center max-w-full">
           <iframe v-if="gameStarted && currentSong" :src="currentSong.youtube" :title="currentSong.artist.name" class="max-w-full h-auto block" width="400" height="200" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" />
           <div v-else class="py-15">
@@ -101,6 +70,10 @@ import { toast } from 'vue-sonner'
 
 import type { MatchedPart } from '@/data'
 import type { VideoBlockExposedMethods } from '@/types'
+
+/**
+ * Websocket
+ */
 
 const { wsObject, startGame, stopGame, isConnected } = useGameWebsocket()
 const { stringify } = useWebsocketMessage()
@@ -203,6 +176,7 @@ defineExpose<VideoBlockExposedMethods>({
 /**
  * Session
  */
+
 const sessionStore = useSessionStore()
 const { sessionId } = storeToRefs(sessionStore)
 const { copy } = useClipboard({ source: sessionId })

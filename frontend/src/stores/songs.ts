@@ -12,12 +12,14 @@ export const useSongs = defineStore('songs', () => {
   const scoringTimelineBase = ref<number>(100)
   const scoringTimeline = ref<number[]>([])
 
-  const gameStarted = ref<boolean>(false)
-  const toggleGameStarted = useToggle(gameStarted)
+  const [gameStarted, toggleGameStarted] = useToggle(false)
   
   const { inc: incrementStep, reset: resetStep, count: currentStep } = useCounter(0, { min: 0 })
   
   const songsPlayed = ref<Song[]>([])
+  // Django returns a list of the remaining songs to be played
+  // minus the song that was already played. So, we just have
+  // to get the last song of the list to get the current song
   const currentSong = computed(() => songsPlayed.value.at(-1))
   
   return {

@@ -71,7 +71,7 @@
 </template>
 
 <script setup lang="ts">
-import { ArtistSong } from '@/types'
+import type { ArtistSong } from '@/types'
 import { toast } from 'vue-sonner'
 
 // TODO: Refactor the types
@@ -90,9 +90,6 @@ const emit = defineEmits({
   }
 })
 
-const { plural } = useString()
-const { client } = useAxiosClient()
-
 const searchParam = useUrlSearchParams('history', {
   initialValue: {
     q: null,
@@ -107,7 +104,6 @@ const searchParam = useUrlSearchParams('history', {
   }
 })
 
-const popoverEl = useTemplateRef('popoverEl')
 const search = ref<string>('')
 const apiResult = ref<ApiResponse>()
 
@@ -116,24 +112,18 @@ const apiResult = ref<ApiResponse>()
  *
  * @param offset The next offset page to get
  */
-async function getSongs(offset: number = 0) {
-  try {
-    const response = await client.get<ApiResponse>('/api/v1/songs/by-artists', {
-      params: {
-        offset,
-        q: search.value
-      }
-    })
+const { status, execute, responseData, refresh } = useRequest<ApiResponse>('django', '/api/v1/songs/by-artists', {
+  method: 'get',
+  query: searchParam
+})
 
-    searchParam.q = search.value
-    searchParam.offset = offset
-    apiResult.value = response.data
-  } catch {
-    toast.error('Could not get songs')
-  }
+await execute()
+
+if (responseData.value) {
+  // searchParam.q = search.value
+  // searchParam.offset = offset
+  apiResult.value = responseData.value
 }
-
-const debouncedGetSongs = useDebounceFn(async () => await getSongs(), 2000)
 
 /**
  * Get the previous page
@@ -141,7 +131,7 @@ const debouncedGetSongs = useDebounceFn(async () => await getSongs(), 2000)
 async function getPrevious() {
   if (apiResult.value) {
     searchParam.offset = apiResult.value.previous
-    getSongs(apiResult.value.previous)
+    await execute()
   }
 }
 
@@ -151,25 +141,39 @@ async function getPrevious() {
 async function getNextPage() {
   if (apiResult.value) {
     searchParam.offset = apiResult.value.next
-    getSongs(apiResult.value.next)
+    await execute()
   }
 }
 
 /**
- *
+ * Return to previous component
  */
 function handleBack() {
   searchParam.v = 'c'
   emit('back')
 }
 
+/**
+ * Popover
+ */
+
+const popoverEl = useTemplateRef('popoverEl')
+
 function showPopover(e: Event) {
-  popoverEl.value.toggle(e)
+  if (isDefined(popoverEl)) {
+    popoverEl.value.toggle(e)
+  }
 }
 
 onBeforeMount(() => {
   searchParam.v = 'l'
 })
 
-await getSongs()
+const debouncedGetSongs = useDebounceFn(async () => await refresh({ q: searchParam.q }), 2000)
+
+/**
+ * String
+ */
+
+const { plural } = useString()
 </script>
