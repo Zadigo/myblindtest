@@ -142,6 +142,7 @@ export function useRequest<T>(name: string, path: string, params?: ComposableOpt
   const responseData = ref<T>()
   const status = ref<RequestStatus>('idle')
 
+  const dynamicParams = toRef(params || {  method: 'get' } as ComposableOptions<T>)
   /**
    * Function used to send a request
    * @param method Method to use for the given request
@@ -160,9 +161,9 @@ export function useRequest<T>(name: string, path: string, params?: ComposableOpt
       status.value = 'pending'
 
       if (method === 'get') {
-        response = await client.get<T>(path, { params: params?.query })
+        response = await client.get<T>(path, { params: dynamicParams.value?.query })
       } else {
-        response = await client[method]<T>(path, params?.body)
+        response = await client[method]<T>(path, dynamicParams.value?.body)
       }
 
       status.value = 'success'
@@ -214,6 +215,13 @@ export function useRequest<T>(name: string, path: string, params?: ComposableOpt
     }
   }
 
+  async function refresh(query: ComposableOptions<T>['query']) {
+    if (query) {
+      dynamicParams.value.query = query
+      await execute()
+    }
+  }
+
   // TODO: Infer type
   if (params?.watch) {
     // console.log('useRequest: Watch', params.watch)
@@ -239,7 +247,8 @@ export function useRequest<T>(name: string, path: string, params?: ComposableOpt
     /**
      * Function to execute the request
      */
-    execute
+    execute,
+    refresh
   }
 }
 
