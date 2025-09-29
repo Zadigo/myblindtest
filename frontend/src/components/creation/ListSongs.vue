@@ -125,7 +125,6 @@ async function getPrevious() {
     searchParam.offset = apiResult.value.previous
     await refresh(searchParam)
     apiResult.value = responseData.value
-    console.log(responseData.value)
   }
 }
 
@@ -137,7 +136,6 @@ async function getNextPage() {
     searchParam.offset = apiResult.value.next
     await refresh(searchParam)
     apiResult.value = responseData.value
-    console.log(responseData.value)
   }
 }
 

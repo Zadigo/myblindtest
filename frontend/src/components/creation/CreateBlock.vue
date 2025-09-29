@@ -18,7 +18,7 @@
 
     <div class="flex gap-2">
       <div class="flex-col">
-        <VoltAutocomplete v-model="newArtistSong.artist_name" :suggestions="artistSuggestions" :virtual-scroller-options="{ itemSize: 50 }" option-label="label" placeholder="Artist name" dropdown @complete="searchArtists" />
+        <VoltAutocomplete v-model="newArtistSong.artist_name" :suggestions="artistSuggestions" :virtual-scroller-options="{ itemSize: 50 }" option-label="label" placeholder="Artist name" dropdown @complete="() => refresh({ q: newArtistSong.artist_name })" />
         <p class="text-xs italic">
           Appuyez sur Shif+Entrée pour split
         </p>
@@ -91,7 +91,7 @@ const newArtistSong = computed({
   }
 })
 
-const { responseData, execute: searchArtists } = useRequest<Artist[]>('django', '/api/v1/songs/artists', {
+const { responseData, execute: searchArtists, refresh } = useRequest<Artist[]>('django', '/api/v1/songs/artists', {
   query: { q: newArtistSong.value.artist_name }
 })
 
