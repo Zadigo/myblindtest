@@ -35,6 +35,7 @@ googlesearch-python = "*"
 nltk = "*"
 kagglehub = "*"
 pandas = "*"
+channels-redis = "*"
 
 [dev-packages]
 autopep8 = "*"

@@ -9,18 +9,14 @@ import dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-def load_env_file():
-    env_file_path = BASE_DIR / '.env'
-    if env_file_path.exists():
-        dotenv.load_dotenv(env_file_path)
-
-
-load_env_file()
-
+ENV_FILE = BASE_DIR / '.env'
+if ENV_FILE.exists():
+    dotenv.load_dotenv(ENV_FILE)
 
 def get_debug():
-    value = os.getenv('DEBUG', '1')
-    return True if value == '1' else False
+    value = os.getenv('DEBUG', 'True')
+    return True if value == 'True' else False
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
