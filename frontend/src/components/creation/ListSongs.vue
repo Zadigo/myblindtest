@@ -1,32 +1,34 @@
 <template>
   <section id="list">
     <div class="mx-auto w-6/12">
-      <VoltCard class="mb-2 border-none">
+      <!-- Header -->
+      <volt-card class="mb-2 border-none">
         <template #content>
           <div class="flex items-center gap-2 mb-3 w-full">
-            <VoltButton @click="handleBack">
+            <volt-button @click="handleBack">
               <VueIcon icon="fa-solid:arrow-left" /> Back
-            </VoltButton>
+            </volt-button>
 
             <div class="ml-auto space-x-2 flex items-center">
-              <VoltButton @click="getPrevious">
+              <volt-button @click="getPrevious">
                 <VueIcon icon="fa-solid:caret-left" />
                 Previous
-              </VoltButton>
+              </volt-button>
 
-              <VoltButton @click="getNextPage">
+              <volt-button @click="getNextPage">
                 Next
                 <VueIcon icon="fa-solid:caret-right" />
-              </VoltButton>
+              </volt-button>
             </div>
           </div>
 
           <VoltInputText v-model="search" type="search" placeholder="Search" @input="debouncedGetSongs" />
         </template>
-      </VoltCard>
+      </volt-card>
 
+      <!-- Songs -->
       <div v-if="apiResult" id="results">
-        <VoltCard>
+        <volt-card>
           <template #content>
             <VoltAccordion>
               <VoltAccordionPanel v-for="artist in apiResult.results" :key="artist.name" :value="artist.name">
@@ -64,24 +66,18 @@
               </VoltAccordionPanel>
             </VoltAccordion>
           </template>
-        </VoltCard>
+        </volt-card>
       </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import type { ArtistSong } from '@/types'
+import type { ArtistSong, BaseApiResponse } from '@/types'
 import { toast } from 'vue-sonner'
 
-// TODO: Refactor the types
-// for this endpoint because it
-// is very confusing
-interface ApiResponse {
+interface ApiResponse extends BaseApiResponse<ArtistSong> {
   count: number
-  next: number
-  previous: number
-  results: ArtistSong[]
 }
 
 const emit = defineEmits({
@@ -109,7 +105,6 @@ const apiResult = ref<ApiResponse>()
 
 /**
  * Return all the songs in the database
- *
  * @param offset The next offset page to get
  */
 const { status, execute, responseData, refresh } = useRequest<ApiResponse>('django', '/api/v1/songs/by-artists', {
@@ -120,8 +115,6 @@ const { status, execute, responseData, refresh } = useRequest<ApiResponse>('djan
 await execute()
 
 if (responseData.value) {
-  // searchParam.q = search.value
-  // searchParam.offset = offset
   apiResult.value = responseData.value
 }
 
@@ -131,7 +124,9 @@ if (responseData.value) {
 async function getPrevious() {
   if (apiResult.value) {
     searchParam.offset = apiResult.value.previous
-    await execute()
+    await refresh(searchParam)
+    apiResult.value = responseData.value
+    console.log(responseData.value)
   }
 }
 
@@ -141,7 +136,9 @@ async function getPrevious() {
 async function getNextPage() {
   if (apiResult.value) {
     searchParam.offset = apiResult.value.next
-    await execute()
+    await refresh(searchParam)
+    apiResult.value = responseData.value
+    console.log(responseData.value)
   }
 }
 
