@@ -22,7 +22,7 @@
             </div>
           </div>
 
-          <VoltInputText v-model="search" type="search" placeholder="Search" @input="debouncedGetSongs" />
+          <VoltInputText v-model="search" type="search" placeholder="Search" />
         </template>
       </volt-card>
 
@@ -34,17 +34,17 @@
               <VoltAccordionPanel v-for="artist in apiResult.results" :key="artist.name" :value="artist.name">
                 <VoltAccordionHeader>
                   <div class="flex justify-start gap-5 items-center">
-                    <VoltAvatar :image="artist.spotify_avatar" :alt="artist.name" @mouseenter="showPopover" />
+                    <volt-avatar :image="artist.spotify_avatar" :alt="artist.name" shape="circle" />
 
-                    <VoltPopover ref="popoverEl">
+                    <!-- <VoltPopover ref="popoverEl">
                       <img :src="artist.spotify_avatar" class="aspect-square object-contain rounded-md">
-                    </VoltPopover>
+                    </VoltPopover> -->
 
                     <div class="flex flex-col items-start">
                       <span>{{ artist.name }}</span>
-                      <Badge variant="secondary">
+                      <VoltBadge variant="secondary">
                         {{ artist.song_set.length }} {{ plural(artist.song_set, 'song') }}
-                      </Badge>
+                      </VoltBadge>
                     </div>
                   </div>
                 </VoltAccordionHeader>
@@ -100,7 +100,6 @@ const searchParam = useUrlSearchParams('history', {
   }
 })
 
-const search = ref<string>('')
 const apiResult = ref<ApiResponse>()
 
 /**
@@ -154,19 +153,34 @@ function handleBack() {
  * Popover
  */
 
-const popoverEl = useTemplateRef('popoverEl')
+// const popoverEl = useTemplateRef('popoverEl')
 
-function showPopover(e: Event) {
-  if (isDefined(popoverEl)) {
-    popoverEl.value.toggle(e)
-  }
-}
+// function showPopover(e: Event) {
+//   if (isDefined(popoverEl)) {
+//     popoverEl.value.toggle(e)
+//   }
+// }
+
+/**
+ * Lifecycle
+ */
 
 onBeforeMount(() => {
   searchParam.v = 'l'
 })
 
-const debouncedGetSongs = useDebounceFn(async () => await refresh({ q: searchParam.q }), 2000)
+/**
+ * Search songs
+ */
+
+const search = ref<string>('')
+const debouncedSearch = debouncedRef(search, 2000)
+
+watch(debouncedSearch, async (newSearch) => {
+  searchParam.q = newSearch
+  await refresh(searchParam)
+  apiResult.value = responseData.value
+})
 
 /**
  * String
