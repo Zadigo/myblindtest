@@ -32,6 +32,9 @@ pyotp = "*"
 qrcode = "*"
 whitenoise = "*"
 googlesearch-python = "*"
+nltk = "*"
+kagglehub = "*"
+pandas = "*"
 
 [dev-packages]
 autopep8 = "*"
