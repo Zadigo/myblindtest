@@ -29,8 +29,5 @@
 </template>
 
 <script setup lang="ts">
-import { useSessionStore } from '@/stores/session'
-
-const sessionStore = useSessionStore()
-const { currentSettings } = storeToRefs(sessionStore)
+const { currentSettings } = useGlobalSessionState()
 </script>

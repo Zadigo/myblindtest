@@ -6,6 +6,8 @@
       </h3>
     </template>
 
+    {{ genres }}
+
     <template v-if="currentSettings" #content>
       <volt-input-number v-model="currentSettings.settings.rounds" :min="1" :max="100" class="w-full" placeholder="Number of rounds" />
 
@@ -14,7 +16,7 @@
         <volt-select v-model="currentSettings.settings.difficultyLevel" :options="difficultyLevels.map(x => ({ name: x }))" option-label="name" option-value="name" />
 
         <label>Genre</label>
-        <volt-select v-model="currentSettings.settings.songType" :options="songGenres.map(x => ({ name: x }))" option-label="name" option-value="name" />
+        <volt-select v-model="currentSettings.settings.songType" :options="genres" option-label="name" option-value="name" />
       </div>
       
       <div class="mt-3">
@@ -50,8 +52,6 @@
 </template>
 
 <script setup lang="ts">
-import { useSessionStore } from '@/stores/session'
-
-const sessionStore = useSessionStore()
-const { currentSettings } = storeToRefs(sessionStore)
+const { genres } = useLoadAutocompleteData(true)
+const { currentSettings } = useGlobalSessionState()
 </script>

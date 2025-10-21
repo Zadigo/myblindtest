@@ -1,10 +1,10 @@
-import { useSessionStore } from './session'
-
+/**
+ * Store used to manage teams within the blindtest session
+ */
 export const useTeamsStore = defineStore('teams', () => {
-  const sessionStore = useSessionStore()
-  const { currentSettings } = storeToRefs(sessionStore)
+  const { currentSettings } = useGlobalSessionState()
 
-  const teams = computed(() => currentSettings.value?.teams || [])
+  const teams = computed(() =>  currentSettings && isDefined(currentSettings) ? currentSettings.value.teams : [])
   const teamOne = computed(() => teams.value.at(0))
   const teamTwo = computed(() => teams.value.at(1))
 

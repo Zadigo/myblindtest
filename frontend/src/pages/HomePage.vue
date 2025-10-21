@@ -3,9 +3,7 @@
     <volt-card class="mt-10 mb-5 shadow-none">
       <template #content>
         <div class="flex justify-end gap-2">
-          <!-- {{ hasExistingSession }} -->
-          <!-- v-if="hasExistingSession" -->
-          <volt-secondary-button rounded @click="() => sessionStore.reset()">
+          <volt-secondary-button :disabled="!hasExistingSession" rounded @click="() => reset()">
             <vue-icon icon="fa7-solid:clock-rotate-left" />
             Reset
           </volt-secondary-button>
@@ -29,13 +27,10 @@
 </template>
 
 <script setup lang="ts">
-useLoadAutocompleteData()
-
-const sessionStore = useSessionStore()
-
-onBeforeMount(async () => {
-  await sessionStore.create()
-})
+/**
+ * Initiate session
+ */
+const { reset, hasExistingSession } = useSession()
 </script>
 
 <style lang="scss">

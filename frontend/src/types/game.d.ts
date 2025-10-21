@@ -1,5 +1,5 @@
-import type { Song } from '.'
 import type { DifficultyLevels, MatchedPart, SongGenres } from '@/data/constants'
+import type { Nullable, Song } from '.'
 
 interface Player {
   name: string
@@ -10,7 +10,7 @@ export interface Team {
   name: string
   players: Player[]
   score: number
-  color: string | null
+  color: Nullable<string>
 }
 
 export interface CacheSession {
@@ -19,7 +19,7 @@ export interface CacheSession {
   teams: Team[]
   settings: {
     rounds: number
-    timeLimit: string | null
+    timeLimit: Nullable<number>
     pointValue: number
     songDifficultyBonus: boolean
     speedBonus: boolean
@@ -40,7 +40,7 @@ export interface Answer {
   song: Song
 }
 
-export interface SettingsDataApiResponse {
+export interface SettingsApiResponse {
   count_by_genre: GenreDistribution[]
   period: {
     minimum: number
