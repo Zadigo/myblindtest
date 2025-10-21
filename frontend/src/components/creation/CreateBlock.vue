@@ -1,37 +1,35 @@
 <template>
   <div :data-id="index">
     <div class="flex justify-end mb-5">
-      <VoltSecondaryButton rounded @click="emit('delete:block', index)">
-        <VueIcon icon="fa-solid:trash" />
-      </VoltSecondaryButton>
+      <volt-secondary-button rounded @click="emit('delete:block', index)">
+        <vue-icon icon="fa-solid:trash" />
+      </volt-secondary-button>
     </div>
 
     <div class="grid grid-cols-3 gap-2">
-      <VoltInputText v-model="newArtistSong.name" placeholder="Song name" />
-      <VoltAutocomplete v-model="newArtistSong.genre" :suggestions="filteredGenres" :virtual-scroller-options="{ itemSize: 50 }" option-label="label" option-group-label="category" option-group-children="items" placeholder="Genre" dropdown @complete="searchGenreComplete" />
-      <VoltInputNumber v-model.number="newArtistSong.year" placeholder="Year" />
+      <volt-input-text v-model="newArtistSong.name" placeholder="Song name" />
+      <volt-autocomplete v-model="newArtistSong.genre" :suggestions="filteredGenres" :virtual-scroller-options="{ itemSize: 50 }" option-label="label" option-group-children="items" option-group-label="category" placeholder="Genre" dropdown @complete="searchGenreComplete" />
+      <volt-input-number v-model.number="newArtistSong.year" placeholder="Year" />
     </div>
 
     <div class="w-9/12 my-2">
-      <VoltInputNumber v-model="newArtistSong.difficulty" :min="1" :max="5" placeholder="Difficulty" />
+      <volt-input-number v-model="newArtistSong.difficulty" :min="1" :max="5" placeholder="Difficulty" />
     </div>
 
     <div class="flex gap-2">
       <div class="flex-col">
-        <VoltAutocomplete v-model="newArtistSong.artist_name" :suggestions="artistSuggestions" :virtual-scroller-options="{ itemSize: 50 }" option-label="label" placeholder="Artist name" dropdown @complete="() => refresh({ q: newArtistSong.artist_name })" />
+        <volt-autocomplete v-model="newArtistSong.artist_name" :suggestions="artistSuggestions" :virtual-scroller-options="{ itemSize: 50 }" option-label="label" placeholder="Artist name" dropdown @complete="() => refresh({ q: newArtistSong.artist_name })" />
         <p class="text-xs italic">
           Appuyez sur Shif+Entrée pour split
         </p>
       </div>
 
-      <VoltInputText v-model="newArtistSong.youtube_id" placeholder="YouTube" />
+      <volt-input-text v-model="newArtistSong.youtube_id" placeholder="YouTube" />
     </div>
 
     <div class="w-10/12">
-      <!-- <VoltAutocomplete v-model="newArtistSong.featured_artists" :suggestions="filteredArtists" :virtual-scroller-options="{ itemSize: 50 }" option-label="name" placeholder="Featured artists" multiple fluid dropdown @complete="searchArtists" /> -->
+      <!-- <volt-autocomplete v-model="newArtistSong.featured_artists" :suggestions="filteredArtists" :virtual-scroller-options="{ itemSize: 50 }" option-label="name" placeholder="Featured artists" multiple fluid dropdown @complete="searchArtists" /> -->
     </div>
-
-    {{ newArtistSong }}
   </div>
 </template>
 
@@ -72,9 +70,21 @@ const filteredGenres = ref<SearchedGenreApiResponse[]>([])
  */
 function searchGenreComplete(event: SearchEvent) {
   if (injectedGenres) {
-    filteredGenres.value = injectedGenres.value.filter((genre) => {
+    const items = injectedGenres.value.filter((genre) => {
       return genre.items.map(item => item.label.toLowerCase().includes(event.query.toLowerCase())).some(Boolean)
     })
+
+    const filteredItems = []
+
+    for (const genre of items) {
+      const newGenre = {
+        category: genre.category,
+        items: genre.items.filter(item => item.label.toLowerCase().includes(event.query.toLowerCase()))
+      }
+      filteredItems.push(newGenre)
+    }
+
+    filteredGenres.value = filteredItems
   } else {
     return []
   }

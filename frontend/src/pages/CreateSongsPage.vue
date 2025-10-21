@@ -1,48 +1,48 @@
 <template>
-  <section class="my-5 px-10">
-    <Suspense v-if="showSongs">
+  <section class="my-5 px-10 h-auto">
+    <suspense v-if="showSongs">
       <template #default>
-        <AsyncListSongs @back="showSongs=false" />
+        <async-list-songs @back="handleBack" />
       </template>
 
       <template #fallback>
         <section id="list">
-          <div class="mx-auto w-6/12">
-            <VoltSkeleton class="w-[200px] h-[200px]" />
+          <div class="mx-auto w-6/12 space-y-2">
+            <volt-skeleton v-for="i in 10" :key="i" height="120px" width="600px" />
           </div>
         </section>
       </template>
-    </Suspense>
+    </suspense>
 
     <div v-else class="w-6/12 mx-auto">
-      <VoltCard class="border-none">
+      <volt-card class="border-none">
         <template #content>
-          <TransitionGroup name="opacity">
+          <transition-group name="opacity">
             <template v-for="(block, i) in blocks" :key="i">
-              <CreateBlock :block="block" :index="i" @delete:block="deleteBlock" />
-              <VoltDivider v-if="blocks.length > 1 && i !== blocks.length - 1" class="my-5" />
+              <create-block :block="block" :index="i" @delete:block="deleteBlock" />
+              <volt-divider v-if="blocks.length > 1 && i !== blocks.length - 1" class="my-5" />
             </template>
-          </TransitionGroup>
+          </transition-group>
         </template>
 
         <template #footer>
           <div class="space-x-2">
-            <VoltButton class="ms-auto" @click="addBlock">
-              <VueIcon icon="fa-solid:plus" />Add block
-            </VoltButton>
+            <volt-button class="ms-auto" @click="addBlock">
+              <vue-icon icon="fa-solid:plus" />Add block
+            </volt-button>
 
-            <VoltButton @click="save">
-              <VueIcon icon="fa-solid:save" />
+            <volt-button @click="save">
+              <vue-icon icon="fa-solid:save" />
               Save
-            </VoltButton>
+            </volt-button>
 
-            <VoltButton @click="showSongs=true">
-              <VueIcon icon="fa-solid:table" />
+            <volt-button @click="showSongs=true">
+              <vue-icon icon="fa-solid:table" />
               Songs
-            </VoltButton>
+            </volt-button>
           </div>
         </template>
-      </VoltCard>
+      </volt-card>
     </div>
   </section>
 </template>
@@ -52,6 +52,10 @@ const AsyncListSongs = defineAsyncComponent({
   loader: async () => import('@/components/creation/ListSongs.vue'),
   timeout: 20000
 })
+
+/**
+ * Actions
+ */
 
 /**
  * c: Create
@@ -65,6 +69,15 @@ const searchParam = useUrlSearchParams('history', {
   }
 })
 
+function handleBack() {
+  searchParam.v = 'c'
+  showSongs.value = false
+}
+
+/**
+ * Genres
+ */
+
 const { showSongs, genres } = useGetGenres()
 const { blocks, addBlock, save, deleteBlock } = useEditSong()
 
@@ -74,5 +87,19 @@ onMounted(async () => {
   if (searchParam.v === 'l') {
     showSongs.value = true
   }
+})
+
+/**
+ * SEO
+ */
+
+useHead({
+  title: 'Create songs',
+  meta: [
+    {
+      name: 'description',
+      content: 'Create new songs for MyBlindTest'
+    }
+  ]
 })
 </script>

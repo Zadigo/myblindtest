@@ -1,3 +1,4 @@
+from tabnanny import verbose
 from songs import utils
 import re
 from urllib.parse import urlunparse
@@ -61,6 +62,7 @@ class Artist(models.Model):
 
     class Meta:
         ordering = ['name']
+        verbose_name = _('artist')
 
     def __str__(self):
         return f'{self.name}'
@@ -120,6 +122,7 @@ class Song(models.Model):
 
     class Meta:
         ordering = ['artist']
+        verbose_name = _('song')
         constraints = [
             models.UniqueConstraint(
                 fields=['name', 'artist'],

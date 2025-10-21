@@ -13,32 +13,50 @@ const router = createRouter({
         {
           path: '',
           component: async () => import('../pages/HomePage.vue'),
-          name: 'home'
+          name: 'home',
+          meta: {
+            heightScreen: true
+          }
         },
         {
           path: 'teams',
           component: async () => import('../pages/TeamsPage.vue'),
-          name: 'teams'
+          name: 'teams',
+          meta: {
+            heightScreen: true
+          }
         },
         {
           path: 'create',
           component: async () => import('../pages/CreateSongsPage.vue'),
-          name: 'create'
+          name: 'create',
+          meta: {
+            heightScreen: false
+          }
         },
         {
           path: 'statistics',
           component: async () => import('../pages/StatisticsPage.vue'),
-          name: 'statistics'
+          name: 'statistics',
+          meta: {
+            heightScreen: true
+          }
         },
         {
           path: 'registration',
           component: async () => import('../pages/RegisterPlayerPage.vue'),
-          name: 'registration'
+          name: 'registration',
+          meta: {
+            heightScreen: true
+          }
         },
         {
           path: '(.*)',
           component: async () => import('../pages/ErrorPage.vue'),
-          name: 'error'
+          name: 'error',
+          meta: {
+            heightScreen: true
+          }
         }
       ]
     },

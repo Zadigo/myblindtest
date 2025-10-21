@@ -22,7 +22,7 @@
             </div>
           </div>
 
-          <VoltInputText v-model="search" type="search" placeholder="Search" />
+          <volt-input-text v-model="search" type="search" placeholder="Search" />
         </template>
       </volt-card>
 
@@ -30,41 +30,41 @@
       <div v-if="apiResult" id="results">
         <volt-card>
           <template #content>
-            <VoltAccordion>
-              <VoltAccordionPanel v-for="artist in apiResult.results" :key="artist.name" :value="artist.name">
-                <VoltAccordionHeader>
+            <volt-accordion>
+              <volt-accordion-panel v-for="artist in apiResult.results" :key="artist.name" :value="artist.name">
+                <volt-accordion-header>
                   <div class="flex justify-start gap-5 items-center">
                     <volt-avatar :image="artist.spotify_avatar" :alt="artist.name" shape="circle" />
 
-                    <!-- <VoltPopover ref="popoverEl">
+                    <!-- <volt-popover ref="popoverEl">
                       <img :src="artist.spotify_avatar" class="aspect-square object-contain rounded-md">
-                    </VoltPopover> -->
+                    </volt-popover> -->
 
                     <div class="flex flex-col items-start">
                       <span>{{ artist.name }}</span>
-                      <VoltBadge variant="secondary">
+                      <volt-badge variant="secondary" class="mt-2">
                         {{ artist.song_set.length }} {{ plural(artist.song_set, 'song') }}
-                      </VoltBadge>
+                      </volt-badge>
                     </div>
                   </div>
-                </VoltAccordionHeader>
+                </volt-accordion-header>
 
-                <VoltAccordionContent>
-                  <div v-for="song in artist.song_set" :key="song.id" :aria-label="song.name" class="p-3 rounded-md bg-blue-200 my-1">
+                <volt-accordion-content>
+                  <div v-for="song in artist.song_set" :key="song.id" :aria-label="song.name" class="p-3 rounded-md bg-primary-600 dark:bg-primary-700 dark:text-surface-50 my-1">
                     <div class="inline-flex gap-3 items-center">
                       <span>{{ song.name }}</span>
 
                       <div class="inline-flex items-center gap-1">
                         <template v-for="i in 5" :key="i">
-                          <VueIcon v-if="i <= song.difficulty" icon="fa-solid:star" />
-                          <VueIcon v-else icon="fa-solid:star" class="text-slate-100" />
+                          <vue-icon v-if="i <= song.difficulty" icon="fa-solid:star" class="dark:text-surface-300" />
+                          <vue-icon v-else icon="fa-solid:star" class="text-surface-50" />
                         </template>
                       </div>
                     </div>
                   </div>
-                </VoltAccordionContent>
-              </VoltAccordionPanel>
-            </VoltAccordion>
+                </volt-accordion-content>
+              </volt-accordion-panel>
+            </volt-accordion>
           </template>
         </volt-card>
       </div>
@@ -119,9 +119,7 @@ if (responseData.value) {
   apiResult.value = responseData.value
 }
 
-/**
- * Get the previous page
- */
+// Get the previous page
 async function getPrevious() {
   if (apiResult.value) {
     searchParam.offset = apiResult.value.previous
@@ -130,9 +128,7 @@ async function getPrevious() {
   }
 }
 
-/**
- * Get the next page
- */
+// Get the next page
 async function getNextPage() {
   if (apiResult.value) {
     searchParam.offset = apiResult.value.next
@@ -141,9 +137,7 @@ async function getNextPage() {
   }
 }
 
-/**
- * Return to previous component
- */
+// Return to previous component
 function handleBack() {
   searchParam.v = 'c'
   emit('back')

@@ -6,7 +6,7 @@ from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.db.models import (Count, ExpressionWrapper, F, IntegerField, Max,
-                              Min, Q, Sum)
+                              Min, Q, QuerySet, Sum)
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import generics, status
@@ -89,6 +89,9 @@ class AllArtists(generics.ListAPIView):
 
 
 class SearchSongsAndArtists(generics.ListAPIView):
+    """Endpoint used to search songs and artists
+    in the database"""
+
     queryset = Artist.objects.all()
     serializer_class = serializers.ArtistSongSerializer
     pagination_class = BasePagination
@@ -96,12 +99,12 @@ class SearchSongsAndArtists(generics.ListAPIView):
 
     def get_queryset(self):
         qs = super().get_queryset()
+
         search = self.request.GET.get('q')
         if search:
-            return qs.filter(
-                Q(name__icontains=search) |
-                Q(song__name__icontains=search)
-            )
+            logic = Q(name__icontains=search)
+            qs1 = qs.filter(logic).distinct()
+            return qs1
         return qs
 
 
@@ -117,12 +120,21 @@ class CreateSongs(generics.GenericAPIView):
         if not isinstance(data, list):
             data = [data]
 
+        serializer_errors = []
+
         serializers_list: list[serializers.SongSerializer] = []
-        for song_data in data:
+        for index, song_data in enumerate(data):
             serializer = serializers.SongSerializer(data=song_data)
             if serializer.is_valid():
                 serializers_list.append(serializer)
                 continue
+            else:
+                result = serializer.errors
+                result['index'] = index
+                serializer_errors.append(result)
+
+        if serializer_errors:
+            return Response(serializer_errors, status=status.HTTP_400_BAD_REQUEST)
 
         errors = []
         created_songs: list[Song] = []
@@ -139,17 +151,13 @@ class CreateSongs(generics.GenericAPIView):
                     continue
 
                 tasks.artist_spotify_information.apply_async(
-                    (
-                        instance.artist.name,
-                    ),
+                    args=[instance.artist.name],
                     countdown=15
                 )
 
                 if not instance.artist.wikipedia_page:
                     tasks.wikipedia_information.apply_async(
-                        (
-                            instance.artist.id,
-                        ),
+                        args=[instance.artist.id],
                         countdown=20
                     )
 

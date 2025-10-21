@@ -1,0 +1,39 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-22 00:37+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: songs/models.py:18
+msgid "The artist's stage name"
+msgstr "Nom de scène de l'artiste"
+
+#: songs/models.py:36
+msgid "ID for the given artist on Spotify"
+msgstr "ID de l'artiste sur Spotify"
+
+#: songs/models.py:45
+msgid "The global classification for the given artist"
+msgstr "Classification global de l'artiste"
+
+#: songs/models.py:65
+msgid "artist"
+msgstr "artiste"
+
+#: songs/models.py:125
+msgid "song"
+msgstr "chanson"

@@ -1,5 +1,6 @@
 <template>
-  <section class="h-screen">
+  <!-- class="h-screen" -->
+  <section :class="sectionClass">
     <navbar>
       <navbar-content>
         <template #brand>
@@ -42,12 +43,18 @@
 </template>
 
 <script setup lang="ts">
-const bgTheme = ref<string[]>(['dark:bg-primary-950', 'bg-no-repeat', 'bg-center', 'bg-gradient-to-tl', 'from-primary/30', 'via-primary-20', 'to-primary/10'])
+import { useRoute } from 'vue-router'
+const meta = useRoute().meta as {
+  heightScreen: boolean
+}
+const sectionClass = computed(() => ({ 'h-screen': meta.heightScreen }))
+
+const bgTheme = ['dark:bg-primary-950', 'bg-no-repeat', 'bg-center', 'bg-gradient-to-tl', 'from-primary/30', 'via-primary-20', 'to-primary/10']
 
 onMounted(() => {
-  document.documentElement.classList.add(...bgTheme.value)
+  document.documentElement.classList.add(...bgTheme)
 })
 onUnmounted(() => {
-  document.documentElement.classList.remove(...bgTheme.value)
+  document.documentElement.classList.remove(...bgTheme)
 })
 </script>

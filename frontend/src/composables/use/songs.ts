@@ -1,6 +1,5 @@
-import { addNewSongData } from '@/data'
-import { useToast } from 'primevue/usetoast'
 import type { NewSong, Song } from '@/types'
+import { useToast } from 'primevue/usetoast'
 
 interface SongCreationApiResponse {
   errors: string[]
@@ -32,6 +31,9 @@ export function useGetGenres<T = SearchedGenreApiResponse>() {
   }
 }
 
+/**
+ * Composable for editing a song
+ */
 export function useEditSong() {
   const toast = useToast()
   
@@ -47,25 +49,18 @@ export function useEditSong() {
     }
   ])
 
-  // const featuredArtists = useStorage<Artist[]>('artists', [])
-
   async function save() {
-    // const transformedRequestData: CopiedCreateData[] = blocks.value.map((item) => {
-    //   if (item.featured_artists.length > 0) {
-    //     const copiedItem = { ...item }
-    //     const featuredArists = copiedItem.featured_artists.join(',')
-
-    //     copiedItem.featured_artists = featuredArists
-
-    //     return copiedItem
-    //   } else {
-    //     return item
-    //   }
-    // })
-
     const { responseData } = await useAsyncRequest<SongCreationApiResponse>('django', '/api/v1/songs/create', {
       method: 'post',
-      body: blocks.value,
+      body: blocks.value.map((block) => ({
+        name: block.name,
+        genre: block.genre.label,
+        artist_name: block.artist_name.label,
+        featured_artists: block.featured_artists,
+        youtube_id: block.youtube_id,
+        year: block.year,
+        difficulty: block.difficulty
+      })),
       immediate: true
     })
 
@@ -74,12 +69,18 @@ export function useEditSong() {
         toast.add({ severity: 'error', summary: 'Error when creating songs', detail: responseData.value.errors.join(', '), life: 10000 })
       }
     }
-
-    blocks.value = [{ ...addNewSongData }]
   }
 
   function addBlock() {
-    blocks.value.push({ ...addNewSongData })
+    blocks.value.push({
+      name: '',
+      genre: '',
+      artist_name: '',
+      featured_artists: [],
+      youtube_id: '',
+      year: 0,
+      difficulty: 1
+    })
   }
 
   function deleteBlock(index: number) {
