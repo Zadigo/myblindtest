@@ -66,7 +66,6 @@
 </template>
 
 <script setup lang="ts">
-import { useSessionStore } from '@/stores/session'
 import { VueColorWheel } from 'vue-color-wheel'
 
 import type { Harmony } from 'vue-color-wheel'
@@ -85,7 +84,6 @@ function handleChangeColor(harmonyColors: Harmony[]) {
 
 const selectedTeam = ref<number>(1)
 
-const sessionStore = useSessionStore()
 const teamStore = useTeamsStore()
 const { teamOne, teamTwo, teams } = storeToRefs(teamStore)
 
