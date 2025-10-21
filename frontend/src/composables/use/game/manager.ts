@@ -34,87 +34,11 @@ export function useAnimationComposable(name: string, animationClasses: string[] 
 }
 
 /**
- * Composable used to handle game-related
- * websocket messages
- */
-export const useGameComposable = createSharedComposable(() => {
-  const { stringify } = useWebsocketMessage()
-  const wsManager = useGameWebsocket()
-
-  const songsStore = useSongs()
-  // const { gameStarted, currentSong, currentStep, correctAnswers } = storeToRefs(songsStore)
-
-  /**
-   * Callback function used after a correct or
-   * incorrect answer was triggered
-   */
-  function handleFinalize() {
-    songsStore.incrementStep()
-  }
-
-  function sendIncorrectAnswer() {
-    const result = stringify({ action: 'skip_song' })
-
-    if (result) {
-      wsManager.wsObject.send(result)
-      handleFinalize()
-    }
-  }
-
-  function sendCorrectAnswer(teamId: string, match: MatchedPart) {
-    let title_match = true
-    let artist_match = true
-
-    if (match === 'Title') {
-      title_match = true
-      artist_match = false
-    }
-
-    if (match === 'Artist') {
-      title_match = false
-      artist_match = true
-    }
-
-    const result = stringify({
-      action: 'submit_guess',
-      team_id: teamId,
-      title_match,
-      artist_match
-    })
-
-    console.log('handleCorrectAnswer', result)
-
-    if (result) {
-      wsManager.wsObject.send(result)
-      handleFinalize()
-    }
-  }
-
-  return {
-    /**
-    * Returns the next song by excluding
-    * those that were already played
-    * 
-    * @param teamId The ID of the team
-    * @param match The element that was matched
-    */
-    sendIncorrectAnswer,
-    /**
-     * Proxy function that can be used by parent elements
-     * to trigger a websocket message on the team guess
-     *
-     * @param teamId The ID of the team
-     * @param match The element that was matched
-     */
-    sendCorrectAnswer
-  }
-})
-
-/**
  * Composable that calculates the number of
  * consecutive correct answers for a given team
  *
  * @param team The team to calculate for
+ * @param minConsecutive The minimum number of consecutive answers to qualify
  */
 export function useConsecutiveAnswers(team: MaybeRef<Empty<Team>>, minConsecutive = 2) {
   const songsStore = useSongs()

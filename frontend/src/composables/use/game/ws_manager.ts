@@ -2,7 +2,7 @@ import { toast } from 'vue-sonner'
 
 /**
  * Hook called when the WebSocket is connected
- * @param ws WebSocket
+ * @param ws WebSocket instance
  */
 function onConnected(ws: WebSocket) {
   const { currentSettings, sessionId } = useGlobalSessionState()
