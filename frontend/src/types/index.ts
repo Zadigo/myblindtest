@@ -16,6 +16,8 @@ export type Refeable<T> = Ref<T>
 
 export type Arrayable<T> = T[]
 
+export type DefaultType<T, D> = T | D
+
 export interface BaseApiResponse<T> {
   next: number
   previous: number
