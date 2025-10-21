@@ -78,11 +78,15 @@ const { gameStarted } = storeToRefs(songsStore)
 
 const matchedElement = ref<MatchedPart>('Both')
 
+
+/**
+ * Team
+ */
+
 const teamStore = useTeamsStore()
 const { teams } = storeToRefs(teamStore)
 
 const team = teamStore.getTeamByIndex(teamIndex)
-
 const teamName = computed(() => {
   if (team.value) {
     return team.value.name === '' ? team.value.id : team.value.name
@@ -107,9 +111,9 @@ const { handleAnimation: handleTeamBlockAnimation } = useAnimationComposable('te
 const { handleAnimation: handleScoreAnimation } = useAnimationComposable('scoreBoxEl')
 
 /**
- * Function that handles the correct
- * answser from a given team
+ * Answering
  */
+
 async function handleCorrectAnswer() {
   if (team.value) {
     await handleTeamBlockAnimation()
@@ -124,12 +128,6 @@ async function handleCorrectAnswer() {
   }
 }
 
-/**
- * Allows us to determine whether the user matched the
- * artist and/or the song title for the current given song
- *
- * @param match The matched element
- */
 function handleMatch(match: MatchedPart) {
   matchedElement.value = match
 }
