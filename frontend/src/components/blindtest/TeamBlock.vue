@@ -60,7 +60,6 @@
 </template>
 
 <script lang="ts" setup>
-import { useAnimationComposable, useConsecutiveAnswers } from '@/composables/use/game/utils';
 import type { MatchedPart } from '@/data'
 
 const emit = defineEmits<{ 'next-song': [data: [ teamId: string, match: MatchedPart]] }>()
@@ -73,26 +72,15 @@ const { teamIndex = 1, marginRight = 0, marginLeft = 0, diffusionMode = false, b
   blockPosition?: string 
 }>()
 
-const songsStore = useSongs()
-const { gameStarted } = storeToRefs(songsStore)
-
 /**
  * Team
  */
 
 const teamStore = useTeamsStore()
-const { teams } = storeToRefs(teamStore)
 
 const team = teamStore.getTeamByIndex(teamIndex)
-const teamName = computed(() => {
-  if (team.value) {
-    return team.value.name === '' ? team.value.id : team.value.name
-  } else {
-    return 'Team XYZ'
-  }
-})
-
-const teamScore = computed(() => team.value ? team.value.score : 0)
+const teamName = computed(() => isDefined(team) ? team.value.name : (team.value?.id || 'Unknown Team'))
+const teamScore = computed(() => isDefined(team) ? team.value.score : 0)
 
 /**
  * Consecutive answers
@@ -111,8 +99,8 @@ const { handleAnimation: handleScoreAnimation } = useAnimationComposable('scoreB
  * Answering
  */
 
+const { sendCorrectAnswer, gameStarted } = useGameWebsocket()
 const matchedElement = ref<MatchedPart>('Both')
-const { sendCorrectAnswer } = useGameWebsocket()
 
 async function proxySendCorrectAnswer() {
   if (team.value) {

@@ -4,7 +4,7 @@ import { useToast } from 'primevue/usetoast'
  * Hook called when the WebSocket is connected
  * @param ws WebSocket instance
  */
-function onConnected(ws: WebSocket) {
+function onConnected(ws: WebSocket, toast: ReturnType<typeof useToast>) {
   const { currentSettings, sessionId } = useGlobalSessionState()
   const { stringify } = useWebsocketMessage()
   
@@ -16,8 +16,7 @@ function onConnected(ws: WebSocket) {
   
   ws.send(result)
 
-  const toast = useToast()
-  toast.add({ severity: 'info', summary: 'Connection Established', detail: 'Waiting for players', life: 8000 })
+  toast.add({ severity: 'success', summary: 'Connection Established', detail: 'Waiting for players', life: 8000 })
   
   if (isDefined(currentSettings)) {
   }
@@ -27,26 +26,16 @@ function onConnected(ws: WebSocket) {
  * Hook called when the WebSocket is disconnected
  * @param store Store used for managing song state
  */
-function onDisconnected(store: ReturnType<typeof useSongs>) {
-  return () => {
-    const toast = useToast()
-    toast.add({ severity: 'warn', summary: 'Warning', detail: 'Game has been disconnected', life: 8000 })
-    
-    store.toggleGameStarted()
-  }
+function onDisconnected(toast: ReturnType<typeof useToast>) {
+  toast.add({ severity: 'warn', summary: 'Warning', detail: 'Game has been disconnected', life: 8000 })
 }
 
 /**
  * Hook called when the WebSocket encounters an error
  * @param store Store used for managing song state
  */
-function onError(store: ReturnType<typeof useSongs>) {
-  const toast = useToast()
-
-  return () => {
-    toast.add({ severity: 'error', summary: 'Error', detail: 'An error has occurred', life: 8000 })
-    store.toggleGameStarted()
-  }
+function onError(toast: ReturnType<typeof useToast>) {
+  toast.add({ severity: 'error', summary: 'Error', detail: 'An error has occurred', life: 8000 })
 }
 
 /**
@@ -59,11 +48,13 @@ export const useGameWebsocket = createSharedComposable(() => {
   const toast = useToast()
   const teamsStore = useTeamsStore()
 
+  const [gameStarted, toggleGameStarted] = useToggle(false)
+
   const wsObject = useWebSocket('ws://127.0.0.1:8000/ws/songs', {
     immediate: false,
-    onConnected,
-    onDisconnected: onDisconnected(songStore),
-    onError: onError(songStore),
+    onConnected: (ws) => onConnected(ws, toast),
+    onDisconnected: () => onDisconnected(toast),
+    onError: () => onError(toast),
     onMessage(_ws, event: MessageEvent<string>) {
       const { parse } = useWebsocketMessage()
       const data = parse(event.data)
@@ -77,10 +68,11 @@ export const useGameWebsocket = createSharedComposable(() => {
             break
 
           case 'game_started':
-            songStore.toggleGameStarted()
+            gameStarted.value = true
             break
             
           case 'song_new':
+            console.log('New song received', data.song)
             if (data.song) songsPlayed.value.push(data.song)
             break
 
@@ -139,20 +131,18 @@ export const useGameWebsocket = createSharedComposable(() => {
    * Actions
    */
 
-  const [gameStarted, toggleGameStarted] = useToggle(false)
-
   function startGame() {
     const { stringify } = useWebsocketMessage()
     const result = stringify({ action: 'start_game' })
     
     wsObject.send(result)
-    toggleGameStarted()
+    gameStarted.value = true
   }
 
   function stopGame(callback: () => void) {
+    gameStarted.value = false
     wsObject.close()
     if (isDefined(callback)) callback()
-    toggleGameStarted()
   }
 
   const isConnected = computed(() => wsObject.status.value === 'OPEN')
@@ -255,6 +245,10 @@ export const useGameWebsocket = createSharedComposable(() => {
      * @param teamId The ID of the team
      * @param match The element that was matched
      */
-    sendCorrectAnswer
+    sendCorrectAnswer,
+    /**
+     * Toggles the game started state
+     */
+    toggleGameStarted
   }
 })

@@ -24,12 +24,35 @@ export const useTeamsStore = defineStore('teams', () => {
   const secondTeamScore = computed(() => teamTwo.value ? teamTwo.value.score : 0)
 
   return {
+    /**
+     * All the teams participating in the blindtest session
+     */
     teams,
+    /**
+     * The first team
+     */
     teamOne,
+    /**
+     * The second team
+     */
     teamTwo,
+    /**
+     * The score of the first team
+     * @default 0
+     */
     firstTeamScore,
+    /**
+     * The score of the second team
+     * @default 0
+     */
     secondTeamScore,
+    /**
+     * Get a team by its index
+     */
     getTeamByIndex,
+    /**
+     * Get a team by its ID
+     */
     getTeamById
   }
 })

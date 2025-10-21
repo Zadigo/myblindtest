@@ -3,7 +3,8 @@
     <!-- Code. State -->
     <volt-card>
       <template #content>
-        {{ isConnected }}
+        Connected: {{ isConnected }}
+        Game started: {{ gameStarted }}
         <div class="flex justify-between items-center">
           <volt-badge v-if="isConnected" class="animate-pulse animation-duration-5000">Connected</volt-badge>
           <volt-badge v-else class="cursor-pointer" @click="wsObject.open()">Disconnected</volt-badge>
