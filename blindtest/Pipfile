@@ -36,6 +36,7 @@ nltk = "*"
 kagglehub = "*"
 pandas = "*"
 channels-redis = "*"
+certifi = "*"
 
 [dev-packages]
 autopep8 = "*"

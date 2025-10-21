@@ -11,6 +11,8 @@ from django.urls import re_path, reverse
 from rest_framework.test import APITransactionTestCase
 from songs import consumers, tasks, utils
 from songs.utils import OTPCode
+from songs.models import Artist, Song
+from songs.completion import Wikipedia, nrj
 
 
 class TestUtils(TestCase):
@@ -477,3 +479,17 @@ class TestCeleryTasks(TestCase):
         print(result)
         self.assertIsNotNone(result)
         self.assertIsNotNone(result, str)
+
+
+class TestCompletion(TestCase):
+    fixtures = ['fixtures/artists']
+
+    def test_wikipedia(self):
+        instance = Wikipedia()
+
+        artist = Artist.objects.first()
+        result = instance.extract_text_from_page(artist)
+
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, str)
+        self.assertIn('mariah carey', result)

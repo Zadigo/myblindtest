@@ -19,12 +19,11 @@ HEADERS = {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36'
 }
 
-# nltk.download('punkt')
-# nltk.download('stopwords')
-# nltk.download('wordnet')
-# nltk.download('punkt_tab')
-# nltk.download('omw-1.4')
-
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
+nltk.download('punkt_tab')
+nltk.download('omw-1.4')
 
 class Wikipedia:
     def __init__(self):

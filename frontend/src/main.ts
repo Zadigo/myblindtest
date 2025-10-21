@@ -33,7 +33,8 @@ const axiosManager = createVueAxiosManager({
     {
       name: 'django',
       label: 'Django',
-      dev: import.meta.env.VITE_DJANGO_PROD_URL
+      dev: import.meta.env.VITE_DJANGO_PROD_URL,
+      disableAuth: true
     }
   ]
 })

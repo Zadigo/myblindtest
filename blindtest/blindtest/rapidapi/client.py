@@ -68,6 +68,10 @@ class BaseApi:
 
 
 class Spotify(BaseApi):
+    """Spotify API client using RapidAPI service to fetch data
+    about artists, albums, tracks, playlists, podcasts, episodes,
+    genres and users."""
+
     url = 'https://spotify23.p.rapidapi.com/search/'
     host = 'spotify23.p.rapidapi.com'
 

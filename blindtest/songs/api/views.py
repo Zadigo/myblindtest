@@ -196,13 +196,12 @@ class SongGenres(generics.GenericAPIView):
 
 class GameSettings(generics.GenericAPIView):
     queryset = Song.objects.all()
-    permission_classes = []
+    permission_classes = [AllowAny]
 
     def get(self, request):
         qs = super().get_queryset()
 
         # Get the minimum and maximim decade
-        # ranges for the frontend
         period = ExpressionWrapper(
             timezone.now().year - F('year'),
             output_field=IntegerField()
