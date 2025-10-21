@@ -80,9 +80,3 @@ export function useWheelRandomizer(ws: Ref<WebSocket | undefined>) {
     randomizerComplete
   }
 }
-
-export function useGameAnswering() {
-  return {
-    
-  }
-}

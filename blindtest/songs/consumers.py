@@ -113,6 +113,7 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
 
         # frontend -> onConnected -> idle_connect
         if action == 'idle_connect':
+            print(content)
             self.connection_token = content.get('firebase_key', None)
             # Connect to the waiting room which is seperate from the
             # game room and allows us to send messages to pending connections

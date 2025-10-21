@@ -1,6 +1,6 @@
 import type { RandomizerData } from '@/components/randomizer'
-import type { Song, GlobalSongGenres } from '../songs'
 import type { CacheSession } from '../game'
+import type { GlobalSongGenres, Song } from '../songs'
 
 export type CommonActions = 'error' | 'idle_connect' | 'check_code'
 

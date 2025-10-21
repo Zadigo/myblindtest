@@ -60,6 +60,7 @@
 </template>
 
 <script lang="ts" setup>
+import { useAnimationComposable, useConsecutiveAnswers } from '@/composables/use/game/manager';
 import type { MatchedPart } from '@/data'
 
 const emit = defineEmits<{ 'next-song': [data: [ teamId: string, match: MatchedPart]] }>()
@@ -73,12 +74,8 @@ const { teamIndex = 1, marginRight = 0, marginLeft = 0, diffusionMode = false, b
 }>()
 
 const songsStore = useSongs()
-const { correctAnswers, gameStarted } = storeToRefs(songsStore)
+const { gameStarted } = storeToRefs(songsStore)
 
-const teamBlockEl = useTemplateRef<HTMLElement>('teamBlockEl')
-const scoreBoxEl = useTemplateRef<HTMLElement>('scoreBoxEl')
-
-const currentBonus = ref<number>(0)
 const matchedElement = ref<MatchedPart>('Both')
 
 const teamStore = useTeamsStore()
@@ -96,58 +93,18 @@ const teamName = computed(() => {
 
 const teamScore = computed(() => team.value ? team.value.score : 0)
 
-// Checks when a team has given multiple consecutive
-// answers (at least 2)
-const MIN_CONSECUTIVE = 2
+/**
+ * Consecutive answers
+ */
 
-const consecutiveAnswers = computed(() => {
-  if (correctAnswers.value.length < MIN_CONSECUTIVE) {
-    return 0
-  }
-
-  let count = 0
-
-  for (let i = correctAnswers.value.length - 1; i >= 0; i--) {
-    const answer = correctAnswers.value[i]
-
-    if (answer && (answer.teamId === (team.value && team.value.id))) {
-      count++
-    } else {
-      break
-    }
-  }
-
-  return count >= MIN_CONSECUTIVE ? count : 0
-})
+const { consecutiveAnswers, hasConsecutiveAnswers } = useConsecutiveAnswers(team, 2)
 
 /**
- * Flag that explicitly returns if the team has
- * answered consecutive answers
+ * Animations
  */
-const hasConsecutiveAnswers = computed(() => consecutiveAnswers.value > MIN_CONSECUTIVE)
 
-whenever(hasConsecutiveAnswers, () => {
-  // Do something
-  currentBonus.value = 0
-})
-
-/**
- * Handles the different animations on the page
- */
-async function handleAnimation() {
-  if (scoreBoxEl.value) {
-    const animationClasses = ['animate__animated', 'animate__heartBeat', 'animate__repeat-1']
-
-    // First remove the classes if they exist
-    scoreBoxEl.value.classList.remove(...animationClasses)
-
-    // Force a reflow to restart the animation
-    void scoreBoxEl.value.offsetWidth
-
-    // Add the classes back
-    scoreBoxEl.value.classList.add(...animationClasses)
-  }
-}
+const { handleAnimation: handleTeamBlockAnimation } = useAnimationComposable('teamBlockEl')
+const { handleAnimation: handleScoreAnimation } = useAnimationComposable('scoreBoxEl')
 
 /**
  * Function that handles the correct
@@ -155,7 +112,8 @@ async function handleAnimation() {
  */
 async function handleCorrectAnswer() {
   if (team.value) {
-    await handleAnimation()
+    await handleTeamBlockAnimation()
+    await handleScoreAnimation()
     
     console.log('Correct answer', team.value)
 

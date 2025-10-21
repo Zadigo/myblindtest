@@ -84,11 +84,14 @@ export const useGlobalSessionState = createGlobalState(() => {
       deep: true
     })
 
+    console.log('Loaded session ID from global session state:', currentSettings.value)
+
     return {
       sessionId,
       currentSettings
     }
   } else {
+    console.warn('No session ID found in global session state')
     return {
       sessionId,
       currentSettings: null

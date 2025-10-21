@@ -10,6 +10,8 @@ export type Nullable<T> = T | null
 
 export type Undefineable<T> = T | undefined
 
+export type Empty<T> = Nullable<T> | Undefineable<T>
+
 export type Refeable<T> = Ref<T>
 
 export type Arrayable<T> = T[]

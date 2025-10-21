@@ -5,21 +5,20 @@ import { toast } from 'vue-sonner'
  * @param ws WebSocket
  */
 function onConnected(ws: WebSocket) {
-  const sessionStore = useSessionStore()
-  const { sessionId } = storeToRefs(sessionStore)
+  const { currentSettings, sessionId } = useGlobalSessionState()
 
   const { stringify } = useWebsocketMessage()
 
-  
-  if (sessionStore.currentSettings) {
-    const result = stringify({
-      action: 'idle_connect',
-      firebase_key: sessionId.value,
-      session: sessionStore.currentSettings
-    })
+  const result = stringify({
+    action: 'idle_connect',
+    firebase_key: sessionId.value,
+    session: currentSettings.value
+  })
 
-    ws.send(result)
-    toast.success('Info', { description: 'Waiting for players' })
+  ws.send(result)
+  toast.success('Info', { description: 'Waiting for players' })
+  
+  if (isDefined(currentSettings)) {
   }
 }
 
