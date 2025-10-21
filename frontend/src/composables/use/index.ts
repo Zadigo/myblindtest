@@ -71,6 +71,7 @@ export const useGlobalSessionState = createGlobalState(() => {
   if (isDefined(sessionId)) {
     const currentSettings = useDocument<CacheSession>(doc(fireStore, 'blindtests', sessionId.value), { once: true })
     
+    // Watch for changes and update the Firestore document
     watchDebounced(currentSettings, async (newValue) => {
       if (sessionId.value) {
         const docRef = doc(fireStore, 'blindtests', sessionId.value)
@@ -93,12 +94,6 @@ export const useGlobalSessionState = createGlobalState(() => {
       currentSettings: null
     }
   }
-
-  // else {
-  //   const collectionRef = collection(fireStore, 'blindtests')
-  //   const result = await addDoc(collectionRef, defaults.settings)
-  //   sessionId.value = result.id
-  // }
 })
 
 /**
