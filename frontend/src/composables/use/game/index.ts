@@ -1,5 +1,5 @@
 import type { RandomizerData } from '@/components/randomizer'
-import type { WebsocketReceiveMessage, WebsocketSendMessage } from '@/types'
+import type { _ReceiveMessages, _SendMessages } from '@/types'
 import type { Ref } from 'vue'
 
 export * from './ws_manager'
@@ -8,7 +8,7 @@ export * from './utils'
 /**
  * Composable used to handle websocket messages
  */
-export function useWebsocketMessage<S = Partial<WebsocketSendMessage>, R = Partial<WebsocketReceiveMessage>>() {
+export function useWebsocketMessage<S = _SendMessages, R = _ReceiveMessages>() {
   function parse(data: string): R | undefined {
     try {
       return JSON.parse(data) as R

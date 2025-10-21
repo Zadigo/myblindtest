@@ -36,8 +36,6 @@ export type _SendMessages = { action: 'idle_connect', firebase_key: string, sett
   | { action: 'start_game' }
   | { action: 'submit_guess', team_id: number, title_match: Nullable<string>, artist_match: Nullable<string> }
   | { action: 'skip_song' }
-  | { action: 'device_connected', device_id: string }
-  | { action: 'device_disconnected', device_id: string }
   | { action: 'randomize_genre', temporary_genre: DefaultType<string | RandomizerData> }
   
   export type _ReceiveMessages = 
@@ -46,10 +44,12 @@ export type _SendMessages = { action: 'idle_connect', firebase_key: string, sett
   | { action: 'game_complete', message: string, final_scores: { team_one: number, team_two: number }, songs_played: number }
   | { action: 'song_new', song: Song }
   | { action: 'timer_tick', remaining_time: number, total_time: number }
-  | { action: 'guess_correct', team_id: number, points: number }
-  | { action: 'guess_incorrect', team_id: number, points: number }
+  | { action: 'guess_correct', team_id: string, points: number }
+  | { action: 'guess_incorrect', team_id: string, points: number }
   | { action: 'device_accepted', device_id: string, message: string }
+  | { action: 'device_disconnected', device_id: string }
   | { action: 'error', message: string }
+  | { action: 'song_skipped', song: Song }
 
 /**
  * Template message used to group diffusion messages

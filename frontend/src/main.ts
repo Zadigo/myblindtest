@@ -3,7 +3,7 @@ import { createHead } from '@unhead/vue/client'
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import { createVueAxiosManager } from './plugins'
-import ToastService from 'primevue/toastservice';
+import ToastService from 'primevue/toastservice'
 
 import AnimateOnScroll from 'primevue/animateonscroll'
 import PrimeVue from 'primevue/config'

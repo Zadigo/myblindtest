@@ -59,9 +59,9 @@ export const useGameWebsocket = createSharedComposable(() => {
       const { parse } = useWebsocketMessage()
       const data = parse(event.data)
 
-      if (data) {
+      if (isDefined(data)) {
         switch (data.action) {
-          case 'idle_connect':
+          case 'idle_response':
             if (data.code) {
               toast.add({ severity: 'info', summary: 'Pin code', detail: `Pin code is ${data.code}`, life: 50000 })
             }
@@ -96,10 +96,6 @@ export const useGameWebsocket = createSharedComposable(() => {
 
           case 'song_skipped':
             break
-
-          case 'randomize_genre':
-            if (data.song) songsPlayed.value.push(data.song)
-            break
           
           case 'error':
             toast.add({ severity: 'error', summary: 'Error', detail: `An error has occurred: ${data.message}`, life: 8000 })
@@ -107,16 +103,12 @@ export const useGameWebsocket = createSharedComposable(() => {
 
           // Group actions
 
-          case 'device_connected':
+          case 'device_accepted':
             toast.add({ severity: 'success', summary: 'Device', detail: 'Projecton device pending connection', life: 8000 })
             break
 
           case 'device_disconnected':
             toast.add({ severity: 'warn', summary: 'Device', detail: 'Projecton device disconnected', life: 8000 })
-            break
-
-          case 'device_accepted':
-            toast.add({ severity: 'success', summary: 'Device', detail: 'Projecton device accepted', life: 8000 })
             break
 
           default:

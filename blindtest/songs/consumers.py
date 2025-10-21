@@ -122,7 +122,7 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
             # The action waits passively
             # waits for other devices to connect
             await self.send_json({
-                'action': 'idle_connect',
+                'action': 'idle_response',
                 'code': self.pin_code
             })
 

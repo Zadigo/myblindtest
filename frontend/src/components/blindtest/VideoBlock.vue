@@ -12,8 +12,8 @@
           <div class="py-2 px-5 rounded-md bg-primary-100 flex justify-start items-center gap-5 cursor-pointer ease-in-out hover:bg-primary-200" @click="() => copy()">
             <p class="text-primary-600">{{ sessionId }}</p>
 
-            <div class="p-1 bg-primary-50 rounded-lg">
-              <vue-icon icon="fa-solid:copy" />
+            <div class="p-1 bg-primary-50 dark:bg-primary-500 rounded-lg">
+              <vue-icon icon="fa-solid:copy" class="dark:text-surface-50" />
             </div>
           </div>
         </div>
