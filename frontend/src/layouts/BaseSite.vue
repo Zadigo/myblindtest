@@ -38,8 +38,6 @@
 </template>
 
 <script setup lang="ts">
-import { Toaster } from 'vue-sonner'
-
 const bgTheme = ref<string[]>(['bg-no-repeat', 'bg-center', 'bg-gradient-to-tl', 'from-primary/30', 'via-primary-20', 'to-primary/10'])
 
 onMounted(() => {

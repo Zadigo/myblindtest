@@ -1,4 +1,4 @@
-import { toast } from 'vue-sonner'
+import { useToast } from 'primevue/usetoast'
 
 /**
  * Hook called when the WebSocket is connected
@@ -6,17 +6,18 @@ import { toast } from 'vue-sonner'
  */
 function onConnected(ws: WebSocket) {
   const { currentSettings, sessionId } = useGlobalSessionState()
-
   const { stringify } = useWebsocketMessage()
-
+  
   const result = stringify({
     action: 'idle_connect',
     firebase_key: sessionId.value,
     session: currentSettings.value
   })
-
+  
   ws.send(result)
-  toast.success('Info', { description: 'Waiting for players' })
+
+  const toast = useToast()
+  toast.add({ severity: 'info', summary: 'Connection Established', detail: 'Waiting for players', life: 8000 })
   
   if (isDefined(currentSettings)) {
   }
@@ -28,11 +29,9 @@ function onConnected(ws: WebSocket) {
  */
 function onDisconnected(store: ReturnType<typeof useSongs>) {
   return () => {
-    toast.error('Warning', {
-      description: 'Game has been disconnected',
-      unstyled: true,
-      class: 'bg-yellow-100'
-    })
+    const toast = useToast()
+    toast.add({ severity: 'warn', summary: 'Warning', detail: 'Game has been disconnected', life: 8000 })
+    
     store.toggleGameStarted()
   }
 }
@@ -42,22 +41,22 @@ function onDisconnected(store: ReturnType<typeof useSongs>) {
  * @param store Store used for managing song state
  */
 function onError(store: ReturnType<typeof useSongs>) {
+  const toast = useToast()
+
   return () => {
-    toast.error('Error', {
-      description: 'An error has occured'
-    })
+    toast.add({ severity: 'error', summary: 'Error', detail: 'An error has occurred', life: 8000 })
     store.toggleGameStarted()
   }
 }
 
 /**
- * Composable used to a connect to the Django websocket
+ * Shared composable used to a connect to the Django websocket
  * in order to start, stop etc. the blindtest game
  */
-export function useGameWebsocket() {
+export const useGameWebsocket = createSharedComposable(() => {
   const songStore = useSongs()
   const { songsPlayed } = storeToRefs(songStore)
-
+  const toast = useToast()
   const teamsStore = useTeamsStore()
 
   const wsObject = useWebSocket('ws://127.0.0.1:8000/ws/songs', {
@@ -73,7 +72,7 @@ export function useGameWebsocket() {
         switch (data.action) {
           case 'idle_connect':
             if (data.code) {
-              toast.success('Pin code', { description: `Pin code is ${data.code}` })
+              toast.add({ severity: 'info', summary: 'Pin code', detail: `Pin code is ${data.code}`, life: 50000 })
             }
             break
 
@@ -111,21 +110,21 @@ export function useGameWebsocket() {
             break
           
           case 'error':
-            toast.error('Error', { description: `An error has occurred: ${data.message}` })
+            toast.add({ severity: 'error', summary: 'Error', detail: `An error has occurred: ${data.message}`, life: 8000 })
             break
 
           // Group actions
 
           case 'device_connected':
-            toast.success('Device', { description: 'Projecton device pending connection' })
+            toast.add({ severity: 'success', summary: 'Device', detail: 'Projecton device pending connection', life: 8000 })
             break
 
           case 'device_disconnected':
-            toast.warning('Device', { description: 'Projecton device disconnected' })
+            toast.add({ severity: 'warn', summary: 'Device', detail: 'Projecton device disconnected', life: 8000 })
             break
 
           case 'device_accepted':
-            toast.success('Device', { description: 'Projecton device accepted' })
+            toast.add({ severity: 'success', summary: 'Device', detail: 'Projecton device accepted', life: 8000 })
             break
 
           default:
@@ -136,19 +135,94 @@ export function useGameWebsocket() {
     }
   })
 
+  /**
+   * Actions
+   */
+
+  const [gameStarted, toggleGameStarted] = useToggle(false)
+
   function startGame() {
     const { stringify } = useWebsocketMessage()
     const result = stringify({ action: 'start_game' })
     
     wsObject.send(result)
+    toggleGameStarted()
   }
 
   function stopGame(callback: () => void) {
     wsObject.close()
-    callback()
+    if (isDefined(callback)) callback()
+    toggleGameStarted()
   }
 
   const isConnected = computed(() => wsObject.status.value === 'OPEN')
+
+  const { stringify } = useWebsocketMessage()
+
+  /**
+   * Answering
+   */
+
+  const songsStore = useSongs()
+  const { currentSong, correctAnswers, answers } = storeToRefs(songsStore)
+
+  function handleFinalize() {
+    songStore.incrementStep()
+  }
+
+  function sendIncorrectAnswer() {
+    const result = stringify({ action: 'skip_song' })
+
+    if (result) {
+      wsObject.send(result)
+      handleFinalize()
+    }
+  }
+
+  function sendCorrectAnswer(teamId: string, match: MatchedPart) {
+    let title_match = true
+    let artist_match = true
+
+    if (match === 'Title') {
+      title_match = true
+      artist_match = false
+    }
+
+    if (match === 'Artist') {
+      title_match = false
+      artist_match = true
+    }
+
+    const result = stringify({
+      action: 'submit_guess',
+      team_id: teamId,
+      title_match,
+      artist_match
+    })
+
+    console.log('handleCorrectAnswer', result)
+
+    if (result) {
+      wsObject.send(result)
+
+      if (isDefined(currentSong)) {
+        correctAnswers.value.push({
+          teamId: teamId,
+          song: currentSong.value
+        })
+
+        answers.value.push({
+          teamId: teamId,
+          matched: match,
+          song: currentSong.value
+        })
+      }
+
+      console.log('BlindTestPage.handleCorrectAnswer', correctAnswers.value, answers.value)
+
+      handleFinalize()
+    }
+  }
 
   return {
     isConnected,
@@ -157,12 +231,30 @@ export function useGameWebsocket() {
      */
     wsObject,
     /**
+     * Whether the game was started
+     * @default false
+     */
+    gameStarted,
+    /**
      * Starts the blindtest
      */
     startGame,
     /**
      * Stops the blindtest
      */
-    stopGame
+    stopGame,
+    /**
+     * Sends an incorrect answer to the server
+     * to skip the current song
+     * @param team The team that answered incorrectly
+     */
+    sendIncorrectAnswer,
+    /**
+     * Sends a correct answer to the server
+     * for the given team
+     * @param teamId The ID of the team
+     * @param match The element that was matched
+     */
+    sendCorrectAnswer
   }
-}
+})

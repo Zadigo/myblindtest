@@ -34,7 +34,7 @@
           </div>
 
           <div class="flex justify-center mt-4 w-full">
-            <volt-contrast-button :disabled="!gameStarted" class="w-10/13 self-center" @click="handleCorrectAnswer">
+            <volt-contrast-button :disabled="!gameStarted" class="w-10/13 self-center" @click="proxySendCorrectAnswer">
               <vue-icon icon="fa-solid:check" />
               Validate
             </volt-contrast-button>
@@ -60,7 +60,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useAnimationComposable, useConsecutiveAnswers } from '@/composables/use/game/manager';
+import { useAnimationComposable, useConsecutiveAnswers } from '@/composables/use/game/utils';
 import type { MatchedPart } from '@/data'
 
 const emit = defineEmits<{ 'next-song': [data: [ teamId: string, match: MatchedPart]] }>()
@@ -75,9 +75,6 @@ const { teamIndex = 1, marginRight = 0, marginLeft = 0, diffusionMode = false, b
 
 const songsStore = useSongs()
 const { gameStarted } = storeToRefs(songsStore)
-
-const matchedElement = ref<MatchedPart>('Both')
-
 
 /**
  * Team
@@ -114,14 +111,17 @@ const { handleAnimation: handleScoreAnimation } = useAnimationComposable('scoreB
  * Answering
  */
 
-async function handleCorrectAnswer() {
+const matchedElement = ref<MatchedPart>('Both')
+const { sendCorrectAnswer } = useGameWebsocket()
+
+async function proxySendCorrectAnswer() {
   if (team.value) {
     await handleTeamBlockAnimation()
     await handleScoreAnimation()
     
     console.log('Correct answer', team.value)
 
-    emit('next-song', [team.value.id, matchedElement.value])
+    sendCorrectAnswer(team.value.id, matchedElement.value)
     matchedElement.value = 'Both'
   } else {
     console.error('handleCorrectAnswer', 'No team')

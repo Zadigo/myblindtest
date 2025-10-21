@@ -35,6 +35,7 @@ export const useSongs = defineStore('songs', () => {
     answers,
     /**
      * Whether the game was started
+     * @deprecated use useGameWebsocket instead
      */
     gameStarted,
     /**
@@ -61,6 +62,7 @@ export const useSongs = defineStore('songs', () => {
     currentSong,
     /**
      * Toggles the game started state
+     * @deprecated use useGameWebsocket instead
      */
     toggleGameStarted,
     /**

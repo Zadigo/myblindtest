@@ -3,7 +3,7 @@ import { createHead } from '@unhead/vue/client'
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import { createVueAxiosManager } from './plugins'
-// import { createVueAxiosManager } from 'vue-axios-manager'
+import ToastService from 'primevue/toastservice';
 
 import AnimateOnScroll from 'primevue/animateonscroll'
 import PrimeVue from 'primevue/config'
@@ -43,6 +43,7 @@ app.use(axiosManager)
 app.use(pinia)
 app.use(router)
 app.use(head)
+app.use(ToastService)
 app.use(installPlugins())
 app.use(PrimeVue, { unstyled: true })
 app.directive('animateonscroll', AnimateOnScroll)

@@ -1,6 +1,5 @@
-import { toast } from 'vue-sonner'
 import { addNewSongData } from '@/data'
-
+import { useToast } from 'primevue/usetoast'
 import type { NewSong, Song } from '@/types'
 
 interface SongCreationApiResponse {
@@ -34,6 +33,8 @@ export function useGetGenres<T = SearchedGenreApiResponse>() {
 }
 
 export function useEditSong() {
+  const toast = useToast()
+  
   const blocks = ref<NewSong[]>([
     {
       name: '',
@@ -70,7 +71,7 @@ export function useEditSong() {
 
     if (responseData.value) {
       if (responseData.value.errors.length > 0) {
-        toast.error(`Error when creating songs: ${responseData.value.errors}`, { duration: 10000 })
+        toast.add({ severity: 'error', summary: 'Error when creating songs', detail: responseData.value.errors.join(', '), life: 10000 })
       }
     }
 

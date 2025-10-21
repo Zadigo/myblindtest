@@ -3,9 +3,10 @@
     <!-- Code. State -->
     <volt-card>
       <template #content>
+        {{ isConnected }}
         <div class="flex justify-between items-center">
           <volt-badge v-if="isConnected" class="animate-pulse animation-duration-5000">Connected</volt-badge>
-          <volt-badge v-else class="cursor-pointer" @click="wsObject.open()">Disconnected: {{ isConnected }}</volt-badge>
+          <volt-badge v-else class="cursor-pointer" @click="wsObject.open()">Disconnected</volt-badge>
 
           <div class="py-2 px-5 rounded-md bg-primary-100 flex justify-start items-center gap-5 cursor-pointer ease-in-out hover:bg-primary-200" @click="() => copy()">
             <p class="text-primary-600">{{ sessionId }}</p>
@@ -18,7 +19,7 @@
       </template>
     </volt-card>
 
-    <!-- Manager -->
+    <!-- Video Panel -->
     <volt-card class="border-none shadow-md">
       <template #content>
         <!-- Song Info -->
@@ -48,7 +49,7 @@
         <div class="inline-flex justify-center w-full gap-1">
           <volt-secondary-button v-if="gameStarted" @click="() => stopGame(stopGameCallback)">
             <vue-icon icon="fa-solid:stop" size="15" />
-            Stop
+            Stop {{ gameStarted }}
           </volt-secondary-button>
           <volt-button v-else variant="outlined" @click="() => startGame()">
             <vue-icon icon="fa-solid:play" size="15" />
@@ -66,100 +67,41 @@
 </template>
 
 <script setup lang="ts">
-import { toast } from 'vue-sonner'
+import { useToast } from 'primevue/usetoast'
 
-import type { MatchedPart } from '@/data'
-import type { VideoBlockExposedMethods } from '@/types'
+const toast = useToast()
 
 /**
  * Websocket
  */
 
-const { wsObject, startGame, stopGame, isConnected } = useGameWebsocket()
-const { stringify } = useWebsocketMessage()
-
-onMounted(() => { wsObject.open() })
+const { wsObject, startGame, stopGame, isConnected, sendIncorrectAnswer, gameStarted } = useGameWebsocket()
 
 const songsStore = useSongs()
-const { gameStarted, currentSong, currentStep, correctAnswers } = storeToRefs(songsStore)
-
-/**
- * Callback function used after a correct or
- * incorrect answer was triggered
- */
-function handleFinalize() {
-  songsStore.incrementStep()
-}
-
- /**
- * Returns the next song by excluding
- * those that were already played
- */
-function sendIncorrectAnswer() {
-  const result = stringify({ action: 'skip_song' })
-
-  if (result) {
-    wsObject.send(result)
-    handleFinalize()
-  }
-}
-
-/**
- * Proxy function that can be used by parent elements
- * to trigger a websocket message on the team guess
- *
- * @param teamId The ID of the team
- * @param match The element that was matched
- */
-function sendCorrectAnswer(teamId: string, match: MatchedPart) {
-  let title_match: boolean = true
-  let artist_match: boolean = true
-
-  if (match === 'Title') {
-    title_match = true
-    artist_match = false
-  }
-
-  if (match === 'Artist') {
-    title_match = false
-    artist_match = true
-  }
-
-  const result = stringify({
-    action: 'submit_guess',
-    team_id: teamId,
-    title_match,
-    artist_match
-  })
-
-  console.log('handleCorrectAnswer', result)
-
-  if (result) {
-    wsObject.send(result)
-    handleFinalize()
-  }
-}
+const { currentSong, currentStep, correctAnswers } = storeToRefs(songsStore)
 
 const teamStore = useTeamsStore()
 const { teamOne, teamTwo } = storeToRefs(teamStore)
 
 /**
- * Stops the game
+ * Actions
  */
-function stopGameCallback() {
-  toast.success('Stopped blind test')
-  
-  correctAnswers.value = []
 
+ // Callback function executed after stopping the game
+ // to reset scores and correct answers
+function stopGameCallback() {
+  correctAnswers.value = []
+  
   if (teamOne.value) {
     teamOne.value.score = 0
   }
-
+  
   if (teamTwo.value) {
     teamTwo.value.score = 0
   }
 
   songsStore.resetStep()
+  toast.add({ severity: 'info', summary: 'Game Stopped', detail: 'The game has been successfully stopped and reset.', life: 8000 })
 }
 
 /**
@@ -168,15 +110,10 @@ function stopGameCallback() {
 
 const { showWheel, randomizerEl, randomizerComplete } = useWheelRandomizer(wsObject.ws)
 
-defineExpose<VideoBlockExposedMethods>({
-  sendCorrectAnswer,
-  sendIncorrectAnswer
-})
-
 /**
- * Session
+ * Session copy
  */
 
-const { sessionId} = useGlobalSessionState()
+const { sessionId } = useGlobalSessionState()
 const { copy } = useClipboard({ source: sessionId })
 </script>

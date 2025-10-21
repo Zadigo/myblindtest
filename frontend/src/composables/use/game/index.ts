@@ -3,6 +3,7 @@ import type { WebsocketReceiveMessage, WebsocketSendMessage } from '@/types'
 import type { Ref } from 'vue'
 
 export * from './ws_manager'
+export * from './utils'
 
 /**
  * Composable used to handle websocket messages

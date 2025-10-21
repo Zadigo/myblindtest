@@ -74,7 +74,9 @@
 
 <script setup lang="ts">
 import type { ArtistSong, BaseApiResponse } from '@/types'
-import { toast } from 'vue-sonner'
+import { useToast } from 'primevue/usetoast'
+
+const toast = useToast()
 
 interface ApiResponse extends BaseApiResponse<ArtistSong> {
   count: number
