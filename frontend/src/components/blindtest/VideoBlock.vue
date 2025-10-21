@@ -177,7 +177,6 @@ defineExpose<VideoBlockExposedMethods>({
  * Session
  */
 
-const sessionStore = useSessionStore()
-const { sessionId } = storeToRefs(sessionStore)
+const { sessionId} = useGlobalSessionState()
 const { copy } = useClipboard({ source: sessionId })
 </script>

@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import VideoBlock from '@/components/blindtest/VideoBlock.vue'
+import type VideoBlock from '@/components/blindtest/VideoBlock.vue'
 import type { MatchedPart } from '@/data'
 import type { VideoBlockExposedMethods } from '@/types'
 
