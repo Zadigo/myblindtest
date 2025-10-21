@@ -1,10 +1,8 @@
 import celery
 from celery import chain
 from celery.utils.log import get_task_logger
-from django.db import transaction
-from googlesearch import search
-from songs.models import Artist, Song
 from songs.completion import Wikipedia, nrj
+from songs.models import Artist, Song
 
 from blindtest.rapidapi.client import Spotify
 
@@ -23,8 +21,8 @@ def song_information(songs):
 @celery.shared_task
 def wikipedia_information(artist_id: int):
     """This task searches for the Wikipedia pages for the
-    given artist on Google and extracts pieces of information on
-    the artist. Both the french and english pages are used if provided"""
+    given artist on Google and extracts pieces of information. 
+    Both the french and english pages are used if provided."""
     try:
         artist = Artist.objects.get(id=artist_id)
     except:
@@ -37,16 +35,23 @@ def wikipedia_information(artist_id: int):
 
         logger.warning(f'Found data for: {artist.name}: {instance.metadata}')
 
-        artist.birthname = instance.metadata['birthname']
+        birthname = instance.metadata.get('birthname', None)
+        if birthname is not None:
+            artist.birthname = instance.metadata['birthname']
+
         artist.date_of_birth = date_of_birth or instance.metadata['date_of_birth']
         artist.save()
 
-        nrj_information.apply_async(args=[artist_id], countdown=5)
+        nrj_information.apply_async(
+            args=[artist_id],
+            countdown=5
+        )
 
 
 @celery.shared_task
 def nrj_information(artist_id: int):
-    """This task searches for the artist's date of birth on NRJ's website"""
+    """This task searches for the artist's date of birth on NRJ's website
+    in case we were not able to find it on Wikipedia."""
     try:
         artist = Artist.objects.get(id=artist_id)
     except:

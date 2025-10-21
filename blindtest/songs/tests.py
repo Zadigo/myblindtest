@@ -1,5 +1,6 @@
 import datetime
 import json
+import nltk
 from unittest.mock import patch
 
 from channels.db import database_sync_to_async
@@ -485,11 +486,38 @@ class TestCompletion(TestCase):
     fixtures = ['fixtures/artists']
 
     def test_wikipedia(self):
-        instance = Wikipedia()
-
         artist = Artist.objects.first()
+
+        instance = Wikipedia()
         result = instance.extract_text_from_page(artist)
 
         self.assertIsNotNone(result)
         self.assertIsInstance(result, str)
         self.assertIn('mariah carey', result)
+
+        value = instance.get_date_or_birth(result)
+        self.assertIsNotNone(value)
+        self.assertIsInstance(value, datetime.date)
+
+    def test_artist_no_wikipedia_page(self):
+        artist = Artist.objects.create(
+            name='Gwen Stefani',
+            birthname='Gwen Renée Stefani'
+        )
+
+        instance = Wikipedia()
+        result = instance.extract_text_from_page(artist)
+        self.assertIsNone(result)
+
+        value = instance.get_date_or_birth(result)
+        self.assertIsNotNone(value)
+
+    def test_nrj(self):
+        artist = Artist.objects.first()
+        result = nrj(artist)
+
+        print(result)
+
+        self.assertIsNotNone(result)
+        self.assertIn('date_of_birth', result)
+        self.assertIsInstance(result['date_of_birth'], datetime.date)

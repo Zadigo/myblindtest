@@ -1,31 +1,41 @@
 import datetime
+import locale
 import pathlib
 import re
-import locale
+import ssl
 import unicodedata
 
+import certifi
 import kagglehub
 import nltk
 import pandas
 import requests
 from bs4 import BeautifulSoup
+from bs4.element import PageElement, Tag
 from googlesearch import search
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from songs.models import Artist
-from bs4.element import PageElement, Tag
 
 HEADERS = {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36'
 }
 
-nltk.download('punkt')
-nltk.download('stopwords')
-nltk.download('wordnet')
-nltk.download('punkt_tab')
-nltk.download('omw-1.4')
+try:
+    nltk.data.find('tokenizers/punkt_tab')
+except LookupError:
+    ssl._create_default_https_context = ssl._create_unverified_context
+    nltk.download('punkt')
+    nltk.download('punkt_tab', quiet=True)
+    nltk.download('stopwords')
+    nltk.download('wordnet')
+    nltk.download('omw-1.4')
+
 
 class Wikipedia:
+    """Class that extracts information from
+    an artist's Wikipedia page"""
+
     def __init__(self):
         en_contractions_path = pathlib.Path(
             kagglehub.dataset_download(
@@ -119,7 +129,10 @@ class Wikipedia:
 
     def extract_text_from_page(self, artist: Artist):
         if not artist.wikipedia_page:
-            results = list(search(f'{artist.name} Wikipedia', num_results=2))
+            results = list(
+                f'{artist.birthname or artist.name} Wikipedia',
+                num_results=5
+            )
 
             base_domain = 'wikipedia.org/wiki/'
             candidates = list(filter(lambda x: base_domain in x, results))
@@ -250,15 +263,16 @@ def nrj(artist: Artist):
                     )
                 )
 
-                place_of_birth: str = place_of_birth[-1].split(':')[0]
+                place_of_birth: str = place_of_birth[-1].split(':')[-1]
 
                 if date_of_birth:
                     date_text = date_of_birth[-1].replace('Né(e) le :', '')
+                    date_text = re.sub(r'\(.*\)', '', date_text)
                     date_of_birth = datetime.datetime.strptime(
                         date_text.strip(),
                         '%d/%m/%Y'
                     )
                     metadata['date_of_birth'] = date_of_birth.date()
 
-                metadata['place_of_birth'] = place_of_birth
+                metadata['place_of_birth'] = place_of_birth.strip()
         return metadata
