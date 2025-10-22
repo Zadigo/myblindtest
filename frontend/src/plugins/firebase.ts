@@ -9,12 +9,12 @@ const env = import.meta.env
 export const firebaseApp = initializeApp({
   apiKey: env.VITE_FIREBASE_API_KEY,
   authDomain: env.VITE_FIREBASE_AUTH_DOMAIN,
-  databaseURL: env.VITE_FIREBASE_DB_URL,
+  databaseURL: env.VITE_FIREBASE_DATABASE_URL,
   storageBucket: env.VITE_FIREBASE_STORAGE_BUCKET,
   appId: env.VITE_FIREBASE_APP_ID,
   projectId: env.VITE_FIREBASE_PROJECT_ID,
   measurementId: env.VITE_FIREBASE_MEASUREMENT_ID,
-  messagingSenderId: env.VITE_FIREBASE_MESSAGE_SENDER_ID
+  messagingSenderId: env.VITE_FIREBASE_MESSAGING_SENDER_ID
 })
 
 const db = getDatabase(firebaseApp)

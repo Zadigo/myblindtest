@@ -4,3 +4,6 @@
     <slot />
   </nav>
 </template>
+
+<script lang="ts" setup>
+</script>

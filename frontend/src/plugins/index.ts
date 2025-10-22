@@ -1,3 +1,4 @@
+import type { Plugin } from 'vue'
 import { VueFire, VueFireAuth } from 'vuefire'
 import { createFirebase, firebaseApp } from './firebase'
 
@@ -7,7 +8,7 @@ export * from './client'
 export * from './date'
 export * from './firebase'
 
-export default function installPlugins() {
+export default function installPlugins(): Plugin {
   return {
     install(app: App) {
       createFirebase(app)
