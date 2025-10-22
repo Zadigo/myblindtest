@@ -1,5 +1,5 @@
 <template>
-  <VoltCard class="border-0 bg-brand-shade-3/30 shadow-none">
+  <VoltCard class="border-0 bg-brand-shade-3/30">
     <template #title>
       <h3 class="font-bold">
         Game modes
@@ -8,16 +8,14 @@
 
     <template v-if="currentSettings" #content>
       <div class="py-3">
-        <volt-label>
-          <volt-switch v-model="currentSettings.settings.soloMode" />
-          <label>Run in solo mode</label>
+        <volt-label label-for="solo-mode" label="Run in solo mode">
+          <volt-toggle-switch v-model="currentSettings.settings.soloMode" />
         </volt-label>
       </div>
 
       <div class="py-3">
-        <volt-label>
-          <volt-switch v-model="currentSettings.settings.adminPlays" />
-          <label>Admin is registered in a team</label>
+        <volt-label label-for="admin-plays" label="Admin is registered in a team">
+          <volt-toggle-switch v-model="currentSettings.settings.adminPlays" />
         </volt-label>
       </div>
     </template>

@@ -1,18 +1,17 @@
 <template>
-  <InputOtp unstyled :pt="theme" :ptOptions="{ mergeProps: ptViewMerge }">
-    <template v-for="(_, slotName) in $slots" v-slot:[slotName]="slotProps">
+  <InputOtp unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
+    <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
       <slot :name="slotName" v-bind="slotProps ?? {}" />
     </template>
   </InputOtp>
 </template>
 
 <script setup lang="ts">
+import InputOtp, { type InputOtpPassThroughOptions, type InputOtpProps } from 'primevue/inputotp'
 import { ref } from 'vue'
 import { ptViewMerge } from './utils'
 
-import InputOtp, { type InputOtpPassThroughOptions, type InputOtpProps } from 'primevue/inputotp'
-
-interface Props extends /* @vue-ignore */ InputOtpProps {}
+interface Props extends /* @vue-ignore */ InputOtpProps { }
 defineProps<Props>()
 
 const theme = ref<InputOtpPassThroughOptions>({

@@ -1,5 +1,5 @@
 <template>
-  <volt-card class="border-0 bg-brand-shade-3/30 shadow-none">
+  <volt-card class="border-0 bg-brand-shade-3/30">
     <template #title>
       <h3 class="font-bold">
         General settings
@@ -20,7 +20,7 @@
       </div>
       
       <div class="mt-3">
-        <volt-label for="game-difficulty" class="mb-2">Time limit</volt-label>
+        <volt-label label-for="game-difficulty" class="mb-2">Time limit</volt-label>
         <volt-input-text id="game-difficulty" v-model="currentSettings.settings.timeLimit" type="time" placeholder="Time limit" />
       </div>
 

@@ -1,9 +1,9 @@
 <template>
-  <Toast unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
+  <Toast unstyled :pt="theme" :ptOptions="{ mergeProps: ptViewMerge }">
     <template #closeicon>
       <TimesIcon />
     </template>
-    <template v-for="(_, slotName) in $slots" v-slot:[slotName]="slotProps">
+    <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
       <slot :name="slotName" v-bind="slotProps ?? {}" />
     </template>
   </Toast>

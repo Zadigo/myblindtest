@@ -5,12 +5,11 @@
 </template>
 
 <script setup lang="ts">
+import AccordionContent, { type AccordionContentPassThroughOptions, type AccordionContentProps } from 'primevue/accordioncontent'
 import { ref } from 'vue'
 import { ptViewMerge } from './utils'
 
-import AccordionContent, { type AccordionContentPassThroughOptions, type AccordionContentProps } from 'primevue/accordioncontent'
-
-interface Props extends /* @vue-ignore */ AccordionContentProps {}
+interface Props extends /* @vue-ignore */ AccordionContentProps { }
 defineProps<Props>()
 
 const theme = ref<AccordionContentPassThroughOptions>({
