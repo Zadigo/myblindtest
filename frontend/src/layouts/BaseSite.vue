@@ -31,8 +31,6 @@
       </navbar-content>
     </navbar>
 
-    <Toaster position="top-right" />
-
     <!-- Main -->
     <router-view v-slot="{ Component }">
       <Transition enter-active-class="duration-300 ease-out" enter-from-class="opacity-0 -translate-x-10 blur-sm" enter-to-class="opacity-100 translate-x-0 blur-none" leave-active-class="duration-300 ease-in" leave-from-class="opacity-100 translate-x-0 blur-none" leave-to-class="opacity-0 translate-x-10 blur-sm" mode="out-in">

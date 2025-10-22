@@ -98,6 +98,7 @@ export const useGameWebsocket = createSharedComposable(() => {
             break
           
           case 'error':
+            console.error('WebSocket error received', data)
             toast.add({ severity: 'error', summary: 'Error', detail: `An error has occurred: ${data.message}`, life: 8000 })
             break
 

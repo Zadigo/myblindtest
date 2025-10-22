@@ -25,7 +25,7 @@ const videoEl = useTemplateRef<InstanceType<typeof VideoBlock> & VideoBlockExpos
  */
 
 const { wsObject } = useGameWebsocket()
-onMounted(() => { wsObject.open() })
+wsObject.open()
 
 /**
  * SEO

@@ -130,6 +130,14 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
             # actual coming game
             session: dict[str, str | bool | int] = content.get('session', {})
 
+            if session is None:
+                await self.send_error('No session was provided')
+                return
+
+            if 'teams' not in session:
+                await self.send_error('Not enough teams to start the game')
+                return
+
             team_one = session['teams'][0]
             team_two = session['teams'][1]
 
