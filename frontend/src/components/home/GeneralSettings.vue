@@ -11,12 +11,12 @@
     <template v-if="currentSettings" #content>
       <volt-input-number v-model="currentSettings.settings.rounds" :min="1" :max="100" class="w-full" placeholder="Number of rounds" />
 
-      <div>
-        <label>Game difficulty</label>
-        <volt-select v-model="currentSettings.settings.difficultyLevel" :options="difficultyLevels.map(x => ({ name: x }))" option-label="name" option-value="name" />
+      <div classs="space-y-3">
+        <p class="font-semibold">Game difficulty</p>
+        <volt-select v-model="currentSettings.settings.difficultyLevel" :options="difficultyLevels.map(x => ({ name: x }))" class="w-4/6" option-label="name" option-value="name" />
 
-        <label>Genre</label>
-        <volt-select v-model="currentSettings.settings.songType" :options="genres" option-label="name" option-value="name" />
+        <p class="font-semibold">Genre</p>
+        <volt-select v-model="currentSettings.settings.songType" :options="genres" class="w-4/6" option-label="name" option-value="name" />
       </div>
       
       <div class="mt-3">
@@ -24,9 +24,7 @@
         <volt-input-text id="game-difficulty" v-model="currentSettings.settings.timeLimit" type="time" placeholder="Time limit" />
       </div>
 
-      <p for="time-period" class="font-bold mt-10">
-        Time period
-      </p>
+      <p class="font-semibold mt-10">Time period</p>
 
       <p class="font-light">
         Choose a timeframe in years to select the
@@ -46,7 +44,10 @@
     </template>
 
     <template v-else #content>
-      <volt-skeleton class="h-96" />
+      <div class="space-y-2">
+        <volt-skeleton class="h-96" />
+        <volt-skeleton class="h-96" />
+      </div>
     </template>
   </volt-card>
 </template>

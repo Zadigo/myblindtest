@@ -31,6 +31,21 @@
  * Initiate session
  */
 const { reset, hasExistingSession } = useSession()
+
+/**
+ * SEO
+ */
+
+useHead({
+  title: 'Home',
+  meta: [
+    {
+      name: 'description',
+      content:
+        'Welcome to Volt Scorekeeper! Manage your sports scoring with ease using our intuitive platform designed for efficiency and accuracy.',
+    },
+  ],
+})
 </script>
 
 <style lang="scss">
