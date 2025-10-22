@@ -1,0 +1,51 @@
+.pyro > .before,
+.pyro > .after {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  box-shadow: 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff;
+  animation: 1s bang ease-out infinite backwards, 1s gravity ease-in infinite backwards, 5s position linear infinite backwards;
+}
+
+.pyro > .after {
+  animation-delay: 1.25s, 1.25s, 1.25s;
+  animation-duration: 1.25s, 1.25s, 6.25s;
+}
+@keyframes bang {
+  to {
+    box-shadow: 38px -394.6666666667px hsl(318, 100%, 50%), -16px -398.6666666667px hsl(36, 100%, 50%), 37px 72.3333333333px hsl(338, 100%, 50%), -69px 58.3333333333px hsl(305, 100%, 50%), 96px 49.3333333333px hsl(331, 100%, 50%), 200px -370.6666666667px hsl(320, 100%, 50%), 40px -247.6666666667px hsl(57, 100%, 50%), -134px -276.6666666667px hsl(88, 100%, 50%), 234px -100.6666666667px hsl(26, 100%, 50%), 127px -97.6666666667px hsl(256, 100%, 50%), 182px -307.6666666667px hsl(58, 100%, 50%), -165px -336.6666666667px hsl(282, 100%, 50%), -239px -247.6666666667px hsl(346, 100%, 50%), 244px -254.6666666667px hsl(290, 100%, 50%), -214px -254.6666666667px hsl(193, 100%, 50%), 38px -133.6666666667px hsl(44, 100%, 50%), 120px -389.6666666667px hsl(72, 100%, 50%), 27px -57.6666666667px hsl(125, 100%, 50%), 137px 48.3333333333px hsl(63, 100%, 50%), 12px 49.3333333333px hsl(4, 100%, 50%), 36px -113.6666666667px hsl(318, 100%, 50%), -236px -283.6666666667px hsl(189, 100%, 50%), -218px 3.3333333333px hsl(225, 100%, 50%), 181px -382.6666666667px hsl(300, 100%, 50%), 67px -256.6666666667px hsl(274, 100%, 50%), 150px -89.6666666667px hsl(97, 100%, 50%), -185px -94.6666666667px hsl(250, 100%, 50%), -188px -166.6666666667px hsl(129, 100%, 50%), -1px 9.3333333333px hsl(109, 100%, 50%), 217px -72.6666666667px hsl(183, 100%, 50%), 106px 47.3333333333px hsl(18, 100%, 50%), 115px -116.6666666667px hsl(10, 100%, 50%), 111px -347.6666666667px hsl(105, 100%, 50%), 106px 26.3333333333px hsl(9, 100%, 50%), 197px -27.6666666667px hsl(302, 100%, 50%), 215px -352.6666666667px hsl(100, 100%, 50%), -158px -160.6666666667px hsl(244, 100%, 50%), 189px -122.6666666667px hsl(256, 100%, 50%), -131px -216.6666666667px hsl(174, 100%, 50%), 227px -112.6666666667px hsl(229, 100%, 50%), 189px -20.6666666667px hsl(97, 100%, 50%), 230px 34.3333333333px hsl(81, 100%, 50%), -137px -189.6666666667px hsl(213, 100%, 50%), 211px -341.6666666667px hsl(234, 100%, 50%), 15px -369.6666666667px hsl(248, 100%, 50%), -212px 76.3333333333px hsl(12, 100%, 50%), -21px -380.6666666667px hsl(164, 100%, 50%), 210px -317.6666666667px hsl(75, 100%, 50%), -83px -283.6666666667px hsl(260, 100%, 50%), 224px -327.6666666667px hsl(49, 100%, 50%), 142px -158.6666666667px hsl(56, 100%, 50%);
+  }
+}
+@keyframes gravity {
+  to {
+    transform: translateY(200px);
+    -moz-transform: translateY(200px);
+    -webkit-transform: translateY(200px);
+    -o-transform: translateY(200px);
+    -ms-transform: translateY(200px);
+    opacity: 0;
+  }
+}
+@keyframes position {
+  0%, 19.9% {
+    margin-top: 10%;
+    margin-left: 40%;
+  }
+  20%, 39.9% {
+    margin-top: 40%;
+    margin-left: 30%;
+  }
+  40%, 59.9% {
+    margin-top: 20%;
+    margin-left: 70%;
+  }
+  60%, 79.9% {
+    margin-top: 30%;
+    margin-left: 20%;
+  }
+  80%, 99.9% {
+    margin-top: 30%;
+    margin-left: 80%;
+  }
+}/*# sourceMappingURL=fireworks.css.map */=fireworks.css.map */
