@@ -15,7 +15,7 @@ export const useTeamsStore = defineStore('teams', () => {
   const getTeamById = reactify(_getTeamById)
 
   function _getTeamByIndex(index: number) {
-    return teams.value.at(index)
+    return teams.value[index]
   }
 
   const getTeamByIndex = reactify(_getTeamByIndex)

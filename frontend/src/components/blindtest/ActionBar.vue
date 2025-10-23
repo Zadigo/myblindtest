@@ -15,10 +15,24 @@
       </volt-dropdown>
     </div>
 
-    <volt-badge size="small" class="animate-pulse gap-2">
-      <vue-icon icon="lucide:circle" />
-      Connected
-    </volt-badge>
+    <div class="flex gap-2">
+      <volt-badge class="cursor-pointer text-sm" @click="() => copy()">
+        <div class="flex gap-2">
+          {{ sessionId }}
+          <vue-icon icon="lucide:copy" />
+        </div>
+      </volt-badge>
+  
+      <volt-badge v-if="isConnected" class="animate-pulse gap-2">
+        <vue-icon icon="lucide:circle" />
+        Connected
+      </volt-badge>
+
+      <volt-badge v-else severity="danger" class="cursor-pointer gap-2">
+        <vue-icon icon="lucide:circle-off" />
+        Disconnected
+      </volt-badge>
+    </div>
   </div>
 </template>
 
@@ -36,4 +50,17 @@ const items = ref([
     ]
   }
 ])
+
+/**
+ * State
+ */
+
+const isConnected = inject<boolean>('isConnected')
+
+/**
+ * Session copy
+ */
+
+const { sessionId } = useGlobalSessionState()
+const { copy } = useClipboard({ source: sessionId })
 </script>

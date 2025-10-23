@@ -208,6 +208,10 @@ export const useGameWebsocket = createSharedComposable(() => {
   }
 
   return {
+    /**
+     * Whether the WebSocket is connected
+     * @default true
+     */
     isConnected,
     /**
      * WebSocket object used to communicate with the server

@@ -29,6 +29,23 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * Background artist image
+ */
 const {} = useStyleTag('.artist { background-image: url("default.jpg"); background-size: cover; background-position: center; }')
+
+/**
+ * Websocket
+ */
+
+const { isConnected, gameStarted } = useGameWebsocket()
+
+provide<boolean>('isConnected', isConnected.value)
+provide<boolean>('gameStarted', gameStarted.value)
+
+/**
+ * Modals
+ */
+
 const showDevices = ref(false)
 </script>
