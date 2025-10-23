@@ -55,7 +55,7 @@ const items = ref([
  * State
  */
 
-const isConnected = inject<boolean>('isConnected')
+const { isConnected } = useGameWebsocket()
 
 /**
  * Session copy

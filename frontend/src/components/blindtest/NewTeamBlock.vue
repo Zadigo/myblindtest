@@ -44,7 +44,7 @@ const gameStarted = inject('gameStarted')
 const teamStore = useTeamsStore()
 const team = teamStore.getTeamByIndex(teamIndex)
 
-const teamName = computed(() => isDefined(team) ? team.value.name : (team.value?.id || 'Unknown Team'))
+const teamName = computed(() => isDefined(team) && team.value.name !== '' ? team.value.name : (team.value?.id || '-'))
 const teamScore = computed(() => isDefined(team) ? team.value.score : 0)
 
 /**

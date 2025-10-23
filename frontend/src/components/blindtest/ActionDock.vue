@@ -1,6 +1,6 @@
 <template>
   <div ref="dock" id="dock" class="col-span-12 bg-primary-100/30 border border-primary-100/80 h-auto min-w-100 w-150 absolute bottom-10 left-[calc(50%-calc(600px/2))] px-2 py-3 rounded-xl flex justify-center gap-2 z-40 overflow-hidden">
-    <div v-for="item in filteredItems" :key="item.icon" :class="{ [`${animationClass }`]: item.animate }" class="p-1 bg-primary-50 rounded-lg w-13 h-13 flex justify-center items-center gap-2 cursor-pointer hover:bg-primary-100 transition hover:-translate-y-1" @click="item.action">
+    <div v-for="item in items" :key="item.icon" :class="{ [`${animationClass }`]: item.animate }" class="p-1 bg-primary-50 rounded-lg w-13 h-13 flex justify-center items-center gap-2 cursor-pointer hover:bg-primary-100 transition hover:-translate-y-1" @click="item.action">
       <vue-icon :icon="item.icon" class="text-xl" />
     </div>
 
@@ -46,6 +46,7 @@ function stopGameCallback() {
     teamTwo.value.score = 0
   }
 
+  songsStore.songsPlayed = []
   songsStore.resetStep()
   toast.add({ severity: 'info', summary: 'Game Stopped', detail: 'The game has been successfully stopped and reset.', life: 8000 })
 }
@@ -58,7 +59,7 @@ const items = [
     action: startGame
   },
   { 
-    icon: 'lucide:stop',
+    icon: 'lucide:circle-stop',
     state: gameStarted.value,
     animate: false,
     action: () => stopGame(stopGameCallback)
@@ -70,11 +71,4 @@ const items = [
     action: () => console.log('Stop')
   }
 ]
-
-const filteredItems = computed(() => {
-  return items.filter((item) => {
-    if (item.state === null) return true
-    return item.state
-  })
-})
 </script>

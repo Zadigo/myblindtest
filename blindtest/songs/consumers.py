@@ -130,6 +130,7 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
             # actual coming game
             session: dict[str, str | bool | int] = content.get('session', {})
 
+            print(session)
             if session is None:
                 await self.send_error('No session was provided')
                 return

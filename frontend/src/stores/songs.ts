@@ -20,7 +20,7 @@ export const useSongs = defineStore('songs', () => {
   // Django returns a list of the remaining songs to be played
   // minus the song that was already played. So, we just have
   // to get the last song of the list to get the current song
-  const currentSong = computed(() => songsPlayed.value[-1])
+  const currentSong = computed(() => songsPlayed.value[songsPlayed.value.length - 1])
   
   return {
     /**
