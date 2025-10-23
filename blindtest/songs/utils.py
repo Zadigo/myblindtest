@@ -100,9 +100,9 @@ def astrologic_sign(date_of_birth: datetime.date | None, translate=False) -> str
         # When trying comparisions like 2000/1/1 > 2000/12/20
         # we get false, We have to shift the year of the
         # right (date of birth) to the next year in order
-        # for the comparision to work effectively 2001/1/1 > 2000/12/20 -; 
-        # at the same time, we also need to replace the start year for all 
-        # signsthat are not Capricorne (which is the previous year - december) 
+        # for the comparision to work effectively 2001/1/1 > 2000/12/20 -;
+        # at the same time, we also need to replace the start year for all
+        # signsthat are not Capricorne (which is the previous year - december)
         # and also the end year by moving them to the next year since the
         # date of birth would be on the next year
         if key in shifts_to_next_year:
@@ -146,7 +146,3 @@ def astrologic_sign(date_of_birth: datetime.date | None, translate=False) -> str
             return translations.get(sign)
         return sign
     return None
-
-
-# print(astrologic_sign(datetime.datetime(year=1996, month=1, day=8).date()))
-print(astrologic_sign(datetime.datetime(year=1996, month=2, day=18).date()))

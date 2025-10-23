@@ -3,8 +3,13 @@ from songs import consumers
 
 websocket_urlpatterns = [
     re_path(
-        r'^ws/connect$',
-        consumers.ScreenInterfaceConsumer.as_asgi(),
+        r'^ws/buzzer/connect$',
+        consumers.SmartphoneConsumer.as_asgi(),
+        name='screen_projection'
+    ),
+    re_path(
+        r'^ws/tv/connect$',
+        consumers.TelevisionConsumer.as_asgi(),
         name='screen_projection'
     ),
     re_path(

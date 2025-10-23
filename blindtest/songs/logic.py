@@ -1,15 +1,15 @@
 import asyncio
 import dataclasses
 import random
-from typing import List, Union
+from typing import List, Optional, Union
 
 from channels.db import database_sync_to_async
 from django.core import exceptions
 from django.core.cache import cache
+from django.utils.crypto import get_random_string
 from songs.api import serializers
 from songs.models import Song
 from songs.processors import FuzzyMatcher
-from django.utils.crypto import get_random_string
 
 # TODO: Ability to use jokers:
 # 1. point boost (win 15 points on this specific answer)
@@ -24,47 +24,54 @@ from django.utils.crypto import get_random_string
 # the updates to the frontend applications
 
 
-# // The timeline allows us to track the progression for
-# // correct and incorrect answers globally for all teams
-# // function updateScoringTimeline (action: 'add' | 'sub') {
-# //     const lastScore = scoringTimeline.value[scoringTimeline.value.length]
-
-# //     if (lastScore) {
-# //         if (action === 'add') {
-# //             scoringTimeline.value.push(lastScore + 1)
-# //         } else {
-# //             scoringTimeline.value.push(lastScore - 1)
-# //         }
-# //     } else {
-# //         if (action === 'add') {
-# //             scoringTimeline.value.push(100 + 1)
-# //         }
-
-# //         if (action === 'sub') {
-# //             scoringTimeline.value.push(100 - 1)
-# //         }
-# //     }
-
-# // }
-
 @dataclasses.dataclass
 class Team:
     team_id: str
-    name: str = None
-    color: str = None
-    points: int = 0
+    name: Optional[str] = None
+    color: Optional[str] = None
+    points: Optional[int] = 0
     correct_answers: List[int] = dataclasses.field(default_factory=list)
     answer_times: List[int] = dataclasses.field(default_factory=list)
 
     def __hash__(self):
         return hash((self.team_id))
 
-    def __eq__(self, value):
+    def __eq__(self, value: str):
         return self.team_id == value
 
 
 class GameGlobalStatisticsMixin:
-    pass
+    cached_answers = []
+    timeline = [100]
+
+    @property
+    def last_score(self) -> dict[str, str] | None:
+        try:
+            return self.cached_answers[-1]
+        except:
+            return None
+
+    async def team_answers(self, team_id: str):
+        """Return the last answers by the given team"""
+        return list(map(lambda x: x['team_id'] == team_id, self.cached_answers))[:5]
+
+    async def register_answer(self, team_id: str, matched: str | None):
+        """Registers the answers"""
+        self.cached_answers.append({'team_id': team_id, 'matched': matched})
+
+    async def update_timeline(self):
+        """The timeline allows us to track the progression for
+        correct and incorrect answers globally for all teams"""
+        if self.is_started:
+            matched = self.last_score['matched']
+            value = self.timeline[-1]
+
+            if matched == 'Title' or matched == 'Artist':
+                value += 1
+                self.timeline.append(value)
+            elif matched is None:
+                value -= 1
+                self.timeline.append(value)
 
 
 class GameLogicMixin(GameGlobalStatisticsMixin):
@@ -74,12 +81,6 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        # This is the session cache that frontend
-        # uses to update the scores, team colors,
-        # team names etc saved here
-        # self.game_cache = {}
-
         self.difficulty = 'All'
         self.genre = 'All'
 
@@ -91,16 +92,14 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
         self.difficulty_bonus = False
         self.time_bonus = False
 
-        team_one_id = f'team_{get_random_string(length=12)}'
-        team_two_id = f'team_{get_random_string(length=12)}'
-        self.team_one = Team(team_one_id)
-        self.team_two = Team(team_two_id)
-        self.team_one_score = 0
-        self.team_two_score = 0
+        # team_one_id = f'team_{get_random_string(length=12)}'
+        # team_two_id = f'team_{get_random_string(length=12)}'
+        self.team_one = Team('fake_id_1')
+        self.team_two = Team('fake_id_2')
 
         self.is_started = False
-        self.current_song: dict[str, Union[str, int]] = None
-        self.timer_task: asyncio.Task = None
+        self.current_song: Optional[dict[str, Union[str, int]]] = None
+        self.timer_task: Optional[asyncio.Task] = None
 
         # Solo mode is a mode where the
         # user tries to guess the songs
@@ -113,51 +112,17 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
         self.admin_plays = False
 
         self.played_songs: set[int] = set()
-        self.connection_token = None
-
         self.fuzzy_matcher = FuzzyMatcher()
 
-    @property
-    def game_cache(self):
-        """Returns a live update of the current data
-        present in the current game"""
-        teams = [
-            {
-                "id": self.team_one.team_id,
-                "name": self.team_one.name,
-                "score": self.team_one_score,
-                "players": [],
-                "color": self.team_two.color
-            },
-            {
-                "id": self.team_one.team_id,
-                "name": self.team_two.name,
-                "score": self.team_two_score,
-                "players": [],
-                "color": self.team_two.color
-            }
-        ]
-
-        cache = {
-            "songs": [],
-            "currentStep": 0,
-            "teams": teams,
-            "settings": {
-                "rounds": 1,
-                "timeLimit": None,
-                "pointValue": self.point_value,
-                "songDifficultyBonus": self.difficulty_bonus,
-                "speedBonus": self.time_bonus,
-                "soloMode": self.solo_mode,
-                "adminPlays": self.admin_plays,
-                "difficultyLevel": self.difficulty,
-                "songType": self.genre
-            }
-        }
-        return cache
+        self.device_name = 'blind_test'
+        self.device_id = f'blind_test_{get_random_string(length=12)}'
+        self.connection_token = None
+        # Pin code for the game
+        self.pin_code = random.randint(1000, 9999)
+        self.pending_devices: List[str] = []
 
     @database_sync_to_async
-    def get_songs(self, temporary_genre: str = None, exclude: List[int] = []) -> List[int]:
+    def get_songs(self, temporary_genre: Optional[str] = None, exclude: List[int] = []) -> List[int]:
         cache_key = f'songs_{self.difficulty}_{self.genre}'
         cached_songs = cache.get(cache_key)
 
@@ -189,7 +154,7 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
         return song_ids
 
     @database_sync_to_async
-    def get_song(self, song_id):
+    def get_song(self, song_id: int):
         try:
             song = Song.objects.get(id=song_id)
             serializer = serializers.SongSerializer(instance=song)
@@ -250,8 +215,8 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
                     'action': 'game_complete',
                     'message': 'Final round complete',
                     'final_scores': {
-                        'team1': self.team_one_score,
-                        'team2': self.team_two_score
+                        'team1': self.team_one.score,
+                        'team2': self.team_two.score
                     },
                     'songs_played': len(self.played_songs)
                 })
@@ -266,9 +231,8 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
         """Calculate points based on match type and remaining time"""
         base_points = 0
 
-        # Use the song's difficulty level to calculate
-        # the amount of points that will be used  to
-        # add to team's final score
+        # Use the song's difficulty level
+        # for the total score
         def factor(value: int):
             if self.difficulty_bonus:
                 factor = int(self.current_song['difficulty'])
@@ -364,25 +328,30 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
             message['action'] = 'guess_correct'
 
             if team_id == self.team_one:
-                self.team_one_score += result
-                # TODO: Fully implement the dataclass
                 self.team_one.points += result
-                message['points'] = self.team_one_score
+                message['points'] = self.team_one.points
 
             if team_id == self.team_two:
-                self.team_two_score += result
-                # TODO: Fully implement the dataclass
                 self.team_two.points += result
-                message['points'] = self.team_two_score
+                message['points'] = self.team_two.points
         else:
             message['action'] = 'guess_incorrect'
-            message['points'] = self.team_one_score if team_id == self.team_one else self.team_two_score
+            message['points'] = self.team_one.points if team_id == self.team_one else self.team_two.points
 
-        await self.channel_layer.group_send(self.diffusion_group_name, {
-            'type': 'game_updates',
-            'sender': 'blind_test',
-            'updates': message
-        })
+        message['song'] = self.current_song
+
+        print('handle_guess', message)
+
+        group_message = self.base_room_message(**{'type': 'game.updates', 'message': message})
+        await self.channel_layer.group_send(self.diffusion_group_name, group_message)
 
         await self.send_json(message)
         await self.next_song()
+
+        # matched = None
+        # if title_match:
+        #     matched = 'Title'
+        # elif artist_match:
+        #     matched = 'Artist'
+        # await self.register_answer(team_id, matched)
+        # await self.update_timeline()

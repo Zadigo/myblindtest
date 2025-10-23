@@ -1,5 +1,12 @@
 {
     "recommendations": [
-        "ionic.ionic"
+        "WebNative.webnative",
+        "biomejs.biome",
+        "Vue.volar",
+        "vitest.explorer",
+        "ms-playwright.playwright",
+        "dbaeumer.vscode-eslint",
+        "EditorConfig.EditorConfig",
+        "oxc.oxc-vscode"
     ]
 }

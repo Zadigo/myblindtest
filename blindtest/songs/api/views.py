@@ -1,8 +1,12 @@
+import json
+from urllib.parse import parse_qs, urlparse
+
+from django.conf import settings
 from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.db.models import (Count, ExpressionWrapper, F, IntegerField, Max,
-                              Min, Q, Sum)
+                              Min, Q, QuerySet, Sum)
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import generics, status
@@ -19,6 +23,29 @@ from songs.models import Artist, Song
 class BasePagination(LimitOffsetPagination):
     default_limit = 100
     max_limit = 100
+
+    def get_paginated_response(self, data):
+        previous_link = urlparse(self.get_previous_link())
+        next_link = urlparse(self.get_next_link())
+
+        q1 = previous_link.query
+        q2 = next_link.query
+
+        previous = parse_qs(q1).get('offset')
+        next = parse_qs(q2).get('offset')
+
+        if previous:
+            previous = int(previous[0])
+
+        if next:
+            next = int(next[0])
+
+        return Response({
+            'count': self.count,
+            'previous': previous,
+            'next': next,
+            'results': data
+        })
 
 
 class AllSongs(generics.ListAPIView):
@@ -62,6 +89,9 @@ class AllArtists(generics.ListAPIView):
 
 
 class SearchSongsAndArtists(generics.ListAPIView):
+    """Endpoint used to search songs and artists
+    in the database"""
+
     queryset = Artist.objects.all()
     serializer_class = serializers.ArtistSongSerializer
     pagination_class = BasePagination
@@ -69,12 +99,12 @@ class SearchSongsAndArtists(generics.ListAPIView):
 
     def get_queryset(self):
         qs = super().get_queryset()
+
         search = self.request.GET.get('q')
         if search:
-            return qs.filter(
-                Q(name__icontains=search) |
-                Q(song__name__icontains=search)
-            )
+            logic = Q(name__icontains=search)
+            qs1 = qs.filter(logic).distinct()
+            return qs1
         return qs
 
 
@@ -90,12 +120,21 @@ class CreateSongs(generics.GenericAPIView):
         if not isinstance(data, list):
             data = [data]
 
+        serializer_errors = []
+
         serializers_list: list[serializers.SongSerializer] = []
-        for song_data in data:
+        for index, song_data in enumerate(data):
             serializer = serializers.SongSerializer(data=song_data)
             if serializer.is_valid():
                 serializers_list.append(serializer)
                 continue
+            else:
+                result = serializer.errors
+                result['index'] = index
+                serializer_errors.append(result)
+
+        if serializer_errors:
+            return Response(serializer_errors, status=status.HTTP_400_BAD_REQUEST)
 
         errors = []
         created_songs: list[Song] = []
@@ -112,17 +151,13 @@ class CreateSongs(generics.GenericAPIView):
                     continue
 
                 tasks.artist_spotify_information.apply_async(
-                    (
-                        instance.artist.name,
-                    ),
+                    args=[instance.artist.name],
                     countdown=15
                 )
 
                 if not instance.artist.wikipedia_page:
                     tasks.wikipedia_information.apply_async(
-                        (
-                            instance.artist.id,
-                        ),
+                        args=[instance.artist.id],
                         countdown=20
                     )
 
@@ -141,25 +176,40 @@ class CreateSongs(generics.GenericAPIView):
 class SongGenres(generics.GenericAPIView):
     permission_classes = [AllowAny]
 
-    def get(self, request):
-        genres = cache.get('genres', None)
+    def read_file(self) -> list[dict[str, str | list[dict[str, str]]]]:
+        path = settings.MEDIA_PATH / 'genres.json'
+        with open(path, mode='r', encoding='utf-8') as f:
+            data = json.load(f)
 
-        if genres is None:
-            data = MusicGenre.choices()
-            values = sorted([x[0] for x in data])
-            cache.add('genres', values, (24 * 60))
-        return Response(data=values, status=status.HTTP_200_OK)
+            main_categories = data.keys()
+            genres = []
+
+            for category in main_categories:
+                template = {'category': None, 'items': []}
+                template['category'] = category
+                template['items'] = list(
+                    map(lambda x: {'label': x}, data[category]))
+                genres.append(template)
+            return genres
+
+    def get(self, request):
+        genres: list[dict[str, str | list[dict[str, str]]]
+                     ] = cache.get('genres', {})
+
+        if not genres:
+            genres = self.read_file()
+            cache.set('genres', genres, timeout=24 * 60 * 60)
+        return Response(data=genres, status=status.HTTP_200_OK)
 
 
 class GameSettings(generics.GenericAPIView):
     queryset = Song.objects.all()
-    permission_classes = []
+    permission_classes = [AllowAny]
 
     def get(self, request):
         qs = super().get_queryset()
 
         # Get the minimum and maximim decade
-        # ranges for the frontend
         period = ExpressionWrapper(
             timezone.now().year - F('year'),
             output_field=IntegerField()

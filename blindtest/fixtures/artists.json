@@ -1,0 +1,29 @@
+[
+    {
+        "model": "songs.Artist",
+        "pk": 1,
+        "fields": {
+            "name": "Mariah Carey",
+            "birthname": null,
+            "date_of_birth": null,
+            "spotify_id": null,
+            "spotify_avatar": null,
+            "wikipedia_page": "https://fr.wikipedia.org/wiki/Mariah_Carey",
+            "created_on": "2024-06-01"
+        }
+    },
+    {
+        "model": "songs.Song",
+        "pk": 1,
+        "fields": {
+            "artist": 1,
+            "name": "We Belong Together",
+            "genre": "Afrobeat",
+            "featured_artists": null,
+            "youtube_id": null,
+            "year": 0,
+            "difficulty": 1,
+            "created_on": "2024-06-01"
+        }
+    }
+]

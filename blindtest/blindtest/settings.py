@@ -8,19 +8,11 @@ import dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+ENV_FILE = BASE_DIR / '.env'
 
-def load_env_file():
-    env_file_path = BASE_DIR / '.env'
-    if env_file_path.exists():
-        dotenv.load_dotenv(env_file_path)
+if ENV_FILE.exists():
+    dotenv.load_dotenv(ENV_FILE)
 
-
-load_env_file()
-
-
-def get_debug():
-    value = os.getenv('DEBUG', '1')
-    return True if value == '1' else False
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -30,7 +22,7 @@ def get_debug():
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = get_debug()
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -184,11 +176,11 @@ REDIS_PASSWORD = os.getenv('REDIS_PASSWORD')
 
 REDIS_URL = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:6379'
 
-RABBITMQ_HOST = os.getenv('RABBITMQ_HOST', 'localhost')
+RABBITMQ_HOST = os.getenv('RABBITMQ_DEFAULT_HOST', 'localhost')
 
-RABBITMQ_USER = os.getenv('RABBITMQ_DEFAULT_USER')
+RABBITMQ_USER = os.getenv('RABBITMQ_DEFAULT_USER', 'guest')
 
-RABBITMQ_PASSWORD = os.getenv('RABBITMQ_DEFAULT_PASS')
+RABBITMQ_PASSWORD = os.getenv('RABBITMQ_DEFAULT_PASSWORD', 'guest')
 
 CELERY_BROKER_URL = f'amqp://{RABBITMQ_USER}:{RABBITMQ_PASSWORD}@{RABBITMQ_HOST}:5672'
 
@@ -301,3 +293,10 @@ CHANNEL_LAYERS = {
         }
     }
 }
+
+
+# Fixtures
+
+FIXTURE_DIRS = [
+    'fixtures/artists'
+]

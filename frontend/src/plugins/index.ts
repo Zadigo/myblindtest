@@ -1,49 +1,23 @@
-import { computed, type App } from "vue";
-import { installAxiosClient } from "./client";
+import type { Plugin } from 'vue'
+import { VueFire, VueFireAuth } from 'vuefire'
+import { createFirebase, firebaseApp } from './firebase'
 
-import dayjs from 'dayjs';
-import calendar from 'dayjs/plugin/calendar';
-import duration from 'dayjs/plugin/duration';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
+import { type App } from 'vue'
 
-import './fontawesome';
+export * from './date'
+export * from './firebase'
 
-dayjs.extend(calendar)
-dayjs.extend(duration)
-dayjs.extend(utc)
-dayjs.extend(timezone)
-dayjs.extend(relativeTime)
+export default function installPlugins(): Plugin {
+  return {
+    install(app: App) {
+      createFirebase(app)
 
-export default function installPlugins () {
-    return {
-        install(app: App) {
-            installAxiosClient(app)
-            app.config.globalProperties.$data = dayjs
-        }
+      app.use(VueFire, {
+        firebaseApp,
+        modules: [
+          VueFireAuth()
+        ]
+      })
     }
+  }
 }
-
-function useDayJs () {
-    const instance = dayjs
-    
-    const currentDate = computed(() => {
-        return instance()
-    })
-
-    const currentYear = computed(() => {
-        return currentDate.value.year()
-    })
-
-    return {
-        currentDate,
-        currentYear,
-        instance
-    }
-}
-
-export {
-    useDayJs
-};
-

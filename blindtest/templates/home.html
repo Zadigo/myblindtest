@@ -5,26 +5,42 @@
 {% block container %}
     <div class="row">
         <div class="col-sm-12 col-md-4 offset-md-4 my-5">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h3 class="card-title">
-                        Welcome!
-                    </h3>
-
-                    <p class="card-text">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure dolorem id totam, 
-                        temporibus maiores cum adipisci ipsa sapiente est ratione autem laudantium placeat libero amet 
-                        facere facilis. Nisi, molestias consectetur?
-                    </p>
-
-                    {{ statistics }}
-
-                    <a type="button" href="{% url 'admin:index' %}" class="btn btn-primary btn-rounded">
-                        <i class="fas fa-link me-2"></i>
-                        Admin
-                    </a>
+            <div class="flex align-items-center vh-100">
+                <div class="card text-center shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title">
+                            Welcome!
+                        </h3>
+    
+                        <div class="card-text">
+                            <p>
+                                {{ statistics }}
+                            </p>
+    
+                            <a type="button" href="{% url 'admin:login' %}" class="btn btn-primary btn-rounded">
+                                <i class="fas fa-link me-2"></i>
+                                Admin
+                            </a>
+    
+                            <a type="button" href="{% url 'redoc' %}" class="btn btn-primary btn-rounded">
+                                <i class="fas fa-link me-2"></i>
+                                Api
+                            </a>
+                            
+                            <a type="button" href="{% url 'swagger-ui' %}" class="btn btn-primary btn-rounded">
+                                <i class="fas fa-link me-2"></i>
+                                Api
+                            </a>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.body.classList.add('bg-light')
+</script>
 {% endblock %}

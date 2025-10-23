@@ -1,10 +1,10 @@
-from blindtest.views import HomePage
-from django.urls import re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 from drf_spectacular import views as drf_views
+
+from blindtest.views import HomePage
 
 urlpatterns = [
     path(

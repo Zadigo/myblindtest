@@ -1,0 +1,8 @@
+ignoredBuiltDependencies:
+  - '@parcel/watcher'
+  - protobufjs
+onlyBuiltDependencies:
+  - '@firebase/util'
+  - '@tailwindcss/oxide'
+  - esbuild
+  - vue-demi

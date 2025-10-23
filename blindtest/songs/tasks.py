@@ -1,10 +1,8 @@
 import celery
 from celery import chain
 from celery.utils.log import get_task_logger
-from django.db import transaction
-from googlesearch import search
+from songs.completion import Wikipedia, nrj
 from songs.models import Artist, Song
-from songs.wikipedia import Wikipedia, nrj
 
 from blindtest.rapidapi.client import Spotify
 
@@ -23,8 +21,8 @@ def song_information(songs):
 @celery.shared_task
 def wikipedia_information(artist_id: int):
     """This task searches for the Wikipedia pages for the
-    given artist on Google. Both the french and english
-    pages are used if provided"""
+    given artist on Google and extracts pieces of information. 
+    Both the french and english pages are used if provided."""
     try:
         artist = Artist.objects.get(id=artist_id)
     except:
@@ -37,22 +35,23 @@ def wikipedia_information(artist_id: int):
 
         logger.warning(f'Found data for: {artist.name}: {instance.metadata}')
 
-        artist.birthname = instance.metadata['birthname']
-        artist.date_of_birth = date_of_birth or instance.metadata['date_of_birth']
+        birthname = instance.metadata.get('birthname', None)
+        if birthname is not None:
+            artist.birthname = instance.metadata['birthname']
 
+        artist.date_of_birth = date_of_birth or instance.metadata['date_of_birth']
         artist.save()
 
-        nrj_information.apply_async((artist_id,), countdown=5)
-
-        # chain(
-        #     nrj_information.s(artist_id)
-        # )
-
-        # chain.apply_async()
+        nrj_information.apply_async(
+            args=[artist_id],
+            countdown=5
+        )
 
 
 @celery.shared_task
 def nrj_information(artist_id: int):
+    """This task searches for the artist's date of birth on NRJ's website
+    in case we were not able to find it on Wikipedia."""
     try:
         artist = Artist.objects.get(id=artist_id)
     except:
@@ -65,7 +64,8 @@ def nrj_information(artist_id: int):
 
 
 @celery.shared_task
-def artist_spotify_information(artist_name):
+def artist_spotify_information(artist_name: str):
+    """This task searches for the artist's Spotify ID and avatar"""
     artist = Artist.objects.get(name=artist_name)
     songs = artist.song_set.filter(year=0).values_list('id', flat=True)
 
@@ -86,11 +86,4 @@ def artist_spotify_information(artist_name):
             logger.error(f'Could not get visuals for: {artist_name}')
             return {}
         artist.save()
-
-    # lazy_group = celery.group([
-    #     wikipedia_information.s(artist.name),
-    #     song_information.s(list(songs))
-    # ])
-
-    # songs = lazy_group().get()
     return artist.spotify_id
