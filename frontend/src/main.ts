@@ -1,8 +1,8 @@
 import { Icon } from '@iconify/vue'
 import { createHead } from '@unhead/vue/client'
-import { createVueAxiosManager } from './plugins'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import { createVueAxiosManager } from 'vue-axios-manager'
 
 import PrimeVue from 'primevue/config'
 import installPlugins from './plugins'
@@ -32,7 +32,7 @@ const axiosManager = createVueAxiosManager({
     {
       name: 'django',
       label: 'Django',
-      dev: import.meta.env.VITE_DJANGO_PROD_URL,
+      dev: import.meta.env.VITE_DJANGO_PROD_DOMAIN,
       disableAuth: true
     }
   ]

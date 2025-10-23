@@ -5,6 +5,7 @@ interface ImportMetaEnv {
   readonly VITE_SITE_URL: string
   readonly VITE_SITE_NAME: string
   readonly VITE_SITE_ENV: string
+  readonly VITE_DJANGO_PROD_DOMAIN: string
 
   // Google
   readonly GOOGLE_CLIENT_ID: string

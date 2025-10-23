@@ -1,4 +1,4 @@
-import type { CacheSession } from '@/types'
+import type { CacheSession, Empty } from '@/types'
 import { addDoc, collection, deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import { useDocument, useFirestore } from 'vuefire'
 
@@ -8,36 +8,25 @@ import { useDocument, useFirestore } from 'vuefire'
 export const useGlobalSessionState = createGlobalState(() => {
   const fireStore = useFirestore()
   const sessionId = useSessionStorage<string>('blindtestId', null)
+  const docRef = doc(fireStore, 'blindtests', sessionId.value)
+  const currentSettings = useDocument<CacheSession>(docRef, { once: true })
 
-  if (isDefined(sessionId)) {
-    const currentSettings = useDocument<CacheSession>(doc(fireStore, 'blindtests', sessionId.value), { once: true })
-
-    // Watch for changes and update the Firestore document
-    watchDebounced(currentSettings, async (newValue) => {
-      if (sessionId.value) {
-        const docRef = doc(fireStore, 'blindtests', sessionId.value)
-        
-        if (newValue) {
-          await updateDoc(docRef, newValue)
-        }
+  // Watch for changes and update the Firestore document
+  watchDebounced(currentSettings, async (newValue) => {
+    if (sessionId.value) {
+      if (isDefined(newValue)) {
+        await updateDoc(docRef, newValue)
       }
-    }, {
-      debounce: 2000,
-      deep: true
-    })
-
-    console.log('Loaded session ID from global session state:', currentSettings.value)
-
-    return {
-      sessionId,
-      currentSettings
     }
-  } else {
-    console.warn('No session ID found in global session state')
-    return {
-      sessionId,
-      currentSettings: null
-    }
+  }, {
+    debounce: 2000,
+    deep: true
+  })
+
+
+  return {
+    sessionId,
+    currentSettings
   }
 })
 

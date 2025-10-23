@@ -44,7 +44,12 @@ export default defineConfig({
         unheadVueComposablesImports,
         'vue',
         'pinia',
-        '@vueuse/core'
+        '@vueuse/core',
+        {
+          'vue-axios-manager': [
+            'useRequest'
+          ]
+        }
       ],
       dirs: [
         'src/composables',
