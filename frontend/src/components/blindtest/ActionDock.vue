@@ -1,13 +1,13 @@
 <template>
   <div ref="dock" id="dock" class="col-span-12 bg-primary-100/30 border border-primary-100/80 h-auto min-w-100 w-150 absolute bottom-10 left-[calc(50%-calc(600px/2))] px-2 py-3 rounded-xl flex justify-center gap-2 z-40 overflow-hidden">
-    <div v-for="item in items" :key="item.icon" :class="{ [`${animationClass }`]: item.animate }" class="p-1 bg-primary-50 rounded-lg w-13 h-13 flex justify-center items-center gap-2 cursor-pointer hover:bg-primary-100 transition hover:-translate-y-1" @click="item.action">
+    <volt-button v-for="item in items" :key="item.icon" :class="{ [`${animationClass}`]: item.animate }" @click="item.action">
       <vue-icon :icon="item.icon" class="text-xl" />
-    </div>
+    </volt-button>
 
-    <div class="p-1 bg-primary-50 rounded-lg ms-5 w-auto h-13 flex justify-center items-center gap-2 cursor-pointer hover:bg-primary-100 transition hover:-translate-y-1" @click="sendIncorrectAnswer">
+    <volt-secondary-button @click="sendIncorrectAnswer">
       <vue-icon icon="lucide:x-square" class="text-xl" />
       Wrong answer
-    </div>
+    </volt-secondary-button>
 
     {{ gameStarted }}
   </div>

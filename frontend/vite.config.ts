@@ -1,4 +1,5 @@
 import { fileURLToPath, URL } from 'node:url'
+import biome from 'vite-plugin-biome'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
@@ -16,6 +17,7 @@ export default defineConfig({
     vue(),
     tailwind(),
     vueDevTools(),
+    biome(),
     componentsAutoImport({
       deep: true,
       dts: 'src/types/components.d.ts',

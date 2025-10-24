@@ -1,13 +1,14 @@
 <template>
   <div class="absolute top-0 left-0 w-full h-auto bg-surface-50 dark:bg-surface-800 px-5 py-2 z-40 flex justify-between items-center">
-    <div class="flex justify-left items-center">
-      <volt-secondary-button size="small">
+    <div class="flex justify-left items-center gap-2">
+      <volt-secondary-button>
         <vue-icon icon="lucide:home" />
+        Home
       </volt-secondary-button>
 
       <volt-dropdown id="settings" :items="items">
         <template #default="{ attrs }">
-          <volt-secondary-button size="small" @click="attrs.toggle">
+          <volt-secondary-button @click="attrs.toggle">
             <vue-icon icon="lucide:cog" />
             Settings
           </volt-secondary-button>

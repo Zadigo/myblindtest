@@ -79,7 +79,7 @@ export const useSession = createGlobalState(() => {
 /**
  * Composable used to manage blindtest sessions
  */
-export const useSessionManagerManager = createSharedComposable(() => {
+export const useSessionManager = createSharedComposable(() => {
   const { sessionId } = useSession()
   const fireStore = useFirestore()
 
