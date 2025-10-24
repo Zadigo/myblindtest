@@ -1,7 +1,7 @@
 import type { RandomizerData } from '@/components/blindtest/randomizer'
 import type { CacheSession } from '../game'
 import type { GlobalSongGenres, Song } from '../songs'
-import type { DefaultType } from '..'
+import type { DefaultType, Undefineable } from '..'
 
 export type CommonActions = 'error' | 'idle_connect' | 'check_code'
 
@@ -31,10 +31,10 @@ export interface BaseWebsocketMessage {
   message: string
 }
 
-export type _SendMessages = { action: 'idle_connect', firebase_key: string, settings: CacheSession }
+export type _SendMessages = { action: 'idle_connect', firebase_key: Undefineable<string>, settings: Undefineable<CacheSession> }
   | { action: 'check_code', code: string }
   | { action: 'start_game' }
-  | { action: 'submit_guess', team_id: number, title_match: Nullable<string>, artist_match: Nullable<string> }
+  | { action: 'submit_guess', team_id: string, title_match: Nullable<string>, artist_match: Nullable<string> }
   | { action: 'skip_song' }
   | { action: 'randomize_genre', temporary_genre: DefaultType<string | RandomizerData> }
   

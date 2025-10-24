@@ -128,19 +128,18 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
 
             # Setup the different parameters for
             # actual coming game
-            session: dict[str, str | bool | int] = content.get('session', {})
+            settings: dict[str, str | bool | int] = content.get('settings', {})
 
-            print(session)
-            if session is None:
-                await self.send_error('No session was provided')
+            if settings is None:
+                await self.send_error('No settings were provided')
                 return
 
-            if 'teams' not in session:
+            if 'teams' not in settings:
                 await self.send_error('Not enough teams to start the game')
                 return
 
-            team_one = session['teams'][0]
-            team_two = session['teams'][1]
+            team_one = settings['teams'][0]
+            team_two = settings['teams'][1]
 
             self.team_one.team_id = team_one['id']
             self.team_two.team_id = team_two['id']
@@ -148,7 +147,8 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
             self.team_one.points = 0
             self.team_two.points = 0
 
-            settings: dict[str, str | bool | int] = session.get('settings', {})
+            settings: dict[str, str | bool |
+                           int] = settings.get('settings', {})
 
             self.difficulty = settings.get('difficultyLevel', 'All')
             self.genre = settings.get('songType', 'All')

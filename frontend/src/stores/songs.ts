@@ -11,12 +11,11 @@ export const useSongs = defineStore('songs', () => {
 
   const scoringTimelineBase = ref<number>(100)
   const scoringTimeline = ref<number[]>([])
-
-  const [gameStarted, toggleGameStarted] = useToggle(false)
   
   const { inc: incrementStep, reset: resetStep, count: currentStep } = useCounter(0, { min: 0 })
   
   const songsPlayed = ref<Song[]>([])
+
   // Django returns a list of the remaining songs to be played
   // minus the song that was already played. So, we just have
   // to get the last song of the list to get the current song
@@ -33,11 +32,6 @@ export const useSongs = defineStore('songs', () => {
      * All the answers of the game
      */
     answers,
-    /**
-     * Whether the game was started
-     * @deprecated use useGameWebsocket instead
-     */
-    gameStarted,
     /**
      * The base score for the scoring timeline
      */
@@ -60,11 +54,6 @@ export const useSongs = defineStore('songs', () => {
      * to the last song in the list of songs played
      */
     currentSong,
-    /**
-     * Toggles the game started state
-     * @deprecated use useGameWebsocket instead
-     */
-    toggleGameStarted,
     /**
      * Increments the current step
      */

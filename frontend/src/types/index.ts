@@ -18,6 +18,8 @@ export type Arrayable<T> = T[]
 
 export type DefaultType<T, D> = T | D
 
+export type PrimeVueToast =  ReturnType<typeof import('primevue/usetoast').useToast>
+
 export interface BaseApiResponse<T> {
   next: number
   previous: number

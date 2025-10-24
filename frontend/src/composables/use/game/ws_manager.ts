@@ -1,17 +1,19 @@
 import { useToast } from 'primevue/usetoast'
+import type { PrimeVueToast } from '@/types'
 
 /**
  * Hook called when the WebSocket is connected
  * @param ws WebSocket instance
  */
-function onConnected(ws: WebSocket, toast: ReturnType<typeof useToast>) {
+function onConnected(ws: WebSocket, toast: PrimeVueToast) {
   const { currentSettings, sessionId } = useSession()
   const { stringify } = useWebsocketMessage()
   
   const result = stringify({
     action: 'idle_connect',
     firebase_key: sessionId.value,
-    session: currentSettings.value
+    // @ts-expect-error Fireebase object
+    settings: currentSettings.value
   })
   
   ws.send(result)
@@ -26,7 +28,7 @@ function onConnected(ws: WebSocket, toast: ReturnType<typeof useToast>) {
  * Hook called when the WebSocket is disconnected
  * @param store Store used for managing song state
  */
-function onDisconnected(toast: ReturnType<typeof useToast>) {
+function onDisconnected(toast: PrimeVueToast) {
   toast.add({ severity: 'warn', summary: 'Warning', detail: 'Game has been disconnected', life: 8000 })
 }
 
@@ -34,7 +36,7 @@ function onDisconnected(toast: ReturnType<typeof useToast>) {
  * Hook called when the WebSocket encounters an error
  * @param store Store used for managing song state
  */
-function onError(toast: ReturnType<typeof useToast>) {
+function onError(toast: PrimeVueToast) {
   toast.add({ severity: 'error', summary: 'Error', detail: 'An error has occurred', life: 8000 })
 }
 
@@ -45,6 +47,7 @@ function onError(toast: ReturnType<typeof useToast>) {
 export const useGameWebsocket = createSharedComposable(() => {
   const songStore = useSongs()
   const { songsPlayed } = storeToRefs(songStore)
+
   const toast = useToast()
   const teamsStore = useTeamsStore()
 
@@ -72,7 +75,7 @@ export const useGameWebsocket = createSharedComposable(() => {
             break
             
           case 'song_new':
-            console.log('New song received', data.song)
+            // console.log('New song received', data.song)
             if (data.song) songsPlayed.value.push(data.song)
             break
 
@@ -98,14 +101,14 @@ export const useGameWebsocket = createSharedComposable(() => {
             break
           
           case 'error':
-            console.error('WebSocket error received', data)
+            // console.error('WebSocket error received', data)
             toast.add({ severity: 'error', summary: 'Error', detail: `An error has occurred: ${data.message}`, life: 8000 })
             break
 
           // Group actions
 
           case 'device_accepted':
-            toast.add({ severity: 'success', summary: 'Device', detail: 'Projecton device pending connection', life: 8000 })
+            toast.add({ severity: 'success', summary: 'Device', detail: 'Projecton device accepted', life: 8000 })
             break
 
           case 'device_disconnected':
@@ -113,7 +116,7 @@ export const useGameWebsocket = createSharedComposable(() => {
             break
 
           default:
-            console.warn('Unknown websocket action', data)
+            toast.add({ severity: 'danger', summary: 'WebSocket', detail: `Received unknown action: ${data.action}`, life: 8000 })
             break
         }
       }
@@ -149,16 +152,12 @@ export const useGameWebsocket = createSharedComposable(() => {
   const songsStore = useSongs()
   const { currentSong, correctAnswers, answers } = storeToRefs(songsStore)
 
-  function handleFinalize() {
-    songStore.incrementStep()
-  }
-
   function sendIncorrectAnswer() {
     const result = stringify({ action: 'skip_song' })
 
     if (result) {
       wsObject.send(result)
-      handleFinalize()
+      songStore.incrementStep()
     }
   }
 
@@ -183,7 +182,7 @@ export const useGameWebsocket = createSharedComposable(() => {
       artist_match
     })
 
-    console.log('handleCorrectAnswer', result)
+    // console.log('handleCorrectAnswer', result)
 
     if (result) {
       wsObject.send(result)
@@ -201,9 +200,9 @@ export const useGameWebsocket = createSharedComposable(() => {
         })
       }
 
-      console.log('BlindTestPage.handleCorrectAnswer', correctAnswers.value, answers.value)
+      songStore.incrementStep()
 
-      handleFinalize()
+      // console.log('BlindTestPage.handleCorrectAnswer', correctAnswers.value, answers.value)
     }
   }
 
