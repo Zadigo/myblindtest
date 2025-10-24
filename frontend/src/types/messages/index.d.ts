@@ -1,4 +1,4 @@
-import type { RandomizerData } from '@/components/randomizer'
+import type { RandomizerData } from '@/components/blindtest/randomizer'
 import type { CacheSession } from '../game'
 import type { GlobalSongGenres, Song } from '../songs'
 import type { DefaultType } from '..'

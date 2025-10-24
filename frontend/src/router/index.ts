@@ -59,7 +59,7 @@ const router = createRouter({
     },
     {
       path: '/blind-test',
-      component: async () => import('../pages/BlindTestPageTwo.vue'),
+      component: async () => import('../pages/BlindTestPage.vue'),
       name: 'blind_test'
     }
   ]

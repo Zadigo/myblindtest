@@ -1,4 +1,4 @@
-import type { RandomizerData } from "@/components/randomizer"
+import type { RandomizerData } from "@/components/blindtest/randomizer"
 
 /**
  * Composable that triggers and runs the

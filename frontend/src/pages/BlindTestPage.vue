@@ -1,31 +1,30 @@
 <template>
   <blind-test-layout>
-    <template #teamOne>
-      <team-block :team-index="0" class="bg-primary/40" />
-    </template>
-
-    <template #teamTwo>
-      <team-block :team-index="1" block-position="ms-auto" class="bg-primary/20" />
-    </template>
-
     <template #video>
-      <video-block ref="videoEl" />
+      <video-block />
+    </template>
+
+    <template #leftTeam>
+      <team-block :team-index="0" />
+    </template>
+
+    <template #rightTeam>
+      <team-block :team-index="1" />
     </template>
   </blind-test-layout>
 </template>
 
 <script setup lang="ts">
-import type VideoBlock from '@/components/blindtest/VideoBlock.vue'
-import type { VideoBlockExposedMethods } from '@/types'
-
-const videoEl = useTemplateRef<InstanceType<typeof VideoBlock> & VideoBlockExposedMethods>('videoEl')
-
 /**
- * Wescocket
+ * Websocket
  */
 
+const { currentSettings } = useSession()
 const { wsObject } = useGameWebsocket()
-wsObject.open()
+
+whenever(() => isDefined(currentSettings), () => {
+  wsObject.open()
+})
 
 /**
  * SEO
@@ -40,4 +39,5 @@ useHead({
     }
   ]
 })
+
 </script>
