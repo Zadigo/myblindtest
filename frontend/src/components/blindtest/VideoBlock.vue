@@ -50,6 +50,7 @@
 </template>
 
 <script setup lang="ts">
+import { useSound } from '@vueuse/sound'
 const { gameStarted } = useGameWebsocket()
 
 /**
@@ -58,6 +59,14 @@ const { gameStarted } = useGameWebsocket()
 
 const songsStore = useSongs()
 const { currentSong, currentStep } = storeToRefs(songsStore)
+
+const { play } = useSound('/battery.mp3', { playbackRate: 1.5 })
+
+watch(currentSong, () => {
+  if (currentStep.value > 1) {
+    play()
+  }
+})
 
 /**
  * Settings
