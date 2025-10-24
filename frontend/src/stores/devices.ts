@@ -6,7 +6,6 @@ export const useDevicesStore = defineStore('devices', () => {
   const showDevicesModal = ref<boolean>(false)
   const devices = reactive({ smartphones: [], televisions: [] })
 
-
   function add(device: 'smartphone' | 'television', data) {
     switch (device) {
       case 'smartphone':
