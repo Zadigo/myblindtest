@@ -2,7 +2,7 @@
  * Store used to manage teams within the blindtest session
  */
 export const useTeamsStore = defineStore('teams', () => {
-  const { currentSettings } = useGlobalSessionState()
+  const { currentSettings } = useSession()
 
   const teams = computed(() =>  currentSettings && isDefined(currentSettings) ? currentSettings.value.teams : [])
   const teamOne = computed(() => teams.value.at(0))

@@ -30,7 +30,7 @@
 /**
  * Initiate session
  */
-const { reset, hasExistingSession } = useSession()
+const { reset, hasExistingSession } = useSessionManager()
 
 /**
  * SEO

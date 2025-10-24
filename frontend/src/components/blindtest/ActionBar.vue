@@ -61,6 +61,6 @@ const { isConnected } = useGameWebsocket()
  * Session copy
  */
 
-const { sessionId } = useGlobalSessionState()
+const { sessionId } = useSession()
 const { copy } = useClipboard({ source: sessionId })
 </script>

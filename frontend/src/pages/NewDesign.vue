@@ -19,7 +19,7 @@
  * Wescocket
  */
 
-const { currentSettings } = useGlobalSessionState()
+const { currentSettings } = useSession()
 const { wsObject } = useGameWebsocket()
 
 whenever(() => isDefined(currentSettings), () => {

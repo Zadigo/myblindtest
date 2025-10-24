@@ -54,5 +54,5 @@
 
 <script setup lang="ts">
 const { genres } = useLoadAutocompleteData(true)
-const { currentSettings } = useGlobalSessionState()
+const { currentSettings } = useSession()
 </script>

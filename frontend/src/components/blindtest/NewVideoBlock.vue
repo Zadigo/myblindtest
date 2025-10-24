@@ -10,12 +10,15 @@
       </div>
 
       <div v-if="currentSong" class="mt-10 space-y-2">
-        <h1 class="text-6xl text-surface-50 font-bold">
-          {{ currentSong.artist.name }} - <span class="opacity-50">{{ currentSong.name }}</span>
+        <h1 class="text-6xl text-surface-50 font-bold opacity-50">
+          {{ currentSong.name }}
+        </h1>
+        <h1 class="text-4xl text-surface-50 font-bold">
+          {{ currentSong.artist.name }}
         </h1>
 
         <!-- Infos -->
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 mt-5">
           <!-- Genre -->
           <volt-badge variant="default">
             {{ currentSong.genre }}
@@ -29,10 +32,10 @@
 
         <!-- Other -->
         <div class="flex gap-2">
-          <div class="p-2 bg-primary-100 rounded-lg text-2xl mt-15 opacity-80 w-30 text-center">
+          <div class="p-2 bg-primary-100 rounded-lg text-2xl mt-5 opacity-80 w-30 text-center">
             {{ currentStep }} of <span class="font-semibold">40</span>
           </div>
-          <div class="p-2 bg-primary-100 rounded-lg text-2xl mt-15 opacity-80 w-30 text-center">
+          <div class="p-2 bg-primary-100 rounded-lg text-2xl mt-5 opacity-80 w-30 text-center">
             11:00
           </div>
         </div>
@@ -60,5 +63,5 @@ const { currentSong, currentStep } = storeToRefs(songsStore)
  * Settings
  */
 
-const { currentSettings } = useGlobalSessionState()
+const { currentSettings } = useSession()
 </script>

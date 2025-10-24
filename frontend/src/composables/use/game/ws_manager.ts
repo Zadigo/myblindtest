@@ -5,7 +5,7 @@ import { useToast } from 'primevue/usetoast'
  * @param ws WebSocket instance
  */
 function onConnected(ws: WebSocket, toast: ReturnType<typeof useToast>) {
-  const { currentSettings, sessionId } = useGlobalSessionState()
+  const { currentSettings, sessionId } = useSession()
   const { stringify } = useWebsocketMessage()
   
   const result = stringify({
