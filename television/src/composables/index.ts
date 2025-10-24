@@ -1,5 +1,6 @@
 import type { Ref } from 'vue'
 
+export * from './session'
 export * from './game/ws_manager'
 
 /**

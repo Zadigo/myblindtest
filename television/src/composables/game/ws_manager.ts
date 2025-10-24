@@ -1,32 +1,20 @@
-import { toast } from 'vue-sonner'
+import { useToast } from 'primevue/usetoast'
+import type { PrimeVueToast } from '@/types'
 import { useWebsocketMessage } from '.'
 
-/**
- *
- */
-function onError() {
-  toast('Failed to connect to websocket', {
-    position: 'top-center'
-  })
-  console.log('Failed to connect')
+function onError(toast: PrimeVueToast) {
+  toast.add({ detail: 'An error occurred with the websocket connection', severity: 'error', summary: 'Websocket error' })
 }
 
-/**
- *
- */
-function onDisconnected() {
-  // Do something
+function onDisconnected(toast: PrimeVueToast) {
+  toast.add({ detail: 'Websocket connection lost', severity: 'error', summary: 'Websocket disconnected' })
 }
-
 
 /**
  * @param ws Websocket
  * @param event The incoming event
  */
-function onMessage(ws: WebSocket, event: MessageEvent<string>) {
-  const connectionStore = useConnectionStore()
-  const { showAnswer, answer } = storeToRefs(connectionStore)
-
+function onMessage(ws: WebSocket, event: MessageEvent<string>, toast: PrimeVueToast, store: ReturnType<typeof useGameStore>) {
   const { parse } = useWebsocketMessage()
   const parsedData = parse(event.data)
   
@@ -36,34 +24,29 @@ function onMessage(ws: WebSocket, event: MessageEvent<string>) {
     switch (parsedData.action) {
       case 'idle_connect':
         console.log('Idle connect')
-        toast.info('Device ID', { description: parsedData.message })
-        connectionStore.toggleIsConnected()
+        toast.add({ detail: 'Connected to server', severity: 'info', summary: 'Websocket connected' })
         break
         
       case 'device_accepted':
-        toast.info('Device accepted')
-        connectionStore.toggleIsAccepted()
-        console.log('Device accepted', connectionStore)
+        toast.add({ detail: 'Device accepted', severity: 'info', summary: 'Device accepted' })
         break
         
       case 'game_disconnected':
-        connectionStore.toggleIsConnected()
+        toast.add({ detail: 'Game disconnected', severity: 'warn', summary: 'Game disconnected' })
         break
 
       case 'guess_correct':
-        showAnswer.value = true
-        
         if (parsedData.song) {
-          answer.value = parsedData.song
+          store.showAnswer = true
+          store.answer = parsedData.song
+          store.correctAnswerTeamId = parsedData.team_id
         }
         break
 
       case 'song_skipped':
-        showAnswer.value = true
-
-        if (parsedData.song) {
-          answer.value = parsedData.song
-        }
+        store.showAnswer = true
+        console.log(parsedData)
+        if (parsedData.song) store.answer = parsedData.song
         break
   
       case 'game_updates':
@@ -81,14 +64,18 @@ function onMessage(ws: WebSocket, event: MessageEvent<string>) {
 /**
  * Composable for managing game websocket
  */
-export function useGameWebsocket() {
+export const useGameWebsocket = createGlobalState(() => {
+  const toast = useToast()
   const { stringify } = useWebsocketMessage()
+  const isAccepted = ref<boolean>(false)
+
+  const gameStore = useGameStore()
 
   const ws = useWebSocket('ws://127.0.0.1:8000/ws/tv/connect', {
     immediate: false,
-    onError,
-    onDisconnected,
-    onMessage: onMessage
+    onError: () => onError(toast),
+    onDisconnected: () => onDisconnected(toast),
+    onMessage: (ws, event) => onMessage(ws, event, toast, gameStore)
   })
 
   const isConnected = computed(() => ws.status.value === 'OPEN')
@@ -115,11 +102,18 @@ export function useGameWebsocket() {
     checkPinCode,
     /**
      * Check if the websocket is connected
+     * @default false
      */
     isConnected,
     /**
+     * Whether the connection token is accepted
+     * for the given blindtest
+     * @default false
+     */
+    isAccepted,
+    /**
      * The websocket object
      */
-    wsObject: ws
+    ws
   }
-}
+})

@@ -206,7 +206,11 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
                 await self.send_json(message)
 
                 group_message = self.base_room_message(
-                    **{'type': 'game.updates', 'message': message})
+                    **{
+                        'type': 'game.updates',
+                        'message': message
+                    }
+                )
                 await self.channel_layer.group_send(self.diffusion_group_name, group_message)
 
                 await self.next_song()
@@ -336,6 +340,7 @@ class TelevisionConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):
             await self.send_error(f'No action was provided: {action}')
 
     async def game_updates(self, content):
+        print('TelevisionConsumer', content)
         origin = content['device_id']
 
         if self.is_admin_device('blind_test', origin):
@@ -344,6 +349,9 @@ class TelevisionConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):
     async def game_disconnected(self, content):
         origin = content['device_id']
 
+        await self.send_json(content['message'])
+        # FIXME: If the main admin device sends a message,
+        # just return the content
         if self.is_admin_device('blind_test', origin):
             await self.send_json(content['message'])
 
