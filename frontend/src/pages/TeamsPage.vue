@@ -13,7 +13,7 @@
               </volt-secondary-button>
 
               <volt-secondary-button rounded>
-                <router-link :to="{ name: 'blind_test' }">
+                <router-link :to="{ name: 'blind_test', query: { id: sessionId } }" class="flex items-center gap-2">
                   Go to blindtest
                 </router-link>
                 <vue-icon icon="fa-solid:arrow-right" />
@@ -48,8 +48,16 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * Session
+ */
+const { sessionId } = useSession()
+
+/**
+ * Teams
+ */
 const teamStore = useTeamsStore()
-const { teamOne, teamTwo, teams } = storeToRefs(teamStore)
+const { teamOne, teamTwo } = storeToRefs(teamStore)
 
 /**
  * SEO

@@ -4,10 +4,14 @@
       <vue-icon :icon="item.icon" class="text-xl" />
     </volt-button>
 
-    <volt-secondary-button @click="sendIncorrectAnswer">
-      <vue-icon icon="lucide:x-square" class="text-xl" />
-      Wrong answer
-    </volt-secondary-button>
+    <sound-effect id="sound-wrong-answer" name="cinematic-hit">
+      <template #default="{ attrs }">
+        <volt-secondary-button @click="attrs.playSound(sendIncorrectAnswer)">
+          <vue-icon icon="lucide:x-square" class="text-xl" />
+          Wrong answer
+        </volt-secondary-button>
+      </template>
+    </sound-effect>
 
     {{ gameStarted }}
   </div>
@@ -17,6 +21,12 @@
 import { useToast } from 'primevue/usetoast'
 
 const toast = useToast()
+
+/**
+ * Ranadomizer
+ */
+
+const { showWheel } = useWheelRandomizer()
 
 /**
  * Websocket
@@ -68,7 +78,7 @@ const items = [
     icon: 'lucide:zap',
     state: null,
     animate: false,
-    action: () => console.log('Stop')
+    action: () => { showWheel.value = !showWheel.value }
   }
 ]
 </script>
