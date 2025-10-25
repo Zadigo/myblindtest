@@ -57,7 +57,7 @@ class ArtistAdmin(ImportExportModelAdmin):
         [
             'General',
             {
-                'fields': ['name', 'birthname', 'date_of_birth']
+                'fields': ['name', 'birthname', 'date_of_birth', 'is_group']
             }
         ],
         [
@@ -75,8 +75,11 @@ class ArtistAdmin(ImportExportModelAdmin):
     ]
     search_fields = ['name', 'genre']
     resource_class = ArtistResource
-    actions = ['update_metadata', 'update_from_wikipedia',
-               'define_genre_to_base_pop', 'define_genre_to_base_afrobeats']
+    list_filter = ['is_group']
+    actions = [
+        'update_metadata', 'update_from_wikipedia',
+        'define_genre_to_base_pop', 'define_genre_to_base_afrobeats'
+    ]
 
     def define_genre_to_base_pop(self, request, queryset):
         queryset.update(genre='Electropop')

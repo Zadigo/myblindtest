@@ -1,14 +1,15 @@
-from tabnanny import verbose
-from songs import utils
 import re
+from tabnanny import verbose
 from urllib.parse import urlunparse
 
 from django.db import models
 from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
-from songs import managers, validators
+from songs import managers, utils, validators
 from songs.choices import MusicGenre
+from django.dispatch import receiver
+from django.db.models.signals import pre_save
 
 
 class Artist(models.Model):
@@ -26,7 +27,11 @@ class Artist(models.Model):
     )
     date_of_birth = models.DateField(
         blank=True,
-        null=True
+        null=True,
+        help_text=_(
+            "The artist's birth name or the date "
+            "of formation if a group"
+        )
     )
     spotify_id = models.CharField(
         max_length=100,
@@ -50,6 +55,9 @@ class Artist(models.Model):
     spotify_avatar = models.URLField(
         blank=True,
         null=True
+    )
+    is_group = models.BooleanField(
+        default=False
     )
     wikipedia_page = models.URLField(
         blank=True,
@@ -218,3 +226,9 @@ class PopArtist(Artist):
     class Meta:
         ordering = ['birthname']
         proxy = True
+
+
+@receiver(pre_save, sender=Artist)
+def update_birthname(instance, **kwargs):
+    if instance.is_group:
+        instance.birthname = instance.name
