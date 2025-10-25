@@ -214,7 +214,13 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
                 await self.channel_layer.group_send(self.diffusion_group_name, group_message)
 
                 await self.next_song()
+            else:
+                await self.send_error('Game not started or no current song')
         elif action == 'randomize_genre':
+            if not self.is_started:
+                await self.send_error("Cannot randomize. Game not started")
+                return
+
             # Select a temporary genre within songs, if and only if
             # a global genre is not selected
             temporary_genre = content.get('temporary_genre', None)

@@ -1,5 +1,6 @@
-import type { Empty, Team } from '@/types'
+import { useSound } from '@vueuse/sound'
 import type { MaybeRef } from 'vue'
+import type { Empty, Team } from '@/types'
 
 /**
  * A composable function to handle animations
@@ -87,3 +88,59 @@ export function useConsecutiveAnswers(team: MaybeRef<Empty<Team>>, minConsecutiv
     hasConsecutiveAnswers
   }
 }
+
+/**
+ * Composable that provides a countdown timer
+ * @param startFrom Time to start the countdown from
+ */
+export const useGameCountdown = createGlobalState((startFrom: number | undefined) => {
+  if (isDefined(startFrom)) {
+    console.log(startFrom, typeof startFrom)
+    const timeLimit = refDefault<number>(toRef(startFrom * 60), 0)
+    const { gameStarted} = useGameWebsocket()
+    const { remaining, start, pause, reset } = useCountdown(timeLimit, { immediate: false, interval: 1000 })
+  
+    const { play, stop } = useSound('/clock.mp3', { volume: 0.5 })
+
+    const toMinutes = computed(() => {
+      const minutes = Math.floor(remaining.value / 60)
+      const seconds = remaining.value % 60
+      return `${minutes}:${seconds.toString().padStart(2, '0')}`
+    })
+  
+    whenever(() => remaining.value > 0 && remaining.value <= 10, (value) => {
+      if (value) {
+        play()
+      } else {
+        stop()
+      }
+    })
+  
+    watchDebounced(gameStarted, (state) => {
+      if (state) {
+        start()
+      } else {
+        pause()
+        reset()
+      }
+    })
+    return {
+      toMinutes,
+      timeLimit,
+      remaining,
+      start,
+      pause,
+      reset
+    }
+  } else {
+    return {
+      toMinutes: ref('0:00'),
+      timeLimit: ref(0),
+      remaining: ref(0),
+      start: () => {},
+      pause: () => {},
+      reset: () => {}
+    }
+  }
+})
+

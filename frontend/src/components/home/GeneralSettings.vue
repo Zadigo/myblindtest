@@ -21,7 +21,7 @@
       
       <div class="mt-3">
         <volt-label label-for="game-difficulty" class="mb-2">Time limit</volt-label>
-        <volt-input-text id="game-difficulty" v-model="currentSettings.settings.timeLimit" type="time" placeholder="Time limit" />
+        <volt-input-number id="game-difficulty" v-model.number="currentSettings.settings.timeLimit" placeholder="Time limit" :min="0" :step="1" />
       </div>
 
       <p class="font-semibold mt-10">Time period</p>

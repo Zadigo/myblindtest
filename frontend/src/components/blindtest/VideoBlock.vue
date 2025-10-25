@@ -35,8 +35,8 @@
           <div class="p-2 bg-primary-100 rounded-lg text-2xl mt-5 opacity-80 w-30 text-center">
             {{ currentStep }} of <span class="font-semibold">40</span>
           </div>
-          <div class="p-2 bg-primary-100 rounded-lg text-2xl mt-5 opacity-80 w-30 text-center">
-            11:00
+          <div class="p-2 bg-primary-100 rounded-lg text-2xl mt-5 opacity-80 w-30 text-center" @click="start()">
+            {{ toMinutes }}
           </div>
         </div>
       </div>
@@ -51,6 +51,7 @@
 
 <script setup lang="ts">
 import { useSound } from '@vueuse/sound'
+
 const { gameStarted } = useGameWebsocket()
 
 /**
@@ -73,4 +74,16 @@ watch(currentSong, () => {
  */
 
 const { currentSettings } = useSession()
+
+/**
+ * Countdown
+ */
+
+console.log(currentSettings.value?.settings.timeLimit)
+const { remaining, start, pause, reset, toMinutes } = useGameCountdown(currentSettings.value?.settings.timeLimit)
+
+onBeforeUnmount(() => {
+  pause()
+  reset()
+})
 </script>

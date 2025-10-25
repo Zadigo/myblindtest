@@ -31,7 +31,7 @@
         Connected
       </volt-badge>
 
-      <volt-badge v-else severity="danger" class="cursor-pointer gap-2">
+      <volt-badge v-else severity="danger" class="cursor-pointer gap-2" @click="wsObject.open()">
         <vue-icon icon="lucide:circle-off" />
         Disconnected
       </volt-badge>
@@ -66,7 +66,7 @@ const items: MenuItem = ref([
  * State
  */
 
-const { isConnected } = useGameWebsocket()
+const { isConnected, wsObject } = useGameWebsocket()
 
 /**
  * Session copy

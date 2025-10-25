@@ -1,5 +1,5 @@
-import type { _ReceiveMessages, _SendMessages } from '@/types'
 import type { Ref } from 'vue'
+import type { _ReceiveMessages, _SendMessages } from '@/types'
 
 export * from './randomizer'
 export * from './utils'

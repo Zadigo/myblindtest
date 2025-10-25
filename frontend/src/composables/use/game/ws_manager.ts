@@ -135,7 +135,7 @@ export const useGameWebsocket = createSharedComposable(() => {
     gameStarted.value = true
   }
 
-  function stopGame(callback: () => void) {
+  function stopGame(callback?: () => void) {
     gameStarted.value = false
     wsObject.close()
     if (isDefined(callback)) callback()

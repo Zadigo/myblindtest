@@ -21,7 +21,7 @@ export const defaults: CacheSession = {
   ],
   settings: {
     rounds: 1,
-    timeLimit: null,
+    timeLimit: 0,
     pointValue: 1,
     songDifficultyBonus: false,
     speedBonus: false,

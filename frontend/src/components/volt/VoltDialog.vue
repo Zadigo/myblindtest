@@ -33,7 +33,7 @@ import WindowMaximizeIcon from '@primevue/icons/windowmaximize'
 import WindowMinimizeIcon from '@primevue/icons/windowminimize'
 import Dialog, { type DialogPassThroughOptions, type DialogProps } from 'primevue/dialog'
 import { ref } from 'vue'
-import SecondaryButton from './SecondaryButton.vue'
+import SecondaryButton from './VoltSecondaryButton.vue'
 import { ptViewMerge } from './utils'
 
 interface Props extends /* @vue-ignore */ DialogProps {}
