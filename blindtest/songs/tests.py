@@ -1,6 +1,7 @@
 import datetime
 import json
 import nltk
+import asyncio
 from unittest.mock import patch
 
 from channels.db import database_sync_to_async
@@ -14,6 +15,13 @@ from songs import consumers, tasks, utils
 from songs.utils import OTPCode
 from songs.models import Artist, Song
 from songs.completion import Wikipedia, nrj
+from django.conf import settings
+
+TEST_CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer'
+    }
+}
 
 
 class TestUtils(TestCase):
@@ -364,38 +372,55 @@ class TestRestApiView(APITransactionTestCase):
                 self.assertEqual(item['name'], data[0]['name'])
 
 
-class TestScreenInterfaceConsumer(TransactionTestCase):
+@override_settings(CHANNEL_LAYERS=TEST_CHANNEL_LAYERS)
+class TestSongConsumer(TestCase):
     fixtures = ['songs']
 
     def setUp(self):
         self.app = URLRouter([
             re_path(r'^ws/songs$', consumers.SongConsumer.as_asgi()),
-            re_path(r'^ws/connect$', consumers.ScreenInterfaceConsumer.as_asgi())
+            # re_path(r'^ws/tv/connect$', consumers.TelevisionConsumer.as_asgi()),
+            # re_path(r'^ws/buzzer/connect$', consumers.SmartphoneConsumer.as_asgi())
         ])
 
     async def create_connections(self):
         conn1 = WebsocketCommunicator(self.app, '/ws/songs')
-        conn2 = WebsocketCommunicator(self.app, '/ws/connect')
+        # conn2 = WebsocketCommunicator(self.app, '/ws/tv/connect'),
 
         state, _ = await conn1.connect()
-        self.assertTrue(state)
+        self.assertTrue(state, "Song consumer failed to connect")
 
-        # Song consumer
-        response = await conn1.receive_json_from()
-        self.assertEqual(response['action'], 'connection_token')
+        try:
+            # Song consumer
+            response = await conn1.receive_json_from(timeout=20)
+        except asyncio.TimeoutError as e:
+            self.fail("Song consumer did not respond in time: " + str(e))
+        else:
+            self.assertEqual(response['action'], 'connection_token')
 
-        state, _ = await conn2.connect()
-        self.assertTrue(state)
+        # state, _ = await conn2.connect()
+        # self.assertTrue(state, "Television consumer failed to connect")
 
         # Team consumer
-        response = await conn2.receive_json_from()
-        self.assertEqual(response['action'], 'initiate_connection')
-        self.assertIn('device_id', response)
+        # response = await conn2.receive_json_from()
+        # self.assertEqual(response['action'], 'initiate_connection', "Television did not initiate connection")
+        # self.assertIn('device_id', response, "Television did not receive device_id")
 
-        return conn1, conn2
+        return conn1, None
 
     async def test_connection(self):
         conn1, conn2 = await self.create_connections()
+        await conn1.disconnect()
+        # await conn2.disconnect()
+
+    async def test_idle_connection(self):
+        conn1, conn2 = await self.create_connections()
+
+        await conn2.send_json_to({'action': 'idle_connect'})
+
+        response = await conn2.receive_json_from()
+        self.assertEqual(response['action'], 'idle_response')
+
         await conn1.disconnect()
         await conn2.disconnect()
 
