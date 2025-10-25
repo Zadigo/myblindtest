@@ -1,9 +1,9 @@
-import type { RandomizerData } from '@/components/randomizer'
-import type { _ReceiveMessages, _SendMessages } from '@/types'
 import type { Ref } from 'vue'
+import type { _ReceiveMessages, _SendMessages } from '@/types'
 
-export * from './ws_manager'
+export * from './randomizer'
 export * from './utils'
+export * from './ws_manager'
 
 /**
  * Composable used to handle websocket messages
@@ -39,45 +39,5 @@ export function useWebsocketMessage<S = _SendMessages, R = _ReceiveMessages>() {
      * Stringifies the given data for sending over the websocket
      */
     stringify
-  }
-}
-
-/**
- * Composable that triggers and runs the
- * wheel randomizer
- */
-export function useWheelRandomizer(ws: Ref<WebSocket | undefined>) {
-  const showWheel = ref<boolean>(false)
-  const randomizerEl = ref<HTMLElement>()
-
-  const { stringify } = useWebsocketMessage()
-
-  /**
-   * Function that gets called once the
-   * spinning has finished
-   *
-   * @param value The genre to get
-   */
-  function randomizerComplete(value: string | undefined | RandomizerData) {
-    if (value) {
-      setTimeout(() => {
-        showWheel.value = false
-
-        const result = stringify({
-          action: 'randomize_genre',
-          temporary_genre: value
-        })
-
-        if (result && ws.value) {
-          ws.value.send(result)
-        }
-      }, 3000)
-    }
-  }
-
-  return {
-    showWheel,
-    randomizerEl,
-    randomizerComplete
   }
 }

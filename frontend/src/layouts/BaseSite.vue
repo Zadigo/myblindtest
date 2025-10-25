@@ -42,6 +42,7 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
+
 const meta = useRoute().meta as {
   heightScreen: boolean
 }
@@ -52,6 +53,7 @@ const bgTheme = ['dark:bg-primary-950', 'bg-no-repeat', 'bg-center', 'bg-gradien
 onMounted(() => {
   document.documentElement.classList.add(...bgTheme)
 })
+
 onUnmounted(() => {
   document.documentElement.classList.remove(...bgTheme)
 })

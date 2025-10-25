@@ -1,120 +1,89 @@
 <template>
-  <div class="absolute my-10 left-2/6 w-4/12 bg-secondary space-y-2">
-    <!-- Code. State -->
-    <volt-card>
-      <template #content>
-        Connected: {{ isConnected }}
-        Game started: {{ gameStarted }}
-        <div class="flex justify-between items-center">
-          <volt-badge v-if="isConnected" class="animate-pulse animation-duration-5000">Connected</volt-badge>
-          <volt-badge v-else class="cursor-pointer" @click="wsObject.open()">Disconnected</volt-badge>
+  <transition mode="in-out">
+    <div id="video" v-if="gameStarted" class="h-full flex justify-center gap-10">
+      <div v-if="currentSong" class="flex justify-left">
+        <volt-card class="h-full">
+          <template #content>
+            <iframe :src="currentSong.youtube" class="max-w-full h-auto block" width="400" height="200" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" />
+          </template>
+        </volt-card>
+      </div>
 
-          <div class="py-2 px-5 rounded-md bg-primary-100 flex justify-start items-center gap-5 cursor-pointer ease-in-out hover:bg-primary-200" @click="() => copy()">
-            <p class="text-primary-600">{{ sessionId }}</p>
+      <div v-if="currentSong" class="mt-10 space-y-2">
+        <h1 class="text-6xl text-surface-50 font-bold opacity-50">
+          {{ currentSong.name }}
+        </h1>
+        <h1 class="text-4xl text-surface-50 font-bold">
+          {{ currentSong.artist.name }}
+        </h1>
 
-            <div class="p-1 bg-primary-50 dark:bg-primary-500 rounded-lg">
-              <vue-icon icon="fa-solid:copy" class="dark:text-surface-50" />
-            </div>
-          </div>
-        </div>
-      </template>
-    </volt-card>
+        <!-- Infos -->
+        <div class="flex items-center gap-2 mt-5">
+          <!-- Genre -->
+          <volt-badge variant="default">
+            {{ currentSong.genre }}
+          </volt-badge>
 
-    <!-- Video Panel -->
-    <volt-card class="border-none shadow-md">
-      <template #content>
-        <!-- Song Info -->
-        <video-block-song-info :currentSong="currentSong" @show:wheel="showWheel = !showWheel" />
-
-        <p class="font-bold py-3">
-          {{ currentStep }}/-
-        </p>
-        
-        <!-- Video -->
-        <div id="video-wrapper" class="rounded-md overflow-hidden flex justify-center items-center max-w-full">
-          <iframe v-if="gameStarted && currentSong" :src="currentSong.youtube" :title="currentSong.artist.name" class="max-w-full h-auto block" width="400" height="200" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" />
-          <div v-else class="py-15">
-            <Spinner name="loader-12" />
-          </div>
+          <!-- Difficulty -->
+          <volt-badge severity="info">
+            <vue-icon v-for="i in currentSong.difficulty" :key="i" icon="lucide:star" />
+          </volt-badge>
         </div>
 
-        <!-- Wheel -->
-        <Transition mode="out-in" name="animate__animated" enter-active-class="animate__animated animate__fadeInDown" leave-active-class="animate__animated animate__fadeOutDown">
-          <div v-if="showWheel">
-            <genre-randomizer ref="randomizerEl" :items="wheelDetaults" @completed="randomizerComplete" />
+        <!-- Other -->
+        <div class="flex gap-2">
+          <div class="p-2 bg-primary-100 rounded-lg text-2xl mt-5 opacity-80 w-30 text-center">
+            {{ currentStep }} of <span class="font-semibold">40</span>
           </div>
-        </Transition>
-      </template>
-
-      <template #footer>
-        <div class="inline-flex justify-center w-full gap-1">
-          <volt-secondary-button v-if="gameStarted" @click="() => stopGame(stopGameCallback)">
-            <vue-icon icon="fa-solid:stop" size="15" />
-            Stop {{ gameStarted }}
-          </volt-secondary-button>
-          <volt-button v-else variant="outlined" @click="() => startGame()">
-            <vue-icon icon="fa-solid:play" size="15" />
-            Start
-          </volt-button>
-
-          <volt-button :disabled="!gameStarted" variant="destructive" @click="() => sendIncorrectAnswer()">
-            <vue-icon icon="fa-solid:exclamation" size="15" />
-            Wrong answer
-          </volt-button>
+          <div class="p-2 bg-primary-100 rounded-lg text-2xl mt-5 opacity-80 w-30 text-center" @click="start()">
+            {{ toMinutes }}
+          </div>
         </div>
-      </template>
-    </volt-card>
-  </div>
+      </div>
+    </div>
+
+    <div v-else class="py-15">
+      {{ gameStarted }}
+      <spinner name="loader-12" />
+    </div>
+  </transition>
 </template>
 
 <script setup lang="ts">
-import { useToast } from 'primevue/usetoast'
+import { useSound } from '@vueuse/sound'
 
-const toast = useToast()
+const { gameStarted } = useGameWebsocket()
 
 /**
- * Websocket
+ * Song
  */
-
-const { wsObject, startGame, stopGame, isConnected, sendIncorrectAnswer, gameStarted } = useGameWebsocket()
 
 const songsStore = useSongs()
-const { currentSong, currentStep, correctAnswers } = storeToRefs(songsStore)
+const { currentSong, currentStep } = storeToRefs(songsStore)
 
-const teamStore = useTeamsStore()
-const { teamOne, teamTwo } = storeToRefs(teamStore)
+const { play } = useSound('/battery.mp3', { playbackRate: 1.5 })
 
-/**
- * Actions
- */
-
- // Callback function executed after stopping the game
- // to reset scores and correct answers
-function stopGameCallback() {
-  correctAnswers.value = []
-  
-  if (teamOne.value) {
-    teamOne.value.score = 0
+watch(currentSong, () => {
+  if (currentStep.value > 1) {
+    play()
   }
-  
-  if (teamTwo.value) {
-    teamTwo.value.score = 0
-  }
-
-  songsStore.resetStep()
-  toast.add({ severity: 'info', summary: 'Game Stopped', detail: 'The game has been successfully stopped and reset.', life: 8000 })
-}
+})
 
 /**
- * Wheel Randomizer
+ * Settings
  */
 
-const { showWheel, randomizerEl, randomizerComplete } = useWheelRandomizer(wsObject.ws)
+const { currentSettings } = useSession()
 
 /**
- * Session copy
+ * Countdown
  */
 
-const { sessionId } = useGlobalSessionState()
-const { copy } = useClipboard({ source: sessionId })
+console.log(currentSettings.value?.settings.timeLimit)
+const { remaining, start, pause, reset, toMinutes } = useGameCountdown(currentSettings.value?.settings.timeLimit)
+
+onBeforeUnmount(() => {
+  pause()
+  reset()
+})
 </script>

@@ -128,18 +128,18 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
 
             # Setup the different parameters for
             # actual coming game
-            session: dict[str, str | bool | int] = content.get('session', {})
+            settings: dict[str, str | bool | int] = content.get('settings', {})
 
-            if session is None:
-                await self.send_error('No session was provided')
+            if settings is None:
+                await self.send_error('No settings were provided')
                 return
 
-            if 'teams' not in session:
+            if 'teams' not in settings:
                 await self.send_error('Not enough teams to start the game')
                 return
 
-            team_one = session['teams'][0]
-            team_two = session['teams'][1]
+            team_one = settings['teams'][0]
+            team_two = settings['teams'][1]
 
             self.team_one.team_id = team_one['id']
             self.team_two.team_id = team_two['id']
@@ -147,7 +147,8 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
             self.team_one.points = 0
             self.team_two.points = 0
 
-            settings: dict[str, str | bool | int] = session.get('settings', {})
+            settings: dict[str, str | bool |
+                           int] = settings.get('settings', {})
 
             self.difficulty = settings.get('difficultyLevel', 'All')
             self.genre = settings.get('songType', 'All')
@@ -205,11 +206,21 @@ class SongConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsume
                 await self.send_json(message)
 
                 group_message = self.base_room_message(
-                    **{'type': 'game.updates', 'message': message})
+                    **{
+                        'type': 'game.updates',
+                        'message': message
+                    }
+                )
                 await self.channel_layer.group_send(self.diffusion_group_name, group_message)
 
                 await self.next_song()
+            else:
+                await self.send_error('Game not started or no current song')
         elif action == 'randomize_genre':
+            if not self.is_started:
+                await self.send_error("Cannot randomize. Game not started")
+                return
+
             # Select a temporary genre within songs, if and only if
             # a global genre is not selected
             temporary_genre = content.get('temporary_genre', None)
@@ -335,6 +346,7 @@ class TelevisionConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):
             await self.send_error(f'No action was provided: {action}')
 
     async def game_updates(self, content):
+        print('TelevisionConsumer', content)
         origin = content['device_id']
 
         if self.is_admin_device('blind_test', origin):
@@ -343,6 +355,9 @@ class TelevisionConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):
     async def game_disconnected(self, content):
         origin = content['device_id']
 
+        await self.send_json(content['message'])
+        # FIXME: If the main admin device sends a message,
+        # just return the content
         if self.is_admin_device('blind_test', origin):
             await self.send_json(content['message'])
 

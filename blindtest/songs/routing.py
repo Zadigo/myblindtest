@@ -5,12 +5,12 @@ websocket_urlpatterns = [
     re_path(
         r'^ws/buzzer/connect$',
         consumers.SmartphoneConsumer.as_asgi(),
-        name='screen_projection'
+        name='smartphone'
     ),
     re_path(
         r'^ws/tv/connect$',
         consumers.TelevisionConsumer.as_asgi(),
-        name='screen_projection'
+        name='television'
     ),
     re_path(
         r'^ws/songs$',

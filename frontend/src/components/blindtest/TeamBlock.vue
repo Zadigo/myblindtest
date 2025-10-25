@@ -1,85 +1,50 @@
 <template>
-  <div ref="teamBlockEl" class="p-5 h-screen relative">
-    <div id="team" :class="blockPosition" class="flex-col w-7/12 absolute top-7/20 left-4/20">
-      <volt-card class="w-full text-center border-none shadow-none">
-        <template #content>
-          <h1 ref="scoreBoxEl" class="text-6xl font-bold">
-            {{ teamScore }}
-          </h1>
-
-          <p class="font-light uppercase text-sm">
-            Points ({{ teamName }})
-          </p>
-        </template>
-      </volt-card>
-
-      <!-- Actions -->
-      <volt-card class="mt-2 mb-10 border-none shadow-none">
-        <template #content>
-          <div class="flex justify-center gap-2">
-            <volt-button :variant="matchedElement === 'Title' ? '' : 'outlined'" size="small" @click="handleMatch('Title')">
-              <vue-icon icon="fa-solid:star-half" />
-              Title
-            </volt-button>
-
-            <volt-button :variant="matchedElement === 'Artist' ? '' : 'outlined'" size="small" @click="handleMatch('Artist')">
-              <vue-icon icon="fa-solid:star-half" />
-              Artist
-            </volt-button>
-
-            <volt-button :variant="matchedElement === 'Both' ? '' : 'outlined'" size="small" @click="handleMatch('Both')">
-              <vue-icon icon="fa-solid:star" />
-              Both
-            </volt-button>
-          </div>
-
-          <div class="flex justify-center mt-4 w-full">
-            <volt-contrast-button :disabled="!gameStarted" class="w-10/13 self-center" @click="proxySendCorrectAnswer">
-              <vue-icon icon="fa-solid:check" />
-              Validate
-            </volt-contrast-button>
-          </div>
-        </template>
-      </volt-card>
-
-      <div class="flex gap-1 justify-center p-5 mt-3">
-        <div v-for="i in 5" :key="i" class="p-2 bg-brand-shade-5/50 rounded-md w-1/6" />
+  <div ref="teamBlockEl" class="w-4/12 mx-auto">
+    <div class="bg-primary-900 p-5 rounded-4xl text-surface-100 text-7xl font-bold text-center overflow-hidden cursor-pointer hover:shadow-xl hover:translate-y-2 transition-all ease-in-out">
+      <!-- Score -->
+      <div ref="scoreBoxEl">
+        {{ teamScore }}
       </div>
 
-      <!-- Consecutive Answers -->
-      <Transition class="animate__animated" enter-to-class="animate__zoomInLeft" leave-to-class="animate__fadeOutLeft">
-        <h1 v-if="hasConsecutiveAnswers" class="text-5xl font-bold text-gray-700">
-          Exceptionnel x {{ consecutiveAnswers }}
-        </h1>
-      </Transition>
-
-      <!-- Fireworks -->
-      <base-fireworks v-show="gameStarted && hasConsecutiveAnswers" />
+      <!-- Team Name -->
+      <p class="text-sm font-light">
+        Team ({{ teamName }})
+      </p>
     </div>
+
+    <!-- Actions -->
+    <team-actions :team="team" @animate="handleAnimations" />
+
+    <!-- Consecutive Answers -->
+    <transition class="animate__animated" enter-to-class="animate__zoomInLeft" leave-to-class="animate__fadeOutLeft">
+      <h1 v-if="hasConsecutiveAnswers" class="text-5xl font-bold text-surface-700">
+        Exceptionnel x {{ consecutiveAnswers }}
+      </h1>
+    </transition>
+
+    <!-- Fireworks -->
+    <base-fireworks v-show="gameStarted && hasConsecutiveAnswers" />
   </div>
 </template>
 
-<script lang="ts" setup>
-import type { MatchedPart } from '@/data'
+<script setup lang="ts">
 
-const emit = defineEmits<{ 'next-song': [data: [ teamId: string, match: MatchedPart]] }>()
+const { teamIndex = 1 } = defineProps<{ teamIndex: number }>()
 
-const { teamIndex = 1, marginRight = 0, marginLeft = 0, diffusionMode = false, blockPosition = 'me-auto' } = defineProps<{ 
-  teamIndex: number, 
-  marginRight?: number, 
-  marginLeft?: number, 
-  diffusionMode?: boolean, 
-  blockPosition?: string 
-}>()
+/**
+ * Game State
+ */
+
+const gameStarted = inject('gameStarted')
 
 /**
  * Team
  */
 
 const teamStore = useTeamsStore()
-
 const team = teamStore.getTeamByIndex(teamIndex)
-const teamName = computed(() => isDefined(team) ? team.value.name : (team.value?.id || 'Unknown Team'))
+
+const teamName = computed(() => isDefined(team) && team.value.name !== '' ? team.value.name : (team.value?.id || '-'))
 const teamScore = computed(() => isDefined(team) ? team.value.score : 0)
 
 /**
@@ -95,28 +60,8 @@ const { consecutiveAnswers, hasConsecutiveAnswers } = useConsecutiveAnswers(team
 const { handleAnimation: handleTeamBlockAnimation } = useAnimationComposable('teamBlockEl')
 const { handleAnimation: handleScoreAnimation } = useAnimationComposable('scoreBoxEl')
 
-/**
- * Answering
- */
-
-const { sendCorrectAnswer, gameStarted } = useGameWebsocket()
-const matchedElement = ref<MatchedPart>('Both')
-
-async function proxySendCorrectAnswer() {
-  if (team.value) {
-    await handleTeamBlockAnimation()
-    await handleScoreAnimation()
-    
-    console.log('Correct answer', team.value)
-
-    sendCorrectAnswer(team.value.id, matchedElement.value)
-    matchedElement.value = 'Both'
-  } else {
-    console.error('handleCorrectAnswer', 'No team')
-  }
-}
-
-function handleMatch(match: MatchedPart) {
-  matchedElement.value = match
+async function handleAnimations() {
+  await handleTeamBlockAnimation()
+  await handleScoreAnimation()
 }
 </script>

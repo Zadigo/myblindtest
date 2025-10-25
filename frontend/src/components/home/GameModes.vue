@@ -27,5 +27,5 @@
 </template>
 
 <script setup lang="ts">
-const { currentSettings } = useGlobalSessionState()
+const { currentSettings } = useSession()
 </script>

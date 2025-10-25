@@ -19,7 +19,7 @@ export interface CacheSession {
   teams: Team[]
   settings: {
     rounds: number
-    timeLimit: Nullable<number>
+    timeLimit: number
     pointValue: number
     songDifficultyBonus: boolean
     speedBonus: boolean

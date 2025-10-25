@@ -1,31 +1,56 @@
 <template>
-  <blind-test-layout>
-    <template #teamOne>
-      <team-block :team-index="0" class="bg-primary/40" />
-    </template>
+  <section id="blindtest">
+    <blind-test-layout>
+      <template #video>
+        <video-block />
+      </template>
+  
+      <template #leftTeam>
+        <team-block :team-index="0" />
+      </template>
+  
+      <template #rightTeam>
+        <team-block :team-index="1" />
+      </template>
+    </blind-test-layout>
 
-    <template #teamTwo>
-      <team-block :team-index="1" block-position="ms-auto" class="bg-primary/20" />
-    </template>
-
-    <template #video>
-      <video-block ref="videoEl" />
-    </template>
-  </blind-test-layout>
+    <!-- Modals -->
+    <active-game v-model="warnActiveGameModal" @proceed="() => stopGame(stopGameCallback)" />
+  </section>
 </template>
 
 <script setup lang="ts">
-import type VideoBlock from '@/components/blindtest/VideoBlock.vue'
-import type { VideoBlockExposedMethods } from '@/types'
-
-const videoEl = useTemplateRef<InstanceType<typeof VideoBlock> & VideoBlockExposedMethods>('videoEl')
+import { onBeforeRouteLeave, useRouter } from 'vue-router'
 
 /**
- * Wescocket
+ * Websocket
  */
 
-const { wsObject } = useGameWebsocket()
-wsObject.open()
+const { currentSettings } = useSession()
+const { wsObject, gameStarted, stopGame } = useGameWebsocket()
+
+whenever(() => isDefined(currentSettings), () => {
+  wsObject.open()
+})
+
+/**
+ * Before leave
+ */
+
+const router = useRouter()
+const warnActiveGameModal = ref(false)
+
+onBeforeRouteLeave(() => {
+  if (gameStarted.value) {
+    warnActiveGameModal.value = true
+    return false
+  }
+})
+
+function stopGameCallback() {
+  warnActiveGameModal.value = false
+  router.push({ name: 'home' })
+}
 
 /**
  * SEO
@@ -40,4 +65,5 @@ useHead({
     }
   ]
 })
+
 </script>
