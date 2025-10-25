@@ -1,0 +1,244 @@
+# save as enrich_artists_frwiki.py and run with: python enrich_artists_frwiki.py
+# Requirements:
+# pip install requests mwparserfromhell python-dateutil pandas beautifulsoup4
+
+import requests
+import mwparserfromhell
+import pandas as pd
+import re
+from dateutil import parser as dateparser
+from bs4 import BeautifulSoup
+from urllib.parse import quote
+
+FR_WIKI_BASE = "https://fr.wikipedia.org/wiki/"
+
+def fr_wiki_url_from_title(title: str) -> str:
+    # Basic slugify: replace spaces with underscore and quote special chars
+    slug = title.replace(" ", "_")
+    return FR_WIKI_BASE + quote(slug, safe=":/_#?=&'")
+
+def page_exists(title: str) -> (bool, str):
+    url = fr_wiki_url_from_title(title)
+    r = requests.get(url, allow_redirects=True, timeout=15)
+    if r.status_code == 200:
+        # check for "Wikipédia" content or some marker that it's a real article
+        # pages that say "Wikipédia n'a pas d'article" often redirect or return 200 with a search page.
+        if "mw-parser-output" in r.text or '<div id="bodyContent"' in r.text:
+            return True, r.text
+    return False, ""
+
+def try_extract_from_infobox(wikitext: str):
+    """Parse wikitext with mwparserfromhell to extract birth_date or formation data."""
+    try:
+        mw = mwparserfromhell.parse(wikitext)
+    except Exception:
+        return None, None
+
+    # Try to find template named 'Infobox' or 'Infobox musical artist' etc.
+    for tpl in mw.filter_templates():
+        name = tpl.name.strip().lower()
+        if "infobox" in name or "biography" in name or "infobox chanteur" in name or "artiste" in name:
+            # Try birth_date / naissance / date_de_naissance
+            for key in ["birth_date", "date_de_naissance", "naissance", "date de naissance", "née"]:
+                if tpl.has(key):
+                    val = str(tpl.get(key).value).strip()
+                    return val, None
+            # formation/created/years_active
+            for key in ["formation", "fondation", "fondée", "years_active", "années_actives", "année_de_sortie"]:
+                if tpl.has(key):
+                    val = str(tpl.get(key).value).strip()
+                    return None, val
+
+    # If we reach here, no clear infobox fields found
+    return None, None
+
+def try_extract_dates_from_html(html_text: str):
+    """Fallback extractor: parse the HTML summary and infobox area for date patterns."""
+    soup = BeautifulSoup(html_text, "html.parser")
+    txt = soup.get_text(separator="\n")
+    # Search for 'né le' or 'née le' patterns
+    m = re.search(r"\bné(?:e)? le\s+([0-9]{1,2}\s+\w+\s+[0-9]{4})", txt, flags=re.IGNORECASE)
+    if not m:
+        m = re.search(r"\bn[ée] le\s+([0-9]{1,2}/[0-9]{1,2}/[0-9]{4})", txt, flags=re.IGNORECASE)
+    if m:
+        try:
+            d = dateparser.parse(m.group(1), dayfirst=True)
+            return d.date().isoformat(), None
+        except Exception:
+            return m.group(1), None
+
+    # For groups: look for 'formé en YYYY' or 'formé(e) en YYYY' or 'fondé en YYYY'
+    mg = re.search(r"(form[ée] (en)?|fond[ée] (en)?|créé en)\s+([0-9]{4})", txt, flags=re.IGNORECASE)
+    if mg:
+        year = mg.group(4)
+        return None, year
+
+    # try to find year in infobox 'Années d'activité' or 'Formation' text
+    infobox = soup.find(class_="infobox_v2") or soup.find(class_="infobox")
+    if infobox:
+        ibtxt = infobox.get_text(separator="\n")
+        mg = re.search(r"(\d{4})", ibtxt)
+        if mg:
+            return None, mg.group(1)
+
+    return None, None
+
+def normalise_date_field(value):
+    """Try to parse and return isoformat YYYY-MM-DD or readable fallback."""
+    if not value or str(value).strip() == "":
+        return ""
+    # Remove extraneous templates like {{...}}
+    # Use mwparserfromhell to strip templates to text where possible
+    try:
+        node = mwparserfromhell.parse(value).strip_code()
+        text = node.strip()
+    except Exception:
+        text = str(value).strip()
+
+    # Attempt to parse date
+    try:
+        d = dateparser.parse(text, dayfirst=True)
+        return d.date().isoformat()
+    except Exception:
+        # return cleaned text if cannot parse to ISO
+        return text
+
+def extract_fr_wiki_info(name, is_group=False):
+    """Try to find French Wikipedia page and extract date of birth or creation year."""
+    # Attempt direct page by title
+    exists, html = page_exists(name)
+    if not exists:
+        # Try searching different title capitalizations common on fr.wiki:
+        candidates = [
+            name.strip(),
+            name.strip().replace('-', ' '),
+            name.strip().replace('&', 'et'),
+            name.strip().title(),
+            name.strip().replace("'", "’"),
+        ]
+        for cand in candidates:
+            exists, html = page_exists(cand)
+            if exists:
+                break
+
+    if not exists:
+        return "", ""  # no fr page, keep fields empty
+
+    # We have html for the FR page. We need its canonical URL (requests followed redirects).
+    # Re-request but let requests give us final URL via r.url:
+    url = fr_wiki_url_from_title(name)
+    r = requests.get(url, allow_redirects=True, timeout=15)
+    final_url = r.url if r.status_code == 200 else url
+    html_text = r.text
+
+    # Try to obtain page wikitext using the MediaWiki API (preferred for infobox parsing)
+    # Use action=parse with page=title to get wikitext? Best is to use action=query&prop=revisions&rvprop=content
+    # But for this script we'll try to grab the page content via API using the normalized title.
+    api_url = "https://fr.wikipedia.org/w/api.php"
+    params = {"action": "query", "prop": "revisions", "rvprop": "content", "format": "json", "titles": name}
+    try:
+        api_r = requests.get(api_url, params=params, timeout=15)
+        api_json = api_r.json()
+        pages = api_json.get("query", {}).get("pages", {})
+        wikitext = None
+        for pid, pdata in pages.items():
+            revs = pdata.get("revisions")
+            if revs and len(revs) > 0:
+                wikitext = revs[0].get("*")  # may be older MW versions; try to fallback
+                break
+    except Exception:
+        wikitext = None
+
+    dob_iso = ""
+    creation_iso = ""
+
+    if wikitext:
+        # Try to extract from infobox template
+        birth_val, creation_val = try_extract_from_infobox(wikitext)
+        if birth_val:
+            dob_iso = normalise_date_field(birth_val)
+        if creation_val:
+            # extract year
+            m = re.search(r"(\d{4})", creation_val)
+            if m:
+                creation_iso = f"1-1-{m.group(1)}"
+            else:
+                # fallback: normalise
+                c = normalise_date_field(creation_val)
+                # if it's a year-only string like '1999', set 1-1-year
+                m2 = re.search(r"(\d{4})", c)
+                if m2:
+                    creation_iso = f"1-1-{m2.group(1)}"
+                else:
+                    creation_iso = c
+
+    if not dob_iso and not creation_iso:
+        # fallback: try to extract from html summary
+        dob_fallback, year_fallback = try_extract_dates_from_html(html_text)
+        if dob_fallback:
+            dob_iso = normalise_date_field(dob_fallback)
+        if year_fallback:
+            creation_iso = f"1-1-{year_fallback}"
+
+    # Decide result depending on is_group
+    if is_group:
+        date_field = creation_iso or ""
+    else:
+        date_field = dob_iso or ""
+
+    return date_field, final_url
+
+def main():
+    INPUT = "/mnt/data/artists_no_dob_wiki.csv"
+    OUTPUT = "/mnt/data/artists_enriched.csv"
+    df = pd.read_csv(INPUT)
+
+    # Ensure columns exist
+    if 'name' not in df.columns:
+        raise ValueError("CSV must contain 'name' column")
+    if 'is_group' not in df.columns:
+        # If missing, assume all False
+        df['is_group'] = False
+    # Normalize is_group to boolean
+    df['is_group'] = df['is_group'].astype(bool)
+
+    # Ensure wikipedia_page and date_of_birth columns exist
+    if 'wikipedia_page' not in df.columns:
+        df['wikipedia_page'] = ""
+    if 'date_of_birth' not in df.columns:
+        df['date_of_birth'] = ""
+
+    # Iterate rows
+    updated = []
+    for idx, row in df.iterrows():
+        name = str(row['name']).strip()
+        is_group = bool(row['is_group'])
+        current_dob = str(row.get('date_of_birth', "") or "").strip()
+        current_wiki = str(row.get('wikipedia_page', "") or "").strip()
+
+        # Only attempt if missing
+        if (not current_dob or current_dob.lower() in ("nan", "none")) or (not current_wiki or current_wiki.lower() in ("nan", "none")):
+            try:
+                date_val, wiki_url = extract_fr_wiki_info(name, is_group=is_group)
+            except Exception as e:
+                print(f"Error extracting for {name}: {e}")
+                date_val, wiki_url = "", ""
+
+            # Only fill fields if non-empty (user requested keep empty if not found)
+            if date_val:
+                df.at[idx, 'date_of_birth'] = date_val
+            # Note: for groups we still fill in date_of_birth field with "1-1-year" per request
+            if wiki_url:
+                df.at[idx, 'wikipedia_page'] = wiki_url
+
+            print(f"[{idx+1}/{len(df)}] {name} -> date: {date_val or '---'}, wiki: {wiki_url or '---'}")
+        else:
+            # nothing to do
+            pass
+
+    # Save enriched CSV
+    df.to_csv(OUTPUT, index=False, encoding="utf-8")
+    print(f"\nSaved enriched CSV to: {OUTPUT}")
+
+if __name__ == "__main__":
+    main()

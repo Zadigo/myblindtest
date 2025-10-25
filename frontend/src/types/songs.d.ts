@@ -1,3 +1,5 @@
+import type { _DatabaseItem, Nullable } from "."
+
 export type GlobalSongGenres = 'pop' 
   | 'rock' 
   | 'hip-hop' 
@@ -5,17 +7,15 @@ export type GlobalSongGenres = 'pop'
   | 'classical' 
   | 'electronic'
 
-export interface Artist {
-  id: number
+export interface Artist extends _DatabaseItem {
   name: string
   spotify_id: string
   spotify_avatar: string
   genre: string
-  created_on: string
+  wikipedia_page: Nullable<string>
 }
 
-export interface Song {
-  id: number
+export interface Song extends _DatabaseItem {
   name: string
   genre: string
   youtube: string
@@ -25,7 +25,6 @@ export interface Song {
   artist: Artist
   youtube_watch_link: string
   difficulty: number
-  created_on: string
 }
 
 type SongSet = Omit<Song, 'artist'>

@@ -25,3 +25,8 @@ export interface BaseApiResponse<T> {
   previous: number
   results: T[]
 }
+
+export interface _DatabaseItem {
+  id: number
+  created_on: string
+}

@@ -10,6 +10,7 @@ class ArtistSerializer(serializers.Serializer):
     spotify_id = fields.CharField()
     spotify_avatar = fields.CharField()
     genre = fields.CharField()
+    wikipedia_page = fields.URLField(allow_null=True)
     created_on = fields.DateField()
 
 
@@ -89,10 +90,14 @@ class SongSerializer(serializers.Serializer):
 
 
 class ArtistSongSerializer(serializers.Serializer):
+    """Serializer used to return an artist
+    with all their songs"""
+
     id = fields.IntegerField()
     name = fields.CharField()
     spotify_avatar = fields.URLField()
     song_set = SongSerializer(many=True)
+    wikipedia_page = fields.URLField(allow_null=True)
 
 
 class SongAutomationSerializer(serializers.Serializer):

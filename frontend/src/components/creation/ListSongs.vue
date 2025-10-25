@@ -50,6 +50,11 @@
                 </volt-accordion-header>
 
                 <volt-accordion-content>
+                  <volt-link v-if="artist.wikipedia_page" :href="artist.wikipedia_page" target="_blank" class="mb-5">
+                    <vue-icon icon="fa6-brands:wikipedia-w" />
+                    Page Wikipedia
+                  </volt-link>
+
                   <div v-for="song in artist.song_set" :key="song.id" :aria-label="song.name" class="p-3 rounded-md bg-primary-600 dark:bg-primary-700 dark:text-surface-50 my-1">
                     <div class="inline-flex gap-3 items-center">
                       <span>{{ song.name }}</span>
@@ -73,8 +78,8 @@
 </template>
 
 <script setup lang="ts">
-import type { ArtistSong, BaseApiResponse } from '@/types'
 import { useToast } from 'primevue/usetoast'
+import type { ArtistSong, BaseApiResponse } from '@/types'
 
 const toast = useToast()
 
@@ -108,7 +113,7 @@ const apiResult = ref<ApiResponse>()
  * Return all the songs in the database
  * @param offset The next offset page to get
  */
-const { status, execute, responseData, refresh } = useRequest<ApiResponse>('django', '/api/v1/songs/by-artists', {
+const { execute, responseData } = useRequest<ApiResponse>('django', '/api/v1/songs/by-artists', {
   method: 'get',
   query: searchParam
 })
@@ -123,7 +128,7 @@ if (responseData.value) {
 async function getPrevious() {
   if (apiResult.value) {
     searchParam.offset = apiResult.value.previous
-    await refresh(searchParam)
+    await execute()
     apiResult.value = responseData.value
   }
 }
@@ -132,7 +137,7 @@ async function getPrevious() {
 async function getNextPage() {
   if (apiResult.value) {
     searchParam.offset = apiResult.value.next
-    await refresh(searchParam)
+    await execute()
     apiResult.value = responseData.value
   }
 }
@@ -172,7 +177,7 @@ const debouncedSearch = debouncedRef(search, 2000)
 
 watch(debouncedSearch, async (newSearch) => {
   searchParam.q = newSearch
-  await refresh(searchParam)
+  await execute()
   apiResult.value = responseData.value
 })
 
