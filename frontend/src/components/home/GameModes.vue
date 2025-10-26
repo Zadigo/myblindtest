@@ -21,7 +21,10 @@
     </template>
 
     <template v-else #content>
-      <volt-skeleton class="h-96" />
+      <div class="space-y-2">
+        <volt-skeleton height="100px" />
+        <volt-skeleton height="100px" />
+      </div>
     </template>
   </VoltCard>
 </template>

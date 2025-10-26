@@ -7,14 +7,17 @@
     </template>
 
     <template v-if="currentSettings" #content>
-      <volt-input-number v-model="currentSettings.settings.pointValue" :min="1" :step="1" :max="50" />
+      <!-- Points -->
+      <volt-input-number v-model="currentSettings.settings.pointValue" :min="1" :step="1" :max="20" class="w-full" />
 
+      <!-- Song Difficulty Bonus -->
       <div class="py-3">
         <volt-label label-for="song-difficulty" label="Use song difficulty bonus">
           <volt-toggle-switch v-model="currentSettings.settings.songDifficultyBonus" />
         </volt-label>
       </div>
 
+      <!-- Speed Bonus -->
       <div class="py-3">
         <volt-label label-for="speed-bonus" label="Use answering speed bonus">
           <volt-toggle-switch v-model="currentSettings.settings.speedBonus" />
@@ -23,7 +26,11 @@
     </template>
 
     <template v-else #content>
-      <volt-skeleton class="h-96" />
+      <div class="space-y-2">
+        <volt-skeleton height="100px" />
+        <volt-skeleton height="100px" />
+        <volt-skeleton height="100px" />
+      </div>
     </template>
   </volt-card>
 </template>

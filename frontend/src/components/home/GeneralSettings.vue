@@ -36,8 +36,9 @@
 
     <template v-else #content>
       <div class="space-y-2">
-        <volt-skeleton class="h-96" />
-        <volt-skeleton class="h-96" />
+        <volt-skeleton height="100px" />
+        <volt-skeleton height="100px" />
+        <volt-skeleton height="100px" />
       </div>
     </template>
   </volt-card>
