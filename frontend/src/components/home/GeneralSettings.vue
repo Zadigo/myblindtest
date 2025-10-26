@@ -31,16 +31,7 @@
         period in which the songs should be located
         for the blind test
       </p>
-
-      <!-- <v-range-slider v-model="songStore.settings.timeRange" :min="minimumPeriod" :max="maximumPeriod" :step="1" class="align-center" hide-details>
-        <template #prepend>
-          <v-text-field v-model="songStore.settings.timeRange[0]" :min="0" density="compact" style="width: 70px" type="number" variant="outlined" hide-details single-line />
-        </template>
-
-        <template #append>
-          <v-text-field v-model="songStore.settings.timeRange[1]" :min="0" density="compact" style="width: 70px" type="number" variant="outlined" hide-details single-line />
-        </template>
-      </v-range-slider> -->
+      <volt-slider v-model="currentSettings.settings.timeRange" :min="autocomplete?.period.minimum || 0" :max="autocomplete?.period.maximum || 0" :step="1" class="my-10" range />
     </template>
 
     <template v-else #content>
@@ -53,6 +44,6 @@
 </template>
 
 <script setup lang="ts">
-const { genres } = useLoadAutocompleteData(true)
+const { genres, autocomplete } = useLoadAutocompleteData(true)
 const { currentSettings } = useSession()
 </script>

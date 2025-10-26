@@ -1,4 +1,5 @@
-import type { GenreDistribution, SettingsApiResponse } from '@/types'
+import { useAsyncRequest } from 'vue-axios-manager'
+import type { GenreDistribution, SettingsApiResponse, Undefineable } from '@/types'
 
 export * from './create'
 export * from './game'
@@ -12,19 +13,14 @@ export * from './songs'
  * @param fromCache Whether to load data from cache or fetch from API
  */
 export const useLoadAutocompleteData = createSharedComposable((fromCache = false) => {
-  const autocomplete = useLocalStorage<SettingsApiResponse>('autocomplete', null, {
-    serializer: {
-      write: (value) => JSON.stringify(value),
-      read: (value) => (value ? JSON.parse(value) : null)
-    }
+  const autocomplete = ref<SettingsApiResponse | undefined>()
+
+  const { load } = useMemoize(async (path: string) => {
+    const { responseData } = await useAsyncRequest<SettingsApiResponse>('django', path, { immediate: true })
+    return responseData.value
   })
 
-  onBeforeMount(async () => {
-    if (!fromCache) {
-      const { responseData } = await useAsyncRequest<SettingsApiResponse>('django', '/api/v1/songs/settings', { method: 'get', immediate: true })
-      syncRef(autocomplete, responseData, { direction: 'rtl' })
-    }
-  })
+  onMounted(async () => { autocomplete.value = await load('/api/v1/songs/settings') })
 
   const minimumPeriod = computed(() => autocomplete.value?.period.minimum || 0)
   const maximumPeriod = computed(() => autocomplete.value?.period.maximum || 100)
