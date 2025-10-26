@@ -12,7 +12,7 @@ const router = createRouter({
           component: async () => import('../pages/HomePage.vue'),
           name: 'home',
           meta: {
-            heightScreen: true
+            heightScreen: false
           }
         },
         {
@@ -35,14 +35,6 @@ const router = createRouter({
           path: 'statistics',
           component: async () => import('../pages/StatisticsPage.vue'),
           name: 'statistics',
-          meta: {
-            heightScreen: true
-          }
-        },
-        {
-          path: 'registration',
-          component: async () => import('../pages/RegisterPlayerPage.vue'),
-          name: 'registration',
           meta: {
             heightScreen: true
           }

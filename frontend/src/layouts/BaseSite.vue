@@ -1,6 +1,5 @@
 <template>
-  <!-- class="h-screen" -->
-  <section :class="sectionClass">
+  <section ref="sectionEl" id="layout-site">
     <navbar>
       <navbar-content>
         <template #brand>
@@ -41,14 +40,20 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
-
-const meta = useRoute().meta as {
-  heightScreen: boolean
-}
-const sectionClass = computed(() => ({ 'h-screen': meta.heightScreen }))
+import { onBeforeRouteLeave, useRoute } from 'vue-router'
 
 const bgTheme = ['dark:bg-primary-950', 'bg-no-repeat', 'bg-center', 'bg-gradient-to-tl', 'from-primary/30', 'via-primary-20', 'to-primary/10']
+
+const meta = useRoute().meta as { heightScreen: boolean }
+const sectionEl = useTemplateRef('sectionEl')
+
+onBeforeRouteLeave(() => {
+  if (meta.heightScreen) {
+    sectionEl.value?.classList.add('h-screen')
+  } else {
+    sectionEl.value?.classList.remove('h-auto')
+  }
+})
 
 onMounted(() => {
   document.documentElement.classList.add(...bgTheme)
