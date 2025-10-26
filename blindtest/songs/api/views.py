@@ -278,3 +278,35 @@ class ArtistAutomation(generics.GenericAPIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class SongStatistics(generics.GenericAPIView):
+    permission_classes = [AllowAny]
+    queryset = Song.objects.all()
+
+    def get_queryset(self) -> QuerySet[Song]:
+        qs = cache.get('songs_for_statistics')
+        if qs is not None:
+            return qs
+        queryset = super().get_queryset()
+        cache.set('songs_for_statistics', queryset, timeout=3600)
+        return queryset 
+
+    def get(self, request):
+        qs = self.get_queryset()
+
+        template = {
+            'distribution_by_genre': {
+                'labels': [],
+                'data': []
+            }
+        }
+
+        # Distribution by genre
+        result = qs.values_list('genre')
+        result1 = result.annotate(count=Count('genre'))
+        distribution_by_genre = result1.order_by('count')
+        template['distribution_by_genre']['labels'] = [item[0] for item in distribution_by_genre]
+        template['distribution_by_genre']['data'] = [item[1] for item in distribution_by_genre]
+
+        return Response(template, status=status.HTTP_200_OK)

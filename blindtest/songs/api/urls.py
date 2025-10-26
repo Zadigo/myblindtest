@@ -5,6 +5,11 @@ app_name = 'songs_api'
 
 urlpatterns = [
     re_path(
+        r'^statistics$',
+        views.SongStatistics.as_view(),
+        name='song_statistics'
+    ),
+    re_path(
         r'^test$',
         views.test,
         name='test'

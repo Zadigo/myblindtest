@@ -1,44 +1,46 @@
 <template>
-  <section class="my-10 px-5 md:px-20">
-    <Card class="border-none mb-5">
-      <CardContent>
+  <volt-container size="md">
+    <volt-card class="border-none mb-5">
+      <template #content>
         <h1 class="font-bold text-3xl">
           Statistics
         </h1>
-      </CardContent>
-    </Card>
+      </template>
+    </volt-card>
 
     <div class="grid grid-cols-1 grid-rows-2 gap-2 md:grid-cols-2 md:gap-5">
-      <Card class="border-none">
-        <CardContent>
-          <BarChart :chart-data="genreChartData" :options="genreChartOptions" height="300px" />
-        </CardContent>
-      </Card>
+      <song-distribution :chart-data="data?.distribution_by_genre" />
 
-      <Card class="border-none">
-        <CardContent>
-          <TimelineChart :chart-data="timelineData" :options="timelineOptions" height="300px" />
-        </CardContent>
-      </Card>
+      <volt-card class="border-none">
+        <template #content>
+          <timeline-chart :chart-data="timelineData" :options="timelineOptions" height="300px" />
+        </template>
+      </volt-card>
     </div>
-  </section>
+  </volt-container>
 </template>
 
 <script lang="ts" setup>
 import type { ChartData, ChartOptions } from 'chart.js'
-// import { useHead } from 'unhead'
+import { useAsyncRequest } from 'vue-axios-manager'
+import type { StatisticsApiResponse } from '@/types'
 
-// useHead({
-//   title: 'Statistics',
-//   meta: [
-//     {
-//       name: 'description',
-//       content: 'Write a description here'
-//     }
-//   ]
-// })
+const data = ref<StatisticsApiResponse>()
 
-// Sample data - replace with your actual data
+const { load } = useMemoize(async () => {
+  const { responseData } = await useAsyncRequest<StatisticsApiResponse>('django', '/api/v1/songs/statistics', {
+    method: 'get',
+    immediate: true
+  })
+
+  return responseData.value
+})
+
+onMounted(async () => {
+  data.value = await load()
+})
+
+
 const songs = ref([
   { genre: 'Rock', year: 2020 },
   { genre: 'Pop', year: 2021 },
@@ -149,4 +151,14 @@ const timelineOptions = computed<ChartOptions>(() => ({
 //     }
 //   }
 // }))
+
+useHead({
+  title: 'Statistics',
+  meta: [
+    {
+      name: 'description',
+      content: 'View detailed statistics about your music collection.'
+    }
+  ]
+})
 </script>

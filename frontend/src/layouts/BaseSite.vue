@@ -22,6 +22,12 @@
           </navbar-link>
 
           <navbar-link>
+            <router-link :to="{ name: 'statistics' }">
+              Statistics
+            </router-link>
+          </navbar-link>
+
+          <navbar-link>
             <router-link :to="{ name: 'about' }">
               About
             </router-link>

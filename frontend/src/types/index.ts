@@ -5,6 +5,7 @@ export type * from './game'
 export type * from './messages'
 export type * from './songs'
 export type * from './vue'
+export type * from './statistics'
 
 export type Nullable<T> = T | null
 
