@@ -23,7 +23,7 @@
           </navbar-link>
 
           <navbar-link>
-            <router-link :to="{ name: 'create' }">
+            <router-link :to="{ name: 'about' }">
               About
             </router-link>
           </navbar-link>

@@ -48,6 +48,14 @@ const router = createRouter({
           }
         },
         {
+          path: 'about',
+          component: async () => import('../pages/AboutPage.vue'),
+          name: 'about',
+          meta: {
+            heightScreen: true
+          }
+        },
+        {
           path: '(.*)',
           component: async () => import('../pages/ErrorPage.vue'),
           name: 'error',

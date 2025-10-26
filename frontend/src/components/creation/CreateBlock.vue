@@ -1,5 +1,5 @@
 <template>
-  <div :data-id="index">
+  <div :data-id="index" class="space-y-2 mb-10">
     <div class="flex justify-end mb-5">
       <volt-secondary-button rounded @click="emit('delete:block', index)">
         <vue-icon icon="fa-solid:trash" />
@@ -11,24 +11,11 @@
       <volt-autocomplete v-model="newArtistSong.genre" :suggestions="filteredGenres" :virtual-scroller-options="{ itemSize: 50 }" option-label="label" option-group-children="items" option-group-label="category" placeholder="Genre" dropdown @complete="searchGenreComplete" />
       <volt-input-number v-model.number="newArtistSong.year" placeholder="Year" />
     </div>
-
-    <div class="w-9/12 my-2">
+    
+    <div class="grid grid-cols-3 gap-2">
       <volt-input-number v-model="newArtistSong.difficulty" :min="1" :max="5" placeholder="Difficulty" />
-    </div>
-
-    <div class="flex gap-2">
-      <div class="flex-col">
-        <volt-autocomplete v-model="newArtistSong.artist_name" :suggestions="artistSuggestions" :virtual-scroller-options="{ itemSize: 50 }" option-label="label" placeholder="Artist name" dropdown @complete="() => refresh({ q: newArtistSong.artist_name })" />
-        <p class="text-xs italic">
-          Appuyez sur Shif+Entrée pour split
-        </p>
-      </div>
-
+      <volt-autocomplete v-model="newArtistSong.artist_name" :suggestions="artistSuggestions" :virtual-scroller-options="{ itemSize: 50 }" option-label="label" placeholder="Artist name" dropdown @complete="() => searchArtists()" />
       <volt-input-text v-model="newArtistSong.youtube_id" placeholder="YouTube" />
-    </div>
-
-    <div class="w-10/12">
-      <!-- <volt-autocomplete v-model="newArtistSong.featured_artists" :suggestions="filteredArtists" :virtual-scroller-options="{ itemSize: 50 }" option-label="name" placeholder="Featured artists" multiple fluid dropdown @complete="searchArtists" /> -->
     </div>
   </div>
 </template>
@@ -101,8 +88,8 @@ const newArtistSong = computed({
   }
 })
 
-const { responseData, execute: searchArtists, refresh } = useRequest<Artist[]>('django', '/api/v1/songs/artists', {
-  query: { q: newArtistSong.value.artist_name }
+const { responseData, execute: searchArtists } = useRequest<Artist[]>('django', '/api/v1/songs/artists', {
+  query: { q: ref(JSON.stringify(newArtistSong.value.artist_name)) }
 })
 
 const artistSuggestions = computed(() => {

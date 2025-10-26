@@ -90,8 +90,8 @@ importers:
         specifier: ^3.5.22
         version: 3.5.22(typescript@5.9.3)
       vue-axios-manager:
-        specifier: 2.0.1
-        version: 2.0.1(async-validator@4.2.5)(axios@1.12.2)(change-case@5.4.4)(drauu@0.4.3)(focus-trap@7.6.5)(fuse.js@7.1.0)(idb-keyval@6.2.2)(jwt-decode@4.0.0)(nprogress@0.2.0)(qrcode@1.5.4)(sortablejs@1.15.6)(vue@3.5.22(typescript@5.9.3))
+        specifier: 2.1.1
+        version: 2.1.1(async-validator@4.2.5)(axios@1.12.2)(change-case@5.4.4)(drauu@0.4.3)(focus-trap@7.6.5)(fuse.js@7.1.0)(idb-keyval@6.2.2)(jwt-decode@4.0.0)(nprogress@0.2.0)(qrcode@1.5.4)(sortablejs@1.15.6)(vue@3.5.22(typescript@5.9.3))
       vue-color-wheel:
         specifier: ^0.1.1
         version: 0.1.1
@@ -3821,8 +3821,8 @@ packages:
   vscode-uri@3.1.0:
     resolution: {integrity: sha512-/BpdSx+yCQGnCvecbyXdxHDkuk55/G3xwnC0GqY4gmQ3j+A+g8kzzgB4Nk/SINjqn6+waqw3EgbVF2QKExkRxQ==}
 
-  vue-axios-manager@2.0.1:
-    resolution: {integrity: sha512-1xR/e3n9IyNpMGZdx1wb9l2UboxNrLvxdYzKLRfOfu29H/gW5iyzDfMNkfhfR1Fwkzl7MXlES82UTYJi5NXJTQ==}
+  vue-axios-manager@2.1.1:
+    resolution: {integrity: sha512-p6q05am79o2remc2FXqK6+DyBkwhUKW0t2XBNXp6UfZWGIpNm92M2bHfSfdhLGKeMHWYZvvukdJcbZg6mErBvg==}
     peerDependencies:
       axios: ^1.10.0
       vue: ^3.5.17
@@ -7813,7 +7813,7 @@ snapshots:
 
   vscode-uri@3.1.0: {}
 
-  vue-axios-manager@2.0.1(async-validator@4.2.5)(axios@1.12.2)(change-case@5.4.4)(drauu@0.4.3)(focus-trap@7.6.5)(fuse.js@7.1.0)(idb-keyval@6.2.2)(jwt-decode@4.0.0)(nprogress@0.2.0)(qrcode@1.5.4)(sortablejs@1.15.6)(vue@3.5.22(typescript@5.9.3)):
+  vue-axios-manager@2.1.1(async-validator@4.2.5)(axios@1.12.2)(change-case@5.4.4)(drauu@0.4.3)(focus-trap@7.6.5)(fuse.js@7.1.0)(idb-keyval@6.2.2)(jwt-decode@4.0.0)(nprogress@0.2.0)(qrcode@1.5.4)(sortablejs@1.15.6)(vue@3.5.22(typescript@5.9.3)):
     dependencies:
       '@vueuse/core': 14.0.0(vue@3.5.22(typescript@5.9.3))
       '@vueuse/integrations': 14.0.0(async-validator@4.2.5)(axios@1.12.2)(change-case@5.4.4)(drauu@0.4.3)(focus-trap@7.6.5)(fuse.js@7.1.0)(idb-keyval@6.2.2)(jwt-decode@4.0.0)(nprogress@0.2.0)(qrcode@1.5.4)(sortablejs@1.15.6)(universal-cookie@8.0.1)(vue@3.5.22(typescript@5.9.3))
