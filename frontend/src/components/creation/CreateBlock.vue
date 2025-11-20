@@ -29,13 +29,6 @@ const defaultProps = withDefaults(defineProps<{ index?: number }>(), {
 })
 
 /**
- * Edit block
- */
-
-const { deleteBlock, getCurrentBlock } = useEditSong()
-const newArtistSong = getCurrentBlock(defaultProps.index)
-
-/**
  * Genres suggestions
  */
 
@@ -71,13 +64,19 @@ function searchGenreComplete(event: SearchEvent) {
 }
 
 /**
+ * Edit block
+ */
+
+const { deleteBlock, getCurrentBlock } = useEditSong()
+const newArtistSong = getCurrentBlock(defaultProps.index)
+const _artistName = computed(() => typeof newArtistSong.value.artist_name === 'string' ? newArtistSong.value.artist_name : newArtistSong.value.artist_name.label)
+
+/**
  * Artists suggestions
  */
 
 const { responseData, execute: searchArtists } = useRequest<Artist[]>('django', '/api/v1/songs/artists', {
-  // TODO: There's a problem with ref on the query of useRequest and useAsyncRequest
-  // query: { q: ref(JSON.stringify(newArtistSong.value.artist_name)) }
-  query: { q: newArtistSong.value.artist_name }
+  query: { q: _artistName }
 })
 
 const artistSuggestions = computed(() => {

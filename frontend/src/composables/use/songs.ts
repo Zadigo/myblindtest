@@ -52,9 +52,10 @@ export const useEditSong = createSharedComposable(() => {
   const cleanedData = computed(() => {
     return blocks.value.map((block) => ({
       ...block,
+      // featured_artists: block.featured_artists.join(','),
       genre: typeof block.genre === 'string' ? block.genre : block.genre.label,
       artist_name: typeof block.artist_name === 'string' ? block.artist_name : block.artist_name.label
-    })) 
+    })) as NewSong[]
   })
 
   async function _save() {
@@ -94,6 +95,10 @@ export const useEditSong = createSharedComposable(() => {
     blocks.value.splice(index, 1)
   }
 
+  /**
+   * Block
+   */
+
   const getCurrentBlock = reactify((index: number) => blocks.value[index])
 
   return {
@@ -101,6 +106,11 @@ export const useEditSong = createSharedComposable(() => {
      * Songs to create
      */
     blocks,
+    /**
+     * Cleaned data to send to the API
+     * @private
+     */
+    cleanedData,
     /**
      * Save the songs
      */

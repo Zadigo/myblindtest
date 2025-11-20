@@ -90,8 +90,8 @@ importers:
         specifier: ^3.5.24
         version: 3.5.24(typescript@5.9.3)
       vue-axios-manager:
-        specifier: 2.1.1
-        version: 2.1.1(async-validator@4.2.5)(axios@1.13.2)(change-case@5.4.4)(drauu@0.4.3)(focus-trap@7.6.6)(fuse.js@7.1.0)(idb-keyval@6.2.2)(jwt-decode@4.0.0)(nprogress@0.2.0)(qrcode@1.5.4)(sortablejs@1.15.6)(vue@3.5.24(typescript@5.9.3))
+        specifier: 2.1.2
+        version: 2.1.2(async-validator@4.2.5)(axios@1.13.2)(change-case@5.4.4)(drauu@0.4.3)(focus-trap@7.6.6)(fuse.js@7.1.0)(idb-keyval@6.2.2)(jwt-decode@4.0.0)(nprogress@0.2.0)(qrcode@1.5.4)(sortablejs@1.15.6)(vue@3.5.24(typescript@5.9.3))
       vue-color-wheel:
         specifier: ^0.1.1
         version: 0.1.1
@@ -2338,8 +2338,8 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
 
-  electron-to-chromium@1.5.258:
-    resolution: {integrity: sha512-rHUggNV5jKQ0sSdWwlaRDkFc3/rRJIVnOSe9yR4zrR07m3ZxhP4N27Hlg8VeJGGYgFTxK5NqDmWI4DSH72vIJg==}
+  electron-to-chromium@1.5.259:
+    resolution: {integrity: sha512-I+oLXgpEJzD6Cwuwt1gYjxsDmu/S/Kd41mmLA3O+/uH2pFRO/DvOjUyGozL8j3KeLV6WyZ7ssPwELMsXCcsJAQ==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -3814,8 +3814,8 @@ packages:
   vscode-uri@3.1.0:
     resolution: {integrity: sha512-/BpdSx+yCQGnCvecbyXdxHDkuk55/G3xwnC0GqY4gmQ3j+A+g8kzzgB4Nk/SINjqn6+waqw3EgbVF2QKExkRxQ==}
 
-  vue-axios-manager@2.1.1:
-    resolution: {integrity: sha512-p6q05am79o2remc2FXqK6+DyBkwhUKW0t2XBNXp6UfZWGIpNm92M2bHfSfdhLGKeMHWYZvvukdJcbZg6mErBvg==}
+  vue-axios-manager@2.1.2:
+    resolution: {integrity: sha512-oHVQEYzWUYGnc9KYn8y8e7MNKHIcTvDv5P3OdXapuTxMv6TjATnlDqly4Sm30RoxQt5PKdylNaHgHTIK04M4Ig==}
     peerDependencies:
       axios: ^1.10.0
       vue: ^3.5.17
@@ -5823,7 +5823,7 @@ snapshots:
     dependencies:
       baseline-browser-mapping: 2.8.30
       caniuse-lite: 1.0.30001756
-      electron-to-chromium: 1.5.258
+      electron-to-chromium: 1.5.259
       node-releases: 2.0.27
       update-browserslist-db: 1.1.4(browserslist@4.28.0)
 
@@ -6234,7 +6234,7 @@ snapshots:
       minimatch: 9.0.1
       semver: 7.7.3
 
-  electron-to-chromium@1.5.258: {}
+  electron-to-chromium@1.5.259: {}
 
   emoji-regex@8.0.0: {}
 
@@ -7795,7 +7795,7 @@ snapshots:
 
   vscode-uri@3.1.0: {}
 
-  vue-axios-manager@2.1.1(async-validator@4.2.5)(axios@1.13.2)(change-case@5.4.4)(drauu@0.4.3)(focus-trap@7.6.6)(fuse.js@7.1.0)(idb-keyval@6.2.2)(jwt-decode@4.0.0)(nprogress@0.2.0)(qrcode@1.5.4)(sortablejs@1.15.6)(vue@3.5.24(typescript@5.9.3)):
+  vue-axios-manager@2.1.2(async-validator@4.2.5)(axios@1.13.2)(change-case@5.4.4)(drauu@0.4.3)(focus-trap@7.6.6)(fuse.js@7.1.0)(idb-keyval@6.2.2)(jwt-decode@4.0.0)(nprogress@0.2.0)(qrcode@1.5.4)(sortablejs@1.15.6)(vue@3.5.24(typescript@5.9.3)):
     dependencies:
       '@vueuse/core': 14.0.0(vue@3.5.24(typescript@5.9.3))
       '@vueuse/integrations': 14.0.0(async-validator@4.2.5)(axios@1.13.2)(change-case@5.4.4)(drauu@0.4.3)(focus-trap@7.6.6)(fuse.js@7.1.0)(idb-keyval@6.2.2)(jwt-decode@4.0.0)(nprogress@0.2.0)(qrcode@1.5.4)(sortablejs@1.15.6)(universal-cookie@8.0.1)(vue@3.5.24(typescript@5.9.3))
