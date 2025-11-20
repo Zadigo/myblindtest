@@ -50,11 +50,8 @@ interface SearchEvent extends Event {
 const injectedGenres = inject<Ref<SearchedGenreApiResponse[]> | undefined>('genres')
 const filteredGenres = ref<SearchedGenreApiResponse[]>([])
 
-/**
- * Callback function for VoltAutocomplete component
- * to filter genres based on user input
- * @param event - The search event containing the query
- */
+// Callback function for VoltAutocomplete component
+// to filter genres based on user input
 function searchGenreComplete(event: SearchEvent) {
   if (injectedGenres) {
     const items = injectedGenres.value.filter((genre) => {

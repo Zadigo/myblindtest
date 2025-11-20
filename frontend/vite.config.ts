@@ -49,7 +49,8 @@ export default defineConfig({
         '@vueuse/core',
         {
           'vue-axios-manager': [
-            'useRequest'
+            'useRequest',
+            'useAsyncRequest',
           ]
         }
       ],

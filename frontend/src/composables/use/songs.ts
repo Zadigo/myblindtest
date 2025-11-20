@@ -11,7 +11,7 @@ export interface SearchedGenreApiResponse {
   items: { label: string }[]
 }
 
-/**
+/**:
  * Returns the list of songs from the Api
  */
 export function useGetGenres<T = SearchedGenreApiResponse>() {
@@ -49,27 +49,33 @@ export function useEditSong() {
     }
   ])
 
-  async function save() {
+  const cleanedData = computed(() => {
+    return blocks.value.map((block) => ({
+      ...block,
+      artist_name: typeof block.artist_name === 'string' ? block.artist_name : block.artist_name.label
+    })) 
+  })
+
+  async function _save() {
     const { responseData } = await useAsyncRequest<SongCreationApiResponse>('django', '/api/v1/songs/create', {
       method: 'post',
-      body: blocks.value.map((block) => ({
-        name: block.name,
-        genre: block.genre.label,
-        artist_name: block.artist_name.label,
-        featured_artists: block.featured_artists,
-        youtube_id: block.youtube_id,
-        year: block.year,
-        difficulty: block.difficulty
-      })),
+      body: cleanedData.value,
       immediate: true
     })
 
     if (responseData.value) {
       if (responseData.value.errors.length > 0) {
-        toast.add({ severity: 'error', summary: 'Error when creating songs', detail: responseData.value.errors.join(', '), life: 10000 })
+        toast.add({
+          severity: 'error', 
+          summary: 'Error when creating songs', 
+          detail: responseData.value.errors.join(', '), 
+          life: 10000
+        })
       }
     }
   }
+
+  const save = useThrottleFn(async () => { await _save() }, 5000)
 
   function addBlock() {
     blocks.value.push({
