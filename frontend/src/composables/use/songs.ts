@@ -52,6 +52,7 @@ export function useEditSong() {
   const cleanedData = computed(() => {
     return blocks.value.map((block) => ({
       ...block,
+      genre: typeof block.genre === 'string' ? block.genre : block.genre.label,
       artist_name: typeof block.artist_name === 'string' ? block.artist_name : block.artist_name.label
     })) 
   })

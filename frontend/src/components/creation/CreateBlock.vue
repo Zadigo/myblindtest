@@ -86,7 +86,9 @@ const newArtistSong = computed({
 })
 
 const { responseData, execute: searchArtists } = useRequest<Artist[]>('django', '/api/v1/songs/artists', {
-  query: { q: ref(JSON.stringify(newArtistSong.value.artist_name)) }
+  // TODO: There's a problem with ref on the query of useRequest and useAsyncRequest
+  // query: { q: ref(JSON.stringify(newArtistSong.value.artist_name)) }
+  query: { q: newArtistSong.value.artist_name }
 })
 
 const artistSuggestions = computed(() => {

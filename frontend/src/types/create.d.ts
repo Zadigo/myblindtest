@@ -1,12 +1,15 @@
-type ArtistName = string | { label: string; value: string }
+type AutoCompleteReturn = { label: string; value: string }
 
+type ArtistName = string | AutoCompleteReturn
+
+type GenreName = string | Pick<AutoCompleteReturn, 'label'>
 
 /**
  * The data to be created in the database
  */
 export interface NewSong {
   name: string
-  genre: string
+  genre: GenreName,
   artist_name: ArtistName
   featured_artists: string[]
   youtube_id: string
