@@ -18,8 +18,8 @@
       <volt-card class="border-none">
         <template #content>
           <transition-group name="opacity">
-            <template v-for="(block, i) in blocks" :key="i">
-              <create-block :block="block" :index="i" @delete:block="deleteBlock" />
+            <template v-for="(_, idx) in blocks" :key="idx">
+              <create-block :index="idx" />
               <volt-divider v-if="blocks.length > 1 && i !== blocks.length - 1" class="my-5" />
             </template>
           </transition-group>
@@ -79,7 +79,7 @@ function handleBack() {
  */
 
 const { showSongs, genres } = useGetGenres()
-const { blocks, addBlock, save, deleteBlock } = useEditSong()
+const { blocks, addBlock, save } = useEditSong()
 
 provide('genres', genres)
 

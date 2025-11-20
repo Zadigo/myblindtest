@@ -1,7 +1,7 @@
 <template>
   <div :data-id="index" class="space-y-2 mb-10">
     <div class="flex justify-end mb-5">
-      <volt-secondary-button rounded @click="emit('delete:block', index)">
+      <volt-secondary-button rounded @click="() => deleteBlock(index)">
         <vue-icon icon="fa-solid:trash" />
       </volt-secondary-button>
     </div>
@@ -22,22 +22,18 @@
 
 <script lang="ts" setup>
 import type { SearchedGenreApiResponse } from '@/composables'
-import type { Artist, NewSong } from '@/types'
+import type { Artist } from '@/types'
 
-const defaultProps = withDefaults(defineProps<{ block?: NewSong, index?: number }>(), {
-  block: () => ({
-    name: '',
-    genre: '',
-    year: 2023,
-    difficulty: 1,
-    artist_name: '',
-    featured_artists: [],
-    youtube_id: ''
-  }),
+const defaultProps = withDefaults(defineProps<{ index?: number }>(), {
   index: 0
 })
 
-const emit = defineEmits<{ 'update:block': [block: NewSong], 'delete:block': [index: number] }>()
+/**
+ * Edit block
+ */
+
+const { deleteBlock, getCurrentBlock } = useEditSong()
+const newArtistSong = getCurrentBlock(defaultProps.index)
 
 /**
  * Genres suggestions
@@ -77,13 +73,6 @@ function searchGenreComplete(event: SearchEvent) {
 /**
  * Artists suggestions
  */
-
-const newArtistSong = computed({
-  get: () => defaultProps.block,
-  set: (value: NewSong) => {
-    emit('update:block', value)
-  }
-})
 
 const { responseData, execute: searchArtists } = useRequest<Artist[]>('django', '/api/v1/songs/artists', {
   // TODO: There's a problem with ref on the query of useRequest and useAsyncRequest

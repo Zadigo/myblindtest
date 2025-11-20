@@ -34,7 +34,7 @@ export function useGetGenres<T = SearchedGenreApiResponse>() {
 /**
  * Composable for editing a song
  */
-export function useEditSong() {
+export const useEditSong = createSharedComposable(() => {
   const toast = useToast()
   
   const blocks = ref<NewSong[]>([
@@ -94,6 +94,8 @@ export function useEditSong() {
     blocks.value.splice(index, 1)
   }
 
+  const getCurrentBlock = reactify((index: number) => blocks.value[index])
+
   return {
     /**
      * Songs to create
@@ -110,6 +112,11 @@ export function useEditSong() {
     /**
      * Delete a block from the songs
      */
-    deleteBlock
+    deleteBlock,
+    /**
+     * Get the current block by index to edit
+     * @param index Index of the block
+     */
+    getCurrentBlock
   }
-}
+})
