@@ -122,9 +122,9 @@ class CreateSongs(generics.GenericAPIView):
 
         serializer_errors = []
 
-        serializers_list: list[serializers.SongSerializer] = []
+        serializers_list: list[serializers.ValidateNewSongSerializer] = []
         for index, song_data in enumerate(data):
-            serializer = serializers.SongSerializer(data=song_data)
+            serializer = serializers.ValidateNewSongSerializer(data=song_data)
             if serializer.is_valid():
                 serializers_list.append(serializer)
                 continue
@@ -143,7 +143,7 @@ class CreateSongs(generics.GenericAPIView):
                 instance: Song = serializer.save()
                 created_songs.append(instance)
             except IntegrityError as e:
-                errors.append(e)
+                errors.append(e.args[0])
             except ValidationError as e:
                 errors.append('Multiple artists returned')
             else:

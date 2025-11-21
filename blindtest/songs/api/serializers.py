@@ -1,4 +1,3 @@
-from django.forms import ValidationError
 from rest_framework import fields, serializers
 from songs import tasks, validators
 from songs.models import Artist
@@ -32,6 +31,23 @@ class SongSerializer(serializers.Serializer):
     is_group = fields.BooleanField(default=False)
     wikipedia_page = fields.URLField(allow_null=True)
     created_on = fields.DateField(read_only=True)
+
+
+class ValidateNewSongSerializer(serializers.Serializer):
+    """Serializer used to validate new songs being added"""
+
+    name = fields.CharField(max_length=255)
+    genre = fields.CharField(max_length=100, default='2 Tone')
+    featured_artists = fields.CharField(allow_null=True)
+    youtube_id = fields.CharField()
+    year = fields.IntegerField(default=0)
+    artist_name = fields.CharField()
+    difficulty = fields.IntegerField(
+        default=1,
+        validators=[validators.validate_difficulty]
+    )
+    is_group = fields.BooleanField(default=False)
+    wikipedia_page = fields.URLField(allow_null=True, allow_blank=True)
 
     def to_internal_value(self, data):
         value = data.get('featured_artists')
