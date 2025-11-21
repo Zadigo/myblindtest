@@ -78,8 +78,11 @@ class ArtistAdmin(ImportExportModelAdmin):
     resource_class = ArtistResource
     list_filter = ['is_group']
     actions = [
-        'update_metadata', 'update_from_wikipedia',
-        'define_genre_to_base_pop', 'define_genre_to_base_afrobeats'
+        'update_metadata',
+        'update_from_wikipedia',
+        'define_genre_to_base_pop',
+        'define_genre_to_base_afrobeats',
+        'full_update'
     ]
 
     def define_genre_to_base_pop(self, request, queryset):
@@ -100,6 +103,14 @@ class ArtistAdmin(ImportExportModelAdmin):
             tasks.wikipedia_information.apply_async((artist.id,), countdown=10)
         messages.success(
             request, f'Scheduled Wikipedia update for {len(queryset)} artists')
+
+    def full_update(self, request, queryset):
+        for artist in queryset:
+            tasks.artist_spotify_information.apply_async(
+                args=[artist.name], countdown=10)
+            tasks.wikipedia_information.apply_async((artist.id,), countdown=20)
+        messages.success(
+            request, f'Scheduled full update for {len(queryset)} artists')
 
 
 @admin.register(Song)

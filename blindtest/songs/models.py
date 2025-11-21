@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from songs import managers, utils, validators
+from blindtest.validators import validate_year, validate_difficulty
 from songs.choices import MusicGenre
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
@@ -87,7 +88,7 @@ class Artist(models.Model):
         return utils.astrologic_sign(self.date_of_birth)
 
 
-class Song(models.Model):
+class AbstractSong(models.Model):
     artist = models.ForeignKey(
         Artist,
         models.SET_NULL,
@@ -112,41 +113,23 @@ class Song(models.Model):
     youtube_id = models.CharField(
         max_length=150,
         blank=True,
-        null=True
+        null=True,
+        help_text=_('The YouTube video ID for the theme song')
     )
     year = models.PositiveIntegerField(
         default=0,
-        validators=[validators.validate_year]
+        validators=[validate_year]
     )
     difficulty = models.IntegerField(
         default=1,
-        validators=[validators.validate_difficulty]
+        validators=[validate_difficulty]
     )
     created_on = models.DateField(
         auto_now=True
     )
 
-    objects = managers.SongManager()
-
     class Meta:
-        ordering = ['artist']
-        verbose_name = _('song')
-        constraints = [
-            models.UniqueConstraint(
-                fields=['name', 'artist'],
-                name='unique_song_per_artist'
-            )
-        ]
-        indexes = [
-            models.Index(
-                condition=(
-                    models.Q(difficulty=4) |
-                    models.Q(difficulty=5)
-                ),
-                fields=['difficulty'],
-                name='diffulty_hard'
-            )
-        ]
+        abstract = True
 
     def __str__(self):
         return f'{self.name}'
@@ -185,6 +168,30 @@ class Song(models.Model):
         if self.year == 0:
             return 0
         return int(self.year / 100)
+
+
+class Song(AbstractSong):
+    objects = managers.SongManager()
+
+    class Meta:
+        ordering = ['artist']
+        verbose_name = _('song')
+        constraints = [
+            models.UniqueConstraint(
+                fields=['name', 'artist'],
+                name='unique_song_per_artist'
+            )
+        ]
+        indexes = [
+            models.Index(
+                condition=(
+                    models.Q(difficulty=4) |
+                    models.Q(difficulty=5)
+                ),
+                fields=['difficulty'],
+                name='diffulty_hard'
+            )
+        ]
 
 
 class PopSong(Song):
