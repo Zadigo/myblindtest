@@ -129,36 +129,37 @@ class Wikipedia:
 
     def extract_text_from_page(self, artist: Artist):
         if not artist.wikipedia_page:
-            results = search(
-                f'{artist.birthname or artist.name} Wikipedia',
-                num_results=5
-            )
+            # results = search(
+            #     f'{artist.birthname or artist.name} Wikipedia',
+            #     num_results=5
+            # )
 
-            base_domain = 'wikipedia.org/wiki/'
-            candidates = list(filter(lambda x: base_domain in x, results))
+            # base_domain = 'wikipedia.org/wiki/'
+            # candidates = list(filter(lambda x: base_domain in x, results))
 
-            if not candidates:
-                return None
+            # if not candidates:
+            #     return None
 
-            try:
-                french_wikipedia = list(
-                    filter(
-                        lambda x: 'fr.wikipedia' in x,
-                        candidates
-                    )
-                )[-1]
+            # try:
+            #     french_wikipedia = list(
+            #         filter(
+            #             lambda x: 'fr.wikipedia' in x,
+            #             candidates
+            #         )
+            #     )[-1]
 
-                english_wikipedia = list(
-                    filter(
-                        lambda x: 'en.wikipedia' in x,
-                        candidates
-                    )
-                )[-1]
-            except:
-                return None
-            else:
-                artist.wikipedia_page = french_wikipedia
-                artist.save()
+            #     english_wikipedia = list(
+            #         filter(
+            #             lambda x: 'en.wikipedia' in x,
+            #             candidates
+            #         )
+            #     )[-1]
+            # except:
+            #     return None
+            # else:
+            #     artist.wikipedia_page = french_wikipedia
+            #     artist.save()
+            return None
 
         try:
             response = requests.get(artist.wikipedia_page, headers=HEADERS)

@@ -87,3 +87,8 @@ def artist_spotify_information(artist_name: str):
             return {}
         artist.save()
     return artist.spotify_id
+
+
+@celery.shared_task
+def artist_spotify_overview(spotify_id: str):
+    pass

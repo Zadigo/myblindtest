@@ -2,7 +2,7 @@ import datetime
 import json
 import nltk
 import asyncio
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 from channels.db import database_sync_to_async
 from channels.routing import URLRouter
@@ -525,14 +525,15 @@ class TestCompletion(TestCase):
         self.assertIsInstance(value, datetime.date)
 
     def test_artist_no_wikipedia_page(self):
-        artist = Artist.objects.create(
-            name='Gwen Stefani',
-            birthname='Gwen Renée Stefani'
-        )
+        mock = Mock()
+        type(mock).wikipedia_page = 'https://fr.wikipedia.org/wiki/Gwen_Stefani'
+        type(mock).name = 'Gwen Stefani'
+        type(mock).birthname = 'Gwen Renée Stefani'
+        mock.save = Mock()
 
         instance = Wikipedia()
-        result = instance.extract_text_from_page(artist)
-        self.assertIsNone(result)
+        result = instance.extract_text_from_page(mock)
+        self.assertIsNotNone(result)
 
         value = instance.get_date_or_birth(result)
         self.assertIsNotNone(value)
