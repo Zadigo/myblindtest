@@ -212,6 +212,15 @@ class RnBSong(Song):
         proxy = True
 
 
+class AfroSong(Song):
+    objects = managers.AfroSongManager()
+
+    class Meta:
+        ordering = ['artist']
+        verbose_name = 'afro song'
+        proxy = True
+
+
 class RapArtist(Artist):
     objects = managers.RapArtistManager()
 

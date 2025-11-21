@@ -34,6 +34,15 @@ class RnBManager(models.Manager):
             models.Q(genre__icontains='rhythm and blues') |
             models.Q(genre__icontains='blues')
         )
+    
+
+class AfroSongManager(models.Manager):
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(
+            models.Q(genre__icontains='afrobeat') |
+            models.Q(genre__icontains='amapiano')
+        )
 
 
 class RapArtistManager(models.Manager):

@@ -6,7 +6,7 @@ from import_export.admin import ImportExportModelAdmin
 from import_export.resources import ModelResource
 from import_export.widgets import ForeignKeyWidget
 from songs import tasks
-from songs.models import (Artist, PopArtist, PopSong, RapArtist, RapSong,
+from songs.models import (AfroSong, Artist, PopArtist, PopSong, RapArtist, RapSong,
                           RnBSong, Song)
 
 from blindtest.rapidapi.client import Spotify
@@ -89,13 +89,16 @@ class ArtistAdmin(ImportExportModelAdmin):
 
     def update_metadata(self, request, queryset):
         for artist in queryset:
-            tasks.artist_spotify_information.apply_async(args=[artist.name], countdown=10)
-        messages.success(request, f'Scheduled Spotify update for {len(queryset)} artists')
+            tasks.artist_spotify_information.apply_async(
+                args=[artist.name], countdown=10)
+        messages.success(
+            request, f'Scheduled Spotify update for {len(queryset)} artists')
 
     def update_from_wikipedia(self, request, queryset):
         for artist in queryset:
             tasks.wikipedia_information.apply_async((artist.id,), countdown=10)
-        messages.success(request, f'Scheduled Wikipedia update for {len(queryset)} artists')
+        messages.success(
+            request, f'Scheduled Wikipedia update for {len(queryset)} artists')
 
 
 @admin.register(Song)
@@ -126,25 +129,29 @@ class SongAdmin(ImportExportModelAdmin):
         messages.success(request, f'Updated {len(queryset)} songs')
 
 
-@admin.register(PopSong)
-class PopSongAdmin(admin.ModelAdmin):
+class ProxyModelAdmin(admin.ModelAdmin):
     list_display = ['name', 'artist', 'genre', 'difficulty']
     search_fields = ['name', 'artist__name', 'artist__genre']
+
+
+@admin.register(PopSong)
+class PopSongAdmin(ProxyModelAdmin):
+    pass
 
 
 @admin.register(RapSong)
-class RapSongAdmin(admin.ModelAdmin):
-    list_display = [
-        'name', 'artist', 'difficulty'
-    ]
-    search_fields = ['name', 'artist__name', 'artist__genre']
+class RapSongAdmin(ProxyModelAdmin):
+    pass
 
 
 @admin.register(RnBSong)
-class RnBSongAdmin(admin.ModelAdmin):
-    list_display = ['name', 'artist', 'genre', 'difficulty']
-    search_fields = ['name', 'artist__name', 'artist__genre']
+class RnBSongAdmin(ProxyModelAdmin):
+    pass
 
+
+@admin.register(AfroSong)
+class AfroSongAdmin(ProxyModelAdmin):
+    pass
 
 @admin.register(RapArtist)
 class RapArtistAdmin(admin.ModelAdmin):
