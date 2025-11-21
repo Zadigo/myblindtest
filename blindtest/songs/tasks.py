@@ -69,7 +69,7 @@ def artist_spotify_information(artist_name: str):
     artist = Artist.objects.get(name=artist_name)
     songs = artist.song_set.filter(year=0).values_list('id', flat=True)
 
-    instance = Spotify(artist_name)
+    instance = Spotify(artist.name, search_type='artists')
     instance.send()
 
     try:

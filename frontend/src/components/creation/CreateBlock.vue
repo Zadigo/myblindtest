@@ -6,17 +6,19 @@
       </volt-secondary-button>
     </div>
 
-    <div class="grid grid-cols-3 gap-2">
-      <volt-input-text v-model="newArtistSong.name" placeholder="Song name" />
-      <volt-autocomplete v-model="newArtistSong.genre" :suggestions="filteredGenres" :virtual-scroller-options="{ itemSize: 50 }" option-label="label" option-group-children="items" option-group-label="category" placeholder="Genre" dropdown @complete="searchGenreComplete" />
-      <volt-input-number v-model.number="newArtistSong.year" placeholder="Year" />
-    </div>
-    
-    <div class="grid grid-cols-3 gap-2">
-      <volt-input-number v-model="newArtistSong.difficulty" :min="1" :max="5" placeholder="Difficulty" />
-      <volt-autocomplete v-model="newArtistSong.artist_name" :suggestions="artistSuggestions" :virtual-scroller-options="{ itemSize: 50 }" option-label="label" placeholder="Artist name" dropdown @complete="() => searchArtists()" />
-      <volt-input-text v-model="newArtistSong.youtube_id" placeholder="YouTube" />
-    </div>
+    <form v-if="newArtistSong" @submit.prevent>
+      <div class="grid grid-cols-3 gap-2">
+        <volt-input-text v-model="newArtistSong.name" placeholder="Song name" />
+        <volt-autocomplete v-model="newArtistSong.genre" :suggestions="filteredGenres" :virtual-scroller-options="{ itemSize: 50 }" option-label="label" option-group-children="items" option-group-label="category" placeholder="Genre" dropdown @complete="searchGenreComplete" />
+        <volt-input-number v-model.number="newArtistSong.year" placeholder="Year" />
+      </div>
+      
+      <div class="grid grid-cols-3 gap-2">
+        <volt-input-number v-model="newArtistSong.difficulty" :min="1" :max="5" placeholder="Difficulty" />
+        <volt-autocomplete v-model="newArtistSong.artist_name" :suggestions="artistSuggestions" :virtual-scroller-options="{ itemSize: 50 }" option-label="label" placeholder="Artist name" dropdown @complete="() => searchArtists()" />
+        <volt-input-text v-model="newArtistSong.youtube_id" placeholder="YouTube" />
+      </div>
+    </form>
   </div>
 </template>
 
@@ -69,7 +71,13 @@ function searchGenreComplete(event: SearchEvent) {
 
 const { deleteBlock, getCurrentBlock } = useEditSong()
 const newArtistSong = getCurrentBlock(defaultProps.index)
-const _artistName = computed(() => typeof newArtistSong.value.artist_name === 'string' ? newArtistSong.value.artist_name : newArtistSong.value.artist_name.label)
+const _artistName = computed(() => {
+  if (isDefined(newArtistSong)) {
+    return typeof newArtistSong.value.artist_name === 'string' ? newArtistSong.value.artist_name : newArtistSong.value.artist_name.label
+  } else {
+    return ''
+  }
+})
 
 /**
  * Artists suggestions

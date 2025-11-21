@@ -129,7 +129,7 @@ class Wikipedia:
 
     def extract_text_from_page(self, artist: Artist):
         if not artist.wikipedia_page:
-            results = list(
+            results = search(
                 f'{artist.birthname or artist.name} Wikipedia',
                 num_results=5
             )

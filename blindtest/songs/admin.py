@@ -89,26 +89,13 @@ class ArtistAdmin(ImportExportModelAdmin):
 
     def update_metadata(self, request, queryset):
         for artist in queryset:
-            instance = Spotify(artist.name)
-            instance.send()
-
-            try:
-                data = instance[0]['data']
-            except:
-                time.sleep(5)
-                continue
-            else:
-                artist.spotify_id = data['uri'].split(':')[-1]
-
-                try:
-                    artist.spotify_avatar = data['visuals']['avatarImage']['sources'][0]['url']
-                except:
-                    time.sleep(5)
-                artist.save()
+            tasks.artist_spotify_information.apply_async(args=[artist.name], countdown=10)
+        messages.success(request, f'Scheduled Spotify update for {len(queryset)} artists')
 
     def update_from_wikipedia(self, request, queryset):
         for artist in queryset:
             tasks.wikipedia_information.apply_async((artist.id,), countdown=10)
+        messages.success(request, f'Scheduled Wikipedia update for {len(queryset)} artists')
 
 
 @admin.register(Song)

@@ -20,7 +20,7 @@
           <transition-group name="opacity">
             <template v-for="(_, idx) in blocks" :key="idx">
               <create-block :index="idx" />
-              <volt-divider v-if="blocks.length > 1 && i !== blocks.length - 1" class="my-5" />
+              <volt-divider v-if="blocks.length > 1 && idx !== blocks.length - 1" class="my-5" />
             </template>
           </transition-group>
         </template>

@@ -11,23 +11,44 @@ export interface SearchedGenreApiResponse {
   items: { label: string }[]
 }
 
-/**:
- * Returns the list of songs from the Api
+/**
+ * Returns the list of genres from the API
  */
 export function useGetGenres<T = SearchedGenreApiResponse>() {
+  /**
+   * Genres
+   */
   const genres = useStorage<T[]>('genres', [])
-  const { execute, responseData } = useRequest<T[]>('django', '/api/v1/songs/genres')
 
-  onMounted(async () => {
+  const { load, cache } = useMemoize(async (_key: number) => {
+    const { execute, responseData } = useRequest<T[]>('django', '/api/v1/songs/genres')
     await execute()
-    genres.value = responseData.value || []
+    return responseData.value || []
   })
 
-  const showSongs = ref<boolean>(false)
+  onMounted(async () => {
+    genres.value = await load(1)
+  })
+
+  console.log('Genres cache:', cache)
+
+  // const { execute, responseData } = useRequest<T[]>('django', '/api/v1/songs/genres')
+
+  // onMounted(async () => {
+  //   await execute()
+  //   genres.value = responseData.value || []
+  // })
+
+  /**
+   * Show songs
+   */
+
+  const [showSongs, toggleShowSongs] = useToggle<boolean>(false)
 
   return {
     showSongs,
-    genres
+    genres,
+    toggleShowSongs
   }
 }
 
