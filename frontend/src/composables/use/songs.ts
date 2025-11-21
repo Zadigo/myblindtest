@@ -66,7 +66,9 @@ export const useEditSong = createSharedComposable(() => {
       featured_artists: [],
       youtube_id: '',
       year: 0,
-      difficulty: 1
+      difficulty: 1,
+      is_group: false,
+      wikipedia_page: ''
     }
   ])
 
@@ -95,6 +97,20 @@ export const useEditSong = createSharedComposable(() => {
           life: 10000
         })
       }
+
+      blocks.value = [
+        {
+          name: '',
+          genre: '',
+          artist_name: '',
+          featured_artists: [],
+          youtube_id: '',
+          year: 0,
+          difficulty: 1,
+          is_group: false,
+          wikipedia_page: ''
+        }
+      ]
     }
   }
 
@@ -108,7 +124,9 @@ export const useEditSong = createSharedComposable(() => {
       featured_artists: [],
       youtube_id: '',
       year: 0,
-      difficulty: 1
+      difficulty: 1,
+      is_group: false,
+      wikipedia_page: ''
     })
   }
 

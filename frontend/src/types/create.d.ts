@@ -15,6 +15,8 @@ export interface NewSong {
   youtube_id: string
   year: number
   difficulty: number
+  is_group: boolean,
+  wikipedia_page?: string
 }
 
 export type CopiedCreateData = Omit<NewSong, 'featured_artists'>

@@ -29,6 +29,8 @@ class SongSerializer(serializers.Serializer):
         default=1,
         validators=[validators.validate_difficulty]
     )
+    is_group = fields.BooleanField(default=False)
+    wikipedia_page = fields.URLField(allow_null=True)
     created_on = fields.DateField(read_only=True)
 
     def to_internal_value(self, data):

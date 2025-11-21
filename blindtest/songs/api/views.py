@@ -152,10 +152,10 @@ class CreateSongs(generics.GenericAPIView):
 
                 tasks.artist_spotify_information.apply_async(
                     args=[instance.artist.name],
-                    countdown=15
+                    countdown=10
                 )
 
-                if not instance.artist.wikipedia_page:
+                if instance.artist.wikipedia_page:
                     tasks.wikipedia_information.apply_async(
                         args=[instance.artist.id],
                         countdown=20
@@ -290,7 +290,7 @@ class SongStatistics(generics.GenericAPIView):
             return qs
         queryset = super().get_queryset()
         cache.set('songs_for_statistics', queryset, timeout=3600)
-        return queryset 
+        return queryset
 
     def get(self, request):
         qs = self.get_queryset()
@@ -306,7 +306,9 @@ class SongStatistics(generics.GenericAPIView):
         result = qs.values_list('genre')
         result1 = result.annotate(count=Count('genre'))
         distribution_by_genre = result1.order_by('count')
-        template['distribution_by_genre']['labels'] = [item[0] for item in distribution_by_genre]
-        template['distribution_by_genre']['data'] = [item[1] for item in distribution_by_genre]
+        template['distribution_by_genre']['labels'] = [item[0]
+                                                       for item in distribution_by_genre]
+        template['distribution_by_genre']['data'] = [item[1]
+                                                     for item in distribution_by_genre]
 
         return Response(template, status=status.HTTP_200_OK)

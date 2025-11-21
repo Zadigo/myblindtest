@@ -6,7 +6,7 @@
       </volt-secondary-button>
     </div>
 
-    <form v-if="newArtistSong" @submit.prevent>
+    <form v-if="newArtistSong" class="space-y-2" @submit.prevent>
       <div class="grid grid-cols-3 gap-2">
         <volt-input-text v-model="newArtistSong.name" placeholder="Song name" />
         <volt-autocomplete v-model="newArtistSong.genre" :suggestions="filteredGenres" :virtual-scroller-options="{ itemSize: 50 }" option-label="label" option-group-children="items" option-group-label="category" placeholder="Genre" dropdown @complete="searchGenreComplete" />
@@ -17,6 +17,14 @@
         <volt-input-number v-model="newArtistSong.difficulty" :min="1" :max="5" placeholder="Difficulty" />
         <volt-autocomplete v-model="newArtistSong.artist_name" :suggestions="artistSuggestions" :virtual-scroller-options="{ itemSize: 50 }" option-label="label" placeholder="Artist name" dropdown @complete="() => searchArtists()" />
         <volt-input-text v-model="newArtistSong.youtube_id" placeholder="YouTube" />
+      </div>
+      
+      <div class="space-y-2">
+        <volt-label label-for="is-group" label="Is group">
+          <volt-toggle-switch v-model="newArtistSong.is_group" id="is-group" />
+        </volt-label>
+
+        <volt-input-text type="url" v-model="newArtistSong.wikipedia_page" placeholder="Wikipedia page" />
       </div>
     </form>
   </div>
