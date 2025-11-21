@@ -6,6 +6,7 @@ from import_export.admin import ImportExportModelAdmin
 from import_export.resources import ModelResource
 from import_export.widgets import ForeignKeyWidget
 from songs import tasks
+from django.utils.crypto import get_random_string
 from songs.models import (AfroSong, Artist, PopArtist, PopSong, RapArtist, RapSong,
                           RnBSong, Song)
 
@@ -117,7 +118,8 @@ class SongAdmin(ImportExportModelAdmin):
     resource_class = SongResource
     actions = [
         'set_difficulty_medium',
-        'set_difficulty_difficult'
+        'set_difficulty_difficult',
+        'duplicate'
     ]
 
     def set_difficulty_medium(self, request, queryset):
@@ -127,6 +129,25 @@ class SongAdmin(ImportExportModelAdmin):
     def set_difficulty_difficult(self, request, queryset):
         queryset.update(difficulty=5)
         messages.success(request, f'Updated {len(queryset)} songs')
+
+    def duplicate(self, request, queryset):
+        if len(queryset) > 1:
+            messages.error(
+                request, 'You can only duplicate one song at a time')
+            return
+
+        for song in queryset:
+            new_name = song.name + " (Copy " + get_random_string(5) + ")"
+            Song.objects.create(
+                name=new_name,
+                artist=song.artist,
+                genre=song.genre,
+                featured_artists=None,
+                youtube_id=song.youtube_id,
+                year=song.year,
+                difficulty=1
+            )
+        messages.success(request, f'Duplicated {len(queryset)} songs')
 
 
 class ProxyModelAdmin(admin.ModelAdmin):
@@ -152,6 +173,7 @@ class RnBSongAdmin(ProxyModelAdmin):
 @admin.register(AfroSong)
 class AfroSongAdmin(ProxyModelAdmin):
     pass
+
 
 @admin.register(RapArtist)
 class RapArtistAdmin(admin.ModelAdmin):

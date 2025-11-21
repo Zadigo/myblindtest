@@ -7,6 +7,7 @@ name,birthname,date_of_birth,spotify_id,genre,spotify_avatar,wikipedia_page
 6ix9ine,Daniel Hernandez,1996-01-08,7gZfnEnfiaHzxARJ2LeXrf,Rap music,https://i.scdn.co/image/ab6761610000e5ebe496acc0275b2bfd673c21a9,https://fr.wikipedia.org/wiki/6ix9ine
 Aaliyah,Aaliyah Dana Haughton,1979-01-16,0urTpYCsixqZwgNTkPJOJ4,Rhythm and blues,https://i.scdn.co/image/ab6761610000e5ebd2493cea701d45401cc79ffd,https://fr.wikipedia.org/wiki/Aaliyah
 Ace of Base,Ace of Base,1990-01-01,5ksRONqssB7BR161NTtJAm,nan,https://i.scdn.co/image/df9832bacbaeb43077530fa37a8178cea85cb956,https://fr.wikipedia.org/wiki/Ace_of_Base
+Adele,Adele Laurie Blue Adkins,1988-01-05,4dpARuHxo51G3z768sgnrY,Britpop,https://i.scdn.co/image/ab6761610000e5eb68f6e5892075d7f22615bd17,https://fr.wikipedia.org/wiki/Adele
 Afro B,Ross-Emmanuel Bayeto,1993-02-25,7oMRcCu0OYSCtCyS3P37iC,Afrobeat,https://i.scdn.co/image/ab6761610000e5eb628c8d57d3561e11d219c2dc,https://fr.wikipedia.org/wiki/Afro_B
 Agnes Obel,Agnes Caroline Thaarup Obel,1980-01-28,1rKrEdI6GKirxWHxIUPYms,Folk pop,https://i.scdn.co//image//ab6761610000e5eb312fa20da6b19e20d9b07974,https://fr.wikipedia.org/wiki/Agnes_Obel
 Akon,Alioune Badara Thiam N'gulu a,1973-01-16,0z4gvV4rjIZ9wHck67ucSV,Rhythm and blues,https://i.scdn.co/image/ab6761610000e5eb3b6ab4190c7435238735b59d,https://fr.wikipedia.org/wiki/Akon
@@ -34,6 +35,7 @@ Aretha Franklin,Aretha Louise Franklin,1942-03-25,7nwUJBm0HE4ZxD3f5cy5ok,nan,htt
 Ariana Grande,Ariana Grande-Butera,1993-01-26,66CXWjxzNUsdJxJ2JdwvnR,Progressive pop,https://i.scdn.co/image/ab6761610000e5eb6725802588d7dc1aba076ca5,https://fr.wikipedia.org/wiki/Ariana_Grande
 Asake,Ahmed Ololade Rhodes,1995-01-13,3a1tBryiczPAZpgoZN9Rzg,Afrobeat,https://i.scdn.co/image/ab6761610000e5eba3ae97af098bf3aeeb24d338,https://fr.wikipedia.org/wiki/Asake
 Ashnikko,Ashton Nicole Casey,1996-02-19,3PyJHH2wyfQK3WZrk9rpmP,nan,https://i.scdn.co/image/ab6761610000e5eb12393f2112b9496d048b6736,https://fr.wikipedia.org/wiki/Ashnikko
+Aventura,Aventura,,1qto4hHid1P71emI6Fd8xi,Bachata,https://i.scdn.co/image/ab6761610000e5eb4cd0464ef7d8eb8521f72dd8,https://fr.wikipedia.org/wiki/Aventura
 Avril Lavigne,Avril Ramona Lavigne,1984-09-27,0p4nmQO2msCgU4IF37Wi3j,Pop rock,https://i.scdn.co/image/ab6761610000e5eb5c3349ddba6b8e064c1bab16,https://fr.wikipedia.org/wiki/Avril_Lavigne
 Aya Nakamura,Aya Danioko,1995-05-10,7IlRNXHjoOCgEAWN5qYksg,Afrobeat,https://i.scdn.co/image/ab6761610000e5eb8fe3fd15b08ed17abc0ee9db,https://fr.wikipedia.org/wiki/Aya_Nakamura
 Ayo,nan,1980-09-14,4kuHnKdDObYPKYPcyJC4f6,nan,https://i.scdn.co/image/ab6761610000e5eb099f22295927964636fd288e,https://fr.wikipedia.org/wiki/Ayo_(chanteuse)
@@ -52,17 +54,19 @@ Beyoncé,Beyonce Giselle Knowles,1981-09-04,6vWDO969PvNqNYHIOW5v0m,Rhythm and bl
 Bhad Bhabie,Danielle Bregoli,2003-03-26,7DuTB6wdzqFJGFLSH17k8e,Rap music,https://i.scdn.co/image/ab6761610000e5eb32f6eec95752845078cbf24e,
 Big Scarr,Alexander Woods,2000-04-07,579LsvZcRVKtToYjS0tkKz,Rap music,https://i.scdn.co/image/ab6761610000e5eb3cfacf8b70d1dce6ab669fd7,
 Big Sean,Sean Michael Leonard Anderson,1988-03-25,0c173mlxpT3dSFRgMO8XPh,Rap music,https://i.scdn.co/image/ab6761610000e5eb3d5b14b45d4c3d10d23b03ff,https://fr.wikipedia.org/wiki/Big_Sean
+Bill Withers,William Harrison Withers,1938-01-04,1ThoqLcyIYvZn7iWbj8fsj,Soul blues,https://i.scdn.co/image/71f81180fa488ceb52df664faadb1d7acf20658e,https://fr.wikipedia.org/wiki/Bill_Withers
 Billy Joel,William Martin Joel,1949-05-09,6zFYqv1mOsgBRQbae3JJ9e,nan,https://i.scdn.co/image/ab6761610000e5ebb34057d59275011032ef8bc8,https://fr.wikipedia.org/wiki/Billy_Joel
 Birdy,nan,1996-05-15,2WX2uTcsvV5OnS0inACecP,nan,https://i.scdn.co/image/ab6761610000e5eb778483686ae247c1906f02fb,https://fr.wikipedia.org/wiki/Birdy_(chanteuse)
 Bloc Party,Bloc Party,1999-01-01,3MM8mtgFzaEJsqbjZBSsHJ,nan,https://i.scdn.co/image/ab6761610000e5eb42712519962b4c8fe48bc4a6,https://fr.wikipedia.org/wiki/Bloc_Party
 Blu Cantrell,Tiffany Cobb,1976-01-16,6vytZ677lz4LzCrUDcDokM,Rhythm and blues,https://i.scdn.co/image/ab6761610000e5eb28831abca4b27c9f46416eb1,https://fr.wikipedia.org/wiki/Blu_Cantrell
 Blueface,Johnathan Jamall Porter,1997-01-20,3Fl1V19tmjt57oBdxXKAjJ,Rap music,https://i.scdn.co/image/ab6761610000e5eb9ee6c8739ef1f20553231132,https://fr.wikipedia.org/wiki/Blueface
 Blur,Blur,1988-01-01,7MhMgCo0Bl0Kukl93PZbYS,nan,https://i.scdn.co/image/ab6761610000e5eb00620d736644d2359ce99430,https://fr.wikipedia.org/wiki/Blur_(groupe)
+Bobby McFerrin,Robert McFerrin Jr,1950-01-11,2FjkZT851ez950cyPjeYid,Soul blues,https://i.scdn.co/image/ab6772690000dd2238b1b727d47e4f73a38b976b,https://fr.wikipedia.org/wiki/Bobby_McFerrin
 Boyz II Men,Boyz II Men,1988-01-01,6O74knDqdv3XaWtkII7Xjp,Rhythm and blues,https://i.scdn.co/image/c8b0d67be35852171d04d7309c2cfe1992a8a4eb,https://fr.wikipedia.org/wiki/Boyz_II_Men
 Brandy & Monica,nan,,05oH07COxkXKIMt6mIPRee,Rhythm and blues,https://i.scdn.co/image/ab6761610000e5ebb39417aaafb9c373e78594ef,https://fr.wikipedia.org/wiki/Brandy_Norwood
 Brigitte,Brigitte,2008-01-01,3sB1RV3IE5yCyMbl01FzBN,nan,https://i.scdn.co/image/ab6761610000e5ebb6db9f26998bdda2e7c0ff6e,https://fr.wikipedia.org/wiki/Brigitte_(groupe)
 Britney Spears,Britney Jean Spears,1981-12-02,26dSoYclwsYLMAKD3tpOr4,Pop rock,https://i.scdn.co/image/ab6761610000e5eb3a49b0a3954e460a8a76ed90,https://fr.wikipedia.org/wiki/Britney_Spears
-Bruce Springsteen,Bruce Frederick Joseph Springsteen,1949-09-23,3eqjTLE0HfPfh78zjh6TqT,nan,https://i.scdn.co/image/ab6761610000e5eb81df2fa2f937029ec986bbb8,https://fr.wikipedia.org/wiki/Bruce_Springsteen
+Bruce Springsteen,Bruce Frederick Joseph Springsteen,1949-09-23,3eqjTLE0HfPfh78zjh6TqT,Traditional pop music,https://i.scdn.co/image/ab6761610000e5eb81df2fa2f937029ec986bbb8,https://fr.wikipedia.org/wiki/Bruce_Springsteen
 Bun B,Bernard Freeman,1973-03-19,45a6gCQWq61lIUDmr1tKuO,nan,https://i.scdn.co/image/3bba8d19446261eb36f6ce214dc472c6669536fa,https://fr.wikipedia.org/wiki/Bun_B
 Burna Boy,Damini Ebunoluwa Ogulu,1991-07-02,3wcj11K77LjEY1PkEazffa,nan,https://i.scdn.co/image/ab6761610000e5eb2d405f4858ce3cd52d409c98,https://fr.wikipedia.org/wiki/Burna_Boy
 Busta Rhymes,Trevor George Smith Jr.,1972-01-20,1YfEcTuGvBQ8xSD1f53UnK,Rap music,https://i.scdn.co/image/ab6761610000e5eb7b31aba081ef084510cde4e3,https://fr.wikipedia.org/wiki/Busta_Rhymes
@@ -74,6 +78,7 @@ Camille,nan,1978-03-10,0gOsZcHl7H3ewXVIEnWFZX,nan,https://i.scdn.co/image/ab6761
 Captain Kid,nan,,7BEfMxbaqx6dOpbtlEqScm,nan,https://i.scdn.co/image/4f2f9946d13c03740d4a033c662bb3995d0c00e1,
 Cardi B,Belcalis Marlenis Almánzar,1992-10-11,4kYSro6naA4h99UJvo89HB,Rap music,https://i.scdn.co/image/ab6761610000e5eb4e8a7e14e2f602eb9af24e31,https://fr.wikipedia.org/wiki/Cardi_B
 Carla Bruni,Carla Gilberta Bruni Tedeschi,1967-12-23,1HVwzNriKEjaeE06okqSpx,nan,https://i.scdn.co/image/ab6761610000e5eb1d05c17e7271984b1e009d6f,https://fr.wikipedia.org/wiki/Carla_Bruni
+Carlos Puebla,,1917-01-11,2IRfUbSEqoOzedNHXVD1Xb,Latin pop,https://i.scdn.co/image/092584945c02710620e9d9044abcd250df23e846,https://fr.wikipedia.org/wiki/Carlos_Puebla
 Carnage,nan,1991-01-03,7CCjtD0hCK005Bvg2WG1a7,Rap music,https://i.scdn.co/image/ab6761610000e5eb9dce3cbff297c22fbcd62a96,https://fr.wikipedia.org/wiki/Carnage_(producteur)
 Cascada,Cascada,2004-01-01,0N0d3kjwdY2h7UVuTdJGfp,Electropop,https://i.scdn.co/image/ab6761610000e5eb7977be627e6c9e8018ad7831,https://fr.wikipedia.org/wiki/Cascada
 Cassie,,1986-08-26,27FGXRNruFoOdf1vP8dqcH,Rhythm and blues,https://i.scdn.co/image/ab6761610000e5eb9592a41ec193fd20c5372ed3,https://fr.wikipedia.org/wiki/Cassie_(chanteuse)
@@ -91,6 +96,7 @@ Charlotte Gainsbourg,Charlotte Lucy Ginsburg,1971-07-21,2rBcvLKWCZs9w1qIWv560v,P
 Cherish,Cherish,2003-01-01,1c70yCa8sRgIiQxl3HOEFo,Rhythm and blues,https://i.scdn.co/image/ab6761610000e5ebed896a298ee61f6cec91abc4,https://fr.wikipedia.org/wiki/Cherish_(groupe)
 Chingy,"Howard Bailey, Jr.",1980-03-09,3s2wTjWxK8NOX09dmsvVOh,Rap music,https://i.scdn.co/image/ab6761610000e5ebec6d65f8f8a7a95d6c6817d7,https://fr.wikipedia.org/wiki/Chingy
 Chris Lake,nan,1982-08-08,5Igpc9iLZ3YGtKeYfSrrOE,Electro house,https://i.scdn.co/image/ab6761610000e5eb3c4c752f83e79a2f4f84341b,https://fr.wikipedia.org/wiki/Chris_Lake
+Chris Stapleton,Christopher Alvin Stapleton,1978-01-15,4YLtscXsxbVgi031ovDDdh,Soul blues,https://i.scdn.co/image/ab6761610000e5eba0c87c8f329b436eac8b9784,https://fr.wikipedia.org/wiki/Chris_Stapleton
 Christina Aguilera,Christina María Aguilera,1980-12-18,1l7ZsJRRS8wlW3WfJfPfNS,Rhythm and blues,https://i.scdn.co/image/ab6761610000e5eb1fb7a2d94b56df1f8a61d779,https://fr.wikipedia.org/wiki/Christina_Aguilera
 Christine and the Queens,Héloïse Adélaïde Letissier,1988-06-01,04vj3iPUiVh5melWr0w3xT,French pop,https://i.scdn.co/image/ab6761610000e5eb15f9f86c69d8db2f685b3792,https://fr.wikipedia.org/wiki/Christine_and_the_Queens
 Chronixx,nan,1992-10-10,2oZcMYiKpjaA2Et5mU3RPP,nan,https://i.scdn.co/image/ab6761610000e5ebff811e1e25b9cf99dc4e544f,https://fr.wikipedia.org/wiki/Chronixx
@@ -104,6 +110,7 @@ Commodores,Commodores,1968-01-01,6twIAGnYuIT1pncMAsXnEm,Funk,https://i.scdn.co/i
 Coolio,Artis Leon Ivey,1996-08-01,3y24n3XhZ96wgwRXjvS17T,Rap music,https://i.scdn.co/image/ab6761610000e5eb5ea53fc78df8f7e7559e228d,https://fr.wikipedia.org/wiki/Coolio
 Corinne Bailey Rae,,1979-02-26,5gFZo6Oh5WehnbEj0XtxiF,Rhythm and blues,https://i.scdn.co/image/ab6761610000e5eb102a1c8e6a4838425728d673,https://fr.wikipedia.org/wiki/Corinne_Bailey_Rae
 Corneille,Cornelius Nyungura,1977-01-24,2GBDOaCl73BVUs2RerIme7,Rhythm and blues,https://i.scdn.co/image/ab6761610000e5eb8dd642e3a61cd544d9abfee7,https://fr.wikipedia.org/wiki/Corneille_(chanteur)
+Cowboy Junkies,Cowboy Junkies,,3CYSRCHfilgR8DSbkCMp5j,Pop rock,https://i.scdn.co/image/ab6761610000e5eb2e227f737b1ec8fbfc39b4f7,https://fr.wikipedia.org/wiki/Cowboy_Junkies
 Craig David,Craig Ashley David,1981-05-05,2JyWXPbkqI5ZJa3gwqVa0c,Rhythm and blues,https://i.scdn.co/image/ab6761610000e5ebf5fa84e65aeb19b122aae9cb,https://fr.wikipedia.org/wiki/Craig_David
 Culture Club,Culture Club,1981-01-01,6kz53iCdBSqhQCZ21CoLcc,New wave,https://i.scdn.co/image/ab6761610000e5eb5903965a15551fd12feb8b87,https://fr.wikipedia.org/wiki/Culture_Club
 Cyndi Lauper,Cynthia Ann Stephanie Lauper,1953-06-22,2BTZIqw0ntH9MvilQ3ewNY,Pop rock,https://i.scdn.co/image/ab6761610000e5eb72f5bad471601240967563d6,https://fr.wikipedia.org/wiki/Cyndi_Lauper
@@ -143,11 +150,13 @@ Ed Sheeran,Edward Christopher Sheeran,1991-02-17,6eUKZXaKkcviH0Ku9w2n3V,Folk pop
 Edward Maya,Eduard Marian Ilie,1986-06-29,6XwwFnewNgWp81MYMK8zLq,Folk pop,https://i.scdn.co/image/ab6761610000e5eb877f1dbdef641d7e31c90d4c,https://fr.wikipedia.org/wiki/Edward_Maya
 Elephant Man,nan,1975-09-11,6NOvBZrkd83MSD51xkq4on,nan,https://i.scdn.co/image/11b5d170e9899db7033a38fcacfcf3a746d06d76,https://fr.wikipedia.org/wiki/Elephant_Man
 Ellie Goulding,Elena Jane Goulding,1986-12-30,0X2BH1fck6amBIoJhDVmmJ,Pop rock,https://i.scdn.co/image/ab6761610000e5ebc3cd7dc428871e8985d62b9a,https://fr.wikipedia.org/wiki/Ellie_Goulding
+Elvis Crespo,Elvis Crespo Díaz,1971-01-30,1c22GXH30ijlOfXhfLz9Df,Merengue,https://i.scdn.co/image/ab6761610000e5eb2d1163694f21bf2a51376ee3,https://fr.wikipedia.org/wiki/Elvis_Crespo
 Elvis Presley,Elvis Aaron Presley,1935-01-08,43ZHCT0cAZBISjO8DG9PnE,Rock and roll,https://i.scdn.co/image/ab6761610000e5eb9a93e273380982dff84c0d7c,https://fr.wikipedia.org/wiki/Elvis_Presley
 Emilie Simon,Émilie Marie Simon,1978-07-17,6kLw7VpGwN4N0sBdmKhhfd,French pop,https://i.scdn.co/image/ab6761610000e5eb2940ee9508c7ae72b8dd873b,https://fr.wikipedia.org/wiki/Emilie_Simon
 Eminem,Marshall Bruce Mathers III,1972-10-17,7dGJo4pcD2V6oG8kP0tJRR,Rap music,https://i.scdn.co/image/ab6761610000e5eba00b11c129b27a88fc72f36b,https://fr.wikipedia.org/wiki/Eminem
 En Vogue,En Vogue,1989-01-01,5fikk4h5qbEebqK2Fc6e48,Rhythm and blues,https://i.scdn.co/image/ab6761610000e5eb6bb7f8ea26ac28c8d18efd8e,https://fr.wikipedia.org/wiki/En_Vogue
 Ephemera,Ephemera,1994-01-01,64xAHfAOo1FcDxFDrnBgmr,nan,https://i.scdn.co/image/ab6761610000e5ebcade8fbbec364a37e1a4998e,https://fr.wikipedia.org/wiki/Ephemera
+Etta James,Jamesetta Hawkins,1938-01-25,0iOVhN3tnSvgDbcg25JoJb,Soul blues,https://i.scdn.co/image/ab6761610000e5eb058531dfd9746a96ad85265f,https://fr.wikipedia.org/wiki/Etta_James
 Eurythmics,Eurythmics,1980-01-01,0NKDgy9j66h3DLnN8qu1bB,Electro house,https://i.scdn.co/image/ab6761610000e5eb145a01fb993c3088fe6ac5e7,https://fr.wikipedia.org/wiki/Eurythmics
 Evanescence,Evanescence,1995-01-01,5nGIFgo0shDenQYSE0Sn7c,Pop rock,https://i.scdn.co/image/ab6761610000e5eb7ecf213c7dd78e0049379c5b,https://fr.wikipedia.org/wiki/Evanescence
 Eve,Eve Jihan Jeffers-Cooper,1978-01-10,58oPVy7oihAEXE0Ott6JOf,Rap music,https://i.scdn.co/image/ab6761610000e5ebcf1059806aef122d3b7cf0f0,https://fr.wikipedia.org/wiki/Eve_(artiste)
@@ -198,11 +207,13 @@ Janet Jackson,Janet Damita Jo Jackson,1966-01-16,4qwGe91Bz9K2T8jXTZ815W,Rhythm a
 Jason Mraz,Jason Thomas Mraz,1977-06-23,4phGZZrJZRo4ElhRtViYdl,nan,https://i.scdn.co/image/ab6761610000e5ebc3b370fc26c83312db52af14,https://fr.wikipedia.org/wiki/Jason_Mraz
 Jay-Z,Shawn Corey Carter,1969-01-04,3nFkdlSjzX9mRTtwJOzDYB,Hip pop,https://i.scdn.co/image/ab6761610000e5ebc75afcd5a9027f60eaebb5e4,https://fr.wikipedia.org/wiki/Jay-Z
 Jean Knight,Jean Caliste,1943-01-26,2Tk0pWxTuQgnE5nsUexrLr,nan,https://i.scdn.co/image/ab67616d0000b2735b221b78b425f3f4b45188d2,https://fr.wikipedia.org/wiki/Jean_Knight
+Jeff Buckley,Jeffrey Scott Buckley,1966-01-17,3nnQpaTvKb5jCQabZefACI,Soul blues,https://i.scdn.co/image/248e8ddbf1be229fd0c31722fb0a01b31b01f474,https://fr.wikipedia.org/wiki/Jeff_Buckley
 Jennifer Lopez,Jennifer Lynn Lopez,1969-07-24,2DlGxzQSjYe5N6G9nkYghR,Latin pop,https://i.scdn.co/image/ab6761610000e5ebdc125248f01efbffd4efaaf4,https://fr.wikipedia.org/wiki/Jennifer_Lopez
 Jennifer Paige,Jennifer Scoggins,1973-09-03,26PDtWYDJ1KD0brukKsJH1,Pop rock,https://i.scdn.co/image/ab6761610000e5eb6cb06b64535283ceab01d414,https://fr.wikipedia.org/wiki/Jennifer_Paige
 Jeremih,Jeremy Philip Felton,1987-07-17,3KV3p5EY4AvKxOlhGHORLg,Rhythm and blues,https://i.scdn.co/image/ab6761610000e5eb8ddeab89a67542470e2631c8,https://fr.wikipedia.org/wiki/Jeremih
 Jermaine Dupri,Jermaine Dupri Mauldin[1],1972-09-23,6nfYGe7IIuuP5bMY1jkJP6,Rhythm and blues,https://i.scdn.co/image/ab6761610000e5eb5b35a576c4e67e75bdc2fa68,https://fr.wikipedia.org/wiki/Jermaine_Dupri
 Jessie J,Jessica Ellen Cornish,1988-01-27,2gsggkzM5R49q6jpPvazou,Dance-pop,https://i.scdn.co/image/ab6761610000e5eb91f0dd753c09e051675a1ca6,https://fr.wikipedia.org/wiki/Jessie_J
+Jevetta Steele,,1963-01-11,,Soul,,https://fr.wikipedia.org/wiki/Jevetta_Steele
 Jewel,Jewel Kilcher,1974-05-23,6FbDoZnMBTdhhhLuJBOOqP,nan,https://i.scdn.co/image/ab6761610000e5eb75a955fe415fd460bf1bf0f2,https://fr.wikipedia.org/wiki/Jewel_(chanteuse)
 Jiva Phez'kombhede,nan,,1D86M7ewUQH1vS0QsXCmI9,Afrobeat,https://i.scdn.co/image/ab6761610000e5eb4a6f3766a23e91536d7ee6ed,
 Joan Osborne,Joan Elizabeth Osborne,1962-07-08,0djV4iaxhNfYWpH60ia85o,nan,https://i.scdn.co/image/ab6761610000e5ebe521dfff71ae1299e3a02e26,https://fr.wikipedia.org/wiki/Joan_Osborne
@@ -248,6 +259,7 @@ Koxie,Laure Cohen,1977-02-26,54eDBxDgfcmO6jqlKg0XLb,nan,https://i.scdn.co/image/
 Kylie Minogue,Kylie Ann Minogue,1968-05-28,4RVnAU35WRWra6OZ3CbbMA,nan,https://i.scdn.co/image/ab6761610000e5eb9a8ae4546aa5fb59aac60262,https://fr.wikipedia.org/wiki/Kylie_Minogue
 Kyo,Kyo,1997-01-01,15uQG9wIjrfNYm9rHcEFwS,nan,https://i.scdn.co/image/ab6761610000e5eb9ab4bce8ed6a72ab17b42ffc,https://fr.wikipedia.org/wiki/Kyo_(groupe)
 Lady Gaga,Stefani Joanne Angelina Germanotta,1986-03-28,1HY2Jd0NmPuamShAr6KMms,Electropop,https://i.scdn.co/image/ab6761610000e5ebaadc18cac8d48124357c38e6,https://fr.wikipedia.org/wiki/Lady_Gaga
+Lana Del Rey,Elizabeth Woolridge Grant,1985-01-21,099eQJfZHFRrXejOGPzGY3,Synthpop,https://i.scdn.co/image/ab67616d0000b27329e5ecb53072fa97d77ed109,https://fr.wikipedia.org/wiki/Lana_Del_Rey
 Latto,Alyssa Michelle Stephens,1998-12-22,3MdXrJWsbVzdn6fe5JYkSQ,Rap music,https://i.scdn.co/image/ab6761610000e5eba11b0b5c37498f5dddb1bd7b,https://fr.wikipedia.org/wiki/Latto
 Led Zeppelin,Led Zeppelin,1968-01-01,36QJpDe2go2KgaRleHCDTp,nan,https://i.scdn.co/image/207803ce008388d3427a685254f9de6a8f61dc2e,https://fr.wikipedia.org/wiki/Led_Zeppelin
 Leona Lewis,Leona Louise Lewis,1985-04-03,5lKZWd6HiSCLfnDGrq9RAm,Rhythm and blues,https://i.scdn.co/image/ab6761610000e5ebe9cf3862b8027eb5b9f6b831,https://fr.wikipedia.org/wiki/Leona_Lewis
@@ -264,9 +276,10 @@ Lily Allen,Lily Rose Beatrice Allen,1985-05-02,13saZpZnCDWOI9D4IJhp1f,nan,https:
 Lisa Stansfield,Lisa Jane Stansfield,1966-04-11,2jS7I1u7BpgWT9ssG62Zr1,nan,https://i.scdn.co/image/ab6761610000e5ebf5030c0934958ec99d386bc4,https://fr.wikipedia.org/wiki/Lisa_Stansfield
 Lizzo,Melissa Viviane Jefferson[1],1988-04-27,56oDRnqbIiwx4mymNEv7dS,Rhythm and blues,https://i.scdn.co/image/ab6761610000e5eb0d66b3670294bf801847dae2,https://fr.wikipedia.org/wiki/Lizzo
 Lollipop,nan,,0mKVSDzKcL0qIbqDpcA0DP,Bouyon,https://i.scdn.co/image/ab6761610000e5eb68c411bc85ddf399a57b2f62,
-London Grammar,London Grammar,2009-01-01,3Bd1cgCjtCI32PYvDC3ynO,nan,https://i.scdn.co/image/ab6761610000e5eb03fca863ba2e1e379ad19998,https://fr.wikipedia.org/wiki/London_Grammar
+London Grammar,London Grammar,2009-01-01,3Bd1cgCjtCI32PYvDC3ynO,Indie pop,https://i.scdn.co/image/ab6761610000e5eb03fca863ba2e1e379ad19998,https://fr.wikipedia.org/wiki/London_Grammar
 Lorie,Laure Pester,1982-05-02,2ixb8I8BVdLRywPPklssgM,French pop,https://i.scdn.co/image/ab6761610000e5ebabf69eecaf0149dc14db4c28,https://fr.wikipedia.org/wiki/Lorie
-Los Del Rio,Los Del Rio,1962-01-01,2JXn03fudjyRkQ1Ye9f5rk,nan,https://i.scdn.co/image/ab6761610000e5eb80db2204010a200f07de58dc,https://fr.wikipedia.org/wiki/Los_Del_R%C3%ADo
+Los Del Rio,Los Del Rio,1962-01-01,2JXn03fudjyRkQ1Ye9f5rk,Traditional pop music,https://i.scdn.co/image/ab6761610000e5eb80db2204010a200f07de58dc,https://fr.wikipedia.org/wiki/Los_Del_R%C3%ADo
+Lou Reed,Lewis Alan Reed,1942-01-02,42TFhl7WlMRXiNqzSrnzPL,Glam rock,https://i.scdn.co/image/49b8173759e47ed5e74d1c7c11a932e4dc6a91f9,https://fr.wikipedia.org/wiki/Lou_Reed
 Lud Foe X Z-Money,nan,,0Cu32uCaqDJYQADOev92Et,Rap music,https://i.scdn.co/image/ab6761610000e5ebde8a95961bcfb55f79382920,
 Ludacris,Christopher Brian Bridges,1977-09-11,3ipn9JLAPI5GUEo4y4jcoi,Rap music,https://i.scdn.co/image/0515a0dfc9c25cd8290cc4be58abf6f66f21706a,https://fr.wikipedia.org/wiki/Ludacris
 Luis Fonsi,Luis Alfonso Rodríguez López-Cepero Fonsi,1978-01-15,4V8Sr092TqfHkfAA5fXXqG,Latin pop,https://i.scdn.co/image/ab6761610000e5ebc75a7a555898c9a59602b32b,https://fr.wikipedia.org/wiki/Luis_Fonsi
@@ -312,15 +325,18 @@ Murda Beatz,Shane Lee Lindstrom,1994-01-11,nan,"('2 Tone', '2 Tone')",nan,https:
 My American Heart,My American Heart,2002-01-01,40ahTPmIE9WQOOTutV1dwc,nan,https://i.scdn.co/image/ab6761610000e5eb54bc48d8b533fbe67a406679,
 Mya,Mýa Marie Harrison,1979-10-10,6lHL3ubAMgSasKjNqKb8HF,Rhythm and blues,https://i.scdn.co/image/ab6761610000e5ebfdc389563fdfb51527f4603d,https://fr.wikipedia.org/wiki/Mya
 NLE Choppa,Bryson Lashun Potts,2002-11-01,0ErzCpIMyLcjPiwT4elrtZ,Rap music,https://i.scdn.co/image/ab6761610000e5ebe2c985e8509fc8788a5a5208,https://fr.wikipedia.org/wiki/NLE_Choppa
+Nancy Sinatra,Nancy Sandra Sinatra,1940-01-08,3IZrrNonYELubLPJmqOci2,Folk pop,https://i.scdn.co/image/ab6761610000e5eb425050048d82a8b7dfd0e4ec,https://fr.wikipedia.org/wiki/Nancy_Sinatra
 Natalie Imbruglia,Natalia Jane Imbruglia,1975-02-04,0dlOr0VIysztGWvU1dpjmP,nan,https://i.scdn.co/image/ab6761610000e5eb2e023776b822635846e1f5f1,https://fr.wikipedia.org/wiki/Natalie_Imbruglia
 Natasha Bedingfield,Natasha Anne Bedingfield,1981-11-26,7o95ZoZt5ZYn31e9z1Hc0a,nan,https://i.scdn.co/image/ab6761610000e5eb15f48264917c2b09a573ecc7,https://fr.wikipedia.org/wiki/Natasha_Bedingfield
 Natasha St-Pier,Natasha Saint-Pierre,1981-02-10,1miK7RIscxXIgQgHQ0G7ch,nan,https://i.scdn.co/image/ab6761610000e5ebcd55923ff87894189b6884aa,https://fr.wikipedia.org/wiki/Natasha_St-Pier
+Nathalie Cardone,Nathalie Cardone,1967-01-29,5bfglVyGJppmmNoC2rhBUG,Latin pop,https://i.scdn.co/image/ab6761610000e5eb924c9acfc115625c129d80a2,https://fr.wikipedia.org/wiki/Nathalie_Cardone
 Nelly Furtado,Nelly Kim Furtado,1978-12-02,2jw70GZXlAI8QzWeY2bgRc,Rhythm and blues,https://i.scdn.co/image/ab6761610000e5ebd2ce0bf5614b54bd44e059d5,https://fr.wikipedia.org/wiki/Nelly_Furtado
 Neneh Cherry,Neneh Mariann Karlsson,1964-03-10,3JxCEqL9zjKnDJgUhRuRJD,nan,https://i.scdn.co/image/ab6761610000e5eb72aecba283cf67c2f058980e,https://fr.wikipedia.org/wiki/Neneh_Cherry
 Nicki Minaj,Onika Tanya Maraj,1982-12-08,0hCNtLu0JehylgoiP8L4Gh,Rap music,https://i.scdn.co/image/ab6761610000e5eb07a50f0a9a8f11e5a1102cbd,https://fr.wikipedia.org/wiki/Nicki_Minaj
 Njie,nan,,50MNakTO5I1i1I9Z4tC8u4,Zouk,https://i.scdn.co/image/ab67616d0000b273a982fbc4112baf12908cde02,
 Nolwenn Leroy,Nolwenn Le Magueresse,1982-09-28,6suRVbMTiFWlTpB6fdLdF2,nan,https://i.scdn.co/image/ab6761610000e5eb08a61d1e3eea5c114fcc8304,https://fr.wikipedia.org/wiki/Nolwenn_Leroy
 Nomads,nan,,6aUKy2LG1OU6KhYOZADolN,nan,https://i.scdn.co/image/ab6761610000e5eb7a0ae37f224490ad5440b281,
+Norah Jones,Geethali Norah Jones Shankar,1979-01-30,2Kx7MNY7cI1ENniW7vT30N,Trad jazz,https://i.scdn.co/image/ab6761610000e5ebed83d3ea063d87ce7e708f00,https://fr.wikipedia.org/wiki/Norah_Jones
 Oasis,Oasis,1991-01-01,2DaxqgrOhkeH0fpeiQq2f4,nan,https://i.scdn.co/image/ab6761610000e5eb0522e98a6f0cf1ddbee9a74f,https://fr.wikipedia.org/wiki/Oasis_(groupe)
 Offset,Kiari Kendrell Cephus,1991-01-14,4DdkRBBYG6Yk9Ka8tdJ9BW,Rap music,https://i.scdn.co/image/ab6761610000e5eb628143c3dd14fc995f925d56,https://fr.wikipedia.org/wiki/Offset_(rappeur)
 Olivia Ruiz,Olivia Blanc,1980-01-01,12OSqKGORygb2C6H36qKuj,nan,https://i.scdn.co/image/ab6761610000e5eb1901412c66270f5b3109d656,https://fr.wikipedia.org/wiki/Olivia_Ruiz
@@ -347,6 +363,7 @@ Prokofiev,(ru) Сергей Сергеевич Прокофьев (Sergueï Serg
 Quality Control,Quality Control,2013-01-01,6i392l38cR3uBPF0DbNs7S,Rap music,https://i.scdn.co/image/ab67616d0000b273f5c547a4335523f10a802f94,
 Quavo,Quavious Keyate Marshall,1991-04-02,0VRj0yCOv2FXJNP47XQnx5,Rap music,https://i.scdn.co/image/ab6761610000e5ebd52229f479361a2375f6021c,https://fr.wikipedia.org/wiki/Quavo
 Queens Of The Stone Age,Queens Of The Stone Age,1996-01-01,4pejUc4iciQfgdX6OKulQn,nan,https://i.scdn.co/image/ab6761610000e5eb909b2c4b7c768ee03445cd10,https://fr.wikipedia.org/wiki/Queens_of_the_Stone_Age
+R.E.M.,R.E.M.,,4KWTAlx2RvbpseOGMEmROg,Alternative rock,https://i.scdn.co/image/ab6761610000e5eb6334ab6a83196f36475ada7f,https://fr.wikipedia.org/wiki/R.E.M.
 ROSALÍA,Rosalia Vila Tobella,1992-01-25,7ltDVBr6mKbRvohxheJ9h1,Latin pop,https://i.scdn.co/image/ab6761610000e5eb9354faf80eb87961466edfbf,https://fr.wikipedia.org/wiki/Rosal%C3%ADa
 Radical Face,nan,1979-05-23,5EM6xJN2QNk0cL7EEm9HR9,Indie folk,https://i.scdn.co/image/ab6761610000e5eb525cf67298ee623539c1b8bf,https://fr.wikipedia.org/wiki/Radical_Face
 Ray Charles,Ray Charles Robinson,1930-09-23,1eYhYunlNJlDoQhtYBvPsi,Rhythm and blues,https://i.scdn.co/image/ab6761610000e5eb6fc460f10177fa38af69b8bf,https://fr.wikipedia.org/wiki/Ray_Charles
@@ -422,6 +439,7 @@ TM88,nan,1986-10-19,5RMUeKq0dZxg9RHE1f0B9P,Rap music,https://i.scdn.co/image/ab6
 Takeoff,Kirsnik Khari Ball,1994-06-18,3EW0kQ1skZiK1NHg3Spt9J,Rap music,https://i.scdn.co/image/ab6761610000e5ebd986fb8037e0b8e2f9f4f37d,https://fr.wikipedia.org/wiki/Takeoff_(rappeur)
 Tanto Metro,nan,1975-06-24,4mVpYIVAOE8sEdYuL8HDpd,nan,https://i.scdn.co/image/ab6761610000e5eb23af7fb6b9934f1dd241ca96,
 Taylor Swift,Taylor Alison Swift,1989-01-13,06HL4z0CvFAxyc27GXpf02,Traditional pop music,https://i.scdn.co/image/ab6761610000e5ebe672b5f553298dcdccb0e676,https://fr.wikipedia.org/wiki/Taylor_Swift
+Teddy Swims,,1992-01-25,33qOK5uJ8AR2xuQQAhHump,Soul blues,https://i.scdn.co/image/ab6761610000e5ebf9cf783eb03eb66aa43943ba,https://fr.wikipedia.org/wiki/Teddy_Swims
 Tekno,nan,1992-12-17,6IhG3Yxm3UW98jhyBvrIut,nan,https://i.scdn.co/image/ab6761610000e5ebbdfa92a97f9da3258e7776e9,https://fr.wikipedia.org/wiki/Tekno_(chanteur)
 Teni,nan,1992-12-23,3ukrG1BmfEiuo0KDj8YTTS,nan,https://i.scdn.co/image/ab6761610000e5ebb660f04f0452e80160feb13c,https://fr.wikipedia.org/wiki/Teni_(chanteuse)
 Terri,nan,1997-05-31,19TPpTWkgX13Qc2stbqVoP,nan,https://i.scdn.co/image/ab6761610000e5eb6d0592295377a93cb370b775,
@@ -431,6 +449,7 @@ The Beatles,The Beatles,1960-01-01,3WrFJ7ztbogyGnTHbHJFl2,Rock and roll,https://
 The Black Eyed Peas,The Black Eyed Peas,1995-01-01,1yxSLGMDHlW21z4YXirZDS,Rhythm and blues,https://i.scdn.co/image/ab6761610000e5ebb3037310c07b99cbefbd2c6d,https://fr.wikipedia.org/wiki/Black_Eyed_Peas
 The Cinematic Orchestra,The Cinematic Orchestra,1999-01-01,32ogthv0BdaSMPml02X9YB,nan,https://i.scdn.co/image/ab6761610000e5eb9e2576943e27fcddc3bb3646,https://fr.wikipedia.org/wiki/The_Cinematic_Orchestra
 The Corrs,The Corrs,1990-01-01,1VbWUxZTRNY2gw3qZ1tg9W,nan,https://i.scdn.co/image/ab6761610000e5eb599f5b4f1ea78db47fbead4e,https://fr.wikipedia.org/wiki/The_Corrs
+The Doors,The Doors,,22WZ7M8sxp5THdruNY3gXt,Alternative rock,https://i.scdn.co/image/ab6761610000e5eb440959e022afc20e819050bd,https://fr.wikipedia.org/wiki/The_Doors
 The Drifters,The Drifters,1953-01-01,1FqqOl9itIUpXr4jZPIVoT,nan,https://i.scdn.co/image/3361d8c88dc781f3a76657778454051db42e6d9e,https://fr.wikipedia.org/wiki/The_Drifters
 The Dø,The Dø,2005-01-01,2mcNCn1qbZUQ3J9KHapUxj,Folk pop,https://i.scdn.co/image/0d94f0d43132aa9762a9958e4eba50c049d956ce,https://fr.wikipedia.org/wiki/The_D%C3%B8
 The East Side Boyz,The East Side Boyz,1996-01-01,3ciRvbBIVz9fBoPbtSYq4x,Rap music,https://i.scdn.co/image/aafc4156598fa9f8f052ec5687e648ba9120f07e,
@@ -441,6 +460,7 @@ The Police,The Police,1977-01-01,5NGO30tJxFlKixkPSgXcFE,nan,https://i.scdn.co/im
 The Pussycat Dolls,The Pussycat Dolls,1995-01-01,6wPhSqRtPu1UhRCDX5yaDJ,Rhythm and blues,https://i.scdn.co/image/ab6761610000e5eb292575f7d081016e04dff9ee,https://fr.wikipedia.org/wiki/The_Pussycat_Dolls
 The Rolling Stones,The Rolling Stones,,22bE4uQ6baNwSHPVcDxLCe,Rock and roll,https://i.scdn.co/image/ab6761610000e5ebe4cea917b68726aadb4854b8,https://fr.wikipedia.org/wiki/The_Rolling_Stones
 The Shanghai Restoration Project,The Shanghai Restoration Project,2005-01-01,0EP5EpsiMP8oLYy7sPHwf9,nan,https://i.scdn.co/image/ab6761610000e5ebdbc1170d337c9ae619b8d5b9,
+The Tellers,The Tellers,,0xAHllnAJZX2DlM8z2A0hC,Folk pop,https://i.scdn.co/image/ab6761610000e5eb5a38491b5735f0c62ebe1d5e,https://fr.wikipedia.org/wiki/The_Tellers
 The Ting Tings,The Ting Tings,2007-01-01,2wvUfjKGoXvcnDHq7GgMOa,Pop rock,https://i.scdn.co/image/ab6761610000e5eb525060ec706fc0f5dd7a2878,https://fr.wikipedia.org/wiki/The_Ting_Tings
 The White Stripes,The White Stripes,1997-01-01,4F84IBURUo98rz4r61KF70,nan,https://i.scdn.co/image/ab6761610000e5eb70cc06de8fc28226d4743cd9,https://fr.wikipedia.org/wiki/The_White_Stripes
 Thierry Cham,nan,,75E2yAVDzecPCYaNbLeNC5,Zouk,https://i.scdn.co/image/ab67616d0000b273e3ba3c8cf61a78e6bd142f5b,
@@ -495,6 +515,7 @@ Young Scooter,Kenneth Edward Bailey,1986-03-28,4cmA2QDPdzh8W2ytpyUGes,Rap music,
 Young Thug,Jeffery Lamar Williams Wayermann,1991-08-16,50co4Is1HCEo8bhOyUWKpn,Rap music,https://i.scdn.co/image/ab6761610000e5eb547d2b41c9f2c97318aad0ed,https://fr.wikipedia.org/wiki/Young_Thug
 Youssou N'Dour,Youssou Madjiguène Ndour,1959-10-01,77zlytAFjPFjUKda8TNIDY,nan,https://i.scdn.co/image/ab6761610000e5ebc6ce99c0d31331765bd499e2,https://fr.wikipedia.org/wiki/Youssou_N%27Dour
 Zaho,Zehira Darabid,1980-05-10,38GSybQjdc6sxptciOkxMq,French pop,https://i.scdn.co/image/ab6761610000e5eb7e1088a61b4f3b3d30f9d82b,https://fr.wikipedia.org/wiki/Zaho
+Zero 7,Zero 7,,14H7ag1wpQOsPPQJOD6Dqr,Trip hop,https://i.scdn.co/image/ab6761610000e5eb85c10aefe83110535eea474c,https://fr.wikipedia.org/wiki/Zero_7
 a-ha,a-ha,1982-01-01,2jzc5TC5TVFLXQlBNiIUzE,nan,https://i.scdn.co/image/ab6761610000e5eb0168ba8148c07c2cdeb7d067,https://fr.wikipedia.org/wiki/A-ha
 alt-J,alt-J,2007-01-01,3XHO7cRUPCLOr6jwp8vsx5,nan,https://i.scdn.co/image/ab6761610000e5eb3fb5214e667e278a20878a6b,https://fr.wikipedia.org/wiki/Alt-J
 björk,Björk Guðmundsdóttir,1965-11-21,7w29UYBi0qsHi5RTcv3lmA,nan,https://i.scdn.co/image/ab6761610000e5ebaeb5c04fdd8ec6273850d207,https://fr.wikipedia.org/wiki/Bj%C3%B6rk
