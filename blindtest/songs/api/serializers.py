@@ -79,7 +79,9 @@ class SongSerializer(serializers.Serializer):
         else:
             artist = Artist.objects.create(
                 name=validated_data['artist_name'],
-                genre=validated_data['genre']
+                genre=validated_data['genre'],
+                is_group=validated_data.get('is_group', False),
+                wikipedia_page=validated_data.get('wikipedia_page', None),
             )
 
         return artist.song_set.create(**{

@@ -1,5 +1,6 @@
 import datetime
 import locale
+from math import inf
 import pathlib
 import re
 import ssl
@@ -65,6 +66,9 @@ class Wikipedia:
         locale.setlocale(locale.LC_ALL, 'fr_FR')
 
         infobox = soup.find('div', attrs={'class': 'infobox_v3'})
+        if infobox is None:
+            return []
+        
         infos = infobox.find_all('tr')
 
         values: list[str] = [

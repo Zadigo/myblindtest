@@ -40,12 +40,13 @@ def wikipedia_information(artist_id: int):
             artist.birthname = instance.metadata['birthname']
 
         artist.date_of_birth = date_of_birth or instance.metadata['date_of_birth']
+
+        genres = instance.metadata.get('genres', [])
+        if genres:
+            artist.other_genres = ','.join(str(value).strip().title() for value in genres)
         artist.save()
 
-        nrj_information.apply_async(
-            args=[artist_id],
-            countdown=5
-        )
+        nrj_information.apply_async(args=[artist_id], countdown=5)
 
 
 @celery.shared_task

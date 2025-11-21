@@ -154,12 +154,10 @@ class CreateSongs(generics.GenericAPIView):
                     args=[instance.artist.name],
                     countdown=10
                 )
-
-                if instance.artist.wikipedia_page:
-                    tasks.wikipedia_information.apply_async(
-                        args=[instance.artist.id],
-                        countdown=20
-                    )
+                tasks.wikipedia_information.apply_async(
+                    args=[instance.artist.id],
+                    countdown=20
+                )
 
         response_serializer = serializers.SongSerializer(
             instance=created_songs,
