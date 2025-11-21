@@ -68,7 +68,10 @@ def nrj_information(artist_id: int):
 def artist_spotify_information(artist_name: str):
     """This task searches for the artist's Spotify ID and avatar"""
     artist = Artist.objects.get(name=artist_name)
-    songs = artist.song_set.filter(year=0).values_list('id', flat=True)
+
+    if artist.spotify_id is not None:
+        logger.warning(f'Spotify ID already exists for: {artist_name}')
+        return artist.spotify_id
 
     instance = Spotify(artist.name, search_type='artists')
     instance.send()
@@ -87,6 +90,8 @@ def artist_spotify_information(artist_name: str):
             logger.error(f'Could not get visuals for: {artist_name}')
             return {}
         artist.save()
+    
+    songs = artist.song_set.filter(year=0).values_list('id', flat=True)
     return artist.spotify_id
 
 

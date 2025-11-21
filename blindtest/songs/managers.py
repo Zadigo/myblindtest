@@ -41,7 +41,8 @@ class AfroSongManager(models.Manager):
         qs = super().get_queryset()
         return qs.filter(
             models.Q(genre__icontains='afrobeat') |
-            models.Q(genre__icontains='amapiano')
+            models.Q(genre__icontains='amapiano') |
+            models.Q(genre__icontains='african')
         )
 
 

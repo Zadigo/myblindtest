@@ -50,7 +50,6 @@ class SongSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         artist_name = validated_data['artist_name']
-        qs = Artist.objects.filter(name__icontains=artist_name.lower())
 
         # If there are featured artists, create
         # them in the database
@@ -58,31 +57,25 @@ class SongSerializer(serializers.Serializer):
         if featured_artists and featured_artists != '':
             artists = featured_artists.split(',')
             for artist_name in artists:
-                instance, state = Artist.objects.get_or_create(
+                instance, created = Artist.objects.get_or_create(
                     defaults={'name': artist_name},
                     name=artist_name
                 )
-                if state:
-                    tasks.wikipedia_information.apply_async(
-                        args=[instance.id],
+                if created:
+                    tasks.artist_spotify_information.apply_async(
+                        args=[instance.name],
                         countdown=40
                     )
 
-        if qs.exists():
-            try:
-                artist = qs.get()
-            except:
-                raise ValidationError(
-                    "Multiple artist with the "
-                    "same name exists"
-                )
-        else:
-            artist = Artist.objects.create(
-                name=validated_data['artist_name'],
-                genre=validated_data['genre'],
-                is_group=validated_data.get('is_group', False),
-                wikipedia_page=validated_data.get('wikipedia_page', None),
-            )
+        artist, created = Artist.objects.get_or_create(
+            defaults={
+                'name': artist_name,
+                'genre': validated_data['genre'],
+                'is_group': validated_data.get('is_group', False),
+                'wikipedia_page': validated_data.get('wikipedia_page', None),
+            },
+            name=artist_name
+        )
 
         return artist.song_set.create(**{
             'name': validated_data['name'],
