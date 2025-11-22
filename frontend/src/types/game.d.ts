@@ -13,10 +13,18 @@ export interface Team {
   color: Nullable<string>
 }
 
+export type IndividualBlindTestPlayer = {
+  name: string
+  color: string
+  points: number
+  correct_answers: Arrayable<number>
+}
+
 export interface CacheSession {
   songsPlayed: Song[]
   currentStep: number
   teams: Team[]
+  players: Record<string, IndividualBlindTestPlayer>
   settings: {
     rounds: number
     timeLimit: number

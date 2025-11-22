@@ -32,8 +32,6 @@ const { showWheel } = useWheelRandomizer()
  * Websocket
  */
 
-// 'animate-bounce animate-ease-in-out animate-duration-1000'
-const animationClass = ''
 const { startGame, stopGame, gameStarted, sendIncorrectAnswer } = useGameWebsocket()
 
 const songsStore = useSongs()

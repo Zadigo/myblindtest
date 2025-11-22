@@ -1,6 +1,6 @@
 <template>
   <section id="blindtest">
-    <blind-test-layout>
+    <players-layout>
       <template #video>
         <video-block />
       </template>
@@ -8,7 +8,7 @@
       <template #default>
         <div id="players" class="col-span-12 bg-linear-to-r from-primary-100 via-primary-200 to-primary-300 p-5 overflow-hidden border-primary-100 border-10">
           <div class="grid grid-cols-10 overflow-y-scroll gap-2 space-y-3 w-full">
-            <volt-card v-for="idx in 10" :key="idx">
+            <volt-card v-for="(player, idx) in players" :key="idx">
               <template #content>
                 <div class="text-center">
                   <div class="h-20 w-20 overflow-hidden rounded-full mb-2">
@@ -16,15 +16,15 @@
                   </div>
 
                   <h5 class="font-bold mb-4">
-                    Player {{ idx }}
+                    {{ player }}
                   </h5>
 
                   <div class="space-x-2">
                     <volt-button>
-                      <icon name="i-lucide:x" />
+                      <vue-icon name="i-lucide:x" />
                     </volt-button>
                     <volt-button>
-                      <icon name="i-lucide:check" />
+                      <vue-icon name="i-lucide:check" />
                     </volt-button>
                   </div>
                 </div>
@@ -33,7 +33,7 @@
           </div>
         </div>
       </template>
-    </blind-test-layout>
+    </players-layout>
 
     <!-- Modals -->
     <active-game v-model="warnActiveGameModal" @proceed="() => stopGame(stopGameCallback)" />
@@ -41,7 +41,15 @@
 </template>
 
 <script setup lang="ts">
+import { useGameWebsocketIndividual } from '@/composables'
 import { ref } from 'vue'
+
+/**
+ * Websocket
+ */
+
+const { wsObject, players } = useGameWebsocketIndividual()
+wsObject.open()
 
 const warnActiveGameModal = ref(false)
 

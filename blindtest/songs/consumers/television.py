@@ -2,9 +2,8 @@ from typing import Any, Union
 
 import pyotp
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
-from consumers.admin import ChannelEventsMixin
 from django.utils.crypto import get_random_string
-from songs.logic import GameLogicMixin
+from songs.consumers.admin import ChannelEventsMixin
 from songs.utils import create_token
 
 

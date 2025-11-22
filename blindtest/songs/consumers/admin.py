@@ -3,19 +3,36 @@ from typing import Any, Union
 import pyotp
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from django.utils.crypto import get_random_string
-from songs.logic import GameLogicMixin
+from songs.logic import TeamGameLogicMixin, IndividualLogicMixin
 from songs.utils import create_token
+from songs.logic import Player
 
 
 class ChannelEventsMixin:
     """This mixin provides generic functions used by the devices
     who are connected the blind test game"""
 
-    # TODO: Append the blindtest ID to the group
-    # when creating the diffusion group in order
-    # to be able to run multiple different blindtests
+    # Room for broadcasting game updates
     diffusion_group_name: str = 'blind_test_updates'
+    # Room for managing pending connections
     waiting_room_name: str = 'blind_test_waiting_room'
+    session_id: str = ''
+
+    @property
+    def indexed_diffusion_group_name(self):
+        """Returns the base diffusion group name with
+        the unique firebase token in order to identify the group"""
+        if self.session_id:
+            return f"{self.diffusion_group_name}_{self.session_id}"
+        return self.diffusion_group_name
+
+    @property
+    def indexed_waiting_room_name(self):
+        """Returns the base waiting room name with
+        the unique firebase token in order to identify the group"""
+        if self.session_id:
+            return f"{self.waiting_room_name}_{self.session_id}"
+        return self.waiting_room_name
 
     def base_room_message(self, **kwargs: str | int):
         base_message = {
@@ -38,6 +55,15 @@ class ChannelEventsMixin:
             'action': error_type,
             'message': message
         })
+
+    async def accept_device(self, content: dict[str, str | int]):
+        """Channels handler for accepting a device into the game"""
+
+    async def disconnect_device(self, content: dict[str, str | int]):
+        """Channels handler for disconnecting a device from the game"""
+
+
+    # Old handlers kept for reference
 
     async def device_connected(self, content: dict[str, str | int]):
         """Channels handler for the devices that are connecting
@@ -68,11 +94,12 @@ class ChannelEventsMixin:
         """Channels handler for authenticating a pin code to
         a blind test game"""
 
-    async def accept_device(self, content: dict[str, str | int]):
-        """Channels handler for accepting a device into the game"""
+
+    async def game_started(self, content: dict[str, str | int]):
+        """Channels handler for indicating that the game has started"""
 
 
-class TeamBlindTestConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsumer):
+class TeamBlindTestConsumer(TeamGameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsumer):
     """This consumer handles connections specifically from admin devices
     which can then be used to control the blind test game. The admin devices
     are used to start/stop the game, validate answers and manage teams."""
@@ -272,7 +299,63 @@ class TeamBlindTestConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsock
             await self.channel_layer.group_send(self.waiting_room_name, message)
 
 
-class IndividualBlindTestConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsumer):
+class IndividualBlindTestConsumer(IndividualLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsumer):
     """This consumer handles connections specifically from admin devices
     which can then be used to control the blind test game. This consumer handles
     blind test games where each player participates individually as opposed to teams."""
+
+    async def connect(self):
+        await self.accept()
+        self.session_id = self.scope['url_route']['kwargs']['firebase']
+        await self.channel_layer.group_add(self.indexed_diffusion_group_name, self.channel_name)
+        await self.channel_layer.group_add(self.indexed_waiting_room_name, self.channel_name)
+
+        await self.send_json({
+            'action': 'idle_response',
+            'code': self.pin_code,
+            'connection_url': f'http://localhost:3000/{self.session_id}/single-player'
+        })
+
+    async def disconnect(self, code):
+        await self.channel_layer.group_discard(self.indexed_diffusion_group_name, self.channel_name)
+        await self.channel_layer.group_discard(self.indexed_waiting_room_name, self.channel_name)
+        await self.close(code=code or 1000)
+
+    async def receive_json(self, content: dict[str, Union[str, int, bool]], **kwargs: Any):
+        action = content.get('action')
+
+        if action is None:
+            await self.send_error('No action was provided')
+            return
+
+        if action == 'start_game':
+            self.played_songs.clear()
+
+            self.is_started = True
+
+            self.channel_layer.group_send(
+                self.indexed_diffusion_group_name,
+                self.base_room_message(**{'type': 'game.started'})
+            )
+
+            await self.send_json({'action': 'game_started'})
+            await self.next_song()
+        elif action == 'submit_guess':
+            pass
+        elif action == 'skip_song':
+            pass
+        elif action == 'randomize_genre':
+            pass
+        else:
+            await self.send_error('Invalid action')
+
+    async def accept_device(self, content: dict[str, str | int]):
+        self._players[content['device_id']] = Player(**content['player'])
+        await self.send_json({'action': 'device_accepted', 'players': self.players})
+
+    async def disconnect_device(self, content: dict[str, str | int]):
+        device_id = content['device_id']
+        
+        if device_id in self._players:
+            del self._players[device_id]
+        await self.send_json({'action': 'device_disconnected', 'players': self.players})

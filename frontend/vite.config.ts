@@ -48,6 +48,14 @@ export default defineConfig({
         'pinia',
         '@vueuse/core',
         {
+          'vue-router': [
+            'useRoute',
+            'useRouter',
+            'onBeforeRouteLeave',
+            'onBeforeRouteUpdate'
+          ]
+        },
+        {
           'vue-axios-manager': [
             'useRequest',
             'useAsyncRequest',

@@ -17,7 +17,7 @@ const router = createRouter({
         },
         {
           path: 'teams',
-          component: async () => import('../pages/TeamsPage.vue'),
+          component: async () => import('../pages/team/TeamsPage.vue'),
           name: 'teams',
           meta: {
             heightScreen: true
@@ -59,13 +59,18 @@ const router = createRouter({
     },
     {
       path: '/blind-test',
-      component: async () => import('../pages/BlindTestPage.vue'),
+      component: async () => import('../pages/team/IndexPage.vue'),
       name: 'blind_test'
     },
     {
       path: '/individual-blind-test',
-      component: async () => import('../pages/IndividualBlindTestPage.vue'),
+      component: async () => import('../pages/individual/IndexPage.vue'),
       name: 'individual_blind_test'
+    },
+    {
+      path: '/:id/single-player',
+      component: async () => import('../pages/individual/PlayerPage.vue'),
+      name: 'single_player'
     }
   ]
 })

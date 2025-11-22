@@ -4,6 +4,7 @@ import type { _ReceiveMessages, _SendMessages } from '@/types'
 export * from './randomizer'
 export * from './utils'
 export * from './ws_manager'
+export * from './ws_individual_manager'
 
 /**
  * Composable used to handle websocket messages

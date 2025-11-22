@@ -1,4 +1,5 @@
 import asyncio
+from collections import defaultdict
 import dataclasses
 import random
 from typing import List, Optional, Union
@@ -40,84 +41,13 @@ class Team:
         return self.team_id == value
 
 
-class GameGlobalStatisticsMixin:
-    cached_answers = []
-    timeline = [100]
+class BaseGameLogicMixin:
+    """Base game logic mixin containing shared logic between
+    individual and team-based blindtests."""
 
-    @property
-    def last_score(self) -> dict[str, str] | None:
-        try:
-            return self.cached_answers[-1]
-        except:
-            return None
-
-    async def team_answers(self, team_id: str):
-        """Return the last answers by the given team"""
-        return list(map(lambda x: x['team_id'] == team_id, self.cached_answers))[:5]
-
-    async def register_answer(self, team_id: str, matched: str | None):
-        """Registers the answers"""
-        self.cached_answers.append({'team_id': team_id, 'matched': matched})
-
-    async def update_timeline(self):
-        """The timeline allows us to track the progression for
-        correct and incorrect answers globally for all teams"""
-        if self.is_started:
-            matched = self.last_score['matched']
-            value = self.timeline[-1]
-
-            if matched == 'Title' or matched == 'Artist':
-                value += 1
-                self.timeline.append(value)
-            elif matched is None:
-                value -= 1
-                self.timeline.append(value)
-
-
-class GameLogicMixin(GameGlobalStatisticsMixin):
     difficulties = ['All', 'Easy', 'Medium', 'Semi-Pro', 'Difficult', 'Expert']
     game_duration: int = 30
     cache_timeout: int = 3600
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.difficulty = 'All'
-        self.genre = 'All'
-
-        # self.start_time = None
-        self.current_round = 0
-        self.number_of_rounds = None
-
-        self.point_value: int = 1
-        self.difficulty_bonus = False
-        self.time_bonus = False
-
-        self.team_one = Team('fake_id_1')
-        self.team_two = Team('fake_id_2')
-
-        self.is_started = False
-        self.current_song: Optional[dict[str, Union[str, int]]] = None
-        self.timer_task: Optional[asyncio.Task] = None
-
-        # Solo mode is a mode where the
-        # user tries to guess the songs
-        # himself
-        self.solo_mode = False
-        # Mode where the admin is also
-        # part of a team and therefore
-        # needs the song information
-        # to be deactivated
-        self.admin_plays = False
-
-        self.played_songs: set[int] = set()
-        self.fuzzy_matcher = FuzzyMatcher()
-
-        self.device_name = 'blind_test'
-        self.device_id = f'blind_test_{get_random_string(length=12)}'
-        self.connection_token = None
-        # Pin code for the game
-        self.pin_code = random.randint(1000, 9999)
-        self.pending_devices: List[str] = []
 
     @database_sync_to_async
     def get_songs(self, temporary_genre: Optional[str] = None, exclude: List[int] = []) -> List[int]:
@@ -159,6 +89,97 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
             return serializer.data
         except exceptions.ObjectDoesNotExist:
             raise
+
+    async def next_song(self, temporary_genre: str = None):
+        raise NotImplementedError
+
+    async def calculate_points(self, title_match: bool, artist_match: bool):
+        """Calculate points based on match type and remaining time"""
+        base_points = 0
+
+        # Use the song's difficulty level
+        # for the total score
+        def factor(value: int):
+            if self.difficulty_bonus:
+                factor = int(self.current_song['difficulty'])
+                return self.point_value * factor
+            return value
+
+        if title_match:
+            base_points += factor(self.point_value)
+
+        if artist_match:
+            base_points += factor(self.point_value)
+
+        # Time bonus: more points for quicker answers
+        # if self.time_bonus:
+        #     # time_multiplier = self.timer_task._coro.cr_frame.f_locals['remaining_time'] / self.game_duration
+        #     coro = self.timer_task.get_coro()
+        #     time_multiplier = (
+        #         coro.cr_frame.f_locals['remaining_time'] /
+        #         self.game_duration
+        #     )
+        #     return int(base_points + (1 + time_multiplier))
+
+        return base_points
+
+    async def handle_guess(self, team_id: str, title_match: bool, artist_match: bool):
+        raise NotImplementedError
+
+    async def next_song(self, temporary_genre: str = None):
+        """Returns a song using IDs present in the datbase.
+
+        Or, returns a song within the genre that is passed within
+        this function. If the queryset is empty, return a selection
+        of all the songs"""
+        song_ids = await self.get_songs(
+            temporary_genre=temporary_genre,
+            exclude=list(self.played_songs)
+        )
+        return song_ids
+
+
+class TeamGameLogicMixin(BaseGameLogicMixin):
+    """Game logic specific to team-based blindtests."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.difficulty = 'All'
+        self.genre = 'All'
+
+        # self.start_time = None
+        self.current_round = 0
+        self.number_of_rounds = None
+
+        self.point_value: int = 1
+        self.difficulty_bonus = False
+        self.time_bonus = False
+
+        self.team_one = Team('fake_id_1')
+        self.team_two = Team('fake_id_2')
+
+        self.is_started = False
+        self.current_song: Optional[dict[str, Union[str, int]]] = None
+
+        # Solo mode is a mode where the
+        # user tries to guess the songs
+        # himself
+        self.solo_mode = False
+        # Mode where the admin is also
+        # part of a team and therefore
+        # needs the song information
+        # to be deactivated
+        self.admin_plays = False
+
+        self.played_songs: set[int] = set()
+        self.fuzzy_matcher = FuzzyMatcher()
+
+        self.device_name = 'blind_test'
+        self.device_id = f'blind_test_{get_random_string(length=12)}'
+        self.connection_token = None
+        # Pin code for the game
+        self.pin_code = random.randint(1000, 9999)
+        self.pending_devices: List[str] = []
 
     async def next_song(self, temporary_genre: str = None):
         """Returns a song using IDs present in the datbase.
@@ -225,84 +246,6 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
         #     self.timer_task.cancel()
         # self.timer_task = asyncio.create_task(self.timer())
 
-    async def calculate_points(self, title_match: bool, artist_match: bool):
-        """Calculate points based on match type and remaining time"""
-        base_points = 0
-
-        # Use the song's difficulty level
-        # for the total score
-        def factor(value: int):
-            if self.difficulty_bonus:
-                factor = int(self.current_song['difficulty'])
-                return self.point_value * factor
-            return value
-
-        if title_match:
-            base_points += factor(self.point_value)
-
-        if artist_match:
-            base_points += factor(self.point_value)
-
-        # Time bonus: more points for quicker answers
-        if self.time_bonus:
-            # time_multiplier = self.timer_task._coro.cr_frame.f_locals['remaining_time'] / self.game_duration
-            coro = self.timer_task.get_coro()
-            time_multiplier = (
-                coro.cr_frame.f_locals['remaining_time'] /
-                self.game_duration
-            )
-            return int(base_points + (1 + time_multiplier))
-
-        return base_points
-
-    async def timer(self):
-        remaining_time = self.game_duration
-        try:
-            while remaining_time > 0 and self.is_started:
-                await self.send_json({
-                    'action': 'timer_tick',
-                    'remaining_time': remaining_time,
-                    'total_time': self.game_duration
-                })
-                await asyncio.sleep(1)
-                remaining_time -= 1
-
-            if self.is_started:
-                await self.next_song()
-        except asyncio.CancelledError:
-            pass
-
-    async def handle_string_guess(self, guess: str):
-        """Handles player's song guess"""
-        if not self.current_song:
-            return
-
-        # TODO: This code is mostly for solo mode or if the
-        # admin of the blind test also participates in the
-        # guess = guess.lower().strip()
-        # title_match = self.fuzzy_match(guess, self.current_song['title'])
-        # artist_match = self.fuzzy_match(guess, self.current_song['artist'])
-
-        # if title_match or artist_match:
-        #     points = self.calculate_points(title_match, artist_match)
-        #     self.score += points
-
-        #     await self.send_json({
-        #         'action': 'guess.correct',
-        #         'points': points,
-        #         'total_score': self.score,
-        #         'song_details': {
-        #             'title': self.current_song['title'],
-        #             'artist': self.current_song['artist'],
-        #         }
-        #     })
-
-        #     await self.next_song()
-        # else:
-        #     await self.send_json({
-        #         'action': 'guess.incorrect'
-        #     })
-
     async def handle_guess(self, team_id: str, title_match: bool, artist_match: bool):
         """Handles player's song guess"""
         if not self.current_song:
@@ -334,16 +277,98 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
 
         print('handle_guess', message)
 
-        group_message = self.base_room_message(**{'type': 'game.updates', 'message': message})
+        group_message = self.base_room_message(
+            **{
+                'type': 'game.updates',
+                'message': message
+            }
+        )
         await self.channel_layer.group_send(self.diffusion_group_name, group_message)
 
         await self.send_json(message)
         await self.next_song()
 
-        # matched = None
-        # if title_match:
-        #     matched = 'Title'
-        # elif artist_match:
-        #     matched = 'Artist'
-        # await self.register_answer(team_id, matched)
-        # await self.update_timeline()
+
+@dataclasses.dataclass
+class Player:
+    name: str = None
+    color: str = None
+    points: int = 0
+    correct_answers: List[int] = dataclasses.field(default_factory=list)
+
+    def __hash__(self):
+        return hash((self.name))
+
+    def __eq__(self, value):
+        return self.name == value
+
+
+class IndividualLogicMixin(BaseGameLogicMixin):
+    """Game logic for individual players"""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.difficulty = 'All'
+        self.genre = 'All'
+
+        self.current_round = 0
+        self.number_of_rounds = None
+
+        self.point_value: int = 1
+        self.difficulty_bonus = False
+        self.time_bonus = False
+
+        self.is_started = False
+        self.current_song: Optional[dict[str, Union[str, int]]] = None
+
+        self.played_songs: set[int] = set()
+        self.fuzzy_matcher = FuzzyMatcher()
+
+        self.device_id = f'player_{get_random_string(length=12)}'
+        self.connection_token = None
+        # Pin code for the game
+        self.pin_code = random.randint(1000, 9999)
+        self.pending_devices: List[str] = []
+
+        self._players = defaultdict(Player)
+
+    @property
+    def players(self) -> dict[str, dict[str, str | int]]:
+        return {key: dataclasses.asdict(player) for key, player in self._players.items()}
+
+    async def handle_guess(self, player_id: str, title_match, artist_match):
+        if not self.current_song:
+            return
+
+        message = {
+            'action': None,
+            'player_id': player_id,
+            'points': 0
+        }
+
+        player: Player = self._players[player_id]
+
+        if title_match or artist_match:
+            result = await self.calculate_points(title_match, artist_match)
+
+            message['action'] = 'guess_correct'
+            player.points += result
+            message['points'] = player.points
+        else:
+            message['action'] = 'guess_incorrect'
+            message['points'] = player.points
+
+        message['song'] = self.current_song
+
+        print('handle_guess', message)
+
+        group_message = self.base_room_message(
+            **{
+                'type': 'game.updates',
+                'message': message
+            }
+        )
+        await self.channel_layer.group_send(self.indexed_diffusion_group_name, group_message)
+
+        await self.send_json(message)
+        await self.next_song()

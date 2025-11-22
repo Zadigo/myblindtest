@@ -1,0 +1,81 @@
+# async def timer(self):
+#     remaining_time = self.game_duration
+#     try:
+#         while remaining_time > 0 and self.is_started:
+#             await self.send_json({
+#                 'action': 'timer_tick',
+#                 'remaining_time': remaining_time,
+#                 'total_time': self.game_duration
+#             })
+#             await asyncio.sleep(1)
+#             remaining_time -= 1
+
+#         if self.is_started:
+#             await self.next_song()
+#     except asyncio.CancelledError:
+#         pass
+
+# async def handle_string_guess(self, guess: str):
+#     """Handles player's song guess"""
+#     if not self.current_song:
+#         return
+
+#     # TODO: This code is mostly for solo mode or if the
+#     # admin of the blind test also participates in the
+#     # guess = guess.lower().strip()
+#     # title_match = self.fuzzy_match(guess, self.current_song['title'])
+#     # artist_match = self.fuzzy_match(guess, self.current_song['artist'])
+
+#     if title_match or artist_match:
+#         points = self.calculate_points(title_match, artist_match)
+#         self.score += points
+
+#         await self.send_json({
+#             'action': 'guess.correct',
+#             'points': points,
+#             'total_score': self.score,
+#             'song_details': {
+#                 'title': self.current_song['title'],
+#                 'artist': self.current_song['artist'],
+#             }
+#         })
+
+#         await self.next_song()
+#     else:
+#         await self.send_json({
+#             'action': 'guess.incorrect'
+#         })
+
+
+# class GameGlobalStatisticsMixin:
+#     cached_answers = []
+#     timeline = [100]
+
+#     @property
+#     def last_score(self) -> dict[str, str] | None:
+#         try:
+#             return self.cached_answers[-1]
+#         except:
+#             return None
+
+#     async def team_answers(self, team_id: str):
+#         """Return the last answers by the given team"""
+#         return list(map(lambda x: x['team_id'] == team_id, self.cached_answers))[:5]
+
+#     async def register_answer(self, team_id: str, matched: str | None):
+#         """Registers the answers"""
+#         self.cached_answers.append({'team_id': team_id, 'matched': matched})
+
+#     async def update_timeline(self):
+#         """The timeline allows us to track the progression for
+#         correct and incorrect answers globally for all teams"""
+#         if self.is_started:
+#             matched = self.last_score['matched']
+#             value = self.timeline[-1]
+
+#             if matched == 'Title' or matched == 'Artist':
+#                 value += 1
+#                 self.timeline.append(value)
+#             elif matched is None:
+#                 value -= 1
+#                 self.timeline.append(value)
