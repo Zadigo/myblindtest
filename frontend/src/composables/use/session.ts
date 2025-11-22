@@ -49,7 +49,7 @@ export const useSession = createGlobalState(() => {
   if (!isDefined(sessionId)) create()
 
   const docRef = doc(fireStore, 'blindtests', sessionId.value)
-  const currentSettings = useDocument<CacheSession>(docRef, { once: true })
+  const currentSettings = useDocument<CacheSession>(docRef)
 
   // Watch for changes and update the Firestore document
   watchDebounced(currentSettings, async (newValue) => {

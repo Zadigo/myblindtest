@@ -2,34 +2,13 @@
   <section id="blindtest">
     <players-layout>
       <template #video>
-        <video-block />
+        <individual-video-block />
       </template>
 
       <template #default>
         <div id="players" class="col-span-12 bg-linear-to-r from-primary-100 via-primary-200 to-primary-300 p-5 overflow-hidden border-primary-100 border-10">
           <div class="grid grid-cols-10 overflow-y-scroll gap-2 space-y-3 w-full">
-            <volt-card v-for="(player, idx) in players" :key="idx">
-              <template #content>
-                <div class="text-center">
-                  <div class="h-20 w-20 overflow-hidden rounded-full mb-2">
-                    <img src="/profile.png" class="aspect-square object-cover" alt="Player Profile">
-                  </div>
-
-                  <h5 class="font-bold mb-4">
-                    {{ player }}
-                  </h5>
-
-                  <div class="space-x-2">
-                    <volt-button>
-                      <vue-icon name="i-lucide:x" />
-                    </volt-button>
-                    <volt-button>
-                      <vue-icon name="i-lucide:check" />
-                    </volt-button>
-                  </div>
-                </div>
-              </template>
-            </volt-card>
+            <player-card v-for="(player, idx) in players" :key="idx" :player-id="player"  />
           </div>
         </div>
       </template>

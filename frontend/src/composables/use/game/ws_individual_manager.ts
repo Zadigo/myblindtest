@@ -1,14 +1,20 @@
-import type { CacheSession, IndividualBlindTestPlayer } from '@/types'
+import type { CacheSession, IndividualBlindTestPlayer, Song } from '@/types'
 import { doc, updateDoc } from 'firebase/firestore'
 import { useToast } from 'primevue/usetoast'
 import { useDocument, useFirestore } from 'vuefire'
 
 
-export type SendIndividualBlindTestMessage = { action: 'test' }
+export type SendIndividualBlindTestMessage = { action: 'start_game' } 
+  | { action: 'skip_song' }
+  | { action: 'submit_guess', team_or_player_id: string, title_match: boolean, artist_match: boolean }
 
 export type ReceiveIndividualBlindTestMessage = { action: 'device_accepted', players: Record<string, IndividualBlindTestPlayer> }
   | { action: 'device_disconnected', players: Record<string, IndividualBlindTestPlayer> }
   | { action: 'idle_connect', session_id: string, player: IndividualBlindTestPlayer }
+  | { action: 'game_started' }
+  | { action: 'song_new', song: Song }
+  | { action: 'guess_correct', player_id: string, points: number, song: Song }
+  | { action: 'guess_incorrect', player_id: string, points: number, song: Song }
 
 
 /**
@@ -31,6 +37,9 @@ export const useGameWebsocketIndividual = createSharedComposable(() => {
   const docRef = doc(fireStore, 'blindtests', sessionId.value)
   const gameStarted = ref(false)
 
+  const songStore = useSongs()
+  const { songsPlayed } = storeToRefs(songStore)
+
   const wsObject = useWebSocket(`ws://127.0.0.1:8000/ws/songs/${sessionId.value}/single-player`, {
     immediate: false,
     onMessage: async (_ws, event: MessageEvent) => {
@@ -45,6 +54,10 @@ export const useGameWebsocketIndividual = createSharedComposable(() => {
         if (message.action === 'device_disconnected') {
           await updateDoc(docRef, { players: message.players })
           toast.add({ severity: 'warn', summary: 'Device disconnected', detail: `Player has disconnected.`, life: 3000 })
+        }
+
+        if (message.action === 'song_new') {
+          if(message.song) songsPlayed.value.push(message.song)
         }
       }
     },
@@ -64,23 +77,14 @@ export const useGameWebsocketIndividual = createSharedComposable(() => {
    * Players
    */
   const players = computed(() => Object.keys(blindTestDoc.value?.players || []))
-
-  /**
-   * Actions
-   */
-
-  function startGame() {}
-
-  function stopGame() {}
+  
 
   return {
     gameStarted,
     wsObject,
     isConnected,
     blindTestDoc,
-    players,
-    startGame,
-    stopGame
+    players
   }
 })
 
@@ -110,8 +114,25 @@ export const useGameWebsocketIndividualPlayer = createSharedComposable(() => {
     onMessage: async (_ws, event: MessageEvent) => {
       const message = parse(event.data)
 
-      if (message?.action === 'idle_connect') {
+      if (!isDefined(message)) return
+
+      if (message.action === 'idle_connect') {
         playerId.value = message.player.name
+      }
+
+      if (message.action === 'game_started') {
+        toast.add({ severity: 'info', summary: 'Game started', detail: 'The game has started!', life: 10000 })
+      }
+
+      if (message.action === 'guess_correct') {
+        if (message.player_id === playerId.value) {
+          const docRef = doc(fireStore, 'blindtests', route.params.id as string)
+          await updateDoc(docRef, { [`players.${playerId.value}.points`]: message.points })
+        }
+      }
+
+      if (message.action === 'guess_incorrect') {
+        // Do something on incorrect guess if needed
       }
     }
   })
@@ -133,3 +154,91 @@ export const useGameWebsocketIndividualPlayer = createSharedComposable(() => {
     player
   }
 })
+
+/**
+ * Composable used to send game actions over websocket such as
+ * starting/stopping the game, skipping songs, etc. -; this wraps
+ * any websocket object and provides easy to use functions over it
+ * @param wsObject The websocket object
+ */
+export function useGameActions (wsObject: ReturnType<typeof useWebSocket>, gameStarted: Ref<boolean>) {
+  const { stringify } = useWebsocketMessage<SendIndividualBlindTestMessage, ReceiveIndividualBlindTestMessage>()
+
+  function startGame() {
+    const { stringify } = useWebsocketMessage()
+    const result = stringify({ action: 'start_game' })
+
+    wsObject.send(result)
+    gameStarted.value = true
+  }
+
+  function stopGame(callback?: () => void) {
+    gameStarted.value = false
+    wsObject.close()
+    callback?.()
+  }
+
+  const songStore = useSongs()
+
+  function sendIncorrectAnswer() {
+    const result = stringify({ action: 'skip_song' })
+
+    if (result) {
+      wsObject.send(result)
+      songStore.incrementStep()
+    }
+  }
+
+  const songsStore = useSongs()
+  const { currentSong, correctAnswers, answers } = storeToRefs(songsStore)
+
+  function sendCorrectAnswer(id: string, match: MatchedPart) {
+    let title_match = true
+    let artist_match = true
+
+    if (match === 'Title') {
+      title_match = true
+      artist_match = false
+    }
+
+    if (match === 'Artist') {
+      title_match = false
+      artist_match = true
+    }
+
+    const result = stringify({
+      action: 'submit_guess',
+      team_or_player_id: id,
+      title_match,
+      artist_match
+    })
+
+    // console.log('handleCorrectAnswer', result)
+
+    if (result) {
+      wsObject.send(result)
+
+      if (isDefined(currentSong)) {
+        correctAnswers.value.push({
+          teamId: id,
+          song: currentSong.value
+        })
+
+        answers.value.push({
+          teamId: id,
+          matched: match,
+          song: currentSong.value
+        })
+      }
+
+      songStore.incrementStep()
+    }
+  }
+
+  return {
+    startGame,
+    stopGame,
+    sendCorrectAnswer,
+    sendIncorrectAnswer
+  }
+}

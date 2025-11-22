@@ -11,19 +11,10 @@
       </div>
     </div>
 
-    <slot>
-      <!-- Teams -->
-      <div class="col-span-6 bg-linear-to-r from-primary-100 via-primary-200 to-primary-300 p-5 overflow-hidden border-primary-100 border-10">
-        <slot name="leftTeam" />
-      </div>
-  
-      <div class="col-span-6 bg-linear-to-l from-primary-100 via-primary-200 to-primary-300 p-5 overflow-hidden border-primary-100 border-10">
-        <slot name="rightTeam" />
-      </div>
-    </slot>
+    <slot />
 
     <!-- Dock -->
-    <action-dock />
+    <individual-action-dock />
 
     <!-- Modals -->
     <devices-modal v-model="showDevices" />
@@ -32,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import type { RandomizerData } from '@/components/blindtest/randomizer'
+import { wheelDefaults } from '@/composables'
 
 /**
  * Background artist image
@@ -65,18 +56,6 @@ provide<boolean>('gameStarted', gameStarted.value)
 
 // const randomizeEl = useTemplateRef('randomizerEl')
 const { showWheel, randomizerEl, randomizerComplete } = useWheelRandomizer(wsObject)
-
-const wheelDefaults: RandomizerData[] = [
-  { id: 1, value: 'Pop', bgColor: '#f87171', color: '#ffffff' },
-  { id: 2, value: 'Rock', bgColor: '#60a5fa', color: '#ffffff' },
-  { id: 3, value: 'Hip-Hop', bgColor: '#34d399', color: '#ffffff' },
-  { id: 4, value: 'Jazz', bgColor: '#fbbf24', color: '#ffffff' },
-  { id: 5, value: 'Classical', bgColor: '#a78bfa', color: '#ffffff' },
-  { id: 6, value: 'Electronic', bgColor: '#f472b6', color: '#ffffff' },
-  { id: 7, value: 'Metal', bgColor: '#9ca3af', color: '#ffffff' },
-  { id: 8, value: 'Funk', bgColor: '#10b981', color: '#ffffff' },
-  { id: 9, value: 'Reggae', bgColor: '#22d3ee', color: '#ffffff' }
-]
 
 /**
  * Modals

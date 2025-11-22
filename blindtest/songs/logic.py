@@ -91,6 +91,11 @@ class BaseGameLogicMixin:
             raise
 
     async def next_song(self, temporary_genre: str = None):
+        """Returns a song using IDs present in the datbase.
+
+        Or, returns a song within the genre that is passed within
+        this function. If the queryset is empty, return a selection
+        of all the songs"""
         raise NotImplementedError
 
     async def calculate_points(self, title_match: bool, artist_match: bool):
@@ -324,7 +329,9 @@ class IndividualLogicMixin(BaseGameLogicMixin):
         self.played_songs: set[int] = set()
         self.fuzzy_matcher = FuzzyMatcher()
 
-        self.device_id = f'player_{get_random_string(length=12)}'
+        self.device_name = 'admin_individual'
+        self.device_id = 'admin_individual'
+        
         self.connection_token = None
         # Pin code for the game
         self.pin_code = random.randint(1000, 9999)
@@ -338,7 +345,7 @@ class IndividualLogicMixin(BaseGameLogicMixin):
 
     async def handle_guess(self, player_id: str, title_match, artist_match):
         if not self.current_song:
-            return
+            return None
 
         message = {
             'action': None,
@@ -361,14 +368,50 @@ class IndividualLogicMixin(BaseGameLogicMixin):
         message['song'] = self.current_song
 
         print('handle_guess', message)
+        return message
 
-        group_message = self.base_room_message(
-            **{
-                'type': 'game.updates',
-                'message': message
-            }
+        # group_message = self.base_room_message(
+        #     **{
+        #         'type': 'game.updates',
+        #         'message': message
+        #     }
+        # )
+        # await self.channel_layer.group_send(self.indexed_diffusion_group_name, group_message)
+
+        # await self.send_json(message)
+        # await self.next_song()
+
+    async def next_song(self, temporary_genre: str = None):
+        song_ids = await self.get_songs(
+            temporary_genre=temporary_genre,
+            exclude=list(self.played_songs)
         )
-        await self.channel_layer.group_send(self.indexed_diffusion_group_name, group_message)
 
-        await self.send_json(message)
-        await self.next_song()
+        if not song_ids:
+            await self.send_json({
+                'action': 'game_complete',
+                'message': 'No songs left',
+                'final_scores': self.players,
+                'songs_played': len(self.played_songs)
+            })
+            self.is_started = False
+            return
+
+        random_id = random.choice(song_ids)
+        self.current_song = await self.get_song(random_id)
+        self.played_songs.add(random_id)
+
+        await self.send_json({'action': 'song_new', 'song': self.current_song})
+
+        self.current_round += 1
+
+        if self.number_of_rounds is not None:
+            if self.current_round > self.number_of_rounds:
+                await self.send_json({
+                    'action': 'game_complete',
+                    'message': 'Final round complete',
+                    'final_scores': self.players,
+                    'songs_played': len(self.played_songs)
+                })
+                self.is_started = False
+                return

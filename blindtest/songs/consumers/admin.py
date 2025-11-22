@@ -18,6 +18,9 @@ class ChannelEventsMixin:
     waiting_room_name: str = 'blind_test_waiting_room'
     session_id: str = ''
 
+    device_name: str = 'unknown_device'
+    device_id: str = f'unknown_device_id'
+
     @property
     def indexed_diffusion_group_name(self):
         """Returns the base diffusion group name with
@@ -62,6 +65,12 @@ class ChannelEventsMixin:
     async def disconnect_device(self, content: dict[str, str | int]):
         """Channels handler for disconnecting a device from the game"""
 
+    async def game_started(self, content: dict[str, str | int]):
+        """Channels handler for indicating that the game has started"""
+
+    async def game_updates(self, content: dict[str, str | int]):
+        """Channels handler for connected devices to receive updates on
+        the current game: scores, correct answer, song skipped etc"""
 
     # Old handlers kept for reference
 
@@ -86,17 +95,10 @@ class ChannelEventsMixin:
         """Channels handler to indicate to devices that game has either
         disconnected or simply over"""
 
-    async def game_updates(self, content: dict[str, str | int]):
-        """Channels handler for connected devices to receive updates on
-        the current game: scores, correct answer, song skipped etc"""
 
     async def check_pin_code(self, content: dict[str, str | int]):
         """Channels handler for authenticating a pin code to
         a blind test game"""
-
-
-    async def game_started(self, content: dict[str, str | int]):
-        """Channels handler for indicating that the game has started"""
 
 
 class TeamBlindTestConsumer(TeamGameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsumer):
@@ -333,7 +335,7 @@ class IndividualBlindTestConsumer(IndividualLogicMixin, ChannelEventsMixin, Asyn
 
             self.is_started = True
 
-            self.channel_layer.group_send(
+            await self.channel_layer.group_send(
                 self.indexed_diffusion_group_name,
                 self.base_room_message(**{'type': 'game.started'})
             )
@@ -341,11 +343,55 @@ class IndividualBlindTestConsumer(IndividualLogicMixin, ChannelEventsMixin, Asyn
             await self.send_json({'action': 'game_started'})
             await self.next_song()
         elif action == 'submit_guess':
-            pass
+            if not self.is_started:
+                await self.send_error("Game not started")
+                return
+
+            player_id = content.get('team_or_player_id', None)
+            if player_id is None:
+                await self.send_error('No team was provided')
+                return
+            
+            title_match = content.get('title_match', False)
+            artist_match = content.get('artist_match', False)
+
+            message = await self.handle_guess(player_id, title_match, artist_match)
+            group_message = self.base_room_message(
+                **{
+                    'type': 'game.updates',
+                    'message': message
+                }
+            )
+            await self.channel_layer.group_send(self.indexed_diffusion_group_name, group_message)
+
+            await self.send_json(message)
+            await self.next_song()
         elif action == 'skip_song':
-            pass
+            if self.is_started and self.current_song:
+                message = {'action': 'song_skipped', 'song': self.current_song}
+                await self.send_json(message)
+
+                group_message = self.base_room_message(
+                    **{
+                        'type': 'game.updates',
+                        'message': message
+                    }
+                )
+                await self.channel_layer.group_send(self.indexed_diffusion_group_name, group_message)
+                await self.next_song()
+            else:
+                await self.send_error('Game not started or no current song')
         elif action == 'randomize_genre':
-            pass
+            if not self.is_started:
+                await self.send_error("Cannot randomize. Game not started")
+                return
+
+            temporary_genre = content.get('temporary_genre', None)
+            if temporary_genre is None:
+                await self.send_error('No temporary genre was provided')
+                return
+            
+            await self.next_song(temporary_genre=temporary_genre)
         else:
             await self.send_error('Invalid action')
 
@@ -355,7 +401,7 @@ class IndividualBlindTestConsumer(IndividualLogicMixin, ChannelEventsMixin, Asyn
 
     async def disconnect_device(self, content: dict[str, str | int]):
         device_id = content['device_id']
-        
+
         if device_id in self._players:
             del self._players[device_id]
         await self.send_json({'action': 'device_disconnected', 'players': self.players})

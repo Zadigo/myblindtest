@@ -1,0 +1,68 @@
+<template>
+  <div ref="dock" id="dock" class="col-span-12 bg-primary-100/30 border border-primary-100/80 h-auto min-w-100 w-150 absolute bottom-10 left-[calc(50%-calc(600px/2))] px-2 py-3 rounded-xl flex justify-center gap-2 z-40 overflow-hidden">
+    <volt-button v-for="item in items" :key="item.icon" @click="item.action">
+      <vue-icon :icon="item.icon" class="text-xl" />
+    </volt-button>
+
+    <sound-effect id="sound-wrong-answer" name="cinematic-hit">
+      <template #default="{ attrs }">
+        <volt-secondary-button @click="attrs.playSound(sendIncorrectAnswer)">
+          <vue-icon icon="lucide:x-square" class="text-xl" />
+          Wrong answer
+        </volt-secondary-button>
+      </template>
+    </sound-effect>
+
+    {{ gameStarted }}
+  </div>
+</template>
+
+<script setup lang="ts">
+import { useToast } from 'primevue/usetoast'
+
+const toast = useToast()
+
+/**
+ * Ranadomizer
+ */
+
+const { showWheel } = useWheelRandomizer()
+
+/**
+ * Websocket
+ */
+
+const { wsObject, gameStarted } = useGameWebsocketIndividual()
+const { startGame, stopGame, sendIncorrectAnswer } = useGameActions(wsObject, gameStarted)
+
+const songsStore = useSongs()
+const { correctAnswers } = storeToRefs(songsStore)
+
+// Callback function executed after stopping the game
+// to reset scores and correct answers
+function stopGameCallback() {
+  correctAnswers.value = []
+
+  songsStore.songsPlayed = []
+  songsStore.resetStep()
+  toast.add({ severity: 'info', summary: 'Game Stopped', detail: 'The game has been successfully stopped and reset.', life: 8000 })
+}
+
+const items = [
+  {
+    name: 'Play',
+    icon: 'lucide:play',
+    action: startGame
+  },
+  {
+    name: 'Stop',
+    icon: 'lucide:circle-stop',
+    action: () => stopGame(stopGameCallback)
+  },
+  {
+    name: 'Randomizer',
+    icon: 'lucide:zap',
+    action: () => { showWheel.value = !showWheel.value }
+  }
+]
+</script>

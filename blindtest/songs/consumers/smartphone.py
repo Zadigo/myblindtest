@@ -44,7 +44,8 @@ class IndividualPlayerSmartphoneConsumer(ChannelEventsMixin, AsyncJsonWebsocketC
             'player': dataclasses.asdict(self.player)
         })
 
-        group_message = self.base_room_message(type='accept.device', player=dataclasses.asdict(self.player))
+        group_message = self.base_room_message(
+            type='accept.device', player=dataclasses.asdict(self.player))
         await self.channel_layer.group_send(self.indexed_waiting_room_name, group_message)
 
     async def disconnect(self, code: int) -> None:
@@ -62,8 +63,8 @@ class IndividualPlayerSmartphoneConsumer(ChannelEventsMixin, AsyncJsonWebsocketC
             await self.send_error('No action was provided')
             return
 
-        if action == 'start_game':
-            pass
-
     async def game_started(self, content):
-        print('Group message - Game started', content)
+        await self.send_json({'action': 'game_started'})
+
+    async def game_updates(self, content):
+        await self.send_json(content['message'])

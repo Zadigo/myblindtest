@@ -43,7 +43,7 @@ export interface CacheSession {
  * The team's anwswer given the current song
  */
 export interface Answer {
-  teamId: string
+  teamId: string // Rename to teamOrPlayerId
   matched?: MatchedPart
   song: Song
 }
