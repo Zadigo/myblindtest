@@ -11,14 +11,16 @@
       </div>
     </div>
 
-    <!-- Teams -->
-    <div class="col-span-6 bg-linear-to-r from-primary-100 via-primary-200 to-primary-300 p-5 overflow-hidden border-primary-100 border-10">
-      <slot name="leftTeam" />
-    </div>
-
-    <div class="col-span-6 bg-linear-to-l from-primary-100 via-primary-200 to-primary-300 p-5 overflow-hidden border-primary-100 border-10">
-      <slot name="rightTeam" />
-    </div>
+    <slot>
+      <!-- Teams -->
+      <div class="col-span-6 bg-linear-to-r from-primary-100 via-primary-200 to-primary-300 p-5 overflow-hidden border-primary-100 border-10">
+        <slot name="leftTeam" />
+      </div>
+  
+      <div class="col-span-6 bg-linear-to-l from-primary-100 via-primary-200 to-primary-300 p-5 overflow-hidden border-primary-100 border-10">
+        <slot name="rightTeam" />
+      </div>
+    </slot>
 
     <!-- Dock -->
     <action-dock />

@@ -92,8 +92,6 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
         self.difficulty_bonus = False
         self.time_bonus = False
 
-        # team_one_id = f'team_{get_random_string(length=12)}'
-        # team_two_id = f'team_{get_random_string(length=12)}'
         self.team_one = Team('fake_id_1')
         self.team_two = Team('fake_id_2')
 
@@ -304,12 +302,6 @@ class GameLogicMixin(GameGlobalStatisticsMixin):
         #     await self.send_json({
         #         'action': 'guess.incorrect'
         #     })
-
-    # TODO: This code is mostly for solo mode or if the
-        # admin of the blind test also participates in the
-    # def fuzzy_match(self, guess, target):
-    #     """Simple fuzzy matching - can be improved with more sophisticated algorithms"""
-    #     return guess in target.lower()
 
     async def handle_guess(self, team_id: str, title_match: bool, artist_match: bool):
         """Handles player's song guess"""
