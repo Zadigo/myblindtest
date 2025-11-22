@@ -1,20 +1,8 @@
 <template>
-  <volt-card>
+  <volt-card ref="cardEl" class="h-40" @mouseenter="() => toggleIsHovered(true)" @mouseleave="() => toggleIsHovered(false)">
     <template #content>
       <div v-if="player" class="text-center flex-row justify-center items-center w-full">
-        <!-- <div class="h-20 w-20 overflow-hidden rounded-full mb-2">
-          <img src="/profile.png" class="aspect-square object-cover" alt="Player Profile">
-        </div> -->
-
-        <h2 class="font-bold text-5xl text-primary-100">
-          {{ player.points }}
-        </h2>
-
-        <h5 class="font-bold mb-4 overflow-hidden text-ellipsis whitespace-nowrap text-primary-100">
-          {{ player.name }}
-        </h5>
-
-        <div class="space-y-2">
+        <div v-if="isHovered" class="space-y-2">
           <volt-button class="w-full" size="small" @click="() => sendCorrectAnswer(playerId, 'Artist')">
             <vue-icon icon="i-lucide:type" />
             Artist
@@ -30,6 +18,17 @@
             Both
           </volt-button>
         </div>
+
+        <div v-else>
+          <h2 class="font-bold text-5xl text-primary-100 rounded-xl p-2 dark:bg-primary-800 mb-4">
+            {{ player.points }}
+          </h2>
+
+          <h5 class="font-bold mb-4 overflow-hidden text-ellipsis whitespace-nowrap text-primary-100">
+            {{ player.name }}
+          </h5>
+
+        </div>
       </div>
     </template>
   </volt-card>
@@ -37,6 +36,10 @@
 
 <script setup lang="ts">
 const props = defineProps<{ playerId: string }>()
+
+const  cardEl = useTemplateRef('cardEl')
+
+const [isHovered, toggleIsHovered] = useToggle(false)
 
 /**
  * Player
