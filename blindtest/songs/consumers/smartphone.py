@@ -68,3 +68,6 @@ class IndividualPlayerSmartphoneConsumer(ChannelEventsMixin, AsyncJsonWebsocketC
 
     async def game_updates(self, content):
         await self.send_json(content['message'])
+
+    async def game_disconnected(self, content):
+        await self.send_json({'action': 'game_disconnected'})

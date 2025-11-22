@@ -4,7 +4,8 @@ import { useToast } from 'primevue/usetoast'
 import { useDocument, useFirestore } from 'vuefire'
 
 
-export type SendIndividualBlindTestMessage = { action: 'start_game' } 
+export type SendIndividualBlindTestMessage = { action: 'start_game' }
+  | { action: 'stop_game' }
   | { action: 'skip_song' }
   | { action: 'submit_guess', team_or_player_id: string, title_match: boolean, artist_match: boolean }
 
@@ -15,6 +16,7 @@ export type ReceiveIndividualBlindTestMessage = { action: 'device_accepted', pla
   | { action: 'song_new', song: Song }
   | { action: 'guess_correct', player_id: string, points: number, song: Song }
   | { action: 'guess_incorrect', player_id: string, points: number, song: Song }
+  | { action: 'game_disconnected' }
 
 
 /**
@@ -134,6 +136,10 @@ export const useGameWebsocketIndividualPlayer = createSharedComposable(() => {
       if (message.action === 'guess_incorrect') {
         // Do something on incorrect guess if needed
       }
+
+      if (message.action === 'game_disconnected') {
+        toast.add({ severity: 'warn', summary: 'Game disconnected', detail: 'The game has ended or the host has disconnected.', life: 10000 })
+      }
     }
   })
 
@@ -174,6 +180,7 @@ export function useGameActions (wsObject: ReturnType<typeof useWebSocket>, gameS
 
   function stopGame(callback?: () => void) {
     gameStarted.value = false
+    wsObject.send(stringify({ action: 'stop_game' }))
     wsObject.close()
     callback?.()
   }

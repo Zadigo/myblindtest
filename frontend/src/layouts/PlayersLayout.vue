@@ -1,7 +1,7 @@
 <template>
   <section id="blindtest" class="grid grid-cols-12 h-screen relative">
     <!-- Action Bar -->
-    <action-bar />
+    <individual-action-bar />
 
     <!-- Video -->
     <div class="artist col-span-12 min-h-100 bg-primary-500 dark:bg-primary-900 p-20 relative">

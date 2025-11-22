@@ -72,6 +72,10 @@ class ChannelEventsMixin:
         """Channels handler for connected devices to receive updates on
         the current game: scores, correct answer, song skipped etc"""
 
+    async def game_disconnected(self, content: dict[str, str | int]):
+        """Channels handler to indicate to devices that game has either
+        disconnected or simply over"""
+
     # Old handlers kept for reference
 
     async def device_connected(self, content: dict[str, str | int]):
@@ -90,11 +94,6 @@ class ChannelEventsMixin:
         """Channels handler for devices that are pending
         in the wait room. These devices have to send a confirmation
         code (pin code) for the correct blind test room to accept them"""
-
-    async def game_disconnected(self, content: dict[str, str | int]):
-        """Channels handler to indicate to devices that game has either
-        disconnected or simply over"""
-
 
     async def check_pin_code(self, content: dict[str, str | int]):
         """Channels handler for authenticating a pin code to
@@ -331,6 +330,10 @@ class IndividualBlindTestConsumer(IndividualLogicMixin, ChannelEventsMixin, Asyn
             return
 
         if action == 'start_game':
+            if self.is_started:
+                await self.send_error("Game already started")    
+                return
+            
             self.played_songs.clear()
 
             self.is_started = True
@@ -342,6 +345,17 @@ class IndividualBlindTestConsumer(IndividualLogicMixin, ChannelEventsMixin, Asyn
 
             await self.send_json({'action': 'game_started'})
             await self.next_song()
+        elif action == 'stop_game':
+            if not self.is_started:
+                await self.send_error("Game not started")    
+                return
+
+            self.is_started = False
+
+            await self.channel_layer.group_send(
+                self.indexed_diffusion_group_name,
+                self.base_room_message(**{'type': 'game.stopped'})
+            )
         elif action == 'submit_guess':
             if not self.is_started:
                 await self.send_error("Game not started")

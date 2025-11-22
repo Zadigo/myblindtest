@@ -331,7 +331,7 @@ class IndividualLogicMixin(BaseGameLogicMixin):
 
         self.device_name = 'admin_individual'
         self.device_id = 'admin_individual'
-        
+
         self.connection_token = None
         # Pin code for the game
         self.pin_code = random.randint(1000, 9999)
@@ -369,17 +369,6 @@ class IndividualLogicMixin(BaseGameLogicMixin):
 
         print('handle_guess', message)
         return message
-
-        # group_message = self.base_room_message(
-        #     **{
-        #         'type': 'game.updates',
-        #         'message': message
-        #     }
-        # )
-        # await self.channel_layer.group_send(self.indexed_diffusion_group_name, group_message)
-
-        # await self.send_json(message)
-        # await self.next_song()
 
     async def next_song(self, temporary_genre: str = None):
         song_ids = await self.get_songs(
