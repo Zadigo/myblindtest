@@ -28,7 +28,7 @@ class IndividualPlayerSmartphoneConsumer(ChannelEventsMixin, AsyncJsonWebsocketC
         super().__init__(*args, **kwargs)
 
         self.device_name = 'player_smartphone'
-        self.device_id = f'player_{get_random_string(length=20)}'
+        self.device_id = f'player_{get_random_string(length=10)}'
         self.player.name = self.device_id
 
     async def connect(self) -> None:
