@@ -1,25 +1,27 @@
 <template>
-  <div class="h-screen w-full bg-linear-to-b from-primary-100 via-primary-200 to-primary-300 flex items-center justify-center">
+  <div class="h-screen w-full bg-linear-to-b from-primary-200 via-primary-300 to-primary-500 flex items-center justify-center">
     <volt-container size="sm">
-      <!-- <base-game-loader class="my-5" /> -->
-    
-      <volt-card>
+      {{ currentSettings?.players }}
+      <volt-card v-if="player">
         <template #content>
-          <div v-if="player" class="p-5 text-center">
-            <h1 class="text-8xl font-bold">
+          <div  class="p-5 text-center">
+            <h1 class="text-8xl font-bold text-primary-100">
               {{ player.points }}
             </h1>
 
-            <p class="font-light">
+            <p class="font-light text-primary-100">
               Points
             </p>
 
-            <p class="mt-5 bg-primary-50 p-5 rounded-lg text-lg">
+
+            <p class="mt-5 bg-primary-50 dark:bg-primary-800 p-5 rounded-lg text-lg">
               {{ player.name }}
             </p>
           </div>
         </template>
       </volt-card>
+
+      <base-game-loader v-else class="my-5" />    
     </volt-container>
   </div>
 </template>
@@ -33,6 +35,12 @@ const { wsObject, player } = useGameWebsocketIndividualPlayer()
 wsObject.open()
 
 /**
- * Player
+ * Ranking
  */
+
+const { currentSettings } = useSession()
+
+ onMounted(() => {
+   console.log(currentSettings.value)
+ })
 </script>

@@ -38,8 +38,7 @@
 const props = defineProps<{ playerId: string }>()
 
 const  cardEl = useTemplateRef('cardEl')
-
-const [isHovered, toggleIsHovered] = useToggle(false)
+const isHovered = useElementHover(cardEl)
 
 /**
  * Player

@@ -151,12 +151,19 @@ export const useGameWebsocketIndividualPlayer = createSharedComposable(() => {
 
   const docRef = doc(fireStore, 'blindtests', route.params.id as string)
   const blindTestDoc = useDocument<CacheSession>(docRef)
-  const player = computed(() => blindTestDoc.value?.players[playerId.value])
+
+  const players = computed(() => blindTestDoc.value?.players)
+  const player = computed(() => isDefined(players) ? players.value[playerId.value] : undefined)
+
+  console.log('player', player.value)
+  console.log('players', players.value)
+  console.log('playerId', playerId.value)
 
   return {
     wsObject,
     isConnected,
     blindTestDoc,
+    players,
     player
   }
 })

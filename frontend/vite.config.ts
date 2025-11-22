@@ -13,6 +13,9 @@ import globalAutoImport from 'unplugin-auto-import/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  server: {
+    allowedHosts: ['.ngrok-free.app']
+  },
   plugins: [
     vue(),
     tailwind(),

@@ -1,5 +1,5 @@
 <template>
-  <section class="w-5xl mx-auto my-20 relative">
+  <section class="w-full md:w-5xl mx-auto my-20 relative">
     <volt-card class="mt-10 mb-5 shadow-none">
       <template #content>
         <div class="flex justify-end gap-2">
@@ -18,7 +18,7 @@
       </template>
     </volt-card>
 
-    <div class="grid grid-cols-2 gap-2">
+    <div class="grid grid-rows-2 md:grid-cols-2 gap-2">
       <general-settings />
       <point-values />
       <game-modes />
