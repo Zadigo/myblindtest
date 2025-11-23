@@ -314,7 +314,7 @@ class IndividualBlindTestConsumer(IndividualLogicMixin, ChannelEventsMixin, Asyn
         await self.send_json({
             'action': 'idle_response',
             'code': self.pin_code,
-            'connection_url': f'http://localhost:3000/{self.session_id}/single-player'
+            'connection_url': f'/{self.session_id}/single-player'
         })
 
     async def disconnect(self, code):

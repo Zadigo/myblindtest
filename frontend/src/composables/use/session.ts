@@ -30,6 +30,13 @@ export const useSession = createGlobalState(() => {
   const fireStore = useFirestore()
   const sessionId = useSessionStorage<string>('blindtestId', null)
 
+  const route = useRoute()
+
+  // If there is an ID in the route, use that as session ID
+  if (route.params.id && typeof route.params.id === 'string') {
+    sessionId.value = route.params.id
+  }
+
   /**
    * Initialize session
    */

@@ -9,7 +9,7 @@
           </volt-secondary-button>
 
           <volt-secondary-button rounded class="rounded-full">
-            <router-link :to="{ name: 'individual_blind_test' }" class="inline-flex gap-2 items-center">
+            <router-link :to="{ name: 'individual_blind_test', params: { id: sessionId } }" class="inline-flex gap-2 items-center">
               Start with players
               <vue-icon icon="fa7-solid:arrow-right" />
             </router-link>
@@ -37,7 +37,7 @@
 /**
  * Initiate session
  */
-const { reset, hasExistingSession } = useSessionManager()
+const { reset, hasExistingSession, sessionId } = useSessionManager()
 
 /**
  * SEO

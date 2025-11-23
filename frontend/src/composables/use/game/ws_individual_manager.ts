@@ -103,7 +103,9 @@ export const useGameWebsocketIndividualPlayer = createSharedComposable(() => {
   const fireStore = useFirestore()
   const { parse } = useWebsocketMessage<SendIndividualBlindTestMessage, ReceiveIndividualBlindTestMessage>()
 
+  const query = useUrlSearchParams('history')
   const playerId = useLocalStorage<string>('playerId', '')
+  query.player = playerId.value
 
   const wsObject = useWebSocket(`ws://127.0.0.1:8000/ws/single-player/${route.params.id}/connect`, {
     immediate: false,

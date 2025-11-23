@@ -18,6 +18,7 @@
 
     <!-- Modals -->
     <devices-modal v-model="showDevices" />
+    <connection-url v-model:show="showConnectionUrl" />
     <genre-randomizer ref="randomizerEl" v-model:show="showWheel" :items="wheelDefaults" @completed="randomizerComplete" />
   </section>
 </template>
@@ -45,7 +46,7 @@ watchDebounced(currentSong, (newSong) => {
  * Websocket
  */
 
-const { isConnected, gameStarted, wsObject } = useGameWebsocket()
+const { isConnected, gameStarted, wsObject } = useGameWebsocketIndividual()
 
 provide<boolean>('isConnected', isConnected.value)
 provide<boolean>('gameStarted', gameStarted.value)
@@ -62,4 +63,5 @@ const { showWheel, randomizerEl, randomizerComplete } = useWheelRandomizer(wsObj
  */
 
 const showDevices = ref(false)
+const showConnectionUrl = ref(false)
 </script>
