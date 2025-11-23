@@ -9,8 +9,6 @@
 
     <!-- Image -->
     <div class="absolute top-35 left-1/2 transform -translate-x-1/2 w-200 h-200">
-      <!-- <img v-if="isReady" :src="correctSong?.artist.spotify_avatar" :class="imageTheme" :alt="correctSong?.artist.name">
-      <img v-else src="/default.jpg" :class="imageTheme" alt=""> -->
       <img v-if="correctSong" :src="correctSong.artist.spotify_avatar" :alt="correctSong.artist.name" :class="imageTheme" />
     </div>
 
@@ -35,14 +33,6 @@ const props = defineProps<{
   isCorrectGuess: boolean
   isIncorrectGuess: boolean
   }>()
-
-/**
- * Artist image
- */
-
-const { isLoading, state, isReady } = useImage({ src: props.correctSong?.artist.spotify_avatar || '', alt: 'Artist Image' })
-
-console.log(isLoading.value, state.value, isReady.value)
 
 /**
  * Themes
