@@ -40,10 +40,13 @@
 </template>
 
 <script setup lang="ts">
+import { useGlobalState } from '@/composables'
 import type { MenuItem } from 'primevue/menuitem'
 
 const devicesStore = useDevicesStore()
 const { showDevicesModal } = storeToRefs(devicesStore)
+
+const { toggleShowConnectionUrl } = useGlobalState()
 
 const items: MenuItem = ref([
   {
@@ -54,6 +57,10 @@ const items: MenuItem = ref([
         command() {
           showDevicesModal.value = true
         }
+      },
+      {
+        label: 'Connection url',
+        command: () => toggleShowConnectionUrl(true)
       },
       {
         label: 'About'

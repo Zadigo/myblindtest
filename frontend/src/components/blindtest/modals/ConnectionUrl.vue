@@ -1,5 +1,5 @@
 <template>
-  <volt-dialog v-model:visible="show">
+  <volt-dialog v-model:visible="showConnectionUrl" title="Join the Game">
     <img :src="qrcode" alt="QR Code" />
     <p class="mt-4 text-center">Scan this QR code to join the game on your device!</p>
     {{ url }}
@@ -7,9 +7,10 @@
 </template>
 
 <script setup lang="ts">
+import { useGlobalState } from '@/composables'
 import { useQRCode } from '@vueuse/integrations/useQRCode'
 
-const show = defineModel<boolean>('show', { default: false })
+const { showConnectionUrl } = useGlobalState()
 
 /**
  * QR Code

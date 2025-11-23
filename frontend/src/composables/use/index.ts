@@ -55,3 +55,16 @@ export const useLoadAutocompleteData = createSharedComposable((fromCache = false
     genreNames
   }
 })
+
+
+export const useGlobalState = createGlobalState(() => {
+  const [showAbout, toggleShowAbout] = useToggle(false)
+  const [showConnectionUrl, toggleShowConnectionUrl] = useToggle(false)
+  
+  return {
+    showAbout,
+    toggleShowAbout,
+    showConnectionUrl,
+    toggleShowConnectionUrl
+  }
+})
