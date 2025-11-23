@@ -4,7 +4,6 @@ import { useSound } from '@vueuse/sound'
 import { doc, updateDoc, arrayUnion } from 'firebase/firestore'
 import { useToast } from 'primevue/usetoast'
 import { useDocument, useFirestore } from 'vuefire'
-import { array } from 'zod'
 
 
 export type WsSendMessage = { action: 'start_game' }
@@ -134,9 +133,9 @@ export const useGameWebsocketIndividualPlayer = createSharedComposable(() => {
 
   const backgroundImage = refAutoReset<string>('/dancing1.jpg', 10000)
   const correctSong = refAutoReset<Song | null>(null, 10000)
-  const isCorrectGuess = refAutoReset<boolean>(true, 10000)
+  const isCorrectGuess = refAutoReset<boolean>(false, 10000)
   const isIncorrectGuess = refAutoReset<boolean>(false, 10000)
-  const showAnswer = refAutoReset<boolean>(true, 10000)
+  const showAnswer = refAutoReset<boolean>(false, 10000)
 
   /**
    * Websocket

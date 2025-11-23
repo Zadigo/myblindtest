@@ -235,7 +235,7 @@ class IndividualBlindTestConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonW
             await self.send_error('Invalid action')
 
     async def accept_device(self, content: dict[str, str | int]):
-        print("Accepting device...", content)
+        # print("Accepting device...", content)
 
         device_session_id = content['session_id']
 
@@ -270,4 +270,4 @@ class IndividualBlindTestConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonW
         if player_id in self._players:
             selected_player = self._players[player_id]
             selected_player.name = player.get('name', selected_player.id)
-            print('Updated players', self._players)
+            # print('Updated players', self._players)

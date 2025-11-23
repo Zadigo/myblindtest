@@ -42,7 +42,7 @@ class IndividualPlayerSmartphoneConsumer(ChannelEventsMixin, AsyncJsonWebsocketC
         # might not be active anymore and therefore des not have a waiting room
 
         group_message = self.base_room_message(
-            type='accept.device', 
+            type='accept.device',
             player=dataclasses.asdict(self.player),
             session_id=self.session_id
         )
@@ -62,7 +62,7 @@ class IndividualPlayerSmartphoneConsumer(ChannelEventsMixin, AsyncJsonWebsocketC
         if action is None:
             await self.send_error('No action was provided')
             return
-        
+
         if action == 'update_player':
             new_name = content.get('name')
             if new_name is not None:
@@ -81,6 +81,7 @@ class IndividualPlayerSmartphoneConsumer(ChannelEventsMixin, AsyncJsonWebsocketC
         # Forwards game updates to the smartphone
         # using an undeerlying dictionnary with
         # actions like: guess_correct, guess_incorrect...
+        print("Forwarding game update to smartphone:", content)
         await self.send_json(content['message'])
         await self.send_json({'action': 'show_answer'})
 

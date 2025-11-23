@@ -19,6 +19,18 @@
     --color-secondary-800: #4e6f56;
     --color-secondary-900: #1f2c22;
     --color-secondary-950: #000000;
+
+    --color-neutral-50: #fefefc;
+    --color-neutral-100: #fbfaee;
+    --color-neutral-200: #faf9eb;
+    --color-neutral-300: #f9f8e7;
+    --color-neutral-400: #f8f6e0;
+    --color-neutral-500: #f7f5dd;
+    --color-neutral-600: #c6c4b1;
+    --color-neutral-700: #949385;
+    --color-neutral-800: #636258;
+    --color-neutral-900: #191816;
+    --color-neutral-950: #000000;
 }
 
 /* Primary and Surface Palettes */
@@ -34,18 +46,6 @@
     --p-primary-800: #690b27;
     --p-primary-900: #3f0718;
     --p-primary-950: #150208;
-
-    --p-secondary-50: #f8f2f3;
-    --p-secondary-100: #dec0c3;
-    --p-secondary-200: #d7b3b6;
-    --p-secondary-300: #d1a7aa;
-    --p-secondary-400: #ca9a9e;
-    --p-secondary-500: #bd8186;
-    --p-secondary-600: #845a5e;
-    --p-secondary-700: #714d50;
-    --p-secondary-800: #392728;
-    --p-secondary-900: #261a1b;
-    --p-secondary-950: #130d0d;
 
     --p-surface-0: #ffffff;
     --p-surface-50: #fdeaf0;

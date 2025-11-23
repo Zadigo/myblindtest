@@ -1,13 +1,16 @@
 <template>
-  <div class="relative h-screen w-full bg-no-repeat bg-center bg-cover bg-clip-content overflow-hidden" :style="{ backgroundImage: `url(${backgroundImage})` }">
+  <div class="relative h-screen w-full overflow-hidden transition-all ease-in">
     <volt-container size="sm">
-      <div class="absolute top-4/12 left-1/2 transform -translate-x-1/2 z-50">
+      <div class="absolute top-50 left-1/2 transform -translate-x-1/2 z-50">
         <guess-state v-if="showAnswer" :is-correct-guess="isCorrectGuess" :is-incorrect-guess="isIncorrectGuess" :correct-song="correctSong" class="mt-5" />
         <main-card v-else :player="player" :is-ready="isReady" @toggle-settings-modal="toggleSettingsModal" />
       </div>
 
+      <!-- Background -->
+      <div ref="bgEl" :class="bgTheme" class="absolute top-0 left-0 w-full h-screen bg-no-repeat bg-center bg-cover bg-fixed overflow-hidden" :style="{ backgroundImage: `url(${backgroundImage})` }"></div>
+
       <!-- Overlay -->
-      <div :class="overlayTheme" class="absolute top-0 left-0 w-full h-screen opacity-90 z-1 blur-sm" />
+      <div ref="overlayEl" :class="overlayTheme" id="overlay" class="absolute top-0 left-0 w-full h-screen opacity-90 z-10" />
 
       <!-- Modals -->
       <volt-dialog v-model:visible="showSettingsModal">
@@ -45,6 +48,17 @@ wsObject.open()
  * Background
  */
 
+const bgEl = useTemplateRef<HTMLDivElement>('bgEl')
+const { x, y } = useMouse({ touch: false })
+
+watch([x, y], () => {
+  if (bgEl.value) {
+    const xPos = x.value / window.innerWidth * 10
+    const yPos = y.value / window.innerHeight * 10
+
+    bgEl.value.style.transform = `translate(-${xPos}%, -${yPos}%) scale(1.2)`
+  }
+})
 
 /**
  * Ranking
@@ -76,10 +90,18 @@ watchDebounced(playerName, async (newName) => {
 const overlayTheme = computed(() => {
   return [
     {
-      'bg-linear-to-b from-primary-200 via-primary-300 to-primary-500 dark:from-primary-400 dark:via-primary-700 dark:to-primary-800': isIncorrectGuess.value,
-      'bg-linear-to-b from-secondary-200 via-secondary-300 to-secondary-500 dark:from-secondary-400 dark:via-secondary-700 dark:to-secondary-800': isCorrectGuess.value
+      'bg-linear-to-b from-primary-200 via-primary-300 to-primary-500 dark:from-primary-400 dark:via-primary-500 dark:to-primary-800': isIncorrectGuess.value,
+      'bg-linear-to-tr from-secondary-200 via-secondary-300 to-secondary-500 dark:from-secondary-400 dark:via-secondary-700 dark:to-secondary-800': isCorrectGuess.value,
+      'bg-linear-to-t from-neutral-200 to-neutral-700 dark:from-neutral-500 dark:to-neutral-900/50': !isCorrectGuess.value && !isIncorrectGuess.value,
     }
   ]
+})
+
+const bgTheme = computed(() => {
+  return {
+    'blur-xs': isCorrectGuess.value || isIncorrectGuess.value,
+    'filter grayscale-50 brightness-50 blur-md': !isCorrectGuess.value && !isIncorrectGuess.value,
+  }
 })
 
 /**
@@ -96,3 +118,23 @@ useHead({
   ]
 })
 </script>
+
+<style scoped>
+#overlay {
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 0%;
+  }
+
+  50% {
+    background-position: 100% 100%;
+  }
+
+  100% {
+    background-position: 0% 0%;
+  }
+}
+</style>
