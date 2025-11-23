@@ -6,8 +6,7 @@ import type { CacheSession } from '@/types'
  * Generate the team IDs that will be used for
  * the current session used for the current session
  * @param data 
- * @returns 
- */
+- */
 export function createTeamIds(data: CacheSession) {
   const teamOne = data.teams[0]
   const teamTwo = data.teams[1]
@@ -36,17 +35,21 @@ export const useSession = createGlobalState(() => {
    */
 
   async function create() {
-    if (!sessionId.value) {
+    if (!isDefined(sessionId)) {
       const collectionRef = collection(fireStore, 'blindtests')
 
-      const baseDefaults = { ...defaults }
-      const data = await addDoc(collectionRef, createTeamIds(baseDefaults))
-
-      sessionId.value = data.id
+      try {
+        const baseDefaults = { ...defaults }
+        const data = await addDoc(collectionRef, createTeamIds(baseDefaults))
+        sessionId.value = data.id
+      } catch (error) {
+        console.error('Error creating blindtest session:', error)
+        return
+      }
     }
   }
 
-  if (!isDefined(sessionId)) create()
+  create()
 
   const docRef = doc(fireStore, 'blindtests', sessionId.value)
   const currentSettings = useDocument<CacheSession>(docRef)
@@ -62,7 +65,6 @@ export const useSession = createGlobalState(() => {
     debounce: 2000,
     deep: true
   })
-
 
   return {
     /**

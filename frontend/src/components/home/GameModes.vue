@@ -1,5 +1,6 @@
 <template>
-  <VoltCard class="border-0 bg-brand-shade-3/30">
+  <!-- class="border-0 bg-brand-shade-3/30" -->
+  <volt-card>
     <template #title>
       <h3 class="font-bold">
         Game modes
@@ -26,7 +27,7 @@
         <volt-skeleton height="100px" />
       </div>
     </template>
-  </VoltCard>
+  </volt-card>
 </template>
 
 <script setup lang="ts">

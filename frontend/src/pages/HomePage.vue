@@ -9,6 +9,13 @@
           </volt-secondary-button>
 
           <volt-secondary-button rounded class="rounded-full">
+            <router-link :to="{ name: 'individual_blind_test' }" class="inline-flex gap-2 items-center">
+              Start with players
+              <vue-icon icon="fa7-solid:arrow-right" />
+            </router-link>
+          </volt-secondary-button>
+
+          <volt-secondary-button rounded class="rounded-full">
             <router-link :to="{ name: 'teams' }" class="inline-flex gap-2 items-center">
               Manage teams
               <vue-icon icon="fa7-solid:arrow-right" />

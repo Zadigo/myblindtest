@@ -6,8 +6,6 @@
       </h3>
     </template>
 
-    {{ genres }}
-
     <template v-if="currentSettings" #content>
       <volt-input-number v-model="currentSettings.settings.rounds" :min="1" :max="100" class="w-full" placeholder="Number of rounds" />
 

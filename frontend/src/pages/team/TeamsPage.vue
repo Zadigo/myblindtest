@@ -28,6 +28,7 @@
         <volt-card>
           <template #content>
             <volt-input-text v-if="teamOne" v-model="teamOne.name" class="w-full" placeholder="Team name" />
+            <volt-skeleton v-else height="100px" />
           </template>
         </volt-card>
       </div>
@@ -36,6 +37,7 @@
         <volt-card>
           <template #content>
             <volt-input-text v-if="teamTwo" v-model="teamTwo.name" class="w-full" placeholder="Team name" />
+            <volt-skeleton v-else height="100px" />
           </template>
         </volt-card>
       </div>
