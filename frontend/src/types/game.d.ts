@@ -1,30 +1,19 @@
 import type { DifficultyLevels, MatchedPart, SongGenres } from '@/data/constants'
 import type { Nullable, Song } from '.'
 
-interface Player {
-  name: string
-}
-
-export interface Team {
+export type BlindtestPlayer = {
   id: string
-  name: string
-  players: Player[]
-  score: number
-  color: Nullable<string>
-}
-
-export type IndividualBlindTestPlayer = {
   name: string
   color: string
   points: number
+  team?: Nullable<string>
   correct_answers: Arrayable<number>
 }
 
 export interface CacheSession {
   songsPlayed: Song[]
   currentStep: number
-  teams: Team[]
-  players: Record<string, IndividualBlindTestPlayer>
+  players: Record<string, BlindtestPlayer>
   settings: {
     rounds: number
     timeLimit: number
@@ -36,6 +25,7 @@ export interface CacheSession {
     difficultyLevel: DifficultyLevels
     songType: SongGenres
     timeRange: number[]
+    availableTeams: string[]
   }
 }
 

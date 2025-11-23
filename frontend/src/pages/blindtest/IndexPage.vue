@@ -1,8 +1,8 @@
 <template>
   <section id="blindtest">
-    <players-layout>
+    <blind-test-layout>
       <template #video>
-        <individual-video-block />
+        <video-block />
       </template>
 
       <template #default>
@@ -12,7 +12,7 @@
           </div>
         </div>
       </template>
-    </players-layout>
+    </blind-test-layout>
 
     <!-- Modals -->
     <active-game v-model="warnActiveGameModal" @proceed="() => stopGame(stopGameCallback)" />
@@ -46,7 +46,7 @@ function stopGameCallback() {
  */
 
 useHead({
-  title: 'Individual Blindtest',
+  title: 'Blindtest',
   meta: [
     {
       name: 'description',

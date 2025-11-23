@@ -16,7 +16,7 @@ export const wheelDefaults: RandomizerData[] = [
  * Composable that triggers and runs the
  * wheel randomizer
  */
-export const useWheelRandomizer = createGlobalState((ws?: ReturnType<typeof useGameWebsocket>['wsObject'], autoClose = false) => {
+export const useWheelRandomizer = createGlobalState((ws?: ReturnType<typeof useGameWebsocketIndividual>['wsObject'], autoClose = false) => {
   const showWheel = ref<boolean>(false)
   const randomizerEl = useTemplateRef('randomizerEl')
 

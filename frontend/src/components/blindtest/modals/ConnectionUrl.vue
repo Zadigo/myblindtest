@@ -17,6 +17,6 @@ const { showConnectionUrl } = useGlobalState()
  */
 
 const { sessionId } = useSession()
-const url = ref(`${import.meta.env.VITE_SITE_URL}/${sessionId.value}/single-player`)
+const url = ref(`${import.meta.env.VITE_SITE_URL}/${sessionId.value}/player`)
 const qrcode = useQRCode(url)
 </script>

@@ -1,167 +1,268 @@
+import type { BlindtestPlayer, CacheSession, Song, Undefineable } from '@/types'
+import { promiseTimeout, set } from '@vueuse/core'
+import { useSound } from '@vueuse/sound'
+import { doc, updateDoc, arrayUnion } from 'firebase/firestore'
 import { useToast } from 'primevue/usetoast'
-import type { PrimeVueToast } from '@/types'
+import { useDocument, useFirestore } from 'vuefire'
+import { array } from 'zod'
+
+
+export type WsSendMessage = { action: 'start_game' }
+  | { action: 'stop_game' }
+  | { action: 'not_guessed' }
+  | { action: 'submit_guess', team_or_player_id: string, title_match: boolean, artist_match: boolean }
+  | { action: 'game_settings', settings: Undefineable<CacheSession['settings']> }
+  | { action: 'update_player', id: Undefineable<string>, name: string }
+
+export type WsReceiveMessage = { action: 'device_accepted', player: BlindtestPlayer, players: Record<string, BlindtestPlayer> }
+  | { action: 'device_disconnected', players: Record<string, BlindtestPlayer> }
+  | { action: 'idle_connect', player: BlindtestPlayer }
+  | { action: 'game_started' }
+  | { action: 'song_new', song: Song }
+  | { action: 'guess_correct', player_id: string, points: number, song: Song }
+  | { action: 'guess_incorrect', player_id: string, points: number, song: Song }
+  | { action: 'game_disconnected' }
+  | { action: 'error', message: string }
+  | { action: 'idle_response', code: number, connection_url: string }
+  | { action: 'show_answer' }
+
 
 /**
- * Hook called when the WebSocket is connected
- * @param ws WebSocket instance
+ * Websocket for individual game (admin)
  */
-function onConnected(ws: WebSocket, toast: PrimeVueToast) {
-  const { currentSettings, sessionId } = useSession()
-  const { stringify } = useWebsocketMessage()
+export const useGameWebsocketIndividual = createSharedComposable(() => {
+  const toast = useToast()
+  const { sessionId, currentSettings } = useSession()
+
+  /**
+   * Message
+   */
+
+  const { parse, stringify } = useWebsocketMessage()
+
+  /**
+   * Websocket
+   */
+  const fireStore = useFirestore()
+  const docRef = doc(fireStore, 'blindtests', sessionId.value)
   
-  const result = stringify({
-    action: 'idle_connect',
-    firebase_key: sessionId.value,
-    // @ts-expect-error Fireebase object
-    settings: currentSettings.value
-  })
-  
-  ws.send(result)
+  const gameStarted = ref(false)
 
-  toast.add({ severity: 'success', summary: 'Connection Established', detail: 'Waiting for players', life: 8000 })
-  
-  if (isDefined(currentSettings)) {
-  }
-}
-
-/**
- * Hook called when the WebSocket is disconnected
- * @param store Store used for managing song state
- */
-function onDisconnected(toast: PrimeVueToast) {
-  toast.add({ severity: 'warn', summary: 'Warning', detail: 'Game has been disconnected', life: 8000 })
-}
-
-/**
- * Hook called when the WebSocket encounters an error
- * @param store Store used for managing song state
- */
-function onError(toast: PrimeVueToast) {
-  toast.add({ severity: 'error', summary: 'Error', detail: 'An error has occurred', life: 8000 })
-}
-
-/**
- * Shared composable used to a connect to the Django websocket
- * in order to start, stop etc. the blindtest game
- */
-export const useGameWebsocket = createSharedComposable(() => {
   const songStore = useSongs()
   const { songsPlayed } = storeToRefs(songStore)
+  const { play } = useSound('tick.mp3')
 
-  const toast = useToast()
-  const teamsStore = useTeamsStore()
-
-  const [gameStarted, toggleGameStarted] = useToggle(false)
-
-  const wsObject = useWebSocket('ws://127.0.0.1:8000/ws/songs', {
+  const wsObject = useWebSocket(`ws://127.0.0.1:8000/ws/songs/${sessionId.value}/single-player`, {
     immediate: false,
-    onConnected: (ws) => onConnected(ws, toast),
-    onDisconnected: () => onDisconnected(toast),
-    onError: () => onError(toast),
-    onMessage(_ws, event: MessageEvent<string>) {
-      const { parse } = useWebsocketMessage()
-      const data = parse(event.data)
+    onMessage: async (_ws, event: MessageEvent) => {
+      const message = parse(event.data)
 
-      if (isDefined(data)) {
-        switch (data.action) {
-          case 'idle_response':
-            if (data.code) {
-              toast.add({ severity: 'info', summary: 'Pin code', detail: `Pin code is ${data.code}`, life: 50000 })
-            }
-            break
-
-          case 'game_started':
-            gameStarted.value = true
-            break
-            
-          case 'song_new':
-            // console.log('New song received', data.song)
-            if (data.song) songsPlayed.value.push(data.song)
-            break
-
-          case 'game_complete':
-            break
-
-          case 'guess_correct':
-            if (data.team_id && data.points) {
-              const team = teamsStore.getTeamById(ref(data.team_id))
-              
-              if (team.value) {
-                team.value.score = data.points
-              } else {
-                console.error("Team not found in 'guess_correct'")
-              }
-            }
-            break
-
-          case 'timer_tick':
-            break
-
-          case 'song_skipped':
-            break
-          
-          case 'error':
-            // console.error('WebSocket error received', data)
-            toast.add({ severity: 'error', summary: 'Error', detail: `An error has occurred: ${data.message}`, life: 8000 })
-            break
-
-          // Group actions
-
-          case 'device_accepted':
-            toast.add({ severity: 'success', summary: 'Device', detail: 'Projecton device accepted', life: 8000 })
-            break
-
-          case 'device_disconnected':
-            toast.add({ severity: 'warn', summary: 'Device', detail: 'Projecton device disconnected', life: 8000 })
-            break
-
-          default:
-            toast.add({ severity: 'danger', summary: 'WebSocket', detail: `Received unknown action: ${data.action}`, life: 8000 })
-            break
+      if (isDefined(message)) {
+        if (message.action === 'device_accepted') {
+          play({  id: 1 })
+          await updateDoc(docRef, { players: message.players })
+          toast.add({ severity: 'info', summary: 'Device connected', detail: `Player ${message.player.id} has connected.`, life: 10000 })
         }
+
+        if (message.action === 'device_disconnected') {
+          play({ id: 2 })
+          await updateDoc(docRef, { players: message.players })
+          toast.add({ severity: 'warn', summary: 'Device disconnected', detail: `Player has disconnected.`, life: 3000 })
+        }
+
+        if (message.action === 'song_new') {
+          if(message.song) {
+            songsPlayed.value.push(message.song)
+            songStore.incrementStep()
+            await updateDoc(docRef, { songsPlayed: arrayUnion(message.song) } )
+          }
+        }
+
+        if (message.action === 'idle_response') {
+          const settings = stringify({ action: 'game_settings', settings: toValue(currentSettings)?.settings } )
+          wsObject.send(settings)
+        }
+
+        if (message.action === 'error') {
+          toast.add({ severity: 'error', summary: 'Error', detail: `Error from server: ${message.message}`, life: 10000 })
+        }
+      }
+    },
+    onDisconnected: (_ws, _event) => {
+      toast.add({ severity: 'warn', summary: 'Disconnected', detail: 'WebSocket disconnected for individual game', life: 3000 })
+    }
+  })
+
+  /**
+   * State
+   */
+
+  const isConnected = computed(() => wsObject.status.value === 'OPEN')
+  const blindTestDoc = useDocument(docRef)
+
+  /**
+   * Players
+   */
+  const players = computed(() => Object.keys(blindTestDoc.value?.players || []))
+  
+
+  return {
+    gameStarted,
+    wsObject,
+    isConnected,
+    blindTestDoc,
+    players
+  }
+})
+
+/**
+ * Websocket for individual player (smartphone)
+ */
+export const useGameWebsocketIndividualPlayer = createSharedComposable(() => {
+  const route = useRoute()
+  
+  const toast = useToast()
+  const fireStore = useFirestore()
+  const { parse } = useWebsocketMessage()
+
+  const query = useUrlSearchParams('history')
+  const playerId = useLocalStorage<string>('playerId', '')
+
+  /**
+   * Good answer states
+   */
+
+  const backgroundImage = refAutoReset<string>('/dancing1.jpg', 10000)
+  const correctSong = refAutoReset<Song | null>(null, 10000)
+  const isCorrectGuess = refAutoReset<boolean>(true, 10000)
+  const isIncorrectGuess = refAutoReset<boolean>(false, 10000)
+  const showAnswer = refAutoReset<boolean>(true, 10000)
+
+  /**
+   * Websocket
+   */
+
+  const wsObject = useWebSocket(`ws://127.0.0.1:8000/ws/single-player/${route.params.id}/connect`, {
+    immediate: false,
+    onConnected: async (_ws) => {
+      toast.add({ severity: 'info', summary: 'Connected', detail: 'WebSocket connected for individual player', life: 3000 })
+    },
+    onDisconnected: (_ws, _event) => {
+      toast.add({ severity: 'warn', summary: 'Disconnected', detail: 'WebSocket disconnected for individual player', life: 3000 })
+    },
+    onMessage: async (_ws, event: MessageEvent) => {
+      const message = parse(event.data)
+      
+      if (!isDefined(message)) return
+      
+      if (message.action === 'idle_connect') {
+        playerId.value = message.player.name
+        query.player = playerId.value
+      }
+
+      if (message.action === 'game_started') {
+        toast.add({ severity: 'info', summary: 'Game started', detail: 'The game has started!', life: 10000 })
+      }
+
+      if (message.action === 'guess_correct') {
+        if (message.player_id === playerId.value) {
+          const docRef = doc(fireStore, 'blindtests', route.params.id as string)
+          await updateDoc(docRef, { [`players.${playerId.value}.points`]: message.points })
+          
+          isCorrectGuess.value = true
+        }
+      }
+      
+      if (message.action === 'guess_incorrect') {
+        isIncorrectGuess.value = true
+      }
+      
+      // Common for both correct and incorrect answers
+      if (message.action === 'guess_correct' || message.action === 'guess_incorrect') {
+        correctSong.value = message.song  
+        backgroundImage.value = message.song.artist.spotify_avatar   
+      }
+
+      if (message.action === 'game_disconnected') {
+        toast.add({ severity: 'warn', summary: 'Game disconnected', detail: 'The game has ended or the host has disconnected.', life: 10000 })
+      }
+
+      if (message.action === 'show_answer') {
+        showAnswer.value = true
       }
     }
   })
 
   /**
-   * Actions
+   * State
    */
+
+  const isConnected = computed(() => wsObject.status.value === 'OPEN')
+
+  const docRef = doc(fireStore, 'blindtests', route.params.id as string)
+  const blindTestDoc = useDocument<CacheSession>(docRef)
+
+  const players = computed(() => Object.keys(blindTestDoc.value?.players || {}))
+  const player = computed(() => blindTestDoc.value?.players[playerId.value])
+
+  const isReady = ref(false)
+
+  tryOnMounted(async () => {
+    await promiseTimeout(3000)
+    set(isReady, true)
+  })
+
+  return {
+    wsObject,
+    isConnected,
+    blindTestDoc,
+    backgroundImage,
+    isCorrectGuess,
+    showAnswer,
+    correctSong,
+    isIncorrectGuess,
+    isReady,
+    players,
+    player
+  }
+})
+
+/**
+ * Composable used to send game actions over websocket such as
+ * starting/stopping the game, skipping songs, etc. -; this wraps
+ * any websocket object and provides easy to use functions over it
+ * @param wsObject The websocket object
+ */
+export function useGameActions (wsObject: ReturnType<typeof useWebSocket>, gameStarted: Ref<boolean>) {
+  const { stringify } = useWebsocketMessage()
 
   function startGame() {
     const { stringify } = useWebsocketMessage()
     const result = stringify({ action: 'start_game' })
-    
+
     wsObject.send(result)
     gameStarted.value = true
   }
 
   function stopGame(callback?: () => void) {
     gameStarted.value = false
+    wsObject.send(stringify({ action: 'stop_game' }))
     wsObject.close()
-    if (isDefined(callback)) callback()
+    callback?.()
   }
 
-  const isConnected = computed(() => wsObject.status.value === 'OPEN')
+  function sendIncorrectAnswer() {
+    const result = stringify({ action: 'not_guessed' })
 
-  const { stringify } = useWebsocketMessage()
-
-  /**
-   * Answering
-   */
+    if (result) {
+      wsObject.send(result)
+    }
+  }
 
   const songsStore = useSongs()
   const { currentSong, correctAnswers, answers } = storeToRefs(songsStore)
 
-  function sendIncorrectAnswer() {
-    const result = stringify({ action: 'skip_song' })
-
-    if (result) {
-      wsObject.send(result)
-      songStore.incrementStep()
-    }
-  }
-
-  function sendCorrectAnswer(teamId: string, match: MatchedPart) {
+  function sendCorrectAnswer(id: string, match: MatchedPart) {
     let title_match = true
     let artist_match = true
 
@@ -177,7 +278,7 @@ export const useGameWebsocket = createSharedComposable(() => {
 
     const result = stringify({
       action: 'submit_guess',
-      team_id: teamId,
+      team_or_player_id: id,
       title_match,
       artist_match
     })
@@ -189,62 +290,23 @@ export const useGameWebsocket = createSharedComposable(() => {
 
       if (isDefined(currentSong)) {
         correctAnswers.value.push({
-          teamId: teamId,
+          teamId: id,
           song: currentSong.value
         })
 
         answers.value.push({
-          teamId: teamId,
+          teamId: id,
           matched: match,
           song: currentSong.value
         })
       }
-
-      songStore.incrementStep()
-
-      // console.log('BlindTestPage.handleCorrectAnswer', correctAnswers.value, answers.value)
     }
   }
 
   return {
-    /**
-     * Whether the WebSocket is connected
-     * @default true
-     */
-    isConnected,
-    /**
-     * WebSocket object used to communicate with the server
-     */
-    wsObject,
-    /**
-     * Whether the game was started
-     * @default false
-     */
-    gameStarted,
-    /**
-     * Starts the blindtest
-     */
     startGame,
-    /**
-     * Stops the blindtest
-     */
     stopGame,
-    /**
-     * Sends an incorrect answer to the server
-     * to skip the current song
-     * @param team The team that answered incorrectly
-     */
-    sendIncorrectAnswer,
-    /**
-     * Sends a correct answer to the server
-     * for the given team
-     * @param teamId The ID of the team
-     * @param match The element that was matched
-     */
     sendCorrectAnswer,
-    /**
-     * Toggles the game started state
-     */
-    toggleGameStarted
+    sendIncorrectAnswer
   }
-})
+}

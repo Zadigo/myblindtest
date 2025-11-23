@@ -1,10 +1,10 @@
 import { useAsyncRequest } from 'vue-axios-manager'
-import type { GenreDistribution, SettingsApiResponse, Undefineable } from '@/types'
+import type { GenreDistribution, SettingsApiResponse } from '@/types'
 
 export * from './create'
 export * from './game'
 export * from './session'
-export * from './songs'
+export * from './utils'
 
 /**
  * Loads autocomplete data for the minimum and maximum time
@@ -53,18 +53,5 @@ export const useLoadAutocompleteData = createSharedComposable((fromCache = false
      * List of genre names for the songs
      */
     genreNames
-  }
-})
-
-
-export const useGlobalState = createGlobalState(() => {
-  const [showAbout, toggleShowAbout] = useToggle(false)
-  const [showConnectionUrl, toggleShowConnectionUrl] = useToggle(false)
-  
-  return {
-    showAbout,
-    toggleShowAbout,
-    showConnectionUrl,
-    toggleShowConnectionUrl
   }
 })

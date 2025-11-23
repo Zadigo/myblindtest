@@ -32,27 +32,16 @@ const { showWheel } = useWheelRandomizer()
  * Websocket
  */
 
-const { startGame, stopGame, gameStarted, sendIncorrectAnswer } = useGameWebsocket()
+const { wsObject, gameStarted } = useGameWebsocketIndividual()
+const { startGame, stopGame, sendIncorrectAnswer } = useGameActions(wsObject, gameStarted)
 
 const songsStore = useSongs()
 const { correctAnswers } = storeToRefs(songsStore)
-
-const teamStore = useTeamsStore()
-const { teamOne, teamTwo } = storeToRefs(teamStore)
-
 
 // Callback function executed after stopping the game
 // to reset scores and correct answers
 function stopGameCallback() {
   correctAnswers.value = []
-
-  if (teamOne.value) {
-    teamOne.value.score = 0
-  }
-
-  if (teamTwo.value) {
-    teamTwo.value.score = 0
-  }
 
   songsStore.songsPlayed = []
   songsStore.resetStep()

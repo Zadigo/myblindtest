@@ -144,158 +144,159 @@ class BaseGameLogicMixin:
         return song_ids
 
 
-class TeamGameLogicMixin(BaseGameLogicMixin):
-    """Game logic specific to team-based blindtests."""
+# class TeamGameLogicMixin(BaseGameLogicMixin):
+#     """Game logic specific to team-based blindtests."""
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.difficulty = 'All'
-        self.genre = 'All'
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.difficulty = 'All'
+#         self.genre = 'All'
 
-        # self.start_time = None
-        self.current_round = 0
-        self.number_of_rounds = None
+#         # self.start_time = None
+#         self.current_round = 0
+#         self.number_of_rounds = None
 
-        self.point_value: int = 1
-        self.difficulty_bonus = False
-        self.time_bonus = False
+#         self.point_value: int = 1
+#         self.difficulty_bonus = False
+#         self.time_bonus = False
 
-        self.team_one = Team('fake_id_1')
-        self.team_two = Team('fake_id_2')
+#         self.team_one = Team('fake_id_1')
+#         self.team_two = Team('fake_id_2')
 
-        self.is_started = False
-        self.current_song: Optional[dict[str, Union[str, int]]] = None
+#         self.is_started = False
+#         self.current_song: Optional[dict[str, Union[str, int]]] = None
 
-        # Solo mode is a mode where the
-        # user tries to guess the songs
-        # himself
-        self.solo_mode = False
-        # Mode where the admin is also
-        # part of a team and therefore
-        # needs the song information
-        # to be deactivated
-        self.admin_plays = False
+#         # Solo mode is a mode where the
+#         # user tries to guess the songs
+#         # himself
+#         self.solo_mode = False
+#         # Mode where the admin is also
+#         # part of a team and therefore
+#         # needs the song information
+#         # to be deactivated
+#         self.admin_plays = False
 
-        self.played_songs: set[int] = set()
-        self.fuzzy_matcher = FuzzyMatcher()
+#         self.played_songs: set[int] = set()
+#         self.fuzzy_matcher = FuzzyMatcher()
 
-        self.device_name = 'blind_test'
-        self.device_id = f'blind_test_{get_random_string(length=12)}'
-        self.connection_token = None
-        # Pin code for the game
-        self.pin_code = random.randint(1000, 9999)
-        self.pending_devices: List[str] = []
+#         self.device_name = 'blind_test'
+#         self.device_id = f'blind_test_{get_random_string(length=12)}'
+#         self.connection_token = None
+#         # Pin code for the game
+#         self.pin_code = random.randint(1000, 9999)
+#         self.pending_devices: List[str] = []
 
-    async def next_song(self, temporary_genre: str = None):
-        """Returns a song using IDs present in the datbase.
+#     async def next_song(self, temporary_genre: str = None):
+#         """Returns a song using IDs present in the datbase.
 
-        Or, returns a song within the genre that is passed within
-        this function. If the queryset is empty, return a selection
-        of all the songs"""
-        song_ids = await self.get_songs(
-            temporary_genre=temporary_genre,
-            exclude=list(self.played_songs)
-        )
+#         Or, returns a song within the genre that is passed within
+#         this function. If the queryset is empty, return a selection
+#         of all the songs"""
+#         song_ids = await self.get_songs(
+#             temporary_genre=temporary_genre,
+#             exclude=list(self.played_songs)
+#         )
 
-        if not song_ids:
-            await self.send_json({
-                'action': 'game_complete',
-                'message': 'No songs left',
-                'final_scores': {
-                    'team1': self.team_one_score,
-                    'team2': self.team_two_score
-                },
-                'songs_played': len(self.played_songs)
-            })
-            self.is_started = False
-            return
+#         if not song_ids:
+#             await self.send_json({
+#                 'action': 'game_complete',
+#                 'message': 'No songs left',
+#                 'final_scores': {
+#                     'team1': self.team_one_score,
+#                     'team2': self.team_two_score
+#                 },
+#                 'songs_played': len(self.played_songs)
+#             })
+#             self.is_started = False
+#             return
 
-        random_id = random.choice(song_ids)
-        self.current_song = await self.get_song(random_id)
-        self.played_songs.add(random_id)
+#         random_id = random.choice(song_ids)
+#         self.current_song = await self.get_song(random_id)
+#         self.played_songs.add(random_id)
 
-        if self.solo_mode:
-            # In solo mode return only the audio
-            # of the song not its information since
-            # we get those when the user guesses the
-            # the song
-            await self.send_json({
-                'action': 'song_new',
-                'song': {
-                    'audio_url': self.current_song['audio_url']
-                }
-            })
-        else:
-            await self.send_json({
-                'action': 'song_new',
-                'song': self.current_song
-            })
+#         if self.solo_mode:
+#             # In solo mode return only the audio
+#             # of the song not its information since
+#             # we get those when the user guesses the
+#             # the song
+#             await self.send_json({
+#                 'action': 'song_new',
+#                 'song': {
+#                     'audio_url': self.current_song['audio_url']
+#                 }
+#             })
+#         else:
+#             await self.send_json({
+#                 'action': 'song_new',
+#                 'song': self.current_song
+#             })
 
-        self.current_round += 1
+#         self.current_round += 1
 
-        if self.number_of_rounds is not None:
-            if self.current_round > self.number_of_rounds:
-                await self.send_json({
-                    'action': 'game_complete',
-                    'message': 'Final round complete',
-                    'final_scores': {
-                        'team1': self.team_one.score,
-                        'team2': self.team_two.score
-                    },
-                    'songs_played': len(self.played_songs)
-                })
-                self.is_started = False
-                return
+#         if self.number_of_rounds is not None:
+#             if self.current_round > self.number_of_rounds:
+#                 await self.send_json({
+#                     'action': 'game_complete',
+#                     'message': 'Final round complete',
+#                     'final_scores': {
+#                         'team1': self.team_one.score,
+#                         'team2': self.team_two.score
+#                     },
+#                     'songs_played': len(self.played_songs)
+#                 })
+#                 self.is_started = False
+#                 return
 
-        # if self.timer_task:
-        #     self.timer_task.cancel()
-        # self.timer_task = asyncio.create_task(self.timer())
+#         # if self.timer_task:
+#         #     self.timer_task.cancel()
+#         # self.timer_task = asyncio.create_task(self.timer())
 
-    async def handle_guess(self, team_id: str, title_match: bool, artist_match: bool):
-        """Handles player's song guess"""
-        if not self.current_song:
-            return
+#     async def handle_guess(self, team_id: str, title_match: bool, artist_match: bool):
+#         """Handles player's song guess"""
+#         if not self.current_song:
+#             return
 
-        message = {
-            'action': None,
-            'team_id': team_id,
-            'points': 0
-        }
+#         message = {
+#             'action': None,
+#             'team_id': team_id,
+#             'points': 0
+#         }
 
-        if title_match or artist_match:
-            result = await self.calculate_points(title_match, artist_match)
+#         if title_match or artist_match:
+#             result = await self.calculate_points(title_match, artist_match)
 
-            message['action'] = 'guess_correct'
+#             message['action'] = 'guess_correct'
 
-            if team_id == self.team_one:
-                self.team_one.points += result
-                message['points'] = self.team_one.points
+#             if team_id == self.team_one:
+#                 self.team_one.points += result
+#                 message['points'] = self.team_one.points
 
-            if team_id == self.team_two:
-                self.team_two.points += result
-                message['points'] = self.team_two.points
-        else:
-            message['action'] = 'guess_incorrect'
-            message['points'] = self.team_one.points if team_id == self.team_one else self.team_two.points
+#             if team_id == self.team_two:
+#                 self.team_two.points += result
+#                 message['points'] = self.team_two.points
+#         else:
+#             message['action'] = 'guess_incorrect'
+#             message['points'] = self.team_one.points if team_id == self.team_one else self.team_two.points
 
-        message['song'] = self.current_song
+#         message['song'] = self.current_song
 
-        print('handle_guess', message)
+#         print('handle_guess', message)
 
-        group_message = self.base_room_message(
-            **{
-                'type': 'game.updates',
-                'message': message
-            }
-        )
-        await self.channel_layer.group_send(self.diffusion_group_name, group_message)
+#         group_message = self.base_room_message(
+#             **{
+#                 'type': 'game.updates',
+#                 'message': message
+#             }
+#         )
+#         await self.channel_layer.group_send(self.diffusion_group_name, group_message)
 
-        await self.send_json(message)
-        await self.next_song()
+#         await self.send_json(message)
+#         await self.next_song()
 
 
 @dataclasses.dataclass
 class Player:
+    id: str = None
     name: str = None
     color: str = None
     points: int = 0
@@ -308,7 +309,7 @@ class Player:
         return self.name == value
 
 
-class IndividualLogicMixin(BaseGameLogicMixin):
+class GameLogicMixin(BaseGameLogicMixin):
     """Game logic for individual players"""
 
     def __init__(self, *args, **kwargs):
@@ -333,9 +334,15 @@ class IndividualLogicMixin(BaseGameLogicMixin):
         self.device_id = 'admin_individual'
 
         self.connection_token = None
+
         # Pin code for the game
         self.pin_code = random.randint(1000, 9999)
         self.pending_devices: List[str] = []
+
+        self.solo_mode = False
+        self.admin_plays = False
+        self.time_limit = None
+        self.time_range: List[int] = []
 
         self._players = defaultdict(Player)
 

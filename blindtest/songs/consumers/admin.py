@@ -1,10 +1,13 @@
 from typing import Any, Union
 
 import pyotp
+import dataclasses
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from django.utils.crypto import get_random_string
-from songs.logic import IndividualLogicMixin, Player, TeamGameLogicMixin
+from songs.logic import GameLogicMixin, Player
 from songs.utils import create_token
+
+DictAny = dict[str, str | int | bool | dict[str, Any]]
 
 
 class ChannelEventsMixin:
@@ -75,231 +78,34 @@ class ChannelEventsMixin:
         """Channels handler to indicate to devices that game has either
         disconnected or simply over"""
 
+    async def update_player(self, content: dict[str, str | int]):
+        """Channels handler for updating a player's information"""
+
     # Old handlers kept for reference
 
-    async def device_connected(self, content: dict[str, str | int]):
-        """Channels handler for the devices that are connecting
-        to the current blind test game"""
+    # async def device_connected(self, content: dict[str, str | int]):
+    #     """Channels handler for the devices that are connecting
+    #     to the current blind test game"""
 
-    async def device_disconnected(self, content: dict[str, str | int]):
-        """Channels handler for the devices that have been disconnected
-        from the current blind test game"""
+    # async def device_disconnected(self, content: dict[str, str | int]):
+    #     """Channels handler for the devices that have been disconnected
+    #     from the current blind test game"""
 
-    async def device_accepted(self, content: dict[str, str | int]):
-        """Channels handler for devices that have been accepted
-        in a blind test room once the code that room has been verified"""
+    # async def device_accepted(self, content: dict[str, str | int]):
+    #     """Channels handler for devices that have been accepted
+    #     in a blind test room once the code that room has been verified"""
 
-    async def device_pending(self, content: dict[str, str | int]):
-        """Channels handler for devices that are pending
-        in the wait room. These devices have to send a confirmation
-        code (pin code) for the correct blind test room to accept them"""
+    # async def device_pending(self, content: dict[str, str | int]):
+    #     """Channels handler for devices that are pending
+    #     in the wait room. These devices have to send a confirmation
+    #     code (pin code) for the correct blind test room to accept them"""
 
-    async def check_pin_code(self, content: dict[str, str | int]):
-        """Channels handler for authenticating a pin code to
-        a blind test game"""
-
-
-class TeamBlindTestConsumer(TeamGameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsumer):
-    """This consumer handles connections specifically from admin devices
-    which can then be used to control the blind test game. The admin devices
-    are used to start/stop the game, validate answers and manage teams."""
-
-    @property
-    def keyed_diffusion_group_name(self):
-        """Returns the base diffusion group name with
-        the unique firebase token in order to identify the group"""
-        if self.connection_token:
-            return f"{self.diffusion_group_name}_{self.connection_token}"
-        return self.diffusion_group_name
-
-    async def connect(self):
-        # Create a diffusion group that will allow other
-        # devices to get updates on blind test actual state
-        await self.accept()
-        # TODO: Channel make diffusion group
-        await self.channel_layer.group_add(self.diffusion_group_name, self.channel_name)
-
-    async def disconnect(self, code):
-        # TODO: Channel make diffusion group
-        message = self.base_room_message(**{'type': 'game.disconnected'})
-
-        await self.channel_layer.group_send(self.waiting_room_name, message)
-        await self.channel_layer.group_send(self.diffusion_group_name, message)
-
-        await self.channel_layer.group_discard(self.waiting_room_name, self.channel_name)
-        await self.channel_layer.group_discard(self.diffusion_group_name, self.channel_name)
-
-        if self.timer_task:
-            self.timer_task.cancel()
-
-        await self.close(code=1000)
-        self.is_started = False
-
-    async def receive_json(self, content: dict[str, Union[str, int, bool]], **kwargs):
-        action = content.get('action')
-
-        if action is None:
-            await self.send_error('No action was provided')
-            return
-
-        # frontend -> onConnected -> idle_connect
-        if action == 'idle_connect':
-            print(content)
-            self.connection_token = content.get('firebase_key', None)
-            # Connect to the waiting room which is seperate from the
-            # game room and allows us to send messages to pending connections
-            await self.channel_layer.group_add(self.waiting_room_name, self.channel_name)
-
-            # The action waits passively
-            # waits for other devices to connect
-            await self.send_json({
-                'action': 'idle_response',
-                'code': self.pin_code
-            })
-
-            # Setup the different parameters for
-            # actual coming game
-            settings: dict[str, str | bool | int] = content.get('settings', {})
-
-            if settings is None:
-                await self.send_error('No settings were provided')
-                return
-
-            if 'teams' not in settings:
-                await self.send_error('Not enough teams to start the game')
-                return
-
-            team_one = settings['teams'][0]
-            team_two = settings['teams'][1]
-
-            self.team_one.team_id = team_one['id']
-            self.team_two.team_id = team_two['id']
-
-            self.team_one.points = 0
-            self.team_two.points = 0
-
-            settings: dict[str, str | bool |
-                           int] = settings.get('settings', {})
-
-            self.difficulty = settings.get('difficultyLevel', 'All')
-            self.genre = settings.get('songType', 'All')
-
-            self.point_value = settings.get('pointValue', 1)
-            self.difficulty_bonus = settings.get('songDifficultyBonus', False)
-            self.time_bonus = settings.get('timeBonus', False)
-            self.number_of_rounds = content.get('rounds', None)
-            self.solo_mode = settings.get('soloMode', False)
-            self.admin_plays = settings.get('adminPlays', False)
-
-            # self.time_range = settings.get('timeRange', [])
-            # self.speed_bonus = settings.get('speedBonus', 0)
-            # self.time_limit = settings.get('timeLimit', 0)
-        elif action == 'start_game':
-            self.played_songs.clear()
-
-            self.is_started = True
-
-            await self.send_json({'action': 'game_started'})
-            await self.next_song()
-        elif action == 'submit_guess':
-            if not self.is_started:
-                await self.send_error("Game not started")
-                return
-
-            team_id = content.get('team_id', None)
-            if team_id is None:
-                await self.send_error('No team was provided')
-                return
-
-            ids = [self.team_one.team_id, self.team_two.team_id]
-            if team_id not in ids:
-                await self.send_error(f'Team not found: {team_id}')
-                return
-
-            title_match = content.get('title_match', False)
-            artist_match = content.get('artist_match', False)
-            await self.handle_guess(team_id, title_match, artist_match)
-
-            # TODO: Implement handler for last answers
-            # await self.send_json({
-            #     'action': 'last.answers',
-            #     'team_one': await self.team_answers(self.team_one.team_id),
-            #     'team_two': await self.team_answers(self.team_two.team_id)
-            # })
-
-            # TODO: Use when a string guess is passed
-            # guess = content.get('guess', '').strip()
-            # if guess:
-            #     await self.handle_guess(team_id, title_match, artist_match)
-        elif action == 'skip_song':
-            if self.is_started and self.current_song:
-                message = {'action': 'song_skipped', 'song': self.current_song}
-                await self.send_json(message)
-
-                group_message = self.base_room_message(
-                    **{
-                        'type': 'game.updates',
-                        'message': message
-                    }
-                )
-                await self.channel_layer.group_send(self.diffusion_group_name, group_message)
-
-                await self.next_song()
-            else:
-                await self.send_error('Game not started or no current song')
-        elif action == 'randomize_genre':
-            if not self.is_started:
-                await self.send_error("Cannot randomize. Game not started")
-                return
-
-            # Select a temporary genre within songs, if and only if
-            # a global genre is not selected
-            temporary_genre = content.get('temporary_genre', None)
-            if self.is_started:
-                await self.next_song(temporary_genre=temporary_genre)
-        else:
-            await self.send_error('Invalid action')
-
-    async def device_connected(self, content):
-        origin = content['device_id']
-
-        thread = content['thread']
-
-        await self.send_json({
-            'action': 'device_connected',
-            'device_id': origin
-        })
-
-        if thread == 'waiting_room':
-            action = content['action']
-
-            if action is None:
-                # Recognize that a device was connected
-                message = self.base_room_message(**{'type': 'device.pending'})
-                await self.channel_layer.group_send(self.waiting_room_name, message)
-                self.pending_devices.append(origin)
-
-    async def device_disconnected(self, content):
-        await self.send_json({
-            'action': 'device_disconnected',
-            'device_id': content['device_id']
-        })
-
-    async def check_pin_code(self, content):
-        origin = content['device_id']
-        code = content['code']
-
-        if code is None:
-            await self.send_error(f'Connection failed for: {origin}')
-            return
-
-        if code == self.connection_token:
-            await self.send_json({'action': 'device_accepted', 'message': origin})
-            message = self.base_room_message(**{'type': 'device.accepted'})
-            await self.channel_layer.group_send(self.waiting_room_name, message)
+    # async def check_pin_code(self, content: dict[str, str | int]):
+    #     """Channels handler for authenticating a pin code to
+    #     a blind test game"""
 
 
-class IndividualBlindTestConsumer(IndividualLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsumer):
+class IndividualBlindTestConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsumer):
     """This consumer handles connections specifically from admin devices
     which can then be used to control the blind test game. This consumer handles
     blind test games where each player participates individually as opposed to teams."""
@@ -330,9 +136,9 @@ class IndividualBlindTestConsumer(IndividualLogicMixin, ChannelEventsMixin, Asyn
 
         if action == 'start_game':
             if self.is_started:
-                await self.send_error("Game already started")    
+                await self.send_error("Game already started")
                 return
-            
+
             self.played_songs.clear()
 
             self.is_started = True
@@ -346,7 +152,7 @@ class IndividualBlindTestConsumer(IndividualLogicMixin, ChannelEventsMixin, Asyn
             await self.next_song()
         elif action == 'stop_game':
             if not self.is_started:
-                await self.send_error("Game not started")    
+                await self.send_error("Game not started")
                 return
 
             self.is_started = False
@@ -364,7 +170,7 @@ class IndividualBlindTestConsumer(IndividualLogicMixin, ChannelEventsMixin, Asyn
             if player_id is None:
                 await self.send_error('No team was provided')
                 return
-            
+
             title_match = content.get('title_match', False)
             artist_match = content.get('artist_match', False)
 
@@ -379,15 +185,15 @@ class IndividualBlindTestConsumer(IndividualLogicMixin, ChannelEventsMixin, Asyn
 
             await self.send_json(message)
             await self.next_song()
-        elif action == 'skip_song':
+        elif action == 'not_guessed':
             if self.is_started and self.current_song:
-                message = {'action': 'song_skipped', 'song': self.current_song}
-                await self.send_json(message)
+                # message = {'action': 'guess_incorrect', 'song': self.current_song}
+                # await self.send_json(message)
 
                 group_message = self.base_room_message(
                     **{
                         'type': 'game.updates',
-                        'message': message
+                        'message': {'action': 'guess_incorrect', 'song': self.current_song}
                     }
                 )
                 await self.channel_layer.group_send(self.indexed_diffusion_group_name, group_message)
@@ -403,14 +209,47 @@ class IndividualBlindTestConsumer(IndividualLogicMixin, ChannelEventsMixin, Asyn
             if temporary_genre is None:
                 await self.send_error('No temporary genre was provided')
                 return
-            
+
             await self.next_song(temporary_genre=temporary_genre)
+        elif action == 'game_settings':
+            settings: dict[str, DictAny] = content.get('settings', {})
+
+            if settings is None:
+                await self.send_error('No settings were provided')
+                return
+
+            self.difficulty = settings.get('difficultyLevel', 'All')
+            self.genre = settings.get('songType', 'All')
+
+            self.point_value = settings.get('pointValue', 1)
+            self.difficulty_bonus = settings.get('songDifficultyBonus', False)
+            self.time_bonus = settings.get('timeBonus', False)
+            self.number_of_rounds = content.get('rounds', None)
+            self.solo_mode = settings.get('soloMode', False)
+            self.admin_plays = settings.get('adminPlays', False)
+
+            self.time_range = settings.get('timeRange', [])
+            # self.speed_bonus = settings.get('speedBonus', 0)
+            self.time_limit = settings.get('timeLimit', 0)
         else:
             await self.send_error('Invalid action')
 
     async def accept_device(self, content: dict[str, str | int]):
-        self._players[content['device_id']] = Player(**content['player'])
-        await self.send_json({'action': 'device_accepted', 'players': self.players})
+        print("Accepting device...", content)
+
+        device_session_id = content['session_id']
+
+        if device_session_id != self.session_id:
+            await self.send_error('Invalid session ID for device acceptance')
+            return
+
+        device_name = content['device_name']
+
+        if device_name == 'player_smartphone':
+            player = Player(**content['player'])
+            self._players[content['device_id']] = player
+            # self.pending_devices.append((content['device_id'], player))
+            await self.send_json({'action': 'device_accepted', 'player': dataclasses.asdict(player), 'players': self.players})
 
     async def disconnect_device(self, content: dict[str, str | int]):
         device_id = content['device_id']
@@ -418,3 +257,17 @@ class IndividualBlindTestConsumer(IndividualLogicMixin, ChannelEventsMixin, Asyn
         if device_id in self._players:
             del self._players[device_id]
         await self.send_json({'action': 'device_disconnected', 'players': self.players})
+
+    async def update_player(self, content):
+        player = content.get('player', None)
+        if player is None:
+            return
+
+        player_id = player.get('id', None)
+        if player_id is None:
+            return
+
+        if player_id in self._players:
+            selected_player = self._players[player_id]
+            selected_player.name = player.get('name', selected_player.id)
+            print('Updated players', self._players)

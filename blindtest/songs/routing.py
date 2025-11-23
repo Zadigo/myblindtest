@@ -1,8 +1,6 @@
 from django.urls.conf import re_path
-from songs.consumers.admin import (IndividualBlindTestConsumer,
-                                   TeamBlindTestConsumer)
-from songs.consumers.smartphone import (IndividualPlayerSmartphoneConsumer,
-                                        TeamSmartphoneConsumer)
+from songs.consumers.admin import IndividualBlindTestConsumer
+from songs.consumers.smartphone import IndividualPlayerSmartphoneConsumer
 from songs.consumers.television import TelevisionConsumer
 
 websocket_urlpatterns = [
@@ -21,16 +19,5 @@ websocket_urlpatterns = [
         r'^ws/tv/connect$',
         TelevisionConsumer.as_asgi(),
         name='television'
-    ),
-
-    re_path(
-        r'^ws/buzzer/connect$',
-        TeamSmartphoneConsumer.as_asgi(),
-        name='smartphone'
-    ),
-    re_path(
-        r'^ws/songs$', # Adjusted to match the TeamBlindTestConsumer path
-        TeamBlindTestConsumer.as_asgi(),
-        name='songs'
     )
 ]

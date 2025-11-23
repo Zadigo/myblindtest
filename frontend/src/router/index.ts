@@ -16,14 +16,6 @@ const router = createRouter({
           }
         },
         {
-          path: 'teams',
-          component: async () => import('../pages/team/TeamsPage.vue'),
-          name: 'teams',
-          meta: {
-            heightScreen: true
-          }
-        },
-        {
           path: 'create',
           component: async () => import('../pages/CreateSongsPage.vue'),
           name: 'create',
@@ -46,31 +38,26 @@ const router = createRouter({
           meta: {
             heightScreen: true
           }
-        },
-        {
-          path: '(.*)',
-          component: async () => import('../pages/ErrorPage.vue'),
-          name: 'error',
-          meta: {
-            heightScreen: true
-          }
         }
       ]
     },
     {
-      path: '/blind-test',
-      component: async () => import('../pages/team/IndexPage.vue'),
+      path: '/:id/blind-test',
+      component: async () => import('../pages/blindtest/IndexPage.vue'),
       name: 'blind_test'
     },
     {
-      path: '/:id/individual-blind-test',
-      component: async () => import('../pages/individual/IndexPage.vue'),
-      name: 'individual_blind_test'
+      path: '/:id/player',
+      component: async () => import('../pages/blindtest/PlayerPage.vue'),
+      name: 'player_page'
     },
     {
-      path: '/:id/single-player',
-      component: async () => import('../pages/individual/PlayerPage.vue'),
-      name: 'single_player'
+      path: '/(.*)',
+      component: async () => import('../pages/ErrorPage.vue'),
+      name: 'error',
+      meta: {
+        heightScreen: true
+      }
     }
   ]
 })

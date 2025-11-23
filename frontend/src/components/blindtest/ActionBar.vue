@@ -25,7 +25,7 @@
           <vue-icon icon="lucide:copy" />
         </div>
       </volt-badge>
-  
+
       <volt-badge v-if="isConnected" class="animate-pulse gap-2">
         <vue-icon icon="lucide:circle" />
         Connected
@@ -59,6 +59,10 @@ const items: MenuItem = ref([
         }
       },
       {
+        label: 'Connection url',
+        command: () => toggleShowConnectionUrl(true)
+      },
+      {
         label: 'About'
       }
     ]
@@ -69,7 +73,7 @@ const items: MenuItem = ref([
  * State
  */
 
-const { isConnected, wsObject } = useGameWebsocket()
+const { isConnected, wsObject } = useGameWebsocketIndividual()
 
 /**
  * Session copy

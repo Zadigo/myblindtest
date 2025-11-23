@@ -52,7 +52,7 @@
 <script setup lang="ts">
 import { useSound } from '@vueuse/sound'
 
-const { gameStarted } = useGameWebsocket()
+const { gameStarted } = useGameWebsocketIndividual()
 
 /**
  * Song

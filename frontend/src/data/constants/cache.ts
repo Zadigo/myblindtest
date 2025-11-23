@@ -4,22 +4,6 @@ export const defaults: CacheSession = {
   songsPlayed: [],
   currentStep: 0,
   players: {},
-  teams: [
-    {
-      id: '1',
-      name: '',
-      score: 0,
-      players: [],
-      color: null
-    },
-    {
-      id: '2',
-      name: '',
-      score: 0,
-      players: [],
-      color: null
-    }
-  ],
   settings: {
     rounds: 1,
     timeLimit: 0,
@@ -30,6 +14,7 @@ export const defaults: CacheSession = {
     adminPlays: false,
     difficultyLevel: 'All',
     songType: 'All',
-    timeRange: []
+    timeRange: [],
+    availableTeams: []
   }
 }

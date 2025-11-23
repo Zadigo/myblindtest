@@ -1,6 +1,6 @@
 import { useSound } from '@vueuse/sound'
 import type { MaybeRef } from 'vue'
-import type { Empty, Team } from '@/types'
+import type { Empty, BlindtestPlayer } from '@/types'
 
 /**
  * A composable function to handle animations
@@ -41,7 +41,7 @@ export function useAnimationComposable(name: string, animationClasses: string[] 
  * @param team The team to calculate for
  * @param minConsecutive The minimum number of consecutive answers to qualify
  */
-export function useConsecutiveAnswers(team: MaybeRef<Empty<Team>>, minConsecutive = 2) {
+export function useConsecutiveAnswers(player: MaybeRef<Empty<BlindtestPlayer>>, minConsecutive = 2) {
   const songsStore = useSongs()
   const { correctAnswers } = storeToRefs(songsStore)
 
@@ -55,7 +55,7 @@ export function useConsecutiveAnswers(team: MaybeRef<Empty<Team>>, minConsecutiv
     for (let i = correctAnswers.value.length - 1; i >= 0; i--) {
       const answer = correctAnswers.value[i]
 
-      if (answer && (answer.teamId === (team.value && team.value.id))) {
+      if (answer && (answer.teamId === (player.value && player.value.id))) {
         count++
       } else {
         break
@@ -97,7 +97,7 @@ export const useGameCountdown = createGlobalState((startFrom: number | undefined
   if (isDefined(startFrom)) {
     console.log(startFrom, typeof startFrom)
     const timeLimit = refDefault<number>(toRef(startFrom * 60), 0)
-    const { gameStarted} = useGameWebsocket()
+    const { gameStarted } = useGameWebsocketIndividual()
     const { remaining, start, pause, reset } = useCountdown(timeLimit, { immediate: false, interval: 1000 })
   
     const { play, stop } = useSound('/clock.mp3', { volume: 0.5 })
