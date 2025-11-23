@@ -1,10 +1,17 @@
 <template>
   <div class="relative h-screen w-full overflow-hidden transition-all ease-in">
+    <!-- Acton Bar -->
+     <top-action-bar @toggle-graph="toggleShowGraph" />
+
+    <!-- Content -->
     <volt-container size="sm">
       <div class="absolute top-50 left-1/2 transform -translate-x-1/2 z-50">
         <transition mode="out-in" enter-from-class="animate-zoomout opacity-0" enter-active-class="" enter-to-class="animate-zoomin opacity-100" leave-from-class="animate-zoomin opacity-100" leave-active-class="" leave-to-class="animate-zoomout opacity-0">
           <guess-state v-if="showAnswer" :is-correct-guess="isCorrectGuess" :is-incorrect-guess="isIncorrectGuess" :correct-song="correctSong" class="mt-5" />
-          <main-card v-else :player="player" :is-ready="isReady" @toggle-settings-modal="toggleSettingsModal" />
+          <template v-else>
+            <ranking-state v-if="showGraph" />
+            <main-card v-else :player="player" :is-ready="isReady" @toggle-settings-modal="toggleSettingsModal" />
+          </template>
         </transition>
       </div>
 
@@ -66,6 +73,8 @@ watch([x, y], () => {
  * Ranking
  */
 
+const showGraph = useLocalStorage('blindtest-show-graph', false)
+const toggleShowGraph = useToggle(showGraph)
 
 /**
  * Modals (Name Update)
