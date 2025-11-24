@@ -42,7 +42,6 @@
             <div v-for="i in 5" :key="i" :class="{ 'bg-secondary-50': i > consecutiveAnswers, 'bg-secondary-500': i <= consecutiveAnswers }" class="bg-secondary-100 h-3 w-3 rounded-sm" />
           </div>
 
-
           <h5 class="p-2 bg-primary-100 dark:bg-primary-800 rounded-xl font-bold mb-4 overflow-hidden text-ellipsis whitespace-nowrap text-primary-200 dark:text-primary-50">
             {{ player.name }}
           </h5>
