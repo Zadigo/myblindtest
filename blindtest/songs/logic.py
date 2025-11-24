@@ -1,9 +1,12 @@
 import asyncio
+import os
 import dataclasses
 import random
 from collections import defaultdict
 from typing import List, Optional, Union
 
+import firebase_admin
+from firebase_admin import firestore, credentials
 from channels.db import database_sync_to_async
 from django.core import exceptions
 from django.core.cache import cache
@@ -135,7 +138,7 @@ class Player:
     color: str = None
     points: int = 0
     team: Optional[str] = None
-    correct_answers: List[int] = dataclasses.field(default_factory=list)
+    correctAnswers: List[int] = dataclasses.field(default_factory=list)
 
     def __hash__(self):
         return hash((self.name))
@@ -181,6 +184,24 @@ class GameLogicMixin(BaseGameLogicMixin):
 
         self._players = defaultdict(Player)
         self.player_count: int = 0
+
+        # Initialize Firebase
+        # cert = credentials.Certificate(
+        #     os.getenv('GOOGLE_APPLICATION_CREDENTIALS'))
+
+        # try:
+        #     firebase_admin.initialize_app(cert)
+        #     self.firebase_db = firestore.client()
+        # except Exception as e:
+        #     print('Firebase initialization error:', e)
+        #     self.firebase_db = None
+
+        # doc = self.firebase_collection.document('')
+        # snapshop = doc.get()
+        # doc.update({'active': True})
+        # doc.create({'active': True})
+        # if snapshop.exists:
+        #     snapshop.to_dict()
 
     @property
     def players(self) -> dict[str, dict[str, str | int]]:

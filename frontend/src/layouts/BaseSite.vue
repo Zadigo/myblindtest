@@ -1,7 +1,7 @@
 <template>
   <section ref="sectionEl" id="layout-site">
     <!-- Navbar -->
-    <navbar class="hidden md:visible">
+    <navbar>
       <navbar-content>
         <template #brand>
           <router-link :to="{ name: 'home' }">

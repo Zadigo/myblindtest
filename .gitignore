@@ -176,3 +176,7 @@ __screenshots__/
 
 test-results/
 playwright-report/
+
+# Other
+
+test-service.json

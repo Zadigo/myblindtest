@@ -31,7 +31,6 @@ export const useSession = createGlobalState(() => {
     getDoc(docRef).then((docSnap) => {
       if (!docSnap.exists()) {
         sessionId.value = null
-        // window.location.reload()
       }
     })
   }
@@ -73,7 +72,7 @@ export const useSession = createGlobalState(() => {
             name: 'Admin',
             points: 0,
             color: '#FF0000',
-            correct_answers: [],
+            correctAnswers: [],
             team: null,
             position: 1
           }

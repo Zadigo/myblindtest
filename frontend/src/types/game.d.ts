@@ -7,7 +7,7 @@ export type BlindtestPlayer = {
   color: string
   points: number
   team?: Nullable<string>
-  correct_answers: Arrayable<number>
+  correctAnswers: Arrayable<number>
   position: number
 }
 

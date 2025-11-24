@@ -30,12 +30,19 @@
       <div class="flex gap-2">
         <!-- Current Step -->
         <div class="p-2 bg-secondary-500/70 text-secondary-100 rounded-lg text-2xl mt-5 opacity-80 w-30 text-center">
-          {{ currentStep }} of <span class="font-semibold">40</span>
+          <template v-if="currentSettings">
+            <div v-if="currentSettings.settings.rounds > 0">{{ currentStep }} of <span class="font-semibold">40</span></div>
+            <div v-else>{{ currentSettings.settings.rounds }}</div>
+          </template>
+
+          <div v-else>
+            <volt-skeleton height="20px" width="50px" />
+          </div>
         </div>
 
         <!-- Timer -->
-        <div class="p-2 bg-secondary-500/70 text-secondary-100 rounded-lg text-2xl mt-5 opacity-80 w-30 text-center" @click="start()">
-          {{ toMinutes }}
+        <div class="p-2 bg-secondary-500/70 text-secondary-100 rounded-lg text-2xl mt-5 opacity-80 w-30 text-center">
+          {{ timerToMinutes }}
         </div>
       </div>
     </div>
@@ -80,10 +87,5 @@ const { currentSettings } = useSession()
  * Countdown
  */
 
-const { start, pause, reset, toMinutes } = useGameCountdown(currentSettings.value?.settings.timeLimit)
-
-onBeforeUnmount(() => {
-  pause()
-  reset()
-})
+const { hasTimer, timerToMinutes } = useGameCountdown()
 </script>

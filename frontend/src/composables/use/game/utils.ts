@@ -91,56 +91,111 @@ export function useConsecutiveAnswers(player: MaybeRef<Empty<BlindtestPlayer>>, 
 
 /**
  * Composable that provides a countdown timer
- * @param startFrom Time to start the countdown from
+ * for the game based on the time limit
+ * set in the game settings
+ * @param callback Optional callback to execute when the timer stops
  */
-export const useGameCountdown = createGlobalState((startFrom: number | undefined) => {
-  if (isDefined(startFrom)) {
-    console.log(startFrom, typeof startFrom)
-    const timeLimit = refDefault<number>(toRef(startFrom * 60), 0)
-    const { gameStarted } = useGameWebsocketIndividual()
-    const { remaining, start, pause, reset } = useCountdown(timeLimit, { immediate: false, interval: 1000 })
-  
-    const { play, stop } = useSound('/clock.mp3', { volume: 0.5 })
+export const useGameCountdown = createGlobalState((callback?: () => void) => {
+  const { gameStarted } = useGameWebsocketIndividual()
 
-    const toMinutes = computed(() => {
-      const minutes = Math.floor(remaining.value / 60)
-      const seconds = remaining.value % 60
-      return `${minutes}:${seconds.toString().padStart(2, '0')}`
-    })
-  
-    whenever(() => remaining.value > 0 && remaining.value <= 10, (value) => {
-      if (value) {
-        play()
-      } else {
-        stop()
-      }
-    })
-  
-    watchDebounced(gameStarted, (state) => {
-      if (state) {
-        start()
-      } else {
-        pause()
-        reset()
-      }
-    })
-    return {
-      toMinutes,
-      timeLimit,
-      remaining,
-      start,
-      pause,
-      reset
+  const { currentSettings } = useSession()
+  const _timerValue = toValue(currentSettings.value?.settings.timeLimit)
+
+  /**
+   * Countdown timer
+   */
+
+  const timeLimit = ref<number>(isDefined(_timerValue) ? _timerValue * 60 : 0)
+  const { remaining, isActive, start, pause, reset } = useCountdown(timeLimit, { 
+    immediate: false, 
+    interval: 1000
+  })
+
+  watchDebounced(gameStarted, (newVal) => {
+    if (newVal) {
+      start()
+    } else {
+      pause()
+      reset()
+      callback?.()
     }
-  } else {
-    return {
-      toMinutes: ref('0:00'),
-      timeLimit: ref(0),
-      remaining: ref(0),
-      start: () => {},
-      pause: () => {},
-      reset: () => {}
+  }, { 
+    debounce: 300
+  })
+
+  /**
+   * Convert remaining time to minutes:seconds format
+   */
+
+  const timerToMinutes = computed(() => {
+    const minutes = Math.floor(remaining.value / 60)
+    const seconds = remaining.value % 60
+
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`
+  })
+
+  /**
+   * Play sound when less than 10 seconds remain
+   */
+
+  const { play, stop } = useSound('/clock.mp3', { volume: 0.5 })
+
+  whenever(() => remaining.value > 0 && remaining.value <= 10 && gameStarted.value, (state) => {
+    if (state) {
+      play()
+    } else {
+      stop()
     }
+  })
+
+  /**
+   * State
+   */
+
+  const hasTimer = computed(() => isDefined(_timerValue) && _timerValue > 0)
+
+  /**
+   * Utilities
+   */
+
+  function restart() {
+    if (gameStarted.value) {
+      pause()
+      reset()
+      start()
+    }
+  }
+
+  tryOnBeforeUnmount(() => {
+    restart()
+  })
+
+  return {
+    /**
+     * Whether the timer is active
+     * @default false
+     */
+    isActive,
+    /**
+     * Time remaining in minutes and seconds
+     * @default "0:00"
+     */
+    timerToMinutes,
+    /**
+     * Time limit in seconds
+     * @default 0
+     */
+    timeLimit,
+    /**
+     * Whether a timer is set by the user
+     * in the game settings
+     * @default false
+     */
+    hasTimer,
+    /**
+     * Reset the timer to the initial value
+     */
+    restart
   }
 })
 

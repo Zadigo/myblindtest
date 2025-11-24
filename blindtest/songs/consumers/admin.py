@@ -1,7 +1,7 @@
+import dataclasses
 from typing import Any, Union
 
 import pyotp
-import dataclasses
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from django.utils.crypto import get_random_string
 from songs.logic import GameLogicMixin, Player

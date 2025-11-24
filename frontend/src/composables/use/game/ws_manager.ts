@@ -73,7 +73,7 @@ export const useGameWebsocketIndividual = createSharedComposable(() => {
           if(message.song) {
             songsPlayed.value.push(message.song)
             songStore.incrementStep()
-            await updateDoc(docRef, { songsPlayed: arrayUnion(message.song) } )
+            await updateDoc(docRef, { songsPlayed: arrayUnion(message.song.id) } )
           }
         }
 
@@ -166,7 +166,10 @@ export const useGameWebsocketIndividualPlayer = createSharedComposable(() => {
       if (message.action === 'guess_correct') {
         if (message.player_id === playerId.value) {
           const docRef = doc(fireStore, 'blindtests', route.params.id as string)
-          await updateDoc(docRef, { [`players.${playerId.value}.points`]: message.points })
+          await updateDoc(docRef, { 
+            [`players.${playerId.value}.points`]: message.points,
+            [`players.${playerId.value}.correctAnswers`]: arrayUnion(message.song.id)
+          })
           
           isCorrectGuess.value = true
         }
@@ -247,6 +250,7 @@ export function useGameActions (wsObject: ReturnType<typeof useWebSocket>, gameS
     gameStarted.value = false
     wsObject.send(stringify({ action: 'stop_game' }))
     wsObject.close()
+
     callback?.()
   }
 
@@ -303,9 +307,23 @@ export function useGameActions (wsObject: ReturnType<typeof useWebSocket>, gameS
   }
 
   return {
+    /**
+     * Starts the game
+     * @param callback Optional callback to be called after starting the game
+     */
     startGame,
+    /**
+     * Stops the game
+     * @param callback Optional callback to be called after stopping the game
+     */
     stopGame,
+    /**
+     * Sends a "not guessed" message over the websocket
+     */
     sendCorrectAnswer,
+    /**
+     * Sends an incorrect answer message over the websocket
+     */
     sendIncorrectAnswer
   }
 }
