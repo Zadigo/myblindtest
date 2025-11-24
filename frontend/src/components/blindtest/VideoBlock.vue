@@ -1,12 +1,8 @@
 <template>
   <transition mode="in-out">
-    <div id="video" v-if="gameStarted" class="h-full flex justify-center gap-10">
-      <div v-if="currentSong" class="flex justify-left">
-        <volt-card class="h-full">
-          <template #content>
-            <iframe :src="currentSong.youtube" class="max-w-full h-auto block" width="400" height="200" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" />
-          </template>
-        </volt-card>
+    <div id="video" v-if="gameStarted" class="h-full flex justify-center gap-5 p-5">
+      <div v-if="currentSong" class="flex justify-left overflow-hidden rounded-xl min-height-[200px]">
+        <iframe :src="currentSong.youtube" class="max-w-full h-auto block" width="400" height="200" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" />
       </div>
 
       <div v-if="currentSong" class="mt-10 space-y-2">

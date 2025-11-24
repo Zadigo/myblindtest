@@ -5,8 +5,8 @@
         <video-block />
       </template>
 
-      <template #default>
-        <div id="players" class="col-span-12 bg-linear-to-r from-primary-100 via-primary-200 to-primary-300 p-5 overflow-hidden border-primary-100 border-10">
+      <template #default="attrs">
+        <div id="players" :class="attrs.theme" class="h-full w-full p-5 overflow-hidden">
           <div class="grid grid-cols-10 overflow-y-scroll gap-2 space-y-3 w-full">
             <player-card v-for="(player, idx) in players" :key="idx" :player-id="player"  />
           </div>

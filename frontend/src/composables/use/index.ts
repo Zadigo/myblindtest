@@ -55,3 +55,16 @@ export const useLoadAutocompleteData = createSharedComposable((fromCache = false
     genreNames
   }
 })
+
+/**
+ * Composable to manage dark mode state
+ */
+export const useDarkMode = createSharedComposable(() => {
+  const isDark = useDark({ selector: 'html', attribute: 'class', valueDark: 'p-dark',})
+  const toggleDark = useToggle(isDark)
+
+  return {
+    isDark,
+    toggleDark
+  }
+})

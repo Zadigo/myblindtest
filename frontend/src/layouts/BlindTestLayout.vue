@@ -1,17 +1,28 @@
 <template>
-  <section id="blindtest" class="grid grid-cols-12 h-screen relative">
+  <section id="blindtest" class="relative h-screen w-full bg-primary-200 dark:bg-primary-800">
     <!-- Action Bar -->
     <action-bar />
 
-    <!-- Video -->
-    <div class="artist col-span-12 min-h-100 bg-primary-500 dark:bg-primary-900 p-20 relative">
-      <div class="bg-linear-to-l from-primary-600 to-primary-900 absolute top-0 left-0 w-full h-full z-10 opacity-80 blur-5xl" />
-      <div class="absolute top-0 left-0 w-full h-full flex justify-center items-center z-20 px-10 pt-[calc(2.5rem+50px)] pb-10">
-        <slot name="video" />
+    <!-- Main Content -->
+    <div class="grid grid-cols-12 grid-rows-12 w-full h-full">
+      <div class="relative col-span-12 row-span-8 overflow-hidden">
+        <!-- Overlay -->
+        <div class="absolute filter brightness-50 top-0 left-0 z-40 w-full h-full opacity-90 bg-linear-to-t dark:from-primary-950 dark:via-primary-700 dark:to-primary-600" />
+
+        <!-- Background -->
+        <div id="artist" class="absolute top-0 left-0 w-full h-full bg-no-repeat bg-cover bg-center blur-sm z-20 bg-fixed" :style="{ backgroundImage: `url(${currentSong?.artist.spotify_avatar || '/dancing1.jpg'})` }" />
+
+        <!-- Video -->
+        <div class="absolute z-50 top-50 left-50">
+          <slot name="video" />
+        </div>
+      </div>
+
+      <!-- Bottom -->
+      <div class="col-span-12 row-span-4">
+        <slot :theme="childTheme" />
       </div>
     </div>
-
-    <slot />
 
     <!-- Dock -->
     <action-dock />
@@ -32,15 +43,15 @@ import { wheelDefaults } from '@/composables'
 const songsStore = useSongs()
 const { currentSong } = storeToRefs(songsStore)
 
-const { css } = useStyleTag('.artist { background-image: url("default.jpg");')
+// const { css } = useStyleTag('.artist { background-image: url("dancing1.jpg");')
 
-watchDebounced(currentSong, (newSong) => {
-  if (isDefined(newSong)) {
-    css.value = `.artist { background-image: url("${newSong.artist.spotify_avatar}"); }`
-  }
-}, {
-  debounce: 500
-})
+// watchDebounced(currentSong, (newSong) => {
+//   if (isDefined(newSong)) {
+//     css.value = `.artist { background-image: url("${newSong.artist.spotify_avatar}"); }`
+//   }
+// }, {
+//   debounce: 500
+// })
 
 /**
  * Websocket
@@ -64,4 +75,37 @@ const { showWheel, randomizerEl, randomizerComplete } = useWheelRandomizer(wsObj
 
 const showDevices = ref(false)
 const showConnectionUrl = ref(false)
+
+/**
+ * Theme
+ */
+
+const childTheme = ref([
+  'border-10',
+  'bg-linear-to-r from-primary-100 via-primary-200 to-primary-300',
+  'dark:bg-linear-to-t dark:from-primary-500 dark:via-primary-700 dark:to-primary-900',
+  'border-primary-100 dark:border-primary-800',
+])
 </script>
+
+<style scoped>
+#artist {
+  transition: background-image 0.5s cubic-bezier(.74, .08, .32, .85);
+  animation: fadeIn 10s cubic-bezier(.74, .08, .32, .85) infinite;
+}
+
+@keyframes fadeIn {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  75% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+</style>

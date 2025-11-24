@@ -4,6 +4,8 @@
 @import "tailwindcss-primeui";
 @import "tw-animate-css";
 
+@custom-variant dark (&:where(.p-dark, .p-dark *, .dark));
+
 @theme {
     --font-sans: "Inria Sans", sans-serif;
     --font-title: "Raleway", sans-serif;

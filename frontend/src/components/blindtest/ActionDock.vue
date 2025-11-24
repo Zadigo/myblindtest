@@ -1,5 +1,5 @@
 <template>
-  <div ref="dock" id="dock" class="col-span-12 bg-primary-100/30 border border-primary-100/80 h-auto min-w-100 w-150 absolute bottom-10 left-[calc(50%-calc(600px/2))] px-2 py-3 rounded-xl flex justify-center gap-2 z-40 overflow-hidden">
+  <div ref="dock" id="dock" class="col-span-12 bg-primary-100/30 dark:bg-primary-950 dark:border-none dark:shadow-2xl border border-primary-100/80 h-auto min-w-100 w-150 absolute bottom-10 left-[calc(50%-calc(600px/2))] px-2 py-3 rounded-xl flex justify-center gap-2 z-40 overflow-hidden">
     <volt-button v-for="item in items" :key="item.icon" @click="item.action">
       <vue-icon :icon="item.icon" class="text-xl" />
     </volt-button>

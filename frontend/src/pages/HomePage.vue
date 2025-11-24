@@ -2,6 +2,14 @@
   <section class="w-full md:w-5xl mx-auto my-20 relative">
     <volt-card class="mt-10 mb-5 shadow-none">
       <template #content>
+        <volt-label label-for="dark-mode">
+          <volt-toggle-switch id="dark-mode" v-model="isDark">
+            <template #handle="{ checked }">
+              <vue-icon :icon="checked ? 'fa6-solid:moon' : 'fa6-solid:sun'" class="text-lg" />
+            </template>
+          </volt-toggle-switch>
+        </volt-label>
+
         <div class="flex justify-end gap-2">
           <volt-secondary-button :disabled="!hasExistingSession" rounded @click="() => reset()">
             <vue-icon icon="fa7-solid:clock-rotate-left" />
@@ -31,6 +39,12 @@
  * Initiate session
  */
 const { reset, hasExistingSession, sessionId } = useSession()
+
+/**
+ * Dark mode
+ */
+
+const { isDark } = useDarkMode()
 
 /**
  * SEO

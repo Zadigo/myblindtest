@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute top-0 left-0 w-full h-auto bg-surface-50 dark:bg-surface-800 px-5 py-2 z-40 flex justify-between items-center">
+  <div class="absolute top-0 left-0 w-full h-auto bg-surface-50 dark:bg-surface-800 px-5 py-2 z-50 flex justify-between items-center">
     <div class="flex justify-left items-center gap-2">
       <router-link :to="{ name: 'home' }">
         <volt-secondary-button>
