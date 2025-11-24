@@ -98,7 +98,7 @@ export function useConsecutiveAnswers(player: ComputedRef<Empty<BlindtestPlayer>
  * @param callback Optional callback to execute when the timer stops
  */
 export const useGameCountdown = createGlobalState((callback?: () => void) => {
-  const { gameStarted } = useGameWebsocketIndividual()
+  const { gameStarted } = useAdminWebsocket()
 
   const { currentSettings } = useSession()
   const _timerValue = toValue(currentSettings.value?.settings.timeLimit)

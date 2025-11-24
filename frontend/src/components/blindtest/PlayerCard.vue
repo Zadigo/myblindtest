@@ -75,6 +75,6 @@ const { consecutiveAnswers } = useConsecutiveAnswers(player)
  * Actions
  */
 
-const { wsObject, gameStarted } = useGameWebsocketIndividual()
+const { wsObject, gameStarted } = useAdminWebsocket()
 const { sendCorrectAnswer } = useGameActions(wsObject, gameStarted)
 </script>

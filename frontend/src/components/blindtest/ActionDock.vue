@@ -34,7 +34,7 @@ const { showWheel } = useWheelRandomizer()
  * Websocket
  */
 
-const { wsObject, gameStarted } = useGameWebsocketIndividual()
+const { wsObject, gameStarted } = useAdminWebsocket()
 const { startGame, stopGame, sendIncorrectAnswer } = useGameActions(wsObject, gameStarted)
 
 const songsStore = useSongs()

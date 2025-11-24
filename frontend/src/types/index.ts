@@ -20,6 +20,8 @@ export type DefaultType<T, D> = T | D
 
 export type PrimeVueToast =  ReturnType<typeof import('primevue/usetoast').useToast>
 
+export type VueUseWsReturnType = ReturnType<typeof import('@vueuse/core').useWebSocket>
+
 export interface BaseApiResponse<T> {
   next: number
   previous: number

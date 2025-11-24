@@ -50,7 +50,7 @@ import { useFirestore } from 'vuefire'
  * Websocket
  */
 
-const { wsObject, player, isReady, showAnswer, players, backgroundImage, isCorrectGuess, isIncorrectGuess, correctSong } = useGameWebsocketIndividualPlayer()
+const { wsObject, player, isReady, showAnswer, players, backgroundImage, isCorrectGuess, isIncorrectGuess, correctSong } = usePlayerWebsocket()
 wsObject.open()
 
 /**

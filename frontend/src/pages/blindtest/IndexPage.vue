@@ -20,13 +20,13 @@
 </template>
 
 <script setup lang="ts">
-import { useGameWebsocketIndividual } from '@/composables'
+import { useAdminWebsocket } from '@/composables'
 
 /**
  * Websocket
  */
 
-const { wsObject, players } = useGameWebsocketIndividual()
+const { wsObject, players } = useAdminWebsocket()
 wsObject.open()
 
 const warnActiveGameModal = ref(false)

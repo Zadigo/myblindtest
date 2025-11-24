@@ -4,8 +4,10 @@ import { addDoc, collection, deleteDoc, doc, getDoc, updateDoc } from 'firebase/
 import { useDocument, useFirestore } from 'vuefire'
 
 /**
- * Global state used to share the current session
- * across components in the application
+ * This composable manages the blindtest session. It handles creating,
+ * retrieving, updating, and deleting the session data in Firestore. A session
+ * can be considered as a game instance where players can join and participate
+ * in a blindtest
  */
 export const useSession = createGlobalState(() => {
   const fireStore = useFirestore()

@@ -92,7 +92,7 @@ const items: MenuItem = ref([
  * State
  */
 
-const { isConnected, wsObject } = useGameWebsocketIndividual()
+const { isConnected, wsObject } = useAdminWebsocket()
 
 /**
  * Session copy
