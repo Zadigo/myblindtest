@@ -79,8 +79,12 @@ In smartphone mode, the admin can choose the number of possible answers to displ
 ## Classic Mode
 
 - Every answer (right or wrong) gives points which can be based on the difficulty of the song (depending on admin settings)
+- The admin can set a number of rounds to be played and the player with the most points at the end of the game wins
+- The admin can also choose the game difficulty, focus on a particular genre or a specific period and finally implement a time limit
 
-## Mode Ultimate
+## Ultimate Mode
+
+This mode is designed to make the game more competitive and strategic. It includes:
 
 - Every wrong answer costs points (which depend on the difficulty of the song)
 - Every right answer gives points based on the difficulty of the song
@@ -91,7 +95,7 @@ In smartphone mode, the admin can choose the number of possible answers to displ
 - A player can multiply their points if he answers a song which genre matches his favorite genre (x1.5)
 - A player must obtain 5 points or more in each category to win the game
 
-## Jokers
+### Jokers
 
 - Player steals the points of another player if he answers right and inversely the other player loses points if he answers wrong
 - Player steals 1 point from every other player if he answers right but makes every other player gain 1 point if he answers wrong
