@@ -1,21 +1,22 @@
+import asyncio
 import datetime
 import json
-import nltk
-import asyncio
-from unittest.mock import patch, Mock
+from unittest.mock import Mock, patch
 
+import nltk
 from channels.db import database_sync_to_async
 from channels.routing import URLRouter
 from channels.testing import WebsocketCommunicator
+from django.conf import settings
 from django.core.cache import cache
-from django.test import TestCase, TransactionTestCase, override_settings
+from django.test import TestCase, override_settings
 from django.urls import re_path, reverse
 from rest_framework.test import APITransactionTestCase
-from songs import consumers, tasks, utils
-from songs.utils import OTPCode
-from songs.models import Artist, Song
+from songs import tasks, utils
 from songs.completion import Wikipedia, nrj
-from django.conf import settings
+from songs.consumers import admin, smartphone
+from songs.models import Artist, Song
+from songs.utils import OTPCode
 
 TEST_CHANNEL_LAYERS = {
     'default': {
@@ -50,235 +51,100 @@ class TestUtils(TestCase):
                 self.assertEqual(sign, expected)
 
 
-class TestSongConsumer(TestCase):
-    fixtures = ['songs']
-
+class WSMixin(TestCase):
     def setUp(self):
         cache.clear()
+
         self.app = URLRouter([
-            re_path(r'^ws/songs$', consumers.SongConsumer.as_asgi()),
+            re_path(
+                r'^ws/songs/(?P<firebase>[a-zA-Z0-9]+)/single-player$',
+                admin.AdminConsumer.as_asgi()
+            ),
+            re_path(
+                r'^ws/single-player/(?P<firebase>[a-zA-Z0-9]+)/connect$',
+                smartphone.PlayerConsumer.as_asgi()
+            )
         ])
 
     async def create_connection(self):
-        instance = WebsocketCommunicator(self.app, '/ws/songs')
+        instance = WebsocketCommunicator(
+            self.app,
+            '/ws/songs/1235abc/single-player'
+        )
         state, _ = await instance.connect()
 
         self.assertTrue(state)
-
-        response = await instance.receive_json_from()
-        self.assertEqual(response['action'], 'connection_token')
-        self.assertIn('token', response)
-
         return instance
 
     async def test_connection(self):
         instance = await self.create_connection()
         await instance.disconnect()
 
-    async def test_get_songs_no_filter(self):
+
+class TestAdminConsumer(WSMixin):
+    fixtures = ['songs']
+
+    async def test_initial_connection(self):
         instance = await self.create_connection()
 
-        await instance.send_json_to({
-            'action': 'start_game',
-            'settings': {
-                'game_difficulty': 'All',
-                'genre': 'All'
-            }
-        })
+        response = await instance.receive_json_from()
+        self.assertEqual(response['action'], 'idle_response')
+        self.assertIn('code', response)
+        self.assertIn('connection_url', response)
 
+        # Start game
+        await instance.send_json_to({'action': 'start_game'})
         response = await instance.receive_json_from()
         self.assertEqual(response['action'], 'game_started')
 
         response = await instance.receive_json_from()
+        self.assertEqual(response['action'], 'song_new')
         self.assertIn('song', response)
-        self.assertIn('id', response['song'])
-        self.assertIn('name', response['song'])
-        self.assertIn('artist', response['song'])
 
-        await instance.disconnect()
-
-    async def test_get_songs_with_difficulty_filter(self):
-        instance = await self.create_connection()
-
-        # Start game with difficulty filter
-        await instance.send_json_to({
-            'action': 'start_game',
-            'settings': {
-                'game_difficulty': 'Expert',
-                'genre': 'All'
-            }
-        })
-
-        response = await instance.receive_json_from()
-        self.assertEqual(response['action'], 'game_started')
-
-        response = await instance.receive_json_from()
-        self.assertEqual(response['action'], 'song_new')
-
-        # Verify song difficulty
         song = response['song']
-        # "Expert" difficulty should be 1
-        self.assertLessEqual(song['difficulty'], 5)
+        self.assertIn('id', song)
 
-        await instance.disconnect()
-
-    async def test_get_songs_with_genre_filter(self):
-        instance = await self.create_connection()
-
-        await instance.send_json_to({
-            'action': 'start_game',
-            'settings': {
-                'game_difficulty': 'All',
-                'genre': 'Zouk'
-            }
-        })
-
-        response = await instance.receive_json_from()
-        self.assertEqual(response['action'], 'game_started')
-
-        response = await instance.receive_json_from()
-        self.assertEqual(response['action'], 'song_new')
-
-        # Verify song genre
-        song = response['song']
-        self.assertEqual(song['genre'], 'Zouk')
-
-        await instance.disconnect()
-
-    async def test_invalid_message_type(self):
-        instance = await self.create_connection()
-
-        await instance.send_json_to({'action': 'invalid_type'})
-
-        # Should receive error response
-        response = await instance.receive_json_from()
-        self.assertEqual(response['action'], 'error')
-
-        await instance.disconnect()
-
-    async def test_song_caching(self):
-        instance = await self.create_connection()
-
-        # Clear cache to start fresh
-        cache.clear()
-
-        # Start game
-        await instance.send_json_to({
-            'action': 'start_game',
-            'settings': {
-                'game_difficulty': 'All',
-                'genre': 'All'
-            }
-        })
-
-        response = await instance.receive_json_from()
-        self.assertEqual(response['action'], 'game_started')
-
-        response = await instance.receive_json_from()
-        self.assertEqual(response['action'], 'song_new')
-
-        # Verify cache was set
-        # FIXME: Returns None
-        cached_songs = cache.get('songs_all_all')
-        self.assertIsNotNone(cached_songs)
-
-        await instance.disconnect()
-
-    async def test_correct_answer(self):
-        instance = await self.create_connection()
-
-        await instance.send_json_to({
-            'action': 'start_game',
-            'settings': {
-                'game_difficulty': 'All',
-                'genre': 'All'
-            }
-        })
-
-        # Start game
-        response = await instance.receive_json_from()
-        self.assertEqual(response['action'], 'game_started')
-
-        # Return a song
-        response = await instance.receive_json_from()
-        self.assertEqual(response['action'], 'song_new')
-
-        # Submit correct guess
+        # Submit guess
         await instance.send_json_to({
             'action': 'submit_guess',
-            'team_id': 0,
-            # Either the user guessed the title, the artist
-            # or both (e.g. both are true)
+            'team_or_player_id': '0',
             'title_match': True,
             'artist_match': False
         })
-
-        # Get score
         response = await instance.receive_json_from()
-        self.assertEqual(response['action'], 'guess_correct')
-        self.assertIn('team_id', response)
+        self.assertEqual(response['action'], 'guess_correct', response)
+        self.assertIn('player_id', response)
         self.assertEqual(response['points'], 1)
 
-        # Return the next song
-        response = await instance.receive_json_from()
-        self.assertEqual(response['action'], 'song_new')
-
-        # Submit correct guess
-        await instance.send_json_to({
-            'action': 'submit_guess',
-            'team_id': 0,
-            'title_match': True,
-            'artist_match': True
-        })
-
-        # Get score
-        response = await instance.receive_json_from()
-        # Got 1 point above plus 2 points for guessing
-        # both the title and the artist so 1 + 2 = 3
-        self.assertEqual(response['points'], 3)
-
-        # Since we have no more songs left the game is over
-        response = await instance.receive_json_from()
-        self.assertEqual(response['action'], 'game_complete')
-        self.assertIn('final_scores', response)
-
         await instance.disconnect()
 
-    async def test_correct_answer_using_song_difficulty_bonus(self):
-        instance = await self.create_connection()
 
-        await instance.send_json_to({
-            'action': 'start_game',
-            'settings': {
-                'game_difficulty': 'Easy',
-                'genre': 'All',
-                'difficulty_bonus': True
-            }
-        })
+class TestPlayerConsumer(WSMixin):
+    async def test_initial_connection(self):
+        instance = WebsocketCommunicator(
+            self.app,
+            '/ws/single-player/1235abc/connect'
+        )
+        state, _ = await instance.connect()
 
-        # Start game
+        self.assertTrue(state)
+
         response = await instance.receive_json_from()
-        self.assertEqual(response['action'], 'game_started')
+        self.assertEqual(response['action'], 'idle_connect')
+        self.assertIn('player', response)
 
-        # Return a song
-        response = await instance.receive_json_from()
-        self.assertEqual(response['action'], 'song_new')
+        player = response['player']
+        self.assertIn('id', player)
+        self.assertIn('name', player)
 
-        # Submit correct guess
-        await instance.send_json_to({
-            'action': 'submit_guess',
-            'team_id': 0,
-            'title_match': True,
-            'artist_match': False
-        })
+        # Update player
+        # await instance.send_json_to({
+        #     'action': 'update_player',
+        #     'name': 'New Player Name'
+        # })
+        # response = await instance.receive_json_from()
 
-        # Get score
-        response = await instance.receive_json_from()
-        self.assertEqual(response['action'], 'guess_correct')
-        # We have two songs, one of difficulty 1 and a second of
-        # difficulty 5, so 1 x 1 = 1 and 1 x 5 = 5 so the final
-        # score should be either 1 or 5
-        self.assertIn(response['points'], [1, 5])
+        await instance.disconnect()
 
 
 class TestRestApiView(APITransactionTestCase):

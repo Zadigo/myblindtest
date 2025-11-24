@@ -5,8 +5,8 @@ import random
 from collections import defaultdict
 from typing import List, Optional, Union
 
-import firebase_admin
-from firebase_admin import firestore, credentials
+# import firebase_admin
+# from firebase_admin import firestore, credentials
 from channels.db import database_sync_to_async
 from django.core import exceptions
 from django.core.cache import cache
@@ -230,8 +230,6 @@ class GameLogicMixin(BaseGameLogicMixin):
             message['points'] = player.points
 
         message['song'] = self.current_song
-
-        print('handle_guess', message)
         return message
 
     async def next_song(self, temporary_genre: str = None):
