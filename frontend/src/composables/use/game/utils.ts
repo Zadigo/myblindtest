@@ -1,6 +1,5 @@
+import type { BlindtestPlayer, Empty } from '@/types'
 import { useSound } from '@vueuse/sound'
-import type { MaybeRef } from 'vue'
-import type { Empty, BlindtestPlayer } from '@/types'
 
 /**
  * A composable function to handle animations
@@ -36,26 +35,30 @@ export function useAnimationComposable(name: string, animationClasses: string[] 
 
 /**
  * Composable that calculates the number of
- * consecutive correct answers for a given team
+ * consecutive correct answers for a given player
  *
- * @param team The team to calculate for
- * @param minConsecutive The minimum number of consecutive answers to qualify
+ * @param player The player to check for consecutive answers
+ * @param callback Optional callback to execute when the player has enough consecutive answers
+ * @param minConsecutive Minimum number of consecutive answers required to trigger the callback
  */
-export function useConsecutiveAnswers(player: MaybeRef<Empty<BlindtestPlayer>>, minConsecutive = 2) {
+export function useConsecutiveAnswers(player: ComputedRef<Empty<BlindtestPlayer>> | Ref<Empty<BlindtestPlayer>>, callback?: () => void, minConsecutive = 3) {
   const songsStore = useSongs()
   const { correctAnswers } = storeToRefs(songsStore)
 
+  /**
+   * Computed properties
+   */
+
   const consecutiveAnswers = computed(() => {
-    if (correctAnswers.value.length < minConsecutive) {
-      return 0
-    }
+    if (correctAnswers.value.length < minConsecutive) return 0
+    if (!isDefined(player)) return 0
 
     let count = 0
 
     for (let i = correctAnswers.value.length - 1; i >= 0; i--) {
       const answer = correctAnswers.value[i]
 
-      if (answer && (answer.teamId === (player.value && player.value.id))) {
+      if (answer && (answer.playerId === player.value.id)) {
         count++
       } else {
         break
@@ -65,14 +68,13 @@ export function useConsecutiveAnswers(player: MaybeRef<Empty<BlindtestPlayer>>, 
     return count >= minConsecutive ? count : 0
   })
 
+  /**
+   * State
+   */
+
   const hasConsecutiveAnswers = computed(() => consecutiveAnswers.value > minConsecutive)
-  const currentBonus = ref<number>(0)
 
-  whenever(hasConsecutiveAnswers, () => {
-    // Do something
-    currentBonus.value = 0
-  })
-
+  whenever(hasConsecutiveAnswers, () => { callback?.() })
 
   return {
     /**

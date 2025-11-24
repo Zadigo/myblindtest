@@ -34,8 +34,8 @@ export interface CacheSession {
  * The team's anwswer given the current song
  */
 export interface Answer {
-  teamId: string // Rename to teamOrPlayerId
-  matched?: MatchedPart
+  playerId: string
+  matched: MatchedPart
   song: Song
 }
 
@@ -45,9 +45,4 @@ export interface SettingsApiResponse {
     minimum: number
     maximum: number
   }
-}
-
-export interface VideoBlockExposedMethods {
-  sendCorrectAnswer: (teamId: string, match: MatchedPart) => void
-  sendIncorrectAnswer: () => void
 }

@@ -293,12 +293,13 @@ export function useGameActions (wsObject: ReturnType<typeof useWebSocket>, gameS
 
       if (isDefined(currentSong)) {
         correctAnswers.value.push({
-          teamId: id,
+          playerId: id,
+          matched: match,
           song: currentSong.value
         })
 
         answers.value.push({
-          teamId: id,
+          playerId: id,
           matched: match,
           song: currentSong.value
         })
