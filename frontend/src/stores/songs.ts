@@ -20,8 +20,20 @@ export const useSongs = defineStore('songs', () => {
   // minus the song that was already played. So, we just have
   // to get the last song of the list to get the current song
   const currentSong = computed(() => songsPlayed.value[songsPlayed.value.length - 1])
+
+  function reset() {
+    answers.value = []
+    correctAnswers.value = []
+    scoringTimelineBase.value = 100
+    scoringTimeline.value = []
+    songsPlayed.value = []
+  }
   
   return {
+    /**
+     * Reset the store to its initial state
+     */
+    reset,
     /**
      * The current step in the game. This is used
      * specifically when the user has limited the game

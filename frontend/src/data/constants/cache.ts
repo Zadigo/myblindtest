@@ -5,7 +5,7 @@ export const defaults: CacheSession = {
   currentStep: 0,
   players: {},
   settings: {
-    rounds: 1,
+    rounds: 0,
     timeLimit: 0,
     pointValue: 1,
     songDifficultyBonus: false,

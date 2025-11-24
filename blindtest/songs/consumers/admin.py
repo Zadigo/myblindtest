@@ -246,7 +246,11 @@ class IndividualBlindTestConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonW
         device_name = content['device_name']
 
         if device_name == 'player_smartphone':
+            self.player_count += 1
+
             player = Player(**content['player'])
+            player.position = self.player_count
+
             self._players[content['device_id']] = player
             # self.pending_devices.append((content['device_id'], player))
             await self.send_json({'action': 'device_accepted', 'player': dataclasses.asdict(player), 'players': self.players})

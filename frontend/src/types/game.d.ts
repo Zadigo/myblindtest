@@ -8,6 +8,7 @@ export type BlindtestPlayer = {
   points: number
   team?: Nullable<string>
   correct_answers: Arrayable<number>
+  position: number
 }
 
 export interface CacheSession {

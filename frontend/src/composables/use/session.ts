@@ -74,7 +74,8 @@ export const useSession = createGlobalState(() => {
             points: 0,
             color: '#FF0000',
             correct_answers: [],
-            team: null
+            team: null,
+            position: 1
           }
         } else {
           delete newValue.players['admin']
@@ -99,6 +100,8 @@ export const useSession = createGlobalState(() => {
     }
   }
 
+  const sonsStore = useSongs()
+
   async function reset() {
     if (sessionId.value) {
       const collectionRef = collection(fireStore, 'blindtests')
@@ -106,6 +109,8 @@ export const useSession = createGlobalState(() => {
 
       const baseDefaults = { ...defaults }
       await updateDoc(docRef, baseDefaults)
+
+      sonsStore.reset()
     }
   }
 
