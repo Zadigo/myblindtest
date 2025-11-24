@@ -48,3 +48,27 @@ This connection allows real-time communication between the admin interface and t
 The Firebase ID is used to uniquely identify each game session and its associated players, ensuring that all interactions are properly routed and managed.
 
 https://example.com/blind-test -> UNIQUE_ID_123 -> https://example.com/tv/ -> Enters unique ID 
+
+
+## Mode Ultimate
+
+- Every wrong answer costs points (which depend on the difficulty of the song)
+- Every right answer gives points based on the difficulty of the song
+- The player who gives the right answer gains points and every other player loses a certain amount of points based on their ranking
+- A player can multiply their points based on how fast they answer (first: x3, second: x2, third: x1.5, others: x1)
+- A player can multiply theirt points if he answers in a row without making mistakes (2 in a row: x1.5, 3 in a row: x2, 4 in a row: x3, 5+ in a row: x4)
+- A player can multiply their points based on the difficulty of the song (easy: x1, medium: x1.5, hard: x2)
+- A player can multiply their points if he answers a song which genre matches his favorite genre (x1.5)
+- A player must obtain 5 points or more in each category to win the game
+
+## Jokers
+
+- Player steals the points of another player if he answers right and inversely the other player loses points if he answers wrong
+- Player steals 1 point from every other player if he answers right but makes every other player gain 1 point if he answers wrong
+- Player can double his points if he answers right but loses double points if he answers wrong
+
+### Special Jokers
+
+Obtained after answers a certain number of songs correctly in a row:
+
+- Perfect Combo: If a player answers 10 songs correctly in a row, they earn the "Perfect Combo" joker. This joker allows them to double their points for the next 5 songs they answer, regardless of whether they answer correctly or incorrectly.
