@@ -14,7 +14,7 @@
 
         <!-- Video -->
         <!-- border-8 border-primary-100 dark:border-primary-800 -->
-        <div class="absolute z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-xl overflow-hidden shadow-2xl">
+        <div class="absolute z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-xl overflow-hidden shadow-2xl w-5xl">
           <slot name="video" />
         </div>
       </div>
@@ -43,16 +43,6 @@ import { wheelDefaults } from '@/composables'
  */
 const songsStore = useSongs()
 const { currentSong } = storeToRefs(songsStore)
-
-// const { css } = useStyleTag('.artist { background-image: url("dancing1.jpg");')
-
-// watchDebounced(currentSong, (newSong) => {
-//   if (isDefined(newSong)) {
-//     css.value = `.artist { background-image: url("${newSong.artist.spotify_avatar}"); }`
-//   }
-// }, {
-//   debounce: 500
-// })
 
 /**
  * Websocket
