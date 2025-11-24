@@ -51,7 +51,7 @@ const { isDark } = useDarkMode()
  */
 
 useHead({
-  title: 'Home',
+  title: 'Blindtest challenge',
   meta: [
     {
       name: 'description',
@@ -61,13 +61,3 @@ useHead({
   ],
 })
 </script>
-
-<style lang="scss">
-#side-panel {
-  #panel {
-    position: sticky;
-    top: 0;
-    left: 0;
-  }
-}
-</style>

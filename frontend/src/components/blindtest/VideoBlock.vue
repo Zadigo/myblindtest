@@ -75,8 +75,7 @@ const { currentSettings } = useSession()
  * Countdown
  */
 
-console.log(currentSettings.value?.settings.timeLimit)
-const { remaining, start, pause, reset, toMinutes } = useGameCountdown(currentSettings.value?.settings.timeLimit)
+const { start, pause, reset, toMinutes } = useGameCountdown(currentSettings.value?.settings.timeLimit)
 
 onBeforeUnmount(() => {
   pause()

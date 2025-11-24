@@ -21,7 +21,6 @@
 
 <script setup lang="ts">
 import { useGameWebsocketIndividual } from '@/composables'
-import { ref } from 'vue'
 
 /**
  * Websocket
