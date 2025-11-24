@@ -1,48 +1,53 @@
 <template>
-  <transition mode="in-out">
-    <div id="video" v-if="gameStarted" class="h-full flex justify-center gap-5 p-5">
-      <div v-if="currentSong" class="flex justify-left overflow-hidden rounded-xl min-height-[200px]">
-        <iframe :src="currentSong.youtube" class="max-w-full h-auto block" width="400" height="200" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" />
+  <div id="video" class="h-full flex justify-start gap-8 p-5 z-20">
+    <div class="bg-primary-300/30 dark:bg-primary-900 flex justify-left items-center overflow-hidden rounded-xl w-[400px] h-[300px] min-height-[200px]">
+      <iframe v-if="gameStarted && currentSong" :src="currentSong.youtube" class="max-w-full h-auto block" width="400" height="200" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" />
+      <volt-bars-loader v-else />
+    </div>
+
+    <div v-if="gameStarted && currentSong" class="mt-10 space-y-2">
+      <h1 class="text-6xl text-surface-50 font-bold opacity-50">
+        {{ currentSong.name }}
+      </h1>
+
+      <h3 class="text-4xl text-surface-50 opacity-80 font-bold">
+        {{ currentSong.artist.name }}
+      </h3>
+
+      <!-- Infos -->
+      <div class="flex items-center gap-2 mt-5">
+        <!-- Genre -->
+        <volt-badge severity="contrast">
+          {{ currentSong.genre }}
+        </volt-badge>
+
+        <!-- Difficulty -->
+        <volt-badge severity="contrast">
+          <vue-icon v-for="i in currentSong.difficulty" :key="i" icon="lucide:star" />
+        </volt-badge>
       </div>
 
-      <div v-if="currentSong" class="mt-10 space-y-2">
-        <h1 class="text-6xl text-surface-50 font-bold opacity-50">
-          {{ currentSong.name }}
-        </h1>
-        <h1 class="text-4xl text-surface-50 font-bold">
-          {{ currentSong.artist.name }}
-        </h1>
-
-        <!-- Infos -->
-        <div class="flex items-center gap-2 mt-5">
-          <!-- Genre -->
-          <volt-badge variant="default">
-            {{ currentSong.genre }}
-          </volt-badge>
-
-          <!-- Difficulty -->
-          <volt-badge severity="info">
-            <vue-icon v-for="i in currentSong.difficulty" :key="i" icon="lucide:star" />
-          </volt-badge>
+      <div class="flex gap-2">
+        <!-- Current Step -->
+        <div class="p-2 bg-secondary-500/70 text-secondary-100 rounded-lg text-2xl mt-5 opacity-80 w-30 text-center">
+          {{ currentStep }} of <span class="font-semibold">40</span>
         </div>
 
-        <!-- Other -->
-        <div class="flex gap-2">
-          <div class="p-2 bg-primary-100 rounded-lg text-2xl mt-5 opacity-80 w-30 text-center">
-            {{ currentStep }} of <span class="font-semibold">40</span>
-          </div>
-          <div class="p-2 bg-primary-100 rounded-lg text-2xl mt-5 opacity-80 w-30 text-center" @click="start()">
-            {{ toMinutes }}
-          </div>
+        <!-- Timer -->
+        <div class="p-2 bg-secondary-500/70 text-secondary-100 rounded-lg text-2xl mt-5 opacity-80 w-30 text-center" @click="start()">
+          {{ toMinutes }}
         </div>
       </div>
     </div>
 
-    <div v-else class="py-15">
-      {{ gameStarted }}
-      <spinner name="loader-12" />
+    <div v-else class="flex-col content-center">
+      <div class="space-y-2">
+        <volt-skeleton height="30px" width="300px" />
+        <volt-skeleton height="30px" width="150px" />
+        <volt-skeleton height="30px" width="170px" />
+      </div>
     </div>
-  </transition>
+  </div>
 </template>
 
 <script setup lang="ts">

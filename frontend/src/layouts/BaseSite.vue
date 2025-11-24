@@ -1,6 +1,7 @@
 <template>
   <section ref="sectionEl" id="layout-site">
-    <navbar>
+    <!-- Navbar -->
+    <navbar class="hidden md:visible">
       <navbar-content>
         <template #brand>
           <router-link :to="{ name: 'home' }">
@@ -48,8 +49,6 @@
 <script setup lang="ts">
 import { onBeforeRouteLeave, useRoute } from 'vue-router'
 
-const bgTheme = ['dark:bg-primary-950', 'bg-no-repeat', 'bg-center', 'bg-gradient-to-tl', 'from-primary/30', 'via-primary-20', 'to-primary/10']
-
 const meta = useRoute().meta as { heightScreen: boolean }
 const sectionEl = useTemplateRef('sectionEl')
 
@@ -60,6 +59,12 @@ onBeforeRouteLeave(() => {
     sectionEl.value?.classList.remove('h-auto')
   }
 })
+
+/**
+ * Theme
+ */
+
+const bgTheme = ['dark:bg-primary-950', 'bg-no-repeat', 'bg-center', 'bg-gradient-to-tl', 'from-primary/30', 'via-primary-20', 'to-primary/10']
 
 onMounted(() => {
   document.documentElement.classList.add(...bgTheme)

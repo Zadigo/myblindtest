@@ -43,10 +43,24 @@
 import { useGlobalState } from '@/composables'
 import type { MenuItem } from 'primevue/menuitem'
 
+/**
+ * Devices
+ */
+
 const devicesStore = useDevicesStore()
 const { showDevicesModal } = storeToRefs(devicesStore)
 
+/**
+ * Connection Url
+ */
+
 const { toggleShowConnectionUrl } = useGlobalState()
+
+/**
+ * Dark mode
+ */
+
+const { isDark, toggleDark } = useDarkMode()
 
 const items: MenuItem = ref([
   {
@@ -61,6 +75,11 @@ const items: MenuItem = ref([
       {
         label: 'Connection url',
         command: () => toggleShowConnectionUrl(true)
+      },
+      {
+        label: computed(() => isDark.value ? 'Light mode' : 'Dark mode'),
+        icon: isDark.value ? 'fa7-solid:sun' : 'fa7-solid:moon',
+        command: () => toggleDark()
       },
       {
         label: 'About'

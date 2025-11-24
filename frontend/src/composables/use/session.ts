@@ -1,6 +1,7 @@
-import { addDoc, collection, deleteDoc, doc, updateDoc, getDoc } from 'firebase/firestore'
-import { useDocument, useFirestore } from 'vuefire'
 import type { CacheSession } from '@/types'
+import { promiseTimeout } from '@vueuse/core'
+import { addDoc, collection, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore'
+import { useDocument, useFirestore } from 'vuefire'
 
 /**
  * Global state used to share the current session
@@ -52,8 +53,9 @@ export const useSession = createGlobalState(() => {
         return
       }
     }
+    await promiseTimeout(1000)
   }
-
+  
   create()
 
   const docRef = doc(fireStore, 'blindtests', sessionId.value)

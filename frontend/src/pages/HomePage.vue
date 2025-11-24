@@ -1,5 +1,5 @@
 <template>
-  <section class="w-full md:w-5xl mx-auto my-20 relative">
+  <section class="relative mx-auto my-20 w-full px-5 md:px-0 md:w-5xl">
     <volt-card class="mt-10 mb-5 shadow-none">
       <template #content>
         <volt-label label-for="dark-mode">
