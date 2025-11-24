@@ -101,6 +101,8 @@ export const useGameCountdown = createGlobalState((callback?: () => void) => {
   const { currentSettings } = useSession()
   const _timerValue = toValue(currentSettings.value?.settings.timeLimit)
 
+  console.log('time value', _timerValue)
+
   /**
    * Countdown timer
    */
@@ -135,24 +137,32 @@ export const useGameCountdown = createGlobalState((callback?: () => void) => {
   })
 
   /**
+   * State
+   */
+
+  const hasTimer = computed(() => isDefined(_timerValue) && _timerValue > 0)
+
+
+  /**
+   * Watchers
+   */
+
+  const lessThanFiveSeconds = computed(() => isActive.value && remaining.value <= 5 && gameStarted.value)
+  const lessThanTenSeconds = computed(() => isActive.value && remaining.value > 5 && remaining.value <= 10 && gameStarted.value)
+
+  /**
    * Play sound when less than 10 seconds remain
    */
 
   const { play, stop } = useSound('/clock.mp3', { volume: 0.5 })
 
-  whenever(() => remaining.value > 0 && remaining.value <= 10 && gameStarted.value, (state) => {
+  whenever(lessThanTenSeconds, (state) => {
     if (state) {
       play()
     } else {
       stop()
     }
   })
-
-  /**
-   * State
-   */
-
-  const hasTimer = computed(() => isDefined(_timerValue) && _timerValue > 0)
 
   /**
    * Utilities
@@ -171,6 +181,11 @@ export const useGameCountdown = createGlobalState((callback?: () => void) => {
   })
 
   return {
+    /**
+     * Remaining time in seconds
+     * @default 0
+     */
+    remaining,
     /**
      * Whether the timer is active
      * @default false
@@ -193,9 +208,18 @@ export const useGameCountdown = createGlobalState((callback?: () => void) => {
      */
     hasTimer,
     /**
+     * Whether there are less than five seconds remaining
+     * @default false
+     */
+    lessThanFiveSeconds,
+    /**
+     * Whether there are less than ten seconds remaining
+     * @default false
+     */
+    lessThanTenSeconds,
+    /**
      * Reset the timer to the initial value
      */
     restart
   }
 })
-

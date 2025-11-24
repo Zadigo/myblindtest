@@ -41,7 +41,7 @@
         </div>
 
         <!-- Timer -->
-        <div class="p-2 bg-secondary-500/70 text-secondary-100 rounded-lg text-2xl mt-5 opacity-80 w-30 text-center">
+        <div id="game-timer" ref="timeEl" class="p-2 bg-secondary-500/70 text-secondary-100 rounded-lg text-2xl mt-5 opacity-80 w-30 text-center">
           {{ timerToMinutes }}
         </div>
       </div>
@@ -87,5 +87,45 @@ const { currentSettings } = useSession()
  * Countdown
  */
 
-const { hasTimer, timerToMinutes } = useGameCountdown()
+const { lessThanFiveSeconds, lessThanTenSeconds, timerToMinutes } = useGameCountdown()
+const timerEl = useTemplateRef<HTMLElement>('timerEl')
+
+watch(lessThanTenSeconds, (state) => {
+  if (state) {
+    timerEl.value?.classList.add('less-than-ten-seconds')
+  } else {
+    timerEl.value?.classList.remove('less-than-ten-seconds')
+  }
+})
+
+watch(lessThanFiveSeconds, (state) => {
+  console.log(state)
+  if (state) {
+    timerEl.value?.classList.add('less-than-five-seconds')
+  } else {
+    timerEl.value?.classList.remove('less-than-five-seconds')
+  }
+})
 </script>
+
+<style scoped>
+#game-timer.less-than-ten-seconds {
+  animation: timer-pulse 1s infinite;
+}
+
+#game-timer.less-than-five-seconds {
+  animation: timer-pulse 0.5s infinite;
+}
+
+@keyframes timer-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+</style>
