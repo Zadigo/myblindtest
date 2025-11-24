@@ -9,7 +9,7 @@ from songs.consumers.admin import ChannelEventsMixin
 from songs.utils import create_token
 
 
-class IndividualPlayerSmartphoneConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):
+class PlayerConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):
     """This consumer handles connections specifically from smartphone devices
     which can then be used to interact with the game in single-player mode.
     The smartphones are used as buzzers. When the user buzzes, it stops the game

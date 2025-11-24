@@ -1,4 +1,4 @@
-import type { CastToString, NewSong, Song } from '@/types'
+import type { NewSong, Song } from '@/types'
 import { useToast } from 'primevue/usetoast'
 
 export * from './utils'

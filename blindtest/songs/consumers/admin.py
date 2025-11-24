@@ -81,31 +81,8 @@ class ChannelEventsMixin:
     async def update_player(self, content: dict[str, str | int]):
         """Channels handler for updating a player's information"""
 
-    # Old handlers kept for reference
 
-    # async def device_connected(self, content: dict[str, str | int]):
-    #     """Channels handler for the devices that are connecting
-    #     to the current blind test game"""
-
-    # async def device_disconnected(self, content: dict[str, str | int]):
-    #     """Channels handler for the devices that have been disconnected
-    #     from the current blind test game"""
-
-    # async def device_accepted(self, content: dict[str, str | int]):
-    #     """Channels handler for devices that have been accepted
-    #     in a blind test room once the code that room has been verified"""
-
-    # async def device_pending(self, content: dict[str, str | int]):
-    #     """Channels handler for devices that are pending
-    #     in the wait room. These devices have to send a confirmation
-    #     code (pin code) for the correct blind test room to accept them"""
-
-    # async def check_pin_code(self, content: dict[str, str | int]):
-    #     """Channels handler for authenticating a pin code to
-    #     a blind test game"""
-
-
-class IndividualBlindTestConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsumer):
+class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsumer):
     """This consumer handles connections specifically from admin devices
     which can then be used to control the blind test game. This consumer handles
     blind test games where each player participates individually as opposed to teams."""

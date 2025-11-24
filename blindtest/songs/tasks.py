@@ -10,15 +10,6 @@ logger = get_task_logger(__name__)
 
 
 @celery.shared_task
-def song_information(songs):
-    songs = Song.objects.filter(id__in=songs)
-    for song in songs:
-        pass
-
-    return len(songs)
-
-
-@celery.shared_task
 def wikipedia_information(artist_id: int):
     """This task searches for the Wikipedia pages for the
     given artist on Google and extracts pieces of information. 
@@ -43,7 +34,8 @@ def wikipedia_information(artist_id: int):
 
         genres = instance.metadata.get('genres', [])
         if genres:
-            artist.other_genres = ','.join(str(value).strip().title() for value in genres)
+            artist.other_genres = ','.join(
+                str(value).strip().title() for value in genres)
         artist.save()
 
         nrj_information.apply_async(args=[artist_id], countdown=5)
@@ -90,11 +82,6 @@ def artist_spotify_information(artist_name: str):
             logger.error(f'Could not get visuals for: {artist_name}')
             return {}
         artist.save()
-    
+
     songs = artist.song_set.filter(year=0).values_list('id', flat=True)
     return artist.spotify_id
-
-
-@celery.shared_task
-def artist_spotify_overview(spotify_id: str):
-    pass
