@@ -15,11 +15,11 @@ export const useSession = createGlobalState(() => {
 
   /**
    * Key in url
+   * @description If there is an ID in the route, use that as session ID
    */
 
   const route = useRoute()
 
-  // If there is an ID in the route, use that as session ID
   if (route.params.id && typeof route.params.id === 'string') {
     sessionId.value = route.params.id
   }
@@ -30,6 +30,7 @@ export const useSession = createGlobalState(() => {
   
   if (isDefined(sessionId)) {
     const docRef = doc(fireStore, 'blindtests', sessionId.value)
+
     getDoc(docRef).then((docSnap) => {
       if (!docSnap.exists()) {
         sessionId.value = null
@@ -54,6 +55,9 @@ export const useSession = createGlobalState(() => {
         return
       }
     }
+
+    // Wait a bit to ensure Firestore is ready and
+    // ensure that the document can be accessed
     await promiseTimeout(1000)
   }
   

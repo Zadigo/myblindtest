@@ -54,13 +54,11 @@ const AsyncListSongs = defineAsyncComponent({
 })
 
 /**
- * Actions
+ * URL search param
+ * - c: Create
+ * - l: List of songs
  */
 
-/**
- * c: Create
- * l: List of songs
- */
 const searchParam = useUrlSearchParams('history', {
   initialValue: {
     v: 'c'
@@ -75,10 +73,10 @@ function handleBack() {
 }
 
 /**
- * Genres
+ * Autocompletion
  */
 
-const { showSongs, genres } = useGetGenres()
+const { showSongs, genres } = useAutocompleteGenres()
 const { blocks, addBlock, save } = useEditSong()
 
 provide('genres', genres)

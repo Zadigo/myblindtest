@@ -4,6 +4,7 @@
  * management for the admin side of the game
  */
 
+import type { VueUseWsReturnType } from '@/types'
 import { useSound } from '@vueuse/sound'
 import { arrayUnion, doc, updateDoc } from 'firebase/firestore'
 import { useToast } from 'primevue/usetoast'
@@ -32,6 +33,7 @@ export const useAdminWebsocket = createSharedComposable(() => {
 
   const songStore = useSongs()
   const { songsPlayed } = storeToRefs(songStore)
+
   const { play } = useSound('tick.mp3')
 
   const wsObject = useWebSocket(`ws://127.0.0.1:8000/ws/songs/${sessionId.value}/single-player`, {
@@ -89,24 +91,41 @@ export const useAdminWebsocket = createSharedComposable(() => {
 
 
   return {
+    /**
+     * Whether the game has started
+     * @default false
+     */
     gameStarted,
+    /**
+     * Websocket object for the admin game
+     */
     wsObject,
+    /**
+     * Whether the websocket is connected
+     * @default false
+     */
     isConnected,
+    /**
+     * Blind test document from Firestore
+     */
     blindTestDoc,
+    /**
+     * List of players in the game
+     * @default []
+     */
     players
   }
 })
 
 /**
- * Composable used to send game actions over websocket such as
- * starting/stopping the game, skipping songs, etc. -; this wraps
- * any websocket object and provides easy to use functions over it
+ * Wrapper for the base websocket that implemnts admin actions for the game
+ * such as starting/stopping the game, sending correct/incorrect answers, etc.
  * @param wsObject The websocket object
  */
-export function useGameActions(wsObject: ReturnType<typeof useWebSocket>, gameStarted: Ref<boolean>) {
+export function useGameActions(wsObject: VueUseWsReturnType, gameStarted: Ref<boolean>) {
   const { stringify } = useWebsocketMessage()
 
-  function startGame() {
+  function _startGame() {
     const { stringify } = useWebsocketMessage()
     const result = stringify({ action: 'start_game' })
 
@@ -114,7 +133,7 @@ export function useGameActions(wsObject: ReturnType<typeof useWebSocket>, gameSt
     gameStarted.value = true
   }
 
-  function stopGame(callback?: () => void) {
+  function _stopGame(callback?: () => void) {
     gameStarted.value = false
     wsObject.send(stringify({ action: 'stop_game' }))
     wsObject.close()
@@ -122,7 +141,7 @@ export function useGameActions(wsObject: ReturnType<typeof useWebSocket>, gameSt
     callback?.()
   }
 
-  function sendIncorrectAnswer() {
+  function _sendIncorrectAnswer() {
     const result = stringify({ action: 'not_guessed' })
 
     if (result) {
@@ -133,7 +152,7 @@ export function useGameActions(wsObject: ReturnType<typeof useWebSocket>, gameSt
   const songsStore = useSongs()
   const { currentSong, correctAnswers, answers } = storeToRefs(songsStore)
 
-  function sendCorrectAnswer(id: string, match: MatchedPart) {
+  function _sendCorrectAnswer(id: string, match: MatchedPart) {
     let title_match = true
     let artist_match = true
 
@@ -154,8 +173,6 @@ export function useGameActions(wsObject: ReturnType<typeof useWebSocket>, gameSt
       artist_match
     })
 
-    // console.log('handleCorrectAnswer', result)
-
     if (result) {
       wsObject.send(result)
 
@@ -174,6 +191,11 @@ export function useGameActions(wsObject: ReturnType<typeof useWebSocket>, gameSt
       }
     }
   }
+
+  const startGame = useThrottleFn(_startGame, 3000)
+  const stopGame = useThrottleFn(_stopGame, 3000)
+  const sendCorrectAnswer = useThrottleFn(_sendCorrectAnswer, 500)
+  const sendIncorrectAnswer = useThrottleFn(_sendIncorrectAnswer, 500)
 
   return {
     /**

@@ -11,23 +11,25 @@ export type BlindtestPlayer = {
   position: number
 }
 
+interface GameSettings {
+  rounds: number
+  timeLimit: number
+  pointValue: number
+  songDifficultyBonus: boolean
+  speedBonus: boolean
+  soloMode: boolean
+  adminPlays: boolean
+  difficultyLevel: DifficultyLevels
+  songType: SongGenres
+  timeRange: number[]
+  availableTeams: string[]
+}
+
 export interface CacheSession {
   songsPlayed: Song[]
   currentStep: number
   players: Record<string, BlindtestPlayer>
-  settings: {
-    rounds: number
-    timeLimit: number
-    pointValue: number
-    songDifficultyBonus: boolean
-    speedBonus: boolean
-    soloMode: boolean
-    adminPlays: boolean
-    difficultyLevel: DifficultyLevels
-    songType: SongGenres
-    timeRange: number[]
-    availableTeams: string[]
-  }
+  settings: GameSettings
 }
 
 /**

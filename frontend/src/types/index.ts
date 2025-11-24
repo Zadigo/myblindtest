@@ -20,7 +20,9 @@ export type DefaultType<T, D> = T | D
 
 export type PrimeVueToast =  ReturnType<typeof import('primevue/usetoast').useToast>
 
-export type VueUseWsReturnType = ReturnType<typeof import('@vueuse/core').useWebSocket>
+export type VueUseWsReturnType<T = unknown> = ReturnType<typeof import('@vueuse/core').useWebSocket<T>>
+
+export type CastToString<T> = T extends object ? { [K in keyof T]: CastToString<T[K]> } : T extends Array<infer U> ? Array<CastToString<U>> : string
 
 export interface BaseApiResponse<T> {
   next: number
