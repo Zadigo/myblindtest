@@ -97,7 +97,9 @@ export const useLoadAutocompleteData = createSharedComposable((fromCache = false
     return responseData.value
   })
 
-  onMounted(async () => { autocomplete.value = await load('/api/v1/songs/settings') })
+  tryOnMounted(async () => { 
+    autocomplete.value = await load('/api/v1/songs/settings')
+  })
 
   const minimumPeriod = computed(() => autocomplete.value?.period.minimum || 0)
   const maximumPeriod = computed(() => autocomplete.value?.period.maximum || 100)
