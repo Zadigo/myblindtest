@@ -86,7 +86,7 @@ In smartphone mode, the admin can choose the number of possible answers to displ
 
 This mode is designed to make the game more competitive and strategic. It includes:
 
-- Every wrong answer costs points (which depend on the difficulty of the song)
+- Every wrong answer costs points (which can depend on the difficulty of the song)
 - Every right answer gives points based on the difficulty of the song
 - The player who gives the right answer gains points and every other player loses a certain amount of points based on their ranking
 - A player can multiply their points based on how fast they answer (first: x3, second: x2, third: x1.5, others: x1)

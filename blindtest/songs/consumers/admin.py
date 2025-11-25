@@ -4,7 +4,7 @@ from typing import Any, Union
 import pyotp
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from django.utils.crypto import get_random_string
-from songs.logic import GameLogicMixin, Player
+from songs.logic.base import GameLogicMixin, Player
 from songs.utils import create_token
 
 DictAny = dict[str, str | int | bool | dict[str, Any]]

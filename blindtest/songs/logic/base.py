@@ -15,17 +15,6 @@ from songs.api import serializers
 from songs.models import Song
 from songs.processors import FuzzyMatcher
 
-# TODO: Ability to use jokers:
-# 1. point boost (win 15 points on this specific answer)
-# 2. Steal the other team's answer but also double the loss if the answer is incorrect
-# 3. Win equaalities, if both team finishes with the same amount of points, the team with this card wins
-
-# Intrigue cards:
-# Boost: 1x, 2x, 3x, 4x, 5x
-
-
-# TODO: Centralize the frontend cache directly in Python and dispatch
-# the updates to the frontend applications
 
 class BaseGameLogicMixin:
     """Base game logic mixin containing shared logic between
@@ -101,16 +90,6 @@ class BaseGameLogicMixin:
 
         if artist_match:
             base_points += factor(self.point_value)
-
-        # Time bonus: more points for quicker answers
-        # if self.time_bonus:
-        #     # time_multiplier = self.timer_task._coro.cr_frame.f_locals['remaining_time'] / self.game_duration
-        #     coro = self.timer_task.get_coro()
-        #     time_multiplier = (
-        #         coro.cr_frame.f_locals['remaining_time'] /
-        #         self.game_duration
-        #     )
-        #     return int(base_points + (1 + time_multiplier))
 
         return base_points
 
