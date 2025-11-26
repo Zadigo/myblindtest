@@ -1,5 +1,4 @@
 import re
-from tabnanny import verbose
 from urllib.parse import urlunparse
 
 from django.db import models
