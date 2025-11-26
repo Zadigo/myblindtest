@@ -180,3 +180,6 @@ playwright-report/
 # Other
 
 test-service.json
+
+.devcontainer/
+.ansible/

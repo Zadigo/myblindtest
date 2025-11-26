@@ -26,7 +26,7 @@
       </template>
     </volt-card>
 
-    <div class="grid grid-rows-2 md:grid-cols-2 gap-2">
+    <div class="grid grid-rows-2 items-center-safe md:grid-cols-2 md:items-start gap-2">
       <general-settings />
       <point-values />
       <game-modes />
