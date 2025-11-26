@@ -19,6 +19,18 @@ class TVShow(models.Model):
         null=True,
         help_text=_('The French title of the television series, if applicable')
     )
+    imdb_id = models.CharField(
+        max_length=20,
+        blank=True,
+        null=True,
+        unique=True,
+        help_text=_('The IMDB identifier for the television series')
+    )
+    image_url = models.URLField(
+        blank=True,
+        null=True,
+        help_text=_('URL to an image representing the television series')
+    )
     created_on = models.DateField(
         auto_now_add=True
     )

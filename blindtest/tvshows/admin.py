@@ -1,9 +1,10 @@
 from django.contrib import admin
+from import_export import fields
 from import_export.admin import ImportExportModelAdmin
 from import_export.resources import ModelResource
 from import_export.widgets import ForeignKeyWidget
 from tvshows.models import ThemeSong, TVShow
-from import_export import fields
+from tvshows import tasks
 
 
 class ThemeSongForeignKeyWidget(ForeignKeyWidget):
@@ -31,8 +32,8 @@ class ThemeSongResource(ModelResource):
     class Meta:
         model = ThemeSong
         fields = [
-            'series_name', 
-            'name', 
+            'series_name',
+            'name',
             'artist',
             'youtube_id',
             'year',
@@ -60,3 +61,17 @@ class TVShowAdmin(ImportExportModelAdmin):
     search_fields = ['title', 'title_fr']
     resource_class = TVShowResource
     ordering = ['title']
+    actions = ['update_tv_show', 'clear_tv_show_metadata']
+
+    def update_tv_show(self, request, queryset):
+        for item in queryset:
+            tasks.update_tvshows_task.apply_async(
+                args=[item.id],
+                countdown=15
+            )
+
+    def clear_tv_show_metadata(self, request, queryset):
+        for item in queryset:
+            item.imdb_id = None
+            item.image_url = None
+            item.save()

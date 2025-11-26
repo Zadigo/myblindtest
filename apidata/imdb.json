@@ -1,0 +1,130 @@
+{
+  "data": {
+    "mainSearch": {
+      "edges": [
+        {
+          "node": {
+            "entity": {
+              "__typename": "Title",
+              "id": "tt0410975",
+              "titleText": {
+                "text": "Desperate Housewives",
+                "isOriginalTitle": true
+              },
+              "originalTitleText": {
+                "text": "Desperate Housewives",
+                "isOriginalTitle": true
+              },
+              "releaseYear": {
+                "__typename": "YearRange",
+                "year": 2004,
+                "endYear": 2012
+              },
+              "releaseDate": {
+                "__typename": "ReleaseDate",
+                "month": 10,
+                "day": 3,
+                "year": 2004,
+                "country": {
+                  "id": "US"
+                },
+                "restriction": null,
+                "attributes": [],
+                "displayableProperty": {
+                  "qualifiersInMarkdownList": null
+                }
+              },
+              "titleType": {
+                "__typename": "TitleType",
+                "id": "tvSeries",
+                "text": "TV Series",
+                "categories": [
+                  {
+                    "id": "tv",
+                    "text": "TV",
+                    "value": "tv"
+                  }
+                ],
+                "canHaveEpisodes": true,
+                "isEpisode": false,
+                "isSeries": true,
+                "displayableProperty": {
+                  "value": {
+                    "plainText": "TV Series"
+                  }
+                }
+              },
+              "primaryImage": {
+                "__typename": "Image",
+                "id": "rm1820150529",
+                "url": "https://m.media-amazon.com/images/M/MV5BMDljYmI5OTktNDFmNC00NmIxLWFhODktM2YyM2JlODVmMWUwXkEyXkFqcGc@._V1_.jpg",
+                "height": 2562,
+                "width": 1708
+              },
+              "episodes": {
+                "episodes": {
+                  "total": 180
+                }
+              },
+              "series": null,
+              "principalCredits": [
+                {
+                  "credits": [
+                    {
+                      "name": {
+                        "__typename": "Name",
+                        "id": "nm0000159",
+                        "nameText": {
+                          "text": "Teri Hatcher"
+                        },
+                        "primaryImage": {
+                          "__typename": "Image",
+                          "id": "rm1353169152",
+                          "url": "https://m.media-amazon.com/images/M/MV5BMjAwODU5ODE3OV5BMl5BanBnXkFtZTcwNjY5MjEyNQ@@._V1_.jpg",
+                          "height": 2048,
+                          "width": 1447
+                        }
+                      }
+                    },
+                    {
+                      "name": {
+                        "__typename": "Name",
+                        "id": "nm0005031",
+                        "nameText": {
+                          "text": "Felicity Huffman"
+                        },
+                        "primaryImage": {
+                          "__typename": "Image",
+                          "id": "rm1962913792",
+                          "url": "https://m.media-amazon.com/images/M/MV5BMTYzNDI2MDIwMV5BMl5BanBnXkFtZTcwMzY3NzcxNw@@._V1_.jpg",
+                          "height": 2048,
+                          "width": 1462
+                        }
+                      }
+                    },
+                    {
+                      "name": {
+                        "__typename": "Name",
+                        "id": "nm0189220",
+                        "nameText": {
+                          "text": "Marcia Cross"
+                        },
+                        "primaryImage": {
+                          "__typename": "Image",
+                          "id": "rm2508242176",
+                          "url": "https://m.media-amazon.com/images/M/MV5BMjA2ODcwMTc3M15BMl5BanBnXkFtZTcwMjc1NTc3Ng@@._V1_.jpg",
+                          "height": 2048,
+                          "width": 1365
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

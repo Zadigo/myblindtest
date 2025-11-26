@@ -1,14 +1,14 @@
 import time
 
 from django.contrib import admin, messages
+from django.utils.crypto import get_random_string
 from import_export import fields
 from import_export.admin import ImportExportModelAdmin
 from import_export.resources import ModelResource
 from import_export.widgets import ForeignKeyWidget
 from songs import tasks
-from django.utils.crypto import get_random_string
-from songs.models import (AfroSong, Artist, PopArtist, PopSong, RapArtist, RapSong,
-                          RnBSong, Song)
+from songs.models import (AfroSong, Artist, PopArtist, PopSong, RapArtist,
+                          RapSong, RnBSong, Song)
 
 from blindtest.rapidapi.client import Spotify
 

@@ -1,40 +1,43 @@
 <template>
   <section ref="sectionEl" id="layout-site">
-    <navbar>
-      <navbar-content>
-        <template #brand>
-          <router-link :to="{ name: 'home' }">
-            Blindtest
-          </router-link>
-        </template>
-
-        <navbar-links>
-          <navbar-link>
+    <!-- Navbar -->
+    <header class="hidden md:flex">
+      <navbar>
+        <navbar-content>
+          <template #brand>
             <router-link :to="{ name: 'home' }">
-              Home
+              Blindtest
             </router-link>
-          </navbar-link>
+          </template>
 
-          <navbar-link>
-            <router-link :to="{ name: 'create' }">
-              Create
-            </router-link>
-          </navbar-link>
+          <navbar-links>
+            <navbar-link>
+              <router-link :to="{ name: 'home' }">
+                {{ $t('Home') }}
+              </router-link>
+            </navbar-link>
 
-          <navbar-link>
-            <router-link :to="{ name: 'statistics' }">
-              Statistics
-            </router-link>
-          </navbar-link>
+            <navbar-link>
+              <router-link :to="{ name: 'create' }">
+                {{ $t('Songs') }}
+              </router-link>
+            </navbar-link>
 
-          <navbar-link>
-            <router-link :to="{ name: 'about' }">
-              About
-            </router-link>
-          </navbar-link>
-        </navbar-links>
-      </navbar-content>
-    </navbar>
+            <navbar-link>
+              <router-link :to="{ name: 'statistics' }">
+                {{ $t('Statistics') }}
+              </router-link>
+            </navbar-link>
+
+            <navbar-link>
+              <router-link :to="{ name: 'about' }">
+                {{ $t('About') }}
+              </router-link>
+            </navbar-link>
+          </navbar-links>
+        </navbar-content>
+      </navbar>
+    </header>
 
     <!-- Main -->
     <router-view v-slot="{ Component }">
@@ -46,26 +49,16 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeRouteLeave, useRoute } from 'vue-router'
+// import { onBeforeRouteLeave, useRoute } from 'vue-router'
 
-const bgTheme = ['dark:bg-primary-950', 'bg-no-repeat', 'bg-center', 'bg-gradient-to-tl', 'from-primary/30', 'via-primary-20', 'to-primary/10']
+// const meta = useRoute().meta as { heightScreen: boolean }
+// const sectionEl = useTemplateRef('sectionEl')
 
-const meta = useRoute().meta as { heightScreen: boolean }
-const sectionEl = useTemplateRef('sectionEl')
-
-onBeforeRouteLeave(() => {
-  if (meta.heightScreen) {
-    sectionEl.value?.classList.add('h-screen')
-  } else {
-    sectionEl.value?.classList.remove('h-auto')
-  }
-})
-
-onMounted(() => {
-  document.documentElement.classList.add(...bgTheme)
-})
-
-onUnmounted(() => {
-  document.documentElement.classList.remove(...bgTheme)
-})
+// onBeforeRouteLeave(() => {
+//   if (meta.heightScreen) {
+//     sectionEl.value?.classList.add('h-screen')
+//   } else {
+//     sectionEl.value?.classList.remove('h-auto')
+//   }
+// })
 </script>

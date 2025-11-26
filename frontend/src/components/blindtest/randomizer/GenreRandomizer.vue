@@ -1,6 +1,6 @@
 <template>
   <transition mode="in-out" enter-active-class="animate__animated animate__fadeInLeftBig" leave-active-class="animate__animated animate__fadeOutRight">
-    <div id="randomizer" v-if="show" class="absolute z-40 top-3/12 left-6/16 w-auto shadow-2xl h-auto bg-primary-50 rounded-xl p-2">
+    <div id="randomizer" v-if="show" class="absolute z-50 top-3/12 left-6/16 w-auto shadow-2xl h-auto bg-primary-50 rounded-xl p-2">
       <div class="p-2 flex justify-end">
         <volt-button @click="show=false">
           <vue-icon icon="lucide:eye-off" />

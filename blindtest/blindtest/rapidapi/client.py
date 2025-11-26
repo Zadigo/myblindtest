@@ -7,11 +7,11 @@ from requests import Request, Session
 class BaseApi:
     url: Optional[str] = None
     host: Optional[str] = None
-    errors = []
+    errors: list[dict[str, str]] = []
 
     def __init__(self):
         self.query: dict[str, str] = {}
-        self.response_data: Any = {}
+        self.response_data: dict[str, Any] = {}
 
     def __repr__(self):
         return f'<{self.__class__.__name__}({self.url})>'
@@ -23,15 +23,19 @@ class BaseApi:
         return data
 
     def build_headers(self, **headers: str):
+        """Creates and returns the headers for the API request"""
         base_headers = {'content-type': 'application/json'} | headers
         base_headers.update({'x-rapidapi-key': os.getenv('RAPID_API_KEY')})
         base_headers['x-rapidapi-host'] = self.host
         return base_headers
 
     def build_query(self, **query: str):
+        """A method to build or update the query 
+        parameters for the API request"""
         self.query | query
 
     def build_request(self, headers: dict[str, str] = {}, request_params: dict[str, str] = {}):
+        """Creates and prepares an HTTP request using the requests library"""
         session = Session()
         headers = self.build_headers(**headers)
 

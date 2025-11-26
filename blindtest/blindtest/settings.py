@@ -302,3 +302,9 @@ CHANNEL_LAYERS = {
 FIXTURE_DIRS = [
     'fixtures/artists'
 ]
+
+
+# Google Firebase
+# https://firebase.google.com/docs/admin/setup
+
+GOOGLE_APPLICATION_CREDENTIALS = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')

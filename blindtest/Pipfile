@@ -38,6 +38,7 @@ channels-redis = "*"
 certifi = "*"
 channels = {extras = ["daphne"], version = "*"}
 autobahn = "==22.4.2"
+firebase-admin = "*"
 
 [dev-packages]
 autopep8 = "*"

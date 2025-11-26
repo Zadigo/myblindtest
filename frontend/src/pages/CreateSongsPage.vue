@@ -1,50 +1,64 @@
 <template>
-  <section class="my-5 px-10 h-auto">
-    <suspense v-if="showSongs">
-      <template #default>
-        <async-list-songs @back="handleBack" />
-      </template>
-
-      <template #fallback>
-        <section id="list">
-          <div class="mx-auto w-6/12 space-y-2">
-            <volt-skeleton v-for="i in 10" :key="i" height="120px" width="600px" />
-          </div>
-        </section>
-      </template>
-    </suspense>
-
-    <div v-else class="w-6/12 mx-auto">
-      <volt-card class="border-none">
+  <volt-container class="h-screen" size="md">
+    <div class="space-y-2">
+      <volt-card>
         <template #content>
-          <transition-group name="opacity">
-            <template v-for="(_, idx) in blocks" :key="idx">
-              <create-block :index="idx" />
-              <volt-divider v-if="blocks.length > 1 && idx !== blocks.length - 1" class="my-5" />
-            </template>
-          </transition-group>
-        </template>
+          <h1 class="font-bold text-3xl">
+            {{ $t('Create songs') }}
+          </h1>
 
-        <template #footer>
-          <div class="space-x-2">
-            <volt-button class="ms-auto" @click="addBlock">
-              <vue-icon icon="fa-solid:plus" />Add block
-            </volt-button>
-
-            <volt-button @click="save">
-              <vue-icon icon="fa-solid:save" />
-              Save
-            </volt-button>
-
-            <volt-button @click="showSongs=true">
-              <vue-icon icon="fa-solid:table" />
-              Songs
-            </volt-button>
-          </div>
+          <p>{{ $t('Create new songs for brand', { brand: 'MyBlindTest' }) }}</p>
         </template>
       </volt-card>
+  
+      <!-- Songs -->
+      <suspense v-if="showSongs">
+        <template #default>
+          <async-list-songs @back="handleBack" />
+        </template>
+  
+        <template #fallback>
+          <section id="list">
+            <div class="space-y-2">
+              <volt-skeleton v-for="i in 10" :key="i" height="120px" width="auto" />
+            </div>
+          </section>
+        </template>
+      </suspense>
+  
+      <!-- Creation -->
+      <div v-else id="song-creation">
+        <volt-card class="border-none">
+          <template #content>
+            <transition-group name="opacity">
+              <template v-for="(_, idx) in blocks" :key="idx">
+                <create-block :index="idx" />
+                <volt-divider v-if="blocks.length > 1 && idx !== blocks.length - 1" class="my-5" />
+              </template>
+            </transition-group>
+          </template>
+  
+          <template #footer>
+            <div class="space-x-2">
+              <volt-button class="ms-auto" @click="addBlock">
+                <vue-icon icon="fa-solid:plus" />{{ $t('Add block') }}
+              </volt-button>
+  
+              <volt-button @click="save">
+                <vue-icon icon="fa-solid:save" />
+                {{ $t('Save') }}
+              </volt-button>
+  
+              <volt-button @click="showSongs=true">
+                <vue-icon icon="fa-solid:table" />
+                {{ $t('Songs') }}
+              </volt-button>
+            </div>
+          </template>
+        </volt-card>
+      </div>
     </div>
-  </section>
+  </volt-container>
 </template>
 
 <script setup lang="ts">
@@ -54,13 +68,11 @@ const AsyncListSongs = defineAsyncComponent({
 })
 
 /**
- * Actions
+ * URL search param
+ * - c: Create
+ * - l: List of songs
  */
 
-/**
- * c: Create
- * l: List of songs
- */
 const searchParam = useUrlSearchParams('history', {
   initialValue: {
     v: 'c'
@@ -75,10 +87,10 @@ function handleBack() {
 }
 
 /**
- * Genres
+ * Autocompletion
  */
 
-const { showSongs, genres } = useGetGenres()
+const { showSongs, genres } = useAutocompleteGenres()
 const { blocks, addBlock, save } = useEditSong()
 
 provide('genres', genres)

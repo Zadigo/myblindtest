@@ -1,3 +1,5 @@
+import type { LocalTypes } from '@/i18n'
+import { i18n, SUPPORT_LOCALES } from '@/i18n'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -5,6 +7,10 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      redirect: `/${SUPPORT_LOCALES[1]}`
+    },
+    {
+      path: '/:locale',
       component: async () => import('../layouts/BaseSite.vue'),
       children: [
         {
@@ -13,14 +19,6 @@ const router = createRouter({
           name: 'home',
           meta: {
             heightScreen: false
-          }
-        },
-        {
-          path: 'teams',
-          component: async () => import('../pages/team/TeamsPage.vue'),
-          name: 'teams',
-          meta: {
-            heightScreen: true
           }
         },
         {
@@ -46,33 +44,37 @@ const router = createRouter({
           meta: {
             heightScreen: true
           }
-        },
-        {
-          path: '(.*)',
-          component: async () => import('../pages/ErrorPage.vue'),
-          name: 'error',
-          meta: {
-            heightScreen: true
-          }
         }
       ]
     },
     {
-      path: '/blind-test',
-      component: async () => import('../pages/team/IndexPage.vue'),
+      path: '/:locale/:id/blind-test',
+      component: async () => import('../pages/blindtest/IndexPage.vue'),
       name: 'blind_test'
     },
     {
-      path: '/:id/individual-blind-test',
-      component: async () => import('../pages/individual/IndexPage.vue'),
-      name: 'individual_blind_test'
+      path: '/:locale/:id/player',
+      component: async () => import('../pages/blindtest/PlayerPage.vue'),
+      name: 'player_page'
     },
     {
-      path: '/:id/single-player',
-      component: async () => import('../pages/individual/PlayerPage.vue'),
-      name: 'single_player'
+      path: '/:locale/(.*)',
+      component: async () => import('../pages/ErrorPage.vue'),
+      name: 'error',
+      meta: {
+        heightScreen: true
+      }
     }
   ]
+})
+
+router.beforeEach(async (to, from, next) => {
+  const locale = to.params.locale as LocalTypes
+  if (locale) {
+    i18n.global.locale.value = locale
+  }
+
+  return next()
 })
 
 router.onError((error) => {

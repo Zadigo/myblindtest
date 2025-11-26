@@ -63,6 +63,11 @@ export default defineConfig({
             'useRequest',
             'useAsyncRequest',
           ]
+        },
+        {
+          'vue-i18n': [
+            'useI18n'
+          ]
         }
       ],
       dirs: [

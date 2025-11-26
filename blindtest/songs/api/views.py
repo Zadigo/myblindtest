@@ -98,13 +98,32 @@ class SearchSongsAndArtists(generics.ListAPIView):
     permission_classes = [AllowAny]
 
     def get_queryset(self):
+        search = self.request.GET.get('q')
+        search_type = self.request.GET.get('type', 'artists')
+        cache_key = f'search_{search}_{search_type}'
+
+        cached_qs = cache.get(cache_key)
+        if cached_qs is not None:
+            return cached_qs
+
         qs = super().get_queryset()
 
-        search = self.request.GET.get('q')
         if search:
-            logic = Q(name__icontains=search)
-            qs1 = qs.filter(logic).distinct()
-            return qs1
+            if search_type == 'artists':
+                logic = Q(name__icontains=search)
+                qs = qs.filter(logic).distinct()
+
+            if search_type == 'songs':
+                logic = Q(artist__song__icontains=search)
+                qs = qs.filter(logic).distinct()
+
+            if search_type == 'both':
+                logic = Q(name__icontains=search) | Q(
+                    artist__song__icontains=search)
+                qs = qs.filter(logic).distinct()
+
+            if qs.exists():
+                cache.set(cache_key, qs, timeout=3600)
         return qs
 
 

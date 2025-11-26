@@ -1,5 +1,4 @@
 import re
-from tabnanny import verbose
 from urllib.parse import urlunparse
 
 from django.db import models
@@ -14,6 +13,8 @@ from django.db.models.signals import pre_save
 
 
 class Artist(models.Model):
+    """Model representing a musical artist or group"""
+
     name = models.CharField(
         max_length=100,
         unique=True,
@@ -89,6 +90,8 @@ class Artist(models.Model):
 
 
 class AbstractSong(models.Model):
+    """Abstract model representing a song"""
+
     artist = models.ForeignKey(
         Artist,
         models.SET_NULL,
@@ -171,6 +174,8 @@ class AbstractSong(models.Model):
 
 
 class Song(AbstractSong):
+    """Model representing a song"""
+
     objects = managers.SongManager()
 
     class Meta:
@@ -195,6 +200,8 @@ class Song(AbstractSong):
 
 
 class PopSong(Song):
+    """Proxy model for repesenting pop songs"""
+
     objects = managers.PopSongManager()
 
     class Meta:
@@ -203,6 +210,8 @@ class PopSong(Song):
 
 
 class RapSong(Song):
+    """Proxy model for representing rap songs"""
+
     objects = managers.RapSongManager()
 
     class Meta:
@@ -211,6 +220,8 @@ class RapSong(Song):
 
 
 class RnBSong(Song):
+    """Proxy model for representing rhythm and blues songs"""
+
     objects = managers.RnBManager()
 
     class Meta:
@@ -220,6 +231,9 @@ class RnBSong(Song):
 
 
 class AfroSong(Song):
+    """Proxy model for representing afrobeat songs
+    and music from the african continent"""
+
     objects = managers.AfroSongManager()
 
     class Meta:
@@ -229,6 +243,8 @@ class AfroSong(Song):
 
 
 class RapArtist(Artist):
+    """Proxy model for representing rap artists"""
+
     objects = managers.RapArtistManager()
 
     class Meta:
@@ -237,6 +253,8 @@ class RapArtist(Artist):
 
 
 class PopArtist(Artist):
+    """Proxy model for representing pop artists"""
+
     objects = managers.PopArtistManager()
 
     class Meta:

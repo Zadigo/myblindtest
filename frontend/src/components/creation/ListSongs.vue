@@ -1,28 +1,29 @@
 <template>
-  <section id="list">
-    <div class="mx-auto w-6/12">
+  <section id="list-songs">
+    <div class="mx-auto">
       <!-- Header -->
       <volt-card class="mb-2 border-none">
         <template #content>
           <div class="flex items-center gap-2 mb-3 w-full">
             <volt-button @click="handleBack">
-              <VueIcon icon="fa-solid:arrow-left" /> Back
+              <VueIcon icon="fa-solid:arrow-left" /> {{ $t('Back') }}
             </volt-button>
 
             <div class="ml-auto space-x-2 flex items-center">
               <volt-button @click="getPrevious">
                 <VueIcon icon="fa-solid:caret-left" />
-                Previous
+                {{ $t('Previous') }}
               </volt-button>
 
               <volt-button @click="getNextPage">
-                Next
+                {{ $t('Next') }}
                 <VueIcon icon="fa-solid:caret-right" />
               </volt-button>
             </div>
           </div>
 
-          <volt-input-text v-model="search" type="search" placeholder="Search" />
+          <!-- Search -->
+          <volt-input-text v-model="search" type="search" :placeholder="$t('Search artists, songs...')" class="w-6/12 mt-5" />
         </template>
       </volt-card>
 
@@ -72,6 +73,12 @@
             </volt-accordion>
           </template>
         </volt-card>
+      </div>
+
+      <div v-else>
+        <div class="text-center text-xl bg-primary-100 dark:bg-primary-800 dark:text-primary-50 p-5 rounded-md">
+          {{ $t('No songs found') }}
+        </div>
       </div>
     </div>
   </section>

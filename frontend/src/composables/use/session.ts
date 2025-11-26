@@ -1,40 +1,41 @@
-import { addDoc, collection, deleteDoc, doc, updateDoc } from 'firebase/firestore'
-import { useDocument, useFirestore } from 'vuefire'
 import type { CacheSession } from '@/types'
+import { promiseTimeout } from '@vueuse/core'
+import { addDoc, collection, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore'
+import { useDocument, useFirestore } from 'vuefire'
 
 /**
- * Generate the team IDs that will be used for
- * the current session used for the current session
- * @param data 
-- */
-export function createTeamIds(data: CacheSession) {
-  const teamOne = data.teams[0]
-  const teamTwo = data.teams[1]
-
-  if (teamOne) {
-    teamOne.id = generateRandomString(10).value
-  }
-
-  if (teamTwo) {
-    teamTwo.id = generateRandomString(10).value
-  }
-
-  return data
-}
-
-/**
- * Global state used to share the current session
- * across components in the application
+ * This composable manages the blindtest session. It handles creating,
+ * retrieving, updating, and deleting the session data in Firestore. A session
+ * can be considered as a game instance where players can join and participate
+ * in a blindtest
  */
 export const useSession = createGlobalState(() => {
   const fireStore = useFirestore()
   const sessionId = useSessionStorage<string>('blindtestId', null)
 
+  /**
+   * Key in url
+   * @description If there is an ID in the route, use that as session ID
+   */
+
   const route = useRoute()
 
-  // If there is an ID in the route, use that as session ID
   if (route.params.id && typeof route.params.id === 'string') {
     sessionId.value = route.params.id
+  }
+
+  /**
+   * Key in local storage but not on Firebase
+   */
+  
+  if (isDefined(sessionId)) {
+    const docRef = doc(fireStore, 'blindtests', sessionId.value)
+
+    getDoc(docRef).then((docSnap) => {
+      if (!docSnap.exists()) {
+        sessionId.value = null
+      }
+    })
   }
 
   /**
@@ -47,15 +48,19 @@ export const useSession = createGlobalState(() => {
 
       try {
         const baseDefaults = { ...defaults }
-        const data = await addDoc(collectionRef, createTeamIds(baseDefaults))
+        const data = await addDoc(collectionRef, baseDefaults)
         sessionId.value = data.id
       } catch (error) {
         console.error('Error creating blindtest session:', error)
         return
       }
     }
-  }
 
+    // Wait a bit to ensure Firestore is ready and
+    // ensure that the document can be accessed
+    await promiseTimeout(1000)
+  }
+  
   create()
 
   const docRef = doc(fireStore, 'blindtests', sessionId.value)
@@ -66,6 +71,20 @@ export const useSession = createGlobalState(() => {
     if (sessionId.value) {
       if (isDefined(newValue)) {
         await updateDoc(docRef, newValue)
+
+        if (newValue.settings.soloMode) {
+          newValue.players['admin'] = {
+            id: 'admin',
+            name: 'Admin',
+            points: 0,
+            color: '#FF0000',
+            correctAnswers: [],
+            team: null,
+            position: 1
+          }
+        } else {
+          delete newValue.players['admin']
+        }
       }
     }
   }, {
@@ -73,24 +92,9 @@ export const useSession = createGlobalState(() => {
     deep: true
   })
 
-  return {
-    /**
-     * Current session ID
-     */
-    sessionId,
-    /**
-     * Blindtest settings for the current session
-     */
-    currentSettings
-  }
-})
-
-/**
- * Composable used to manage blindtest sessions
- */
-export const useSessionManager = createSharedComposable(() => {
-  const { sessionId } = useSession()
-  const fireStore = useFirestore()
+  /**
+   * Actions
+   */
 
   const hasExistingSession = computed(() => sessionId.value !== null)
 
@@ -101,18 +105,29 @@ export const useSessionManager = createSharedComposable(() => {
     }
   }
 
+  const sonsStore = useSongs()
+
   async function reset() {
     if (sessionId.value) {
       const collectionRef = collection(fireStore, 'blindtests')
       const docRef = doc(collectionRef, sessionId.value)
 
       const baseDefaults = { ...defaults }
-      await updateDoc(docRef, createTeamIds(baseDefaults))
+      await updateDoc(docRef, baseDefaults)
+
+      sonsStore.reset()
     }
   }
 
   return {
+    /**
+     * Current session ID
+     */
     sessionId,
+    /**
+     * Blindtest settings for the current session
+     */
+    currentSettings,
     /**
      * Whether there is an existing session
      */
@@ -124,6 +139,6 @@ export const useSessionManager = createSharedComposable(() => {
     /**
      * Resets an existing session.
      */
-    reset,
+    reset
   }
 })

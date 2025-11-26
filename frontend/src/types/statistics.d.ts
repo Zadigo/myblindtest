@@ -1,7 +1,7 @@
 import type { Arrayable } from '.'
 
 export interface StatisticsData {
-  labels: Arrayable<string | number>,
+  labels: Arrayable<string | number>
   data: Arrayable<number>
 }
 

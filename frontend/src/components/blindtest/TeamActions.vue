@@ -39,7 +39,7 @@
 <script setup lang="ts">
 import type { Team, Undefineable } from '@/types';
 
-const { sendCorrectAnswer } = useGameWebsocket()
+const { sendCorrectAnswer } = useAdminWebsocket()
 const matchedElement = ref<MatchedPart>('Both')
 
 const props = defineProps<{ team: Undefineable<Team> }>()

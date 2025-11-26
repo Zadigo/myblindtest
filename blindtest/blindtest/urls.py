@@ -28,7 +28,7 @@ urlpatterns = [
     ),
     path(
         'api/v1/songs/',
-        include('songs.api.urls')
+        include('songs.urls')
     ),
     re_path(
         r'^$',

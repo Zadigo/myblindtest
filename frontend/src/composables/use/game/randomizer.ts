@@ -1,4 +1,5 @@
 import type { RandomizerData } from '@/components/blindtest/randomizer'
+import type { Undefineable } from '@/types'
 
 export const wheelDefaults: RandomizerData[] = [
   { id: 1, value: 'Pop', bgColor: '#f87171', color: '#ffffff' },
@@ -13,16 +14,18 @@ export const wheelDefaults: RandomizerData[] = [
 ]
 
 /**
- * Composable that triggers and runs the
- * wheel randomizer
+ * Composable that triggers and runs the wheel randomizer. The wheel randomizer can
+ * be defined as a spinning wheel that randomly selects a genre from a list of genres.
+ * @param ws The websocket object to send the selected genre to the server
+ * @param autoClose Whether to automatically close the wheel after selection
  */
-export const useWheelRandomizer = createGlobalState((ws?: ReturnType<typeof useGameWebsocket>['wsObject'], autoClose = false) => {
+export const useWheelRandomizer = createGlobalState((ws?: ReturnType<typeof useAdminWebsocket>['wsObject'], autoClose = false) => {
   const showWheel = ref<boolean>(false)
-  const randomizerEl = useTemplateRef('randomizerEl')
+  const randomizerEl = useTemplateRef<HTMLElement>('randomizerEl')
 
   const { stringify } = useWebsocketMessage()
 
-  function randomizerComplete(value: string | undefined | RandomizerData) {
+  function onComplete(value: Undefineable<string> | RandomizerData) {
     if (value) {
       const { start } = useTimeoutFn(() => {
         if (autoClose) showWheel.value = false
@@ -48,9 +51,8 @@ export const useWheelRandomizer = createGlobalState((ws?: ReturnType<typeof useG
     /**
      * Function that gets called once the
      * spinning has finished
-     *
      * @param value The genre to get
      */
-    randomizerComplete
+    onComplete
   }
 })
