@@ -1,41 +1,43 @@
 <template>
   <section ref="sectionEl" id="layout-site">
     <!-- Navbar -->
-    <navbar>
-      <navbar-content>
-        <template #brand>
-          <router-link :to="{ name: 'home' }">
-            Blindtest
-          </router-link>
-        </template>
-
-        <navbar-links>
-          <navbar-link>
+    <header class="hidden md:flex">
+      <navbar>
+        <navbar-content>
+          <template #brand>
             <router-link :to="{ name: 'home' }">
-              Home
+              Blindtest
             </router-link>
-          </navbar-link>
+          </template>
 
-          <navbar-link>
-            <router-link :to="{ name: 'create' }">
-              Create
-            </router-link>
-          </navbar-link>
+          <navbar-links>
+            <navbar-link>
+              <router-link :to="{ name: 'home' }">
+                Home
+              </router-link>
+            </navbar-link>
 
-          <navbar-link>
-            <router-link :to="{ name: 'statistics' }">
-              Statistics
-            </router-link>
-          </navbar-link>
+            <navbar-link>
+              <router-link :to="{ name: 'create' }">
+                Create
+              </router-link>
+            </navbar-link>
 
-          <navbar-link>
-            <router-link :to="{ name: 'about' }">
-              About
-            </router-link>
-          </navbar-link>
-        </navbar-links>
-      </navbar-content>
-    </navbar>
+            <navbar-link>
+              <router-link :to="{ name: 'statistics' }">
+                Statistics
+              </router-link>
+            </navbar-link>
+
+            <navbar-link>
+              <router-link :to="{ name: 'about' }">
+                About
+              </router-link>
+            </navbar-link>
+          </navbar-links>
+        </navbar-content>
+      </navbar>
+    </header>
 
     <!-- Main -->
     <router-view v-slot="{ Component }">

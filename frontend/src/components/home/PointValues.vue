@@ -27,7 +27,7 @@
       <div class="py-3">
         <volt-fieldset legend="Epic game mode">
           <div class="grid grid-cols-3 md:grid-cols-4 items-center gap-2 w-full">
-            <p class="col-span-3">Every wrong answer costs points (which can depend on the difficulty of the song)</p>
+            <p class="col-span-2 md:col-span-3">Every wrong answer costs points (which can depend on the difficulty of the song)</p>
             <volt-toggle-switch class="place-self-center" :disabled="true" />
           </div>
         </volt-fieldset>

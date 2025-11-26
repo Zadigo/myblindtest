@@ -1,32 +1,34 @@
 <template>
-  <section class="relative mx-auto my-20 w-full px-5 md:px-0 md:w-5xl">
-    <volt-card class="mt-10 mb-5 shadow-none">
+  <section class="relative mx-auto my-3 w-full px-5 md:my-20 md:px-0 md:w-5xl">
+    <volt-card id="second-header" class="mt-10 mb-5 shadow-none">
       <template #content>
-        <volt-label label-for="dark-mode">
-          <volt-toggle-switch id="dark-mode" v-model="isDark">
-            <template #handle="{ checked }">
-              <vue-icon :icon="checked ? 'fa6-solid:moon' : 'fa6-solid:sun'" class="text-lg" />
-            </template>
-          </volt-toggle-switch>
-        </volt-label>
-
-        <div class="flex justify-end gap-2">
-          <volt-secondary-button :disabled="!hasExistingSession" rounded @click="() => reset()">
-            <vue-icon icon="fa7-solid:clock-rotate-left" />
-            Reset
-          </volt-secondary-button>
-
-          <volt-secondary-button rounded class="rounded-full">
-            <router-link :to="{ name: 'blind_test', params: { id: sessionId } }" class="inline-flex gap-2 items-center">
-              Start blindtest
-              <vue-icon icon="fa7-solid:arrow-right" />
-            </router-link>
-          </volt-secondary-button>
+        <div class="grid grid-cols-2">
+          <volt-label id="dark-mode" label-for="dark-mode">
+            <volt-toggle-switch id="dark-mode" v-model="isDark">
+              <template #handle="{ checked }">
+                <vue-icon :icon="checked ? 'fa6-solid:moon' : 'fa6-solid:sun'" class="text-lg" />
+              </template>
+            </volt-toggle-switch>
+          </volt-label>
+  
+          <div id="actions" class="flex justify-end gap-2">
+            <volt-secondary-button :disabled="!hasExistingSession" rounded @click="() => reset()">
+              <vue-icon icon="fa7-solid:clock-rotate-left" />
+              <span class="hidden md:block">Reset</span>
+            </volt-secondary-button>
+  
+            <volt-secondary-button rounded class="rounded-full">
+              <router-link :to="{ name: 'blind_test', params: { id: sessionId } }" class="inline-flex gap-2 items-center">
+                <span class="hidden md:block">Start blindtest</span>
+                <vue-icon icon="fa7-solid:arrow-right" />
+              </router-link>
+            </volt-secondary-button>
+          </div>
         </div>
       </template>
     </volt-card>
 
-    <div class="grid grid-rows-2 items-center-safe md:grid-cols-2 md:items-start gap-2">
+    <div id="blindtest-settings" class="grid grid-cols-1 items-center-safe md:grid-cols-2 md:items-start gap-2">
       <general-settings />
       <point-values />
       <game-modes />
