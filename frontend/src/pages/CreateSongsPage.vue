@@ -1,6 +1,6 @@
 <template>
-  <volt-container class="h-screen" size="xl">
-    <div class="w-6/12 mx-auto space-y-2">
+  <volt-container class="h-screen" size="md">
+    <div class="space-y-2">
       <volt-card>
         <template #content>
           <h1 class="font-bold text-3xl">
@@ -20,7 +20,7 @@
         <template #fallback>
           <section id="list">
             <div class="space-y-2">
-              <volt-skeleton v-for="i in 10" :key="i" height="120px" width="600px" />
+              <volt-skeleton v-for="i in 10" :key="i" height="120px" width="auto" />
             </div>
           </section>
         </template>

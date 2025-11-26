@@ -10,7 +10,7 @@
       <template #default="{ attrs }">
         <volt-secondary-button @click="attrs.playSound(sendIncorrectAnswer)">
           <vue-icon icon="lucide:x-square" class="text-xl" />
-          Wrong answer
+          {{ $t('Wrong Answer') }}
         </volt-secondary-button>
       </template>
     </sound-effect>
@@ -20,6 +20,7 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { useToast } from 'primevue/usetoast'
 
 const toast = useToast()
@@ -60,20 +61,22 @@ const { restart, hasTimer } = useGameCountdown()
  * Dock Buttons
  */
 
+const { t } = useI18n()
+
 const items = computed(() => {
   const baseItems = [
     {
-      name: 'Play',
+      name: t('Play'),
       icon: 'lucide:play',
       action: startGame
     },
     {
-      name: 'Stop',
+      name: t('Stop'),
       icon: 'lucide:circle-stop',
       action: () => stopGame(stopGameCallback)
     },
     {
-      name: 'Randomizer',
+      name: t('Randomizer'),
       icon: 'lucide:zap',
       action: () => { showWheel.value = !showWheel.value }
     }
@@ -81,7 +84,7 @@ const items = computed(() => {
 
   if (hasTimer.value) {
     baseItems.splice(1, 0, {
-      name: 'Restart Timer',
+      name: t('Restart Timer'),
       icon: 'lucide:timer-reset',
       action: restart
     })

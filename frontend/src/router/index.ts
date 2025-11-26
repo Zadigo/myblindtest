@@ -1,5 +1,5 @@
 import type { LocalTypes } from '@/i18n'
-import { i18n } from '@/i18n'
+import { i18n, SUPPORT_LOCALES } from '@/i18n'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -48,17 +48,17 @@ const router = createRouter({
       ]
     },
     {
-      path: '/:id/blind-test',
+      path: '/:locale/:id/blind-test',
       component: async () => import('../pages/blindtest/IndexPage.vue'),
       name: 'blind_test'
     },
     {
-      path: '/:id/player',
+      path: '/:locale/:id/player',
       component: async () => import('../pages/blindtest/PlayerPage.vue'),
       name: 'player_page'
     },
     {
-      path: '/(.*)',
+      path: '/:locale/(.*)',
       component: async () => import('../pages/ErrorPage.vue'),
       name: 'error',
       meta: {

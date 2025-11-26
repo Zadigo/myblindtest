@@ -4,7 +4,7 @@
       <router-link :to="{ name: 'home' }">
         <volt-secondary-button>
           <vue-icon icon="lucide:home" />
-          Home
+          {{ $t('Home') }}
         </volt-secondary-button>
       </router-link>
 
@@ -12,7 +12,7 @@
         <template #default="{ attrs }">
           <volt-secondary-button @click="attrs.toggle">
             <vue-icon icon="lucide:cog" />
-            Settings
+            {{ $t('Settings') }}
           </volt-secondary-button>
         </template>
       </volt-dropdown>
@@ -28,12 +28,12 @@
 
       <volt-badge v-if="isConnected" class="animate-pulse gap-2">
         <vue-icon icon="lucide:circle" />
-        Connected
+        {{ $t('Connected') }}
       </volt-badge>
 
       <volt-badge v-else severity="danger" class="cursor-pointer gap-2" @click="wsObject.open()">
         <vue-icon icon="lucide:circle-off" />
-        Disconnected
+        {{ $t('Disconnected') }}
       </volt-badge>
     </div>
   </div>
@@ -61,28 +61,29 @@ const { toggleShowConnectionUrl } = useGlobalState()
  */
 
 const { isDark, toggleDark } = useDarkMode()
+const { t } = useI18n()
 
 const items: MenuItem = ref([
   {
-    label: 'Options',
+    label: t('Options'),
     items: [
       {
-        label: 'Devices',
+        label: t('Devices'),
         command() {
           showDevicesModal.value = true
         }
       },
       {
-        label: 'Connection url',
+        label: t('Connection url'),
         command: () => toggleShowConnectionUrl(true)
       },
       {
-        label: computed(() => isDark.value ? 'Light mode' : 'Dark mode'),
+        label: computed(() => isDark.value ? t('Light mode') : t('Dark mode')),
         icon: isDark.value ? 'fa7-solid:sun' : 'fa7-solid:moon',
         command: () => toggleDark()
       },
       {
-        label: 'About'
+        label: t('About')
       }
     ]
   }

@@ -65,10 +65,8 @@ export default defineConfig({
           ]
         },
         {
-          '@/i18n': [
-            'useI18n',
-            'loadLocaleMessages',
-            'SUPPORT_LOCALES'
+          'vue-i18n': [
+            'useI18n'
           ]
         }
       ],
