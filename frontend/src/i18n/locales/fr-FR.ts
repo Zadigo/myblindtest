@@ -46,5 +46,6 @@ export const messagesFr = {
   "Difficulty": "Difficulté",
   "Wikipedia page": "Page Wikipédia",
   "Artist name": "Nom de l'artiste",
-  "Is group?": "L'artiste est un groupe"
+  "Is group?": "L'artiste est un groupe",
+  "Multiple choice answers": "Activer les réponses à choix multiples"
 }
