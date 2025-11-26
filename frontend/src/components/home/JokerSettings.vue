@@ -15,8 +15,10 @@
     <template #content>
       <div id="jokers" class="inner-shadow rounded-lg overflow-hidden">
         <div class="flex gap-2 p-5 overflow-x-scroll">
-          <div v-for="idx in 9" :key="idx" class="border-2 border-primary-200 dark:border-primary-600 p-3 rounded-lg min-h-40 min-w-30 bg-primary-50 dark:bg-primary-700 cursor-pointer">
-            1
+          <div v-for="idx in 9" :key="idx" class="p-5 border-2 border-primary-200 dark:border-primary-600 rounded-lg min-h-50 min-w-40 overflow-hidden hover:border-2 hover:-translate-y-1.5 transition-all ease-in-out bg-primary-50 dark:bg-primary-700 cursor-pointer">
+            <div class="flex flex-wrap items-center w-full h-full">
+              <h4 class="font-bold text-2xl">Pour l'humanité</h4>
+            </div>
           </div>
         </div>
       </div>
