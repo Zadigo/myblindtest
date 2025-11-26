@@ -1,14 +1,15 @@
 import { Icon } from '@iconify/vue'
 import { createHead } from '@unhead/vue/client'
-import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import { createApp } from 'vue'
 import { createVueAxiosManager } from 'vue-axios-manager'
+import { i18n } from './i18n'
 
-import PrimeVue from 'primevue/config'
-import installPlugins from './plugins'
-import ToastService from 'primevue/toastservice'
 import AnimateOnScroll from 'primevue/animateonscroll'
+import PrimeVue from 'primevue/config'
+import ToastService from 'primevue/toastservice'
 import App from './App.vue'
+import installPlugins from './plugins'
 import router from './router'
 
 import 'animate.css'
@@ -39,6 +40,7 @@ const axiosManager = createVueAxiosManager({
 })
 
 app.use(createPinia())
+app.use(i18n)
 app.use(axiosManager)
 app.use(router)
 app.use(ToastService)
@@ -47,5 +49,5 @@ app.use(PrimeVue, { unstyled: true })
 app.use(head)
 app.directive('animateonscroll', AnimateOnScroll)
 app.component('VueIcon', Icon)
-
+app.provide('google', () => {})
 app.mount('#app')

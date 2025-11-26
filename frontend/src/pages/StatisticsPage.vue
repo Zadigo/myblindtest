@@ -4,10 +4,10 @@
       <volt-card>
         <template #content>
           <h1 class="font-bold text-3xl">
-            Statistics
+            {{ $t('Statistics') }}
           </h1>
 
-          <p>Check detailed statistics about your music collection and trends for your different sessions</p>
+          <p>{{ $t('Check detailed statistics about your music collection and trends for your different sessions') }}</p>
         </template>
       </volt-card>
 

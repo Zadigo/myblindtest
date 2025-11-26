@@ -2,19 +2,19 @@
   <volt-card>
     <template #title>
       <h3 class="font-bold">
-        Game modes
+        {{ $t('Game modes') }}
       </h3>
     </template>
 
     <template v-if="currentSettings" #content>
       <div class="py-3">
-        <volt-label label-for="solo-mode" label="Run in solo mode">
+        <volt-label label-for="solo-mode" :label="$t('Run in solo mode')">
           <volt-toggle-switch v-model="currentSettings.settings.soloMode" />
         </volt-label>
       </div>
 
       <div class="py-3">
-        <volt-label label-for="admin-plays" label="Admin is registered in a team">
+        <volt-label label-for="admin-plays" :label="$t('Admin is registered in a team')">
           <volt-toggle-switch v-model="currentSettings.settings.adminPlays" />
         </volt-label>
       </div>

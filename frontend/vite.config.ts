@@ -63,6 +63,13 @@ export default defineConfig({
             'useRequest',
             'useAsyncRequest',
           ]
+        },
+        {
+          '@/i18n': [
+            'useI18n',
+            'loadLocaleMessages',
+            'SUPPORT_LOCALES'
+          ]
         }
       ],
       dirs: [

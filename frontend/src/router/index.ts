@@ -1,3 +1,5 @@
+import type { LocalTypes } from '@/i18n'
+import { i18n } from '@/i18n'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -5,6 +7,10 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      redirect: `/${SUPPORT_LOCALES[1]}`
+    },
+    {
+      path: '/:locale',
       component: async () => import('../layouts/BaseSite.vue'),
       children: [
         {
@@ -60,6 +66,15 @@ const router = createRouter({
       }
     }
   ]
+})
+
+router.beforeEach(async (to, from, next) => {
+  const locale = to.params.locale as LocalTypes
+  if (locale) {
+    i18n.global.locale.value = locale
+  }
+
+  return next()
 })
 
 router.onError((error) => {

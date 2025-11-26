@@ -4,10 +4,10 @@
       <volt-card>
         <template #content>
           <h1 class="font-bold text-3xl">
-            Create songs
+            {{ $t('Create songs') }}
           </h1>
 
-          <p>Create new songs for MyBlindTest</p>
+          <p>{{ $t('Create new songs for brand', { brand: 'MyBlindTest' }) }}</p>
         </template>
       </volt-card>
   
@@ -41,17 +41,17 @@
           <template #footer>
             <div class="space-x-2">
               <volt-button class="ms-auto" @click="addBlock">
-                <vue-icon icon="fa-solid:plus" />Add block
+                <vue-icon icon="fa-solid:plus" />{{ $t('Add block') }}
               </volt-button>
   
               <volt-button @click="save">
                 <vue-icon icon="fa-solid:save" />
-                Save
+                {{ $t('Save') }}
               </volt-button>
   
               <volt-button @click="showSongs=true">
                 <vue-icon icon="fa-solid:table" />
-                Songs
+                {{ $t('Songs') }}
               </volt-button>
             </div>
           </template>

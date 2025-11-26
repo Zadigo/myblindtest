@@ -13,25 +13,25 @@
           <navbar-links>
             <navbar-link>
               <router-link :to="{ name: 'home' }">
-                Home
+                {{ $t('Home') }}
               </router-link>
             </navbar-link>
 
             <navbar-link>
               <router-link :to="{ name: 'create' }">
-                Create
+                {{ $t('Songs') }}
               </router-link>
             </navbar-link>
 
             <navbar-link>
               <router-link :to="{ name: 'statistics' }">
-                Statistics
+                {{ $t('Statistics') }}
               </router-link>
             </navbar-link>
 
             <navbar-link>
               <router-link :to="{ name: 'about' }">
-                About
+                {{ $t('About') }}
               </router-link>
             </navbar-link>
           </navbar-links>
@@ -49,30 +49,16 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeRouteLeave, useRoute } from 'vue-router'
+// import { onBeforeRouteLeave, useRoute } from 'vue-router'
 
-const meta = useRoute().meta as { heightScreen: boolean }
-const sectionEl = useTemplateRef('sectionEl')
+// const meta = useRoute().meta as { heightScreen: boolean }
+// const sectionEl = useTemplateRef('sectionEl')
 
-onBeforeRouteLeave(() => {
-  if (meta.heightScreen) {
-    sectionEl.value?.classList.add('h-screen')
-  } else {
-    sectionEl.value?.classList.remove('h-auto')
-  }
-})
-
-/**
- * Theme
- */
-
-const bgTheme = ['dark:bg-primary-950', 'bg-no-repeat', 'bg-center', 'bg-gradient-to-tl', 'from-primary/30', 'via-primary-20', 'to-primary/10']
-
-onMounted(() => {
-  document.documentElement.classList.add(...bgTheme)
-})
-
-onUnmounted(() => {
-  document.documentElement.classList.remove(...bgTheme)
-})
+// onBeforeRouteLeave(() => {
+//   if (meta.heightScreen) {
+//     sectionEl.value?.classList.add('h-screen')
+//   } else {
+//     sectionEl.value?.classList.remove('h-auto')
+//   }
+// })
 </script>
