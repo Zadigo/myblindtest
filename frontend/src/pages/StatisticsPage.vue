@@ -1,21 +1,25 @@
 <template>
-  <volt-container size="md">
-    <volt-card class="border-none mb-5">
-      <template #content>
-        <h1 class="font-bold text-3xl">
-          Statistics
-        </h1>
-      </template>
-    </volt-card>
-
-    <div class="grid grid-cols-1 grid-rows-2 gap-2 md:grid-cols-2 md:gap-5">
-      <song-distribution :chart-data="data?.distribution_by_genre" />
-
-      <volt-card class="border-none">
+  <volt-container class="h-screen" size="md">
+    <div class="space-y-2 my-5">
+      <volt-card>
         <template #content>
-          <timeline-chart :chart-data="timelineData" :options="timelineOptions" height="300px" />
+          <h1 class="font-bold text-3xl">
+            Statistics
+          </h1>
+
+          <p>Check detailed statistics about your music collection and trends for your different sessions</p>
         </template>
       </volt-card>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
+        <song-distribution :chart-data="data?.distribution_by_genre" />
+
+        <volt-card class="border-none">
+          <template #content>
+            <timeline-chart :chart-data="timelineData" :options="timelineOptions" height="300px" />
+          </template>
+        </volt-card>
+      </div>
     </div>
   </volt-container>
 </template>

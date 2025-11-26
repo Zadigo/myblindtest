@@ -32,6 +32,7 @@
       <general-settings />
       <point-values />
       <game-modes />
+      <joker-settings />
     </div>
   </section>
 </template>

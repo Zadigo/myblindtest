@@ -1,7 +1,7 @@
 <template>
   <div :data-id="index" class="space-y-2 mb-10">
     <div class="flex justify-end mb-5">
-      <volt-secondary-button rounded @click="() => deleteBlock(index)">
+      <volt-secondary-button v-if="index > 0" rounded @click="() => deleteBlock(index)">
         <vue-icon icon="fa-solid:trash" />
       </volt-secondary-button>
     </div>

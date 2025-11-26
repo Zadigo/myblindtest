@@ -1,5 +1,5 @@
 <template>
-  <section id="list">
+  <section id="list-songs">
     <div class="mx-auto w-6/12">
       <!-- Header -->
       <volt-card class="mb-2 border-none">
