@@ -24,6 +24,22 @@ class BaseGameLogicMixin:
     game_duration: int = 30
     cache_timeout: int = 3600
 
+    @property
+    def load_json_genres(self) -> dict[str, List[str]]:
+        genres = cache.get('all_genres', None)
+        if genres is not None:
+            return genres
+
+        path = settings.MEDIA_ROOT / 'genres.json'
+        with open(path, mode='r', encoding='utf-8') as f:
+            data = json.load(f)
+            cache.set('all_genres', data, self.cache_timeout + 3600)
+            return data
+
+    @cached_property
+    def genres_categories(self) -> list[str]:
+        return list(self.load_json_genres.keys())
+
     @database_sync_to_async
     def get_songs(self, temporary_genre: Optional[str] = None, exclude: List[int] = []) -> List[int]:
         cache_key = f'songs_{self.difficulty}_{self.genre}'
