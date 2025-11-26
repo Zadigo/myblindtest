@@ -30,7 +30,12 @@ class BaseGameLogicMixin:
         cached_songs = cache.get(cache_key)
 
         if cached_songs is not None:
-            return [song_id for song_id in cached_songs if song_id not in exclude]
+            song_ids = [
+                song_id for song_id in cached_songs
+                if song_id not in exclude
+            ]
+            random.shuffle(song_ids)
+            return song_ids
 
         qs = Song.objects.all()
 
@@ -57,7 +62,8 @@ class BaseGameLogicMixin:
         return song_ids
 
     @database_sync_to_async
-    def get_song(self, song_id: int):
+    def get_song(self, song_id: int) -> dict[str, Union[str, int]]:
+        """Returns a serialized song by its ID"""
         try:
             song = Song.objects.get(id=song_id)
             serializer = serializers.SongSerializer(instance=song)
@@ -65,13 +71,13 @@ class BaseGameLogicMixin:
         except exceptions.ObjectDoesNotExist:
             raise
 
-    async def next_song(self, temporary_genre: str = None):
+    async def next_song(self, temporary_genre: Optional[str] = None):
         """Returns a song using IDs present in the datbase.
 
         Or, returns a song within the genre that is passed within
         this function. If the queryset is empty, return a selection
         of all the songs"""
-        raise NotImplementedError
+        return await self.get_songs(temporary_genre=temporary_genre, exclude=list(self.played_songs))
 
     async def calculate_points(self, title_match: bool, artist_match: bool):
         """Calculate points based on match type and remaining time"""
@@ -95,18 +101,6 @@ class BaseGameLogicMixin:
 
     async def handle_guess(self, team_id: str, title_match: bool, artist_match: bool):
         raise NotImplementedError
-
-    async def next_song(self, temporary_genre: str = None):
-        """Returns a song using IDs present in the datbase.
-
-        Or, returns a song within the genre that is passed within
-        this function. If the queryset is empty, return a selection
-        of all the songs"""
-        song_ids = await self.get_songs(
-            temporary_genre=temporary_genre,
-            exclude=list(self.played_songs)
-        )
-        return song_ids
 
 
 @dataclasses.dataclass
