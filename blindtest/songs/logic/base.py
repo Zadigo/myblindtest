@@ -252,6 +252,7 @@ class GameLogicMixin(BaseGameLogicMixin):
             message['action'] = 'guess_correct'
             player.points += result
             message['points'] = player.points
+            player.correctAnswers.append(self.current_song['id'])
         else:
             message['action'] = 'guess_incorrect'
             message['points'] = player.points
