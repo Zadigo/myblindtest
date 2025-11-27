@@ -3,10 +3,17 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path, re_path
 from drf_spectacular import views as drf_views
+from graphene_django.views import GraphQLView
+from blindtest.schema import schema
+from django.views.decorators.csrf import csrf_exempt
 
 from blindtest.views import HomePage
 
 urlpatterns = [
+    path(
+        'graphql/',
+        csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema))
+    ),
     path(
         '__debug__/',
         include('debug_toolbar.urls')

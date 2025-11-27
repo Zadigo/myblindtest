@@ -35,6 +35,12 @@ const axiosManager = createVueAxiosManager({
       label: 'Django',
       dev: import.meta.env.VITE_DJANGO_PROD_DOMAIN,
       disableAuth: true
+    },
+    {
+      name: 'djangoGraphQL',
+      label: 'Django GraphQL',
+      dev: import.meta.env.VITE_DJANGO_GRAPHQL_PROD_DOMAIN,
+      disableAuth: true
     }
   ]
 })
