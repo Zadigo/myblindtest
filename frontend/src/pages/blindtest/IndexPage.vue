@@ -8,7 +8,7 @@
       <template #default="attrs">
         <div id="players" :class="attrs.theme" class="h-full w-full p-5 overflow-hidden">
           <div class="flex items-start overflow-y-scroll gap-2 space-y-3 w-full">
-            <player-card v-for="(player, idx) in players" :key="idx" :player-id="player"  />
+            <player-card :id="`player-${idx}`" v-for="(player, idx) in players" :key="idx" :player-id="player"  />
           </div>
         </div>
       </template>
@@ -58,5 +58,17 @@ useHead({
 <style scoped>
 #players>div::-webkit-scrollbar {
   display: none;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-30px);
+  }
+  60% {
+    transform: translateY(-15px);
+  }
 }
 </style>

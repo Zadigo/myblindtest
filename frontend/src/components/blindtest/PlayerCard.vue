@@ -1,5 +1,5 @@
 <template>
-  <volt-card class="h-auto min-h-[197px]">
+  <volt-card class="h-auto min-h-[207px] min-w-[207px]">
     <template #content>
       <div v-if="player" ref="cardEl" class="text-center flex-row justify-center items-center w-full">
         <div v-if="isHovered" class="space-y-2">
