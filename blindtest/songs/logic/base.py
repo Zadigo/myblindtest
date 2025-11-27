@@ -1,7 +1,10 @@
 import asyncio
 import os
+import json
 import dataclasses
+import pathlib
 import random
+from functools import cached_property
 from collections import defaultdict
 from typing import List, Optional, Union
 
@@ -14,6 +17,7 @@ from django.utils.crypto import get_random_string
 from songs.api import serializers
 from songs.models import Song
 from songs.processors import FuzzyMatcher
+from django.conf import settings
 
 
 class BaseGameLogicMixin:
@@ -30,7 +34,7 @@ class BaseGameLogicMixin:
         if genres is not None:
             return genres
 
-        path = settings.MEDIA_ROOT / 'genres.json'
+        path = settings.MEDIA_PATH / 'genres.json'
         with open(path, mode='r', encoding='utf-8') as f:
             data = json.load(f)
             cache.set('all_genres', data, self.cache_timeout + 3600)
@@ -82,10 +86,11 @@ class BaseGameLogicMixin:
         """Returns a serialized song by its ID"""
         try:
             song = Song.objects.get(id=song_id)
-            serializer = serializers.SongSerializer(instance=song)
-            return serializer.data
         except exceptions.ObjectDoesNotExist:
             raise
+        else:
+            serializer = serializers.SongSerializer(instance=song)
+            return serializer.data
 
     async def next_song(self, temporary_genre: Optional[str] = None):
         """Returns a song using IDs present in the datbase.

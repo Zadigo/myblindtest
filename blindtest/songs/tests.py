@@ -18,6 +18,7 @@ from songs.completion import Wikipedia, nrj
 from songs.consumers import admin, smartphone
 from songs.models import Artist, Song
 from songs.utils import OTPCode
+from songs.logic.base import BaseGameLogicMixin
 
 TEST_CHANNEL_LAYERS = {
     'default': {
@@ -301,3 +302,64 @@ class TestCompletion(TestCase):
         self.assertIsNotNone(result)
         self.assertIn('date_of_birth', result)
         self.assertIsInstance(result['date_of_birth'], datetime.date)
+
+
+class TestBaseGameLogic(TestCase):
+    fixtures = ['songs']
+
+    def setUp(self):
+        self.instance = BaseGameLogicMixin()
+
+    @override_settings(CACHE_TIMEOUT=10)
+    def test_load_genres(self):
+        genres = self.instance.load_json_genres
+        self.assertIsInstance(genres, dict)
+        self.assertGreater(len(genres), 0)
+
+    @override_settings(CACHE_TIMEOUT=10)
+    def test_genres_categories(self):
+        categories = self.instance.genres_categories
+        self.assertIsInstance(categories, list)
+        self.assertGreater(len(categories), 0)
+
+    @override_settings(CACHE_TIMEOUT=1)
+    async def test_get_songs(self):
+        # Since this is a mixin we need to set
+        # some of the attributes manually
+        setattr(self.instance, 'difficulty', 'All')
+        setattr(self.instance, 'genre', 'All')
+
+        song_ids = await self.instance.get_songs()
+        self.assertIsInstance(song_ids, list)
+        self.assertGreater(len(song_ids), 0)
+
+    async def test_get_songs_with_exclude(self):
+        # Since this is a mixin we need to set
+        # some of the attributes manually
+        setattr(self.instance, 'difficulty', 'All')
+        setattr(self.instance, 'genre', 'All')
+
+        song_ids = await self.instance.get_songs()
+        song_value = await self.instance.get_song(song_ids[0])
+        self.assertIsInstance(song_value, dict)
+
+    async def test_calculate_points(self):
+        setattr(self.instance, 'point_value', 2)
+        setattr(self.instance, 'difficulty_bonus', False)
+
+        value = await self.instance.calculate_points(title_match=True, artist_match=False)
+        self.assertEqual(value, 2)
+
+        value = await self.instance.calculate_points(title_match=False, artist_match=True)
+        self.assertEqual(value, 2)
+
+        value = await self.instance.calculate_points(title_match=True, artist_match=True)
+        self.assertEqual(value, 4)
+
+        value = await self.instance.calculate_points(title_match=False, artist_match=False)
+        self.assertEqual(value, 0)
+
+        setattr(self.instance, 'difficulty_bonus', True)
+        setattr(self.instance, 'current_song', {'difficulty': 2})
+        value = await self.instance.calculate_points(title_match=True, artist_match=True)
+        self.assertEqual(value, 8)
