@@ -47,5 +47,9 @@ export const messagesEn = {
   "Wikipedia page": "Wikipedia page",
   "Artist name": "Artist name",
   "Is group?": "Is group?",
-  "Multiple choice answers": "Allow multiple choice answers"
+  "Multiple choice answers": "Allow multiple choice answers",
+  "Name": "Name",
+  "Close": "Close",
+  "Settigs": "Settings",
+  "Genre speciality": "Genre speciality"
 }

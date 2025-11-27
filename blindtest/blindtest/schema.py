@@ -1,4 +1,3 @@
-from flask import g
 import graphene
 from graphene_django import DjangoObjectType
 from songs.models import Song, Artist

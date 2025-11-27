@@ -100,7 +100,7 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
         await self.send_json({
             'action': 'idle_response',
             'code': self.pin_code,
-            'connection_url': f'/{self.session_id}/single-player'
+            'connection_url': f'/ws/songs/{self.session_id}/single-player'
         })
 
     async def disconnect(self, code):

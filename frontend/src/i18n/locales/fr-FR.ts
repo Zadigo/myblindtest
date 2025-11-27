@@ -47,5 +47,9 @@ export const messagesFr = {
   "Wikipedia page": "Page Wikipédia",
   "Artist name": "Nom de l'artiste",
   "Is group?": "L'artiste est un groupe",
-  "Multiple choice answers": "Activer les réponses à choix multiples"
+  "Multiple choice answers": "Activer les réponses à choix multiples",
+  "Name": "Nom",
+  "Close": "Fermer",
+  "Settigs": "Paramètres",
+  "Genre speciality": "Spécialité musicale"
 }

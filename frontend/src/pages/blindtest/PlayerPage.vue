@@ -1,7 +1,7 @@
 <template>
   <div class="relative h-screen w-full overflow-hidden transition-all ease-in">
     <!-- Acton Bar -->
-     <top-action-bar @toggle-graph="toggleShowGraph" />
+    <top-action-bar @toggle-graph="toggleShowGraph" />
 
     <!-- Content -->
     <volt-container size="sm">
@@ -22,30 +22,13 @@
       <div ref="overlayEl" :class="overlayTheme" id="overlay" class="absolute top-0 left-0 w-full h-screen opacity-90 z-10" />
 
       <!-- Modals -->
-      <volt-dialog v-model:visible="showSettingsModal">
-        <template #header>
-          <h2 class="text-2xl font-bold">Settings</h2>
-        </template>
-
-        <form v-if="player">
-          <volt-input-text v-model="playerName" placeholder="Name" />
-        </form>
-
-        <template #footer>
-          <volt-button @click="() => toggleSettingsModal()">
-            Close
-          </volt-button>
-        </template>
-      </volt-dialog>
+      <settings-modal v-model:show="showSettingsModal" :player="player" />
     </volt-container>
   </div>
 
 </template>
 
 <script setup lang="ts">
-import { doc, updateDoc } from 'firebase/firestore'
-import { useFirestore } from 'vuefire'
-
 /**
  * Websocket
  */
@@ -81,18 +64,6 @@ const toggleShowGraph = useToggle(showGraph)
  */
 
 const [showSettingsModal, toggleSettingsModal] = useToggle()
-
-const playerName = ref<string>('')
-const { history } = useRefHistory(playerName)
-
-const route = useRoute()
-const { stringify } = useWebsocketMessage()
-
-watchDebounced(playerName, async (newName) => {
-  const docRef = doc(useFirestore(), 'blindtests', route.params.id)
-  await updateDoc(docRef, { [`players.${player.value?.id}.name`]: newName  })
-  wsObject.send(stringify({ action: 'update_player', id: player.value?.id, name: newName }))
-}, { debounce: 2000 })
 
 /**
  * Themes
