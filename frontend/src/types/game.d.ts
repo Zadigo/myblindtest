@@ -6,9 +6,10 @@ export type BlindtestPlayer = {
   name: string
   color: string
   points: number
-  team?: Nullable<string>
+  team: Nullable<string>
   correctAnswers: Arrayable<number>
   position: number
+  speciality: Nullable<string>
 }
 
 interface GameSettings {
@@ -22,7 +23,6 @@ interface GameSettings {
   difficultyLevel: DifficultyLevels
   songType: SongGenres
   timeRange: number[]
-  availableTeams: string[]
 }
 
 export interface CacheSession {

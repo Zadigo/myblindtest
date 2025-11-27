@@ -87,3 +87,10 @@ class PlayerConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):
 
     async def game_disconnected(self, content):
         await self.send_json({'action': 'game_disconnected'})
+
+    async def update_player_failed(self, content):
+        player_id = content.get('player_id', None)
+        if player_id != self.player.id:
+            return
+
+        await self.send_error(content.get('message', 'Player update failed'))

@@ -1,4 +1,5 @@
 import asyncio
+import dataclasses
 import datetime
 import json
 import unittest
@@ -18,7 +19,7 @@ from songs.completion import Wikipedia, nrj
 from songs.consumers import admin, smartphone
 from songs.models import Artist, Song
 from songs.utils import OTPCode
-from songs.logic.base import BaseGameLogicMixin
+from songs.logic.base import BaseGameLogicMixin, Player
 
 TEST_CHANNEL_LAYERS = {
     'default': {
@@ -363,3 +364,60 @@ class TestBaseGameLogic(TestCase):
         setattr(self.instance, 'current_song', {'difficulty': 2})
         value = await self.instance.calculate_points(title_match=True, artist_match=True)
         self.assertEqual(value, 8)
+
+    async def test_calculate_loosers_loses_points(self):
+        players = {
+            '1': Player(id='1', name='Player 1', points=1),
+            '2': Player(id='2', name='Player 2', points=10),
+            '3': Player(id='3', name='Player 3', points=5),
+            '4': Player(id='4', name='Player 3', points=0)
+        }
+
+        setattr(self.instance, '_players', players)
+        setattr(self.instance, 'point_value', 1)
+        setattr(self.instance, 'difficulty_bonus', False)
+
+        await self.instance.calculate_loosers_loses_points('1', title_match=True)
+
+        self.assertEqual(players['1'].points, 2)  # Winner gets points
+        self.assertEqual(players['2'].points, 8)  # Loser loses points
+        self.assertEqual(players['3'].points, 3)  # Loser loses points
+        self.assertEqual(players['4'].points, 0)  # Loser cannot go below 0
+
+    def test_player_dataclass(self):
+        list = [
+            Player(id='1', name='Player 1'),
+            Player(id='2', name='Player 2')
+        ]
+
+        self.assertIn(Player(id='1', name='Player 1'), list)
+        self.assertIn('1', list)
+        self.assertTrue('1' == list[0])
+        self.assertTrue('Player 1' == list[0])
+
+    def test_properties(self):
+        players = {
+            '1': Player(id='1', name='Player 1', points=1),
+            '2': Player(id='2', name='Player 2', points=10)
+        }
+
+        setattr(self.instance, '_players', players)
+
+        player_list = self.instance.players
+        self.assertIsInstance(player_list, list)
+        self.assertEqual(len(player_list), 2)
+
+        for item in player_list:
+            with self.subTest(item=item):
+                self.assertTrue(dataclasses.is_dataclass(item))
+
+        player_values = self.instance.player_values
+        self.assertIsInstance(player_values, dict)
+        self.assertEqual(len(player_values), 2)
+
+        for _, item in player_values.items():
+            with self.subTest(item=item):
+                self.assertIsInstance(item, dict)
+                self.assertIn('id', item)
+                self.assertIn('name', item)
+                self.assertIn('points', item)

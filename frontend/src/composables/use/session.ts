@@ -80,7 +80,8 @@ export const useSession = createGlobalState(() => {
             color: '#FF0000',
             correctAnswers: [],
             team: null,
-            position: 1
+            position: 1,
+            speciality: null
           }
         } else {
           delete newValue.players['admin']

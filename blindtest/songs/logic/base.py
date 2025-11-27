@@ -20,6 +20,35 @@ from songs.processors import FuzzyMatcher
 from django.conf import settings
 
 
+@dataclasses.dataclass
+class Player:
+    id: str = None
+    position: int = 0
+    name: str = None
+    color: str = None
+    points: int = 0
+    team: Optional[str] = None
+    correctAnswers: List[int] = dataclasses.field(default_factory=list)
+    speciality: Optional[str] = None
+
+    def __hash__(self):
+        return hash((self.name, self.id, self.position))
+
+    def __eq__(self, value: Union[str, 'Player']):
+        if isinstance(value, str):
+            return any([
+                self.name == value,
+                self.id == value,
+                str(self.position) == value
+            ])
+
+        return any([
+            self.name == value.name,
+            self.id == value.id,
+            self.position == value.position
+        ])
+
+
 class BaseGameLogicMixin:
     """Base game logic mixin containing shared logic between
     individual and team-based blindtests."""
@@ -27,6 +56,14 @@ class BaseGameLogicMixin:
     difficulties = ['All', 'Easy', 'Medium', 'Semi-Pro', 'Difficult', 'Expert']
     game_duration: int = 30
     cache_timeout: int = 3600
+
+    @property
+    def players(self) -> list[Player]:
+        return list(self._players.values())
+
+    @property
+    def player_values(self) -> dict[str, dict[str, str | int]]:
+        return {key: dataclasses.asdict(player) for key, player in self._players.items()}
 
     @property
     def load_json_genres(self) -> dict[str, List[str]]:
@@ -101,7 +138,8 @@ class BaseGameLogicMixin:
         return await self.get_songs(temporary_genre=temporary_genre, exclude=list(self.played_songs))
 
     async def calculate_points(self, title_match: bool, artist_match: bool):
-        """Calculate points based on match type and remaining time"""
+        """Calculate points based on match type (title/artist) for
+        the player that made the guess"""
         base_points = 0
 
         # Use the song's difficulty level
@@ -120,25 +158,24 @@ class BaseGameLogicMixin:
 
         return base_points
 
-    async def handle_guess(self, team_id: str, title_match: bool, artist_match: bool):
+    async def calculate_loosers_loses_points(self, winner_id: str, title_match: bool = False, artist_match: bool = False):
+        """Calculates the points for the winner and then
+        deducts points from the losers"""
+        winners_points = await self.calculate_points(title_match, artist_match)
+
+        for player in self._players.values():
+            if player.id == winner_id:
+                player.points += winners_points
+                continue
+
+            # Deduct points from losers
+            player.points = max(0, player.points - 2)
+
+    async def handle_guess(self, player_id: str, title_match: bool, artist_match: bool):
+        """Proxy method that handle the guess for either player by calculating
+        points and returning a message dictionary for the frontend. This should be
+        implemented in subclasses."""
         raise NotImplementedError
-
-
-@dataclasses.dataclass
-class Player:
-    id: str = None
-    position: int = 0
-    name: str = None
-    color: str = None
-    points: int = 0
-    team: Optional[str] = None
-    correctAnswers: List[int] = dataclasses.field(default_factory=list)
-
-    def __hash__(self):
-        return hash((self.name))
-
-    def __eq__(self, value):
-        return self.name == value
 
 
 class GameLogicMixin(BaseGameLogicMixin):
@@ -176,7 +213,7 @@ class GameLogicMixin(BaseGameLogicMixin):
         self.time_limit = None
         self.time_range: List[int] = []
 
-        self._players = defaultdict(Player)
+        self._players: defaultdict[str, Player] = defaultdict(Player)
         self.player_count: int = 0
 
         # Initialize Firebase
@@ -196,10 +233,6 @@ class GameLogicMixin(BaseGameLogicMixin):
         # doc.create({'active': True})
         # if snapshop.exists:
         #     snapshop.to_dict()
-
-    @property
-    def players(self) -> dict[str, dict[str, str | int]]:
-        return {key: dataclasses.asdict(player) for key, player in self._players.items()}
 
     async def handle_guess(self, player_id: str, title_match, artist_match):
         if not self.current_song:
@@ -236,7 +269,7 @@ class GameLogicMixin(BaseGameLogicMixin):
             await self.send_json({
                 'action': 'game_complete',
                 'message': 'No songs left',
-                'final_scores': self.players,
+                'final_scores': self.player_values,
                 'songs_played': len(self.played_songs)
             })
             self.is_started = False
@@ -255,7 +288,7 @@ class GameLogicMixin(BaseGameLogicMixin):
                 await self.send_json({
                     'action': 'game_complete',
                     'message': 'Final round complete',
-                    'final_scores': self.players,
+                    'final_scores': self.player_values,
                     'songs_played': len(self.played_songs)
                 })
                 self.is_started = False

@@ -81,6 +81,10 @@ class ChannelEventsMixin:
     async def update_player(self, content: dict[str, str | int]):
         """Channels handler for updating a player's information"""
 
+    async def update_player_failed(self, content: dict[str, str | int]):
+        """Channels handler for notifying that a player's update has failed for
+        example because the name is already taken"""
+
 
 class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsumer):
     """This consumer handles connections specifically from admin devices
@@ -230,25 +234,38 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
 
             self._players[content['device_id']] = player
             # self.pending_devices.append((content['device_id'], player))
-            await self.send_json({'action': 'device_accepted', 'player': dataclasses.asdict(player), 'players': self.players})
+            await self.send_json({'action': 'device_accepted', 'player': dataclasses.asdict(player), 'players': self.player_values})
 
     async def disconnect_device(self, content: dict[str, str | int]):
         device_id = content['device_id']
 
         if device_id in self._players:
             del self._players[device_id]
-        await self.send_json({'action': 'device_disconnected', 'players': self.players})
+        await self.send_json({'action': 'device_disconnected', 'players': self.player_values})
 
-    async def update_player(self, content):
-        player = content.get('player', None)
-        if player is None:
+    async def update_player(self, content: dict[str, str | int]):
+        updated_player = content.get('player', None)
+        if updated_player is None:
             return
 
-        player_id = player.get('id', None)
+        player_id = updated_player.get('id', None)
         if player_id is None:
             return
 
         if player_id in self._players:
             selected_player = self._players[player_id]
-            selected_player.name = player.get('name', selected_player.id)
+
+            # Check if the updated name is already taken
+            updated_name = updated_player.get('name', None)
+            if updated_name is not None:
+                if updated_name in self.players:
+                    message = self.base_room_message(
+                        type='update.player.failed',
+                        player_id=player_id,
+                        message='Name already taken by another player'
+                    )
+                    await self.channel_layer.group_send(self.indexed_diffusion_group_name, message)
+                    return
+
+            selected_player.name = updated_name
             # print('Updated players', self._players)

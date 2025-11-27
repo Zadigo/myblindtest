@@ -14,7 +14,6 @@ export const defaults: CacheSession = {
     adminPlays: false,
     difficultyLevel: 'All',
     songType: 'All',
-    timeRange: [],
-    availableTeams: []
+    timeRange: []
   }
 }
