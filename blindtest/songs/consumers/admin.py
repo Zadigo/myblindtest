@@ -104,6 +104,8 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
         })
 
     async def disconnect(self, code):
+        message = self.base_room_message(**{'type': 'game.disconnected'})
+        await self.channel_layer.group_send(self.indexed_diffusion_group_name, message)
         await self.channel_layer.group_discard(self.indexed_diffusion_group_name, self.channel_name)
         await self.channel_layer.group_discard(self.indexed_waiting_room_name, self.channel_name)
         await self.close(code=code or 1000)
