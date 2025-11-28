@@ -88,7 +88,7 @@ class GameState():
     paused: bool = False
 
     _players: defaultdict[str, Player] = defaultdict(Player)
-    playerCount: int = 0
+    player_count: int = 0
 
     def increase_round(self) -> None:
         self.current_round += 1
