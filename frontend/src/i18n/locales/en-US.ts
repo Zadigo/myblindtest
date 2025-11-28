@@ -51,5 +51,6 @@ export const messagesEn = {
   "Name": "Name",
   "Close": "Close",
   "Settigs": "Settings",
-  "Genre speciality": "Genre speciality"
+  "Genre speciality": "Genre speciality",
+  "Stop game": "Stop game",
 }

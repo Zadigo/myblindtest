@@ -51,5 +51,6 @@ export const messagesFr = {
   "Name": "Nom",
   "Close": "Fermer",
   "Settigs": "Paramètres",
-  "Genre speciality": "Spécialité musicale"
+  "Genre speciality": "Spécialité musicale",
+  "Stop game": "Arrêter le jeu",
 }

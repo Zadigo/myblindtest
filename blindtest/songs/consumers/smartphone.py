@@ -94,3 +94,6 @@ class PlayerConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):
             return
 
         await self.send_error(content.get('message', 'Player update failed'))
+
+    async def game_paused(self, content):
+        await self.send_json({'action': 'game_paused'})

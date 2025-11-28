@@ -216,6 +216,8 @@ class GameLogicMixin(BaseGameLogicMixin):
         self._players: defaultdict[str, Player] = defaultdict(Player)
         self.player_count: int = 0
 
+        self.paused: bool = False
+
         # Initialize Firebase
         # cert = credentials.Certificate(
         #     os.getenv('GOOGLE_APPLICATION_CREDENTIALS'))

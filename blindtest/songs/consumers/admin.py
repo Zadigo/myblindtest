@@ -85,6 +85,9 @@ class ChannelEventsMixin:
         """Channels handler for notifying that a player's update has failed for
         example because the name is already taken"""
 
+    async def game_paused(self, content: dict[str, str | int]):
+        """Channels handler to indicate to devices that game has been paused"""
+
 
 class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsumer):
     """This consumer handles connections specifically from admin devices
@@ -117,7 +120,7 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
             await self.send_error('No action was provided')
             return
 
-        if action == 'start_game':
+        if action == 'start_game':                
             if self.is_started:
                 await self.send_error("Game already started")
                 return
@@ -214,6 +217,10 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
             self.time_range = settings.get('timeRange', [])
             # self.speed_bonus = settings.get('speedBonus', 0)
             self.time_limit = settings.get('timeLimit', 0)
+        elif action == 'pause_game':
+            self.paused = True if not self.paused else False
+            message = self.base_room_message(**{'type': 'game.paused'})
+            await self.channel_layer.group_send(self.indexed_diffusion_group_name, message)
         else:
             await self.send_error('Invalid action')
 

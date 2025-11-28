@@ -10,6 +10,7 @@ import { arrayUnion, doc, updateDoc } from 'firebase/firestore'
 import { useToast } from 'primevue/usetoast'
 import { useDocument, useFirestore } from 'vuefire'
 
+
 /**
  * Websocket for individual game (admin)
  */
@@ -133,10 +134,24 @@ export function useGameActions(wsObject: VueUseWsReturnType, gameStarted: Ref<bo
     gameStarted.value = true
   }
 
+  function _pauseGame() {
+    wsObject.send(stringify({ action: 'pause_game' }))
+  }
+
+  const toast = useToast()
+  const songsStore = useSongs()
+  const { currentSong, answers, correctAnswers } = storeToRefs(songsStore)
+
   function _stopGame(callback?: () => void) {
     gameStarted.value = false
     wsObject.send(stringify({ action: 'stop_game' }))
     wsObject.close()
+
+    correctAnswers.value = []
+
+    songsStore.songsPlayed = []
+    songsStore.resetStep()
+    toast.add({ severity: 'info', summary: 'Game Stopped', detail: 'The game has been successfully stopped and reset.', life: 8000 })
 
     callback?.()
   }
@@ -148,9 +163,6 @@ export function useGameActions(wsObject: VueUseWsReturnType, gameStarted: Ref<bo
       wsObject.send(result)
     }
   }
-
-  const songsStore = useSongs()
-  const { currentSong, correctAnswers, answers } = storeToRefs(songsStore)
 
   function _sendCorrectAnswer(id: string, match: MatchedPart) {
     let title_match = true
@@ -192,29 +204,29 @@ export function useGameActions(wsObject: VueUseWsReturnType, gameStarted: Ref<bo
     }
   }
 
-  const startGame = useThrottleFn(_startGame, 3000)
-  const stopGame = useThrottleFn(_stopGame, 3000)
-  const sendCorrectAnswer = useThrottleFn(_sendCorrectAnswer, 500)
-  const sendIncorrectAnswer = useThrottleFn(_sendIncorrectAnswer, 500)
-
   return {
+    /**
+     * Pauses the game
+     * @param callback Optional callback to be called after pausing the game
+     */
+    pauseGame: useThrottleFn(_pauseGame, 3000),
     /**
      * Starts the game
      * @param callback Optional callback to be called after starting the game
      */
-    startGame,
+    startGame: useThrottleFn(_startGame, 3000),
     /**
      * Stops the game
      * @param callback Optional callback to be called after stopping the game
      */
-    stopGame,
+    stopGame: useThrottleFn(_stopGame, 3000),
     /**
      * Sends a "not guessed" message over the websocket
      */
-    sendCorrectAnswer,
+    sendCorrectAnswer: useThrottleFn(_sendCorrectAnswer, 500),
     /**
      * Sends an incorrect answer message over the websocket
      */
-    sendIncorrectAnswer
+    sendIncorrectAnswer: useThrottleFn(_sendIncorrectAnswer, 500)
   }
 }

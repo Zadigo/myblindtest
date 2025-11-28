@@ -6,6 +6,7 @@ export type WsSendMessage = { action: 'start_game' }
   | { action: 'submit_guess', team_or_player_id: string, title_match: boolean, artist_match: boolean }
   | { action: 'game_settings', settings: Undefineable<CacheSession['settings']> }
   | { action: 'update_player', id: Undefineable<string>, name: string }
+  | { action: 'pause_game' }
 
 export type WsReceiveMessage = { action: 'device_accepted', player: BlindtestPlayer, players: Record<string, BlindtestPlayer> }
   | { action: 'device_disconnected', players: Record<string, BlindtestPlayer> }
@@ -18,6 +19,7 @@ export type WsReceiveMessage = { action: 'device_accepted', player: BlindtestPla
   | { action: 'error', message: string }
   | { action: 'idle_response', code: number, connection_url: string }
   | { action: 'show_answer' }
+  | { action: 'game_paused' }
 
 
 /**

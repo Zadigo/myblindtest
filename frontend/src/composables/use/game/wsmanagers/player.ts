@@ -88,6 +88,14 @@ export const usePlayerWebsocket = createSharedComposable(() => {
       if (message.action === 'show_answer') {
         showAnswer.value = true
       }
+
+      if (message.action === 'error') {
+        toast.add({ severity: 'error', summary: 'Error', detail: `Error from server: ${message.message}`, life: 10000 })
+      }
+
+      if (message.action === 'game_paused') {
+        toast.add({ severity: 'info', summary: 'Game paused', detail: 'The game has been paused by the host.', life: 10000 })
+      }
     }
   })
 

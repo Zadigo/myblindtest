@@ -36,20 +36,7 @@ const { showWheel } = useWheelRandomizer()
  */
 
 const { wsObject, gameStarted } = useAdminWebsocket()
-const { startGame, stopGame, sendIncorrectAnswer } = useGameActions(wsObject, gameStarted)
-
-const songsStore = useSongs()
-const { correctAnswers } = storeToRefs(songsStore)
-
-// Callback function executed after stopping the game
-// to reset scores and correct answers
-function stopGameCallback() {
-  correctAnswers.value = []
-
-  songsStore.songsPlayed = []
-  songsStore.resetStep()
-  toast.add({ severity: 'info', summary: 'Game Stopped', detail: 'The game has been successfully stopped and reset.', life: 8000 })
-}
+const { startGame, pauseGame, sendIncorrectAnswer } = useGameActions(wsObject, gameStarted)
 
 /**
  * Timer
@@ -72,8 +59,8 @@ const items = computed(() => {
     },
     {
       name: t('Stop'),
-      icon: 'lucide:circle-stop',
-      action: () => stopGame(stopGameCallback)
+      icon: 'lucide:pause',
+      action: () => pauseGame()
     },
     {
       name: t('Randomizer'),
