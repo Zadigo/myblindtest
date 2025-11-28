@@ -66,6 +66,7 @@ export const useSession = createGlobalState(() => {
   const docRef = doc(fireStore, 'blindtests', sessionId.value)
   const currentSettings = useDocument<CacheSession>(docRef)
 
+  // TODO: Transform into a writable computed property
   // Watch for changes and update the Firestore document
   watchDebounced(currentSettings, async (newValue) => {
     if (sessionId.value) {
@@ -141,5 +142,23 @@ export const useSession = createGlobalState(() => {
      * Resets an existing session.
      */
     reset
+  }
+})
+
+/**
+ * This composable is used to manage the player session state
+ * across the application. It takes the firebase session ID
+ * directly from the current url
+ * 
+ */
+export const usePlayerSession = createGlobalState(() => {
+  const fireStore = useFirestore()
+  const route = useRoute()
+
+  const docRef = doc(fireStore, 'blindtests', route.params.id as string)
+  const currentSettings = useDocument<CacheSession>(docRef)
+
+  return {
+    currentSettings
   }
 })

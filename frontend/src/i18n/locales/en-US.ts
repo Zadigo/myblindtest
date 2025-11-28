@@ -53,4 +53,6 @@ export const messagesEn = {
   "Settigs": "Settings",
   "Genre speciality": "Genre speciality",
   "Stop game": "Stop game",
+  "Pause": "Pause",
+  "Show Scores": "Show scores"
 }

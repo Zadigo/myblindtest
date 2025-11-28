@@ -29,7 +29,7 @@
 
       <div class="my-5">
         <volt-label label-for="multiple-choice-answers" :label="$t('Multiple choice answers')">
-          <volt-toggle-switch id="multiple-choice-answers" :disabled="true" />
+          <volt-toggle-switch id="multiple-choice-answers" v-model="currentSettings.settings.multipleChoiceAnswers" />
         </volt-label>
       </div>
 

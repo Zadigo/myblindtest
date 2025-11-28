@@ -34,6 +34,12 @@ export const usePlayerWebsocket = createSharedComposable(() => {
   const showAnswer = refAutoReset<boolean>(false, 10000)
 
   /**
+   * Choices state
+   */
+  // const _multipleChoiceAnswers = ref<MultiChoiceAnswer[]>([])
+  // const multipleChoiceAnswers = refDebounced(_multipleChoiceAnswers, 2000)
+
+  /**
    * Websocket
    */
 
@@ -175,6 +181,11 @@ export const usePlayerWebsocket = createSharedComposable(() => {
     /**
      * The current player object
      */
-    player
+    player,
+    /**
+     * Multiple choice answers
+     * @default {} --- IGNORE ---
+     */
+    // multipleChoiceAnswers
   }
 })

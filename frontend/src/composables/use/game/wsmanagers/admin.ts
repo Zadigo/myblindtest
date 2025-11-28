@@ -37,6 +37,10 @@ export const useAdminWebsocket = createSharedComposable(() => {
 
   const { play } = useSound('tick.mp3')
 
+  /**
+   * Player Answers
+   */
+
   const wsObject = useWebSocket(`ws://127.0.0.1:8000/ws/songs/${sessionId.value}/single-player`, {
     immediate: false,
     onMessage: async (_ws, event: MessageEvent) => {
@@ -71,6 +75,24 @@ export const useAdminWebsocket = createSharedComposable(() => {
         if (message.action === 'error') {
           toast.add({ severity: 'error', summary: 'Error', detail: `Error from server: ${message.message}`, life: 10000 })
         }
+
+        if (message.action === 'update_possibilities') {
+          console.log('Updating possibilities for multiple choice answers:', message.choices)
+          currentSettings.value.availableAnswers = message.choices
+        }
+
+        if (message.action === 'player_submitted_answer') {
+          console.log(`Player ${message.player_id} submitted answer index ${message.answer_index}`)
+
+          await updateDoc(docRef, { playerAnswers: arrayUnion({ player_id: message.player_id, answer_index: message.answer_index }) })
+        }
+
+        if (message.action === 'multi_choice_updated_scores') {
+          // Do not update the doc immediately. We will update it
+          // when the admin loads the next song
+          console.log('Received updated scores for multiple choice:', message.players)
+          await updateDoc(docRef, { pendingScoresUpdate: message.players })
+        }
       }
     },
     onDisconnected: (_ws, _event) => {
@@ -89,7 +111,6 @@ export const useAdminWebsocket = createSharedComposable(() => {
    * Players
    */
   const players = computed(() => Object.keys(blindTestDoc.value?.players || []))
-
 
   return {
     /**
@@ -203,7 +224,7 @@ export function useGameActions(wsObject: VueUseWsReturnType, gameStarted: Ref<bo
       }
     }
   }
-
+  
   return {
     /**
      * Pauses the game
@@ -229,4 +250,38 @@ export function useGameActions(wsObject: VueUseWsReturnType, gameStarted: Ref<bo
      */
     sendIncorrectAnswer: useThrottleFn(_sendIncorrectAnswer, 500)
   }
+}
+
+export function useMultiChoiceGameActions(wsObject: VueUseWsReturnType) {
+  const {  currentSettings } = useSession()
+  const { isActive, remaining } = useCountdown(3, { immediate: false })
+
+  const { stringify } = useWebsocketMessage()
+
+  function resetContainers() {
+    if (isDefined(currentSettings)) {
+      currentSettings.value.pendingScoresUpdate = {}
+      currentSettings.value.availableAnswers = []
+      currentSettings.value.playerAnswers = []
+    }
+  }
+
+  async function _updateAnswersWithCountdown() {
+    if (isDefined(currentSettings)) {
+      currentSettings.value.players = currentSettings.value.pendingScoresUpdate
+      resetContainers()
+      wsObject.send(stringify({ action: 'next_song' }))
+    }
+  }
+
+  tryOnBeforeUnmount(( ) => {
+    resetContainers()
+  })
+
+  return {
+    countDownActive: isActive,
+    remaining,
+    updateAnswersWithCountdown: useThrottleFn(_updateAnswersWithCountdown, 500)
+  }
+
 }

@@ -5,6 +5,7 @@ import json
 import unittest
 from unittest.mock import Mock, patch
 
+from Levenshtein import setratio
 import nltk
 from channels.db import database_sync_to_async
 from channels.routing import URLRouter
@@ -309,6 +310,7 @@ class TestBaseGameLogic(TestCase):
     fixtures = ['songs']
 
     def setUp(self):
+        cache.clear()
         self.instance = BaseGameLogicMixin()
 
     @override_settings(CACHE_TIMEOUT=10)
@@ -421,3 +423,14 @@ class TestBaseGameLogic(TestCase):
                 self.assertIn('id', item)
                 self.assertIn('name', item)
                 self.assertIn('points', item)
+
+    async def test_random_choice_answer(self):
+        setattr(self.instance, 'multiple_choice_answers', True)
+        setattr(self.instance, 'difficulty', 'All')
+        setattr(self.instance, 'genre', 'All')
+        setattr(self.instance, 'current_song', 'All')
+        setattr(self.instance, 'number_of_choices', 4)
+
+        song_ids = await self.instance.get_songs()
+        choices = await self.instance.random_choice_answers(song_ids[-1])
+        print(choices)

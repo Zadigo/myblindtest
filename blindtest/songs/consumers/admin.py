@@ -6,8 +6,7 @@ from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from django.utils.crypto import get_random_string
 from songs.logic.base import GameLogicMixin, Player
 from songs.utils import create_token
-
-DictAny = dict[str, str | int | bool | dict[str, Any]]
+from songs.song_typings import DictAny
 
 
 class ChannelEventsMixin:
@@ -88,6 +87,10 @@ class ChannelEventsMixin:
     async def game_paused(self, content: dict[str, str | int]):
         """Channels handler to indicate to devices that game has been paused"""
 
+    async def player_submitted_answer(self, content: dict[str, str | int]):
+        """Channels handler to indicate that a player has submitted an answer
+        when using multiple choice answers"""
+
 
 class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsumer):
     """This consumer handles connections specifically from admin devices
@@ -120,21 +123,23 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
             await self.send_error('No action was provided')
             return
 
-        if action == 'start_game':                
+        if action == 'start_game' or action == 'next_song':
             if self.is_started:
-                await self.send_error("Game already started")
-                return
+                if action == 'start_game':
+                    await self.send_error("Game already started")
+                    return
 
-            self.played_songs.clear()
+            if action == 'start_game':
+                self.played_songs.clear()
+                self.is_started = True
 
-            self.is_started = True
+                await self.channel_layer.group_send(
+                    self.indexed_diffusion_group_name,
+                    self.base_room_message(**{'type': 'game.started'})
+                )
 
-            await self.channel_layer.group_send(
-                self.indexed_diffusion_group_name,
-                self.base_room_message(**{'type': 'game.started'})
-            )
+                await self.send_json({'action': 'game_started'})
 
-            await self.send_json({'action': 'game_started'})
             await self.next_song()
         elif action == 'stop_game':
             if not self.is_started:
@@ -204,23 +209,31 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
                 await self.send_error('No settings were provided')
                 return
 
-            self.difficulty = settings.get('difficultyLevel', 'All')
-            self.genre = settings.get('songType', 'All')
+            self.game_settings.config_from_dict(settings)
 
-            self.point_value = settings.get('pointValue', 1)
-            self.difficulty_bonus = settings.get('songDifficultyBonus', False)
-            self.time_bonus = settings.get('timeBonus', False)
-            self.number_of_rounds = content.get('rounds', None)
-            self.solo_mode = settings.get('soloMode', False)
-            self.admin_plays = settings.get('adminPlays', False)
+            # self.difficulty = settings.get('difficultyLevel', 'All')
+            # self.genre = settings.get('songType', 'All')
 
-            self.time_range = settings.get('timeRange', [])
-            # self.speed_bonus = settings.get('speedBonus', 0)
-            self.time_limit = settings.get('timeLimit', 0)
+            # self.point_value = settings.get('pointValue', 1)
+            # self.difficulty_bonus = settings.get('songDifficultyBonus', False)
+            # self.time_bonus = settings.get('timeBonus', False)
+            # self.number_of_rounds = content.get('rounds', None)
+            # self.solo_mode = settings.get('soloMode', False)
+            # self.admin_plays = settings.get('adminPlays', False)
+            # self.multiple_choice_answers = settings.get(
+            #     'multipleChoiceAnswers',
+            #     False
+            # )
+
+            # self.time_range = settings.get('timeRange', [])
+            # # self.speed_bonus = settings.get('speedBonus', 0)
+            # self.time_limit = settings.get('timeLimit', 0)
         elif action == 'pause_game':
-            self.paused = True if not self.paused else False
-            message = self.base_room_message(**{'type': 'game.paused'})
-            await self.channel_layer.group_send(self.indexed_diffusion_group_name, message)
+            # TODO: Implement game pausing
+            # self.paused = True if not self.paused else False
+            # message = self.base_room_message(**{'type': 'game.paused'})
+            # await self.channel_layer.group_send(self.indexed_diffusion_group_name, message)
+            pass
         else:
             await self.send_error('Invalid action')
 
@@ -278,3 +291,24 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
 
             selected_player.name = updated_name
             # print('Updated players', self._players)
+
+    async def player_submitted_answer(self, content: dict[str, str | int]):
+        player_id = content.get('player_id', None)
+        answer_index = content.get('answer_index', None)
+
+        if player_id is None or answer_index is None:
+            return
+
+        message = {
+            'action': 'player_submitted_answer',
+            'player_id': player_id,
+            'answer_index': answer_index
+        }
+        self.player_choices.append(message)
+        await self.send_json(message)
+
+        # Calculate the points of the Admin. The players
+        # will know their points slightly before the
+        # next song is loaded
+        await self.calculate_multiple_choice_points()
+        await self.send_json({'action': 'multi_choice_updated_scores', 'players': self.player_values})

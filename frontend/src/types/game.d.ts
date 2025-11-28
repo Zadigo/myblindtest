@@ -1,5 +1,5 @@
 import type { DifficultyLevels, MatchedPart, SongGenres } from '@/data/constants'
-import type { Nullable, Song } from '.'
+import type { Arrayable, Nullable, Song } from '.'
 
 export type BlindtestPlayer = {
   id: string
@@ -23,18 +23,26 @@ interface GameSettings {
   difficultyLevel: DifficultyLevels
   songType: SongGenres
   timeRange: number[]
+  multipleChoiceAnswers: boolean
+  pointLimit: number
+}
+
+export interface PlayerAnswer {
+  player_id: string
+  answer_index: number
 }
 
 export interface CacheSession {
   songsPlayed: Song[]
   currentStep: number
   players: Record<string, BlindtestPlayer>
+  // TODO: Rename to possibilities
+  availableAnswers: Arrayable<MultiChoiceAnswer>
+  playerAnswers: Arrayable<PlayerAnswer>
+  pendingScoresUpdate: Record<string, BlindtestPlayer>
   settings: GameSettings
 }
 
-/**
- * The team's anwswer given the current song
- */
 export interface Answer {
   playerId: string
   matched: MatchedPart
@@ -47,4 +55,11 @@ export interface SettingsApiResponse {
     minimum: number
     maximum: number
   }
+}
+
+export interface MultiChoiceAnswer {
+  id: number
+  name: string
+  artist__name: string
+  is_correct_answer: boolean
 }

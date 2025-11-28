@@ -13,6 +13,9 @@
             <main-card v-else :player="player" :is-ready="isReady" @toggle-settings-modal="toggleSettingsModal" />
           </template>
         </transition>
+        
+        <!-- Multiple Choices -->
+        <multiple-choices class="mt-3 z-20" />
       </div>
 
       <!-- Background -->

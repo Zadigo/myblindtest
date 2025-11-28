@@ -53,4 +53,6 @@ export const messagesFr = {
   "Settigs": "Paramètres",
   "Genre speciality": "Spécialité musicale",
   "Stop game": "Arrêter le jeu",
+  "Pause": "Pause",
+  "Show Scores": "Afficher les scores"
 }

@@ -18,7 +18,7 @@
             "name": "Amour",
             "genre": "Zouk",
             "youtube_id": "1234",
-            "year": 2011,
+            "year": 2025,
             "difficulty": 1,
             "created_on": "2025-01-13"
         }
@@ -31,8 +31,60 @@
             "name": "Love",
             "genre": "Kapuka",
             "youtube_id": "abc-d",
-            "year": 2011,
+            "year": 2021,
             "difficulty": 5,
+            "created_on": "2025-01-13"
+        }
+    },
+    {
+        "model": "songs.Song",
+        "pk": 3,
+        "fields": {
+            "artist": 1,
+            "name": "Toola",
+            "genre": "Coupé-Décalé",
+            "youtube_id": "abc-d",
+            "year": 2011,
+            "difficulty": 2,
+            "created_on": "2025-01-13"
+        }
+    },
+    {
+        "model": "songs.Song",
+        "pk": 4,
+        "fields": {
+            "artist": 1,
+            "name": "Jesùs",
+            "genre": "Kizomba",
+            "youtube_id": "abc-d",
+            "year": 2001,
+            "difficulty": 1,
+            "created_on": "2025-01-13"
+        }
+    },
+    {
+        "model": "songs.Song",
+        "pk": 5,
+        "fields": {
+            "artist": 1,
+            "name": "Maria Konpa",
+            "genre": "Kizomba",
+            "youtube_id": "abc-d",
+            "year": 2000,
+            "difficulty": 3,
+            "created_on": "2025-01-13"
+        }
+    },
+    {
+        "model": "songs.Song",
+        "pk": 6,
+        "fields": {
+            "artist": 1,
+            "name": "Maria Konpa II",
+            "genre": "Kizomba",
+            "youtube_id": "abc-d",
+            "year": 2000,
+            "difficulty": 3,
             "created_on": "2025-01-13"
         }
     }

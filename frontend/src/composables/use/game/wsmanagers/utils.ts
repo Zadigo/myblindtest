@@ -1,4 +1,4 @@
-import type { BlindtestPlayer, CacheSession, Song, Undefineable } from '@/types'
+import type { BlindtestPlayer, CacheSession, MultiChoiceAnswer, MultiDictType, Song, Undefineable } from '@/types'
 
 export type WsSendMessage = { action: 'start_game' }
   | { action: 'stop_game' }
@@ -7,6 +7,8 @@ export type WsSendMessage = { action: 'start_game' }
   | { action: 'game_settings', settings: Undefineable<CacheSession['settings']> }
   | { action: 'update_player', id: Undefineable<string>, name: string }
   | { action: 'pause_game' }
+  | { action: 'submit_answer', answer_index: number }
+  | { action: 'next_song' }
 
 export type WsReceiveMessage = { action: 'device_accepted', player: BlindtestPlayer, players: Record<string, BlindtestPlayer> }
   | { action: 'device_disconnected', players: Record<string, BlindtestPlayer> }
@@ -20,6 +22,9 @@ export type WsReceiveMessage = { action: 'device_accepted', player: BlindtestPla
   | { action: 'idle_response', code: number, connection_url: string }
   | { action: 'show_answer' }
   | { action: 'game_paused' }
+  | { action: 'update_possibilities', choices: MultiChoiceAnswer[] }
+  | { action: 'player_submitted_answer', player_id: string, answer_index: number }
+  | { action: 'multi_choice_updated_scores', players: MultiDictType<BlindtestPlayer> }
 
 
 /**
