@@ -125,7 +125,8 @@ class BaseGameLogicMixin:
         """Returns a list of 4 songs including the current song ID"""
         songs = await self.get_songs(exclude=[current_song_id])
 
-        selected_ids = random.sample(songs or [], k=self.game_settings.numberOfChoices)
+        selected_ids = random.sample(
+            songs or [], k=self.game_settings.numberOfChoices)
         selected_ids.append(current_song_id)
 
         choices = await self.queryset(selected_ids, current_song_id)
@@ -140,16 +141,19 @@ class BaseGameLogicMixin:
         of all the songs"""
         return await self.get_songs(temporary_genre=temporary_genre, exclude=list(self.game_state.played_songs))
 
-    async def calculate_points(self, title_match: bool, artist_match: bool):
+    async def calculate_points(self, title_match: bool, artist_match: bool) -> int:
         """Calculate points based on match type (title/artist) for
         the player that made the guess"""
         base_points = 0
 
+        if self.game_state.current_song is None:
+            return base_points
+
         # Use the song's difficulty level
         # for the total score
         def factor(value: int):
-            if self.game_settings.difficulty_bonus:
-                factor = int(self.current_song['difficulty'])
+            if self.game_settings.difficultyBonus:
+                factor = int(self.game_state.current_song['difficulty'])
                 return self.game_settings.pointValue * factor
             return value
 

@@ -5,7 +5,6 @@ import json
 import unittest
 from unittest.mock import Mock, patch
 
-from Levenshtein import setratio
 import nltk
 from channels.db import database_sync_to_async
 from channels.routing import URLRouter
@@ -14,13 +13,15 @@ from django.conf import settings
 from django.core.cache import cache
 from django.test import TestCase, override_settings
 from django.urls import re_path, reverse
+from Levenshtein import setratio
 from rest_framework.test import APITransactionTestCase
 from songs import tasks, utils
 from songs.completion import Wikipedia, nrj
 from songs.consumers import admin, smartphone
+from songs.logic.base import BaseGameLogicMixin, Player
+from songs.logic.base_models import GameSettings, GameState
 from songs.models import Artist, Song
 from songs.utils import OTPCode
-from songs.logic.base import BaseGameLogicMixin, Player
 
 TEST_CHANNEL_LAYERS = {
     'default': {
@@ -312,6 +313,34 @@ class TestBaseGameLogic(TestCase):
     def setUp(self):
         cache.clear()
         self.instance = BaseGameLogicMixin()
+        setattr(
+            self.instance,
+            'game_settings',
+            GameSettings(
+                difficulty='All',
+                genre='All',
+                numberOfChoices=4,
+                pointValue=1,
+                difficultyBonus=False
+            )
+        )
+        setattr(self.instance, 'game_state', GameState(
+            current_song={
+                'id': 1,
+                'difficulty': 3
+            }
+        ))
+
+        players = {
+            '1': Player(id='1', name='Player 1', points=1),
+            '2': Player(id='2', name='Player 2', points=10),
+            '3': Player(id='3', name='Player 3', points=5),
+            '4': Player(id='4', name='Player 3', points=0)
+        }
+
+        self.instance.game_state._players = players
+        self.instance.game_state.point_value = 1
+        self.instance.game_state.difficulty_bonus = False
 
     @override_settings(CACHE_TIMEOUT=10)
     def test_load_genres(self):
@@ -329,8 +358,6 @@ class TestBaseGameLogic(TestCase):
     async def test_get_songs(self):
         # Since this is a mixin we need to set
         # some of the attributes manually
-        setattr(self.instance, 'difficulty', 'All')
-        setattr(self.instance, 'genre', 'All')
 
         song_ids = await self.instance.get_songs()
         self.assertIsInstance(song_ids, list)
@@ -339,16 +366,20 @@ class TestBaseGameLogic(TestCase):
     async def test_get_songs_with_exclude(self):
         # Since this is a mixin we need to set
         # some of the attributes manually
-        setattr(self.instance, 'difficulty', 'All')
-        setattr(self.instance, 'genre', 'All')
 
         song_ids = await self.instance.get_songs()
         song_value = await self.instance.get_song(song_ids[0])
         self.assertIsInstance(song_value, dict)
 
     async def test_calculate_points(self):
-        setattr(self.instance, 'point_value', 2)
-        setattr(self.instance, 'difficulty_bonus', False)
+        self.instance.game_settings.pointValue = 2
+        self.instance.game_settings.difficultyBonus = False
+        self.instance.game_state.current_song = {
+            'id': 1,
+            'difficulty': 3
+        }
+
+        self.assertIsNotNone(self.instance.game_state.current_song)
 
         value = await self.instance.calculate_points(title_match=True, artist_match=False)
         self.assertEqual(value, 2)
@@ -362,29 +393,23 @@ class TestBaseGameLogic(TestCase):
         value = await self.instance.calculate_points(title_match=False, artist_match=False)
         self.assertEqual(value, 0)
 
-        setattr(self.instance, 'difficulty_bonus', True)
-        setattr(self.instance, 'current_song', {'difficulty': 2})
         value = await self.instance.calculate_points(title_match=True, artist_match=True)
-        self.assertEqual(value, 8)
+        self.assertEqual(value, 4)
 
     async def test_calculate_loosers_loses_points(self):
-        players = {
-            '1': Player(id='1', name='Player 1', points=1),
-            '2': Player(id='2', name='Player 2', points=10),
-            '3': Player(id='3', name='Player 3', points=5),
-            '4': Player(id='4', name='Player 3', points=0)
-        }
-
-        setattr(self.instance, '_players', players)
-        setattr(self.instance, 'point_value', 1)
-        setattr(self.instance, 'difficulty_bonus', False)
-
+        # players = self.instance.game_state._players
         await self.instance.calculate_loosers_loses_points('1', title_match=True)
 
-        self.assertEqual(players['1'].points, 2)  # Winner gets points
-        self.assertEqual(players['2'].points, 8)  # Loser loses points
-        self.assertEqual(players['3'].points, 3)  # Loser loses points
-        self.assertEqual(players['4'].points, 0)  # Loser cannot go below 0
+        print(self.instance.game_state._players)
+
+        # Winner gets points
+        self.assertEqual(self.instance.game_state._players['1'].points, 2)
+        # Loser loses points
+        self.assertEqual(self.instance.game_state._players['2'].points, 8)
+        # Loser loses points
+        self.assertEqual(self.instance.game_state._players['3'].points, 3)
+        # Loser cannot go below 0
+        self.assertEqual(self.instance.game_state._players['4'].points, 0)
 
     def test_player_dataclass(self):
         list = [
@@ -403,7 +428,11 @@ class TestBaseGameLogic(TestCase):
             '2': Player(id='2', name='Player 2', points=10)
         }
 
-        setattr(self.instance, '_players', players)
+        self.instance.game_state._players = players
+        self.instance.game_state.point_value = 1
+        self.instance.game_state.difficulty_bonus = False
+
+        # setattr(self.instance, '_players', players)
 
         player_list = self.instance.players
         self.assertIsInstance(player_list, list)

@@ -1,6 +1,6 @@
 import dataclasses
 from collections import defaultdict
-from typing import List, Optional, Union
+from typing import List, Optional, Self, Union
 
 from songs.song_typings import DictAny
 
@@ -41,28 +41,28 @@ class GameSettings():
     voluntary duplicate of the firebase
     structure from the frontend"""
 
-    difficulty = 'All'
-    genre = 'All'
+    difficulty: str = 'All'
+    genre: str = 'All'
 
-    numberOfRounds = None
+    numberOfRounds: int = None
 
     pointValue: int = 1
-    difficultyBonus = False
-    timeBonus = False
-
+    difficultyBonus: bool = False
+    timeBonus: bool = False
     # fuzzy_matcher = FuzzyMatcher()
 
-    connectionToken = None
-
-    soloMode = False
-    adminPlays = False
-    timeLimit = None
-    timeRange: List[int] = []
+    connectionToken: str = None
+    soloMode: bool = False
+    adminPlays: bool = False
+    timeLimit: int = None
+    timeRange: List[int] = dataclasses.field(default_factory=list)
 
     multipleChoiceAnswers: bool = False
     numberOfChoices: int = 4
-    currentChoiceAnswers: List[dict[str, Union[str, int]]] = []
-    playerChoices: list[dict[str, Union[str, int]]] = []
+    currentChoiceAnswers: List[dict[str, Union[str, int]]
+                               ] = dataclasses.field(default_factory=list)
+    playerChoices: list[dict[str, Union[str, int]]
+                        ] = dataclasses.field(default_factory=list)
 
     def config_from_dict(self, config: dict) -> list[str]:
         """Configures the game settings from a dictionary."""
@@ -87,7 +87,8 @@ class GameState():
     played_songs: set[int] = dataclasses.field(default_factory=set)
     paused: bool = False
 
-    _players: defaultdict[str, Player] = defaultdict(Player)
+    _players: defaultdict[str, Player] = dataclasses.field(
+        default_factory=lambda: defaultdict(Player))
     player_count: int = 0
 
     def increase_round(self) -> None:
@@ -113,14 +114,9 @@ class GameState():
         """Returns a dictionary representation of players"""
         return {key: dataclasses.asdict(player) for key, player in self._players.items()}
 
-    def add_player(self, data: dict[str, DictAny]):
+    def add_player(self, data: dict[str, DictAny]) -> Player:
         """Adds a player to the current game settings"""
-        player_id = data.get('id')
-        if player_id is None:
-            return False
-
-        if player_id not in self._players:
-            self.player_count += 1
-            data['position'] = self.player_count
-            player = Player(**data)
-            self._players[player_id] = player
+        player = Player(**data)
+        self._players[player.id] = player
+        self.player_count += 1
+        return player

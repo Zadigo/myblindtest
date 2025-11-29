@@ -124,14 +124,14 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
             return
 
         if action == 'start_game' or action == 'next_song':
-            if self.is_started:
+            if self.game_state.is_started:
                 if action == 'start_game':
                     await self.send_error("Game already started")
                     return
 
             if action == 'start_game':
                 self.played_songs.clear()
-                self.is_started = True
+                self.game_state.is_started = True
 
                 await self.channel_layer.group_send(
                     self.indexed_diffusion_group_name,
@@ -142,18 +142,18 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
 
             await self.next_song()
         elif action == 'stop_game':
-            if not self.is_started:
+            if not self.game_state.is_started:
                 await self.send_error("Game not started")
                 return
 
-            self.is_started = False
+            self.game_state.is_started = False
 
             await self.channel_layer.group_send(
                 self.indexed_diffusion_group_name,
                 self.base_room_message(**{'type': 'game.stopped'})
             )
         elif action == 'submit_guess':
-            if not self.is_started:
+            if not self.game_state.is_started:
                 await self.send_error("Game not started")
                 return
 
@@ -177,7 +177,7 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
             await self.send_json(message)
             await self.next_song()
         elif action == 'not_guessed':
-            if self.is_started and self.current_song:
+            if self.game_state.is_started and self.current_song:
                 # message = {'action': 'guess_incorrect', 'song': self.current_song}
                 # await self.send_json(message)
 
@@ -192,7 +192,7 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
             else:
                 await self.send_error('Game not started or no current song')
         elif action == 'randomize_genre':
-            if not self.is_started:
+            if not self.game_state.is_started:
                 await self.send_error("Cannot randomize. Game not started")
                 return
 
@@ -249,21 +249,30 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
         device_name = content['device_name']
 
         if device_name == 'player_smartphone':
-            self.player_count += 1
+            # NOTE: The player is initially creatd on the
+            # SmartphoneConsumer and then updated here as
+            # a duplicate for admin tracking
+            player = self.game_state.add_player(content['player'])
 
-            player = Player(**content['player'])
-            player.position = self.player_count
+            # self.player_count += 1
 
-            self._players[content['device_id']] = player
+            # player = Player(**content['player'])
+            # player.position = self.player_count
+
+            # self.game_state._players[content['device_id']] = player
             # self.pending_devices.append((content['device_id'], player))
-            await self.send_json({'action': 'device_accepted', 'player': dataclasses.asdict(player), 'players': self.player_values})
+            await self.send_json({
+                'action': 'device_accepted', 
+                'player': dataclasses.asdict(player), 
+                'players': self.game_state.player_values
+            })
 
     async def disconnect_device(self, content: dict[str, str | int]):
         device_id = content['device_id']
 
-        if device_id in self._players:
-            del self._players[device_id]
-        await self.send_json({'action': 'device_disconnected', 'players': self.player_values})
+        if device_id in self.game_state._players:
+            del self.game_state._players[device_id]
+        await self.send_json({'action': 'device_disconnected', 'players': self.game_state.player_values})
 
     async def update_player(self, content: dict[str, str | int]):
         updated_player = content.get('player', None)
@@ -274,8 +283,8 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
         if player_id is None:
             return
 
-        if player_id in self._players:
-            selected_player = self._players[player_id]
+        if player_id in self.game_state._players:
+            selected_player = self.game_state._players[player_id]
 
             # Check if the updated name is already taken
             updated_name = updated_player.get('name', None)
@@ -290,7 +299,7 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
                     return
 
             selected_player.name = updated_name
-            # print('Updated players', self._players)
+            # print('Updated players', self.game_state._players)
 
     async def player_submitted_answer(self, content: dict[str, str | int]):
         player_id = content.get('player_id', None)
@@ -311,4 +320,4 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
         # will know their points slightly before the
         # next song is loaded
         await self.calculate_multiple_choice_points()
-        await self.send_json({'action': 'multi_choice_updated_scores', 'players': self.player_values})
+        await self.send_json({'action': 'multi_choice_updated_scores', 'players': self.game_state.player_values})
