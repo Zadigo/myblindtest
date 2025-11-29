@@ -16,7 +16,7 @@ export const defaults: CacheSession = {
     soloMode: false,
     adminPlays: false,
     difficultyLevel: 'All',
-    songType: 'All',
+    genreSelected: 'All',
     timeRange: [],
     multipleChoiceAnswers: false,
     pointLimit: 0,

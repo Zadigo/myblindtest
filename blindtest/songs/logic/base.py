@@ -18,10 +18,11 @@ from django.core.cache import cache
 from django.db import models
 from django.utils.crypto import get_random_string
 from songs.api import serializers
+from songs.logic.base_models import (GameSettings, GameState, Player,
+                                     SongPossibilities)
 from songs.models import Song
 from songs.processors import FuzzyMatcher
 from songs.song_typings import DictAny
-from songs.logic.base_models import GameSettings, GameState, Player
 
 
 class BaseGameLogicMixin:
@@ -58,7 +59,7 @@ class BaseGameLogicMixin:
 
     @database_sync_to_async
     def get_songs(self, temporary_genre: Optional[str] = None, exclude: List[int] = []) -> List[int]:
-        cache_key = f'songs_{self.game_settings.difficulty}_{self.game_settings.genre}'
+        cache_key = f'songs_{self.game_settings.difficultyLevel}_{self.game_settings.genreSelected}'
         cached_songs = cache.get(cache_key)
 
         if cached_songs is not None:
@@ -71,17 +72,17 @@ class BaseGameLogicMixin:
 
         qs = Song.objects.all()
 
-        if self.game_settings.difficulty != 'All':
+        if self.game_settings.difficultyLevel != 'All':
             value = self.difficulties.index(self.game_settings.difficulty)
             qs = qs.filter(difficulty__gte=value)
 
-        if self.game_settings.genre != 'All':
-            qs = qs.filter(genre__icontains=self.game_settings.genre)
+        if self.game_settings.genreSelected != 'All':
+            qs = qs.filter(genre__icontains=self.game_settings.genreSelected)
         if exclude:
             qs = qs.exclude(id__in=exclude)
 
         if temporary_genre is not None:
-            if self.game_settings.genre == 'All':
+            if self.game_settings.genreSelected == 'All':
                 qs = qs.exclude(genre=temporary_genre)
             self.send_error(
                 'The current blindtest is not set to contain all genres', error='warning')
@@ -130,7 +131,7 @@ class BaseGameLogicMixin:
         selected_ids.append(current_song_id)
 
         choices = await self.queryset(selected_ids, current_song_id)
-        self.game_state.current_choice_answers = choices
+        self.song_possibilities.currentChoiceAnswers = choices
         return choices
 
     async def next_song(self, temporary_genre: Optional[str] = None):
@@ -152,7 +153,7 @@ class BaseGameLogicMixin:
         # Use the song's difficulty level
         # for the total score
         def factor(value: int):
-            if self.game_settings.difficultyBonus:
+            if self.game_settings.songDifficultyBonus:
                 factor = int(self.game_state.current_song['difficulty'])
                 return self.game_settings.pointValue * factor
             return value
@@ -209,6 +210,7 @@ class GameLogicMixin(BaseGameLogicMixin):
         super().__init__(*args, **kwargs)
         self.device_name = 'admin_individual'
         self.device_id = 'admin_individual'
+        self.song_possibilities = SongPossibilities()
 
         # Initialize Firebase
         # cert = credentials.Certificate(
@@ -285,17 +287,17 @@ class GameLogicMixin(BaseGameLogicMixin):
         self.game_state.increase_round()
 
         if self.game_settings.numberOfRounds is not None:
-            if self.current_round > self.game_settings.numberOfRounds:
+            if self.game_state.current_round > self.game_settings.numberOfRounds:
                 await self.send_json({
                     'action': 'game_complete',
                     'message': 'Final round complete',
-                    'final_scores': self.player_values,
+                    'final_scores': self.game_state.player_values,
                     'songs_played': len(self.game_state.played_songs)
                 })
-                self.is_started = False
+                self.game_state.is_started = False
                 return
 
-        print(self.game_settings.currentChoiceAnswers)
+        print(self.song_possibilities.currentChoiceAnswers)
 
         if self.game_settings.multipleChoiceAnswers:
             message = {

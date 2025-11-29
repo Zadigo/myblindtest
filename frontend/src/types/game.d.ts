@@ -21,7 +21,7 @@ interface GameSettings {
   soloMode: boolean
   adminPlays: boolean
   difficultyLevel: DifficultyLevels
-  songType: SongGenres
+  genreSelected: SongGenres
   timeRange: number[]
   multipleChoiceAnswers: boolean
   pointLimit: number

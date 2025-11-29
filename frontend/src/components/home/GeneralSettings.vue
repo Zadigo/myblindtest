@@ -17,7 +17,7 @@
         </volt-input-label>
 
         <volt-input-label :label="$t('Genre')">
-          <volt-select v-model="currentSettings.settings.songType" :options="genres" class="w-4/6" option-label="name" option-value="name" />
+          <volt-select v-model="currentSettings.settings.genreSelected" :options="genres" class="w-4/6" option-label="name" option-value="name" />
         </volt-input-label>
       </div>
 

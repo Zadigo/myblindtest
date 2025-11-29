@@ -130,7 +130,7 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
                     return
 
             if action == 'start_game':
-                self.played_songs.clear()
+                self.game_state.played_songs.clear()
                 self.game_state.is_started = True
 
                 await self.channel_layer.group_send(
@@ -177,14 +177,11 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
             await self.send_json(message)
             await self.next_song()
         elif action == 'not_guessed':
-            if self.game_state.is_started and self.current_song:
-                # message = {'action': 'guess_incorrect', 'song': self.current_song}
-                # await self.send_json(message)
-
+            if self.game_state.is_active:
                 group_message = self.base_room_message(
                     **{
                         'type': 'game.updates',
-                        'message': {'action': 'guess_incorrect', 'song': self.current_song}
+                        'message': {'action': 'guess_incorrect', 'song': self.game_state.current_song}
                     }
                 )
                 await self.channel_layer.group_send(self.indexed_diffusion_group_name, group_message)
@@ -210,24 +207,6 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
                 return
 
             self.game_settings.config_from_dict(settings)
-
-            # self.difficulty = settings.get('difficultyLevel', 'All')
-            # self.genre = settings.get('songType', 'All')
-
-            # self.point_value = settings.get('pointValue', 1)
-            # self.difficulty_bonus = settings.get('songDifficultyBonus', False)
-            # self.time_bonus = settings.get('timeBonus', False)
-            # self.number_of_rounds = content.get('rounds', None)
-            # self.solo_mode = settings.get('soloMode', False)
-            # self.admin_plays = settings.get('adminPlays', False)
-            # self.multiple_choice_answers = settings.get(
-            #     'multipleChoiceAnswers',
-            #     False
-            # )
-
-            # self.time_range = settings.get('timeRange', [])
-            # # self.speed_bonus = settings.get('speedBonus', 0)
-            # self.time_limit = settings.get('timeLimit', 0)
         elif action == 'pause_game':
             # TODO: Implement game pausing
             # self.paused = True if not self.paused else False
@@ -254,13 +233,6 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
             # a duplicate for admin tracking
             player = self.game_state.add_player(content['player'])
 
-            # self.player_count += 1
-
-            # player = Player(**content['player'])
-            # player.position = self.player_count
-
-            # self.game_state._players[content['device_id']] = player
-            # self.pending_devices.append((content['device_id'], player))
             await self.send_json({
                 'action': 'device_accepted', 
                 'player': dataclasses.asdict(player), 
@@ -270,8 +242,9 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
     async def disconnect_device(self, content: dict[str, str | int]):
         device_id = content['device_id']
 
-        if device_id in self.game_state._players:
-            del self.game_state._players[device_id]
+        if self.game_state.has_player(device_id):       
+            self.game_state.remove_player(device_id)
+            
         await self.send_json({'action': 'device_disconnected', 'players': self.game_state.player_values})
 
     async def update_player(self, content: dict[str, str | int]):
@@ -313,7 +286,7 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
             'player_id': player_id,
             'answer_index': answer_index
         }
-        self.player_choices.append(message)
+        self.song_possibilities.playerChoices.append(message)
         await self.send_json(message)
 
         # Calculate the points of the Admin. The players

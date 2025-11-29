@@ -2,7 +2,7 @@ import dataclasses
 from collections import defaultdict
 from typing import List, Optional, Self, Union
 
-from songs.song_typings import DictAny
+from songs.song_typings import DictAny, ListDictType
 
 
 @dataclasses.dataclass
@@ -41,14 +41,16 @@ class GameSettings():
     voluntary duplicate of the firebase
     structure from the frontend"""
 
-    difficulty: str = 'All'
-    genre: str = 'All'
+    pointLimit: int = None
+
+    difficultyLevel: str = 'All'
+    genreSelected: str = 'All'
 
     numberOfRounds: int = None
 
     pointValue: int = 1
-    difficultyBonus: bool = False
-    timeBonus: bool = False
+    songDifficultyBonus: bool = False
+    speedBonus: bool = False
     # fuzzy_matcher = FuzzyMatcher()
 
     connectionToken: str = None
@@ -59,10 +61,6 @@ class GameSettings():
 
     multipleChoiceAnswers: bool = False
     numberOfChoices: int = 4
-    currentChoiceAnswers: List[dict[str, Union[str, int]]
-                               ] = dataclasses.field(default_factory=list)
-    playerChoices: list[dict[str, Union[str, int]]
-                        ] = dataclasses.field(default_factory=list)
 
     def config_from_dict(self, config: dict) -> list[str]:
         """Configures the game settings from a dictionary."""
@@ -87,15 +85,19 @@ class GameState():
     played_songs: set[int] = dataclasses.field(default_factory=set)
     paused: bool = False
 
+    player_count: int = 0
     _players: defaultdict[str, Player] = dataclasses.field(
         default_factory=lambda: defaultdict(Player))
-    player_count: int = 0
+    
+    @property
+    def is_active(self):
+        """Returns whether the game is active and 
+        is ready to play songs, receive answers, etc."""
+        return all([self.is_started, not self.paused, self.current_song is not None])
 
-    def increase_round(self) -> None:
-        self.current_round += 1
-
-    def add_played_song(self, song_id: int) -> None:
-        self.played_songs.add(song_id)
+    @property
+    def player_names(self):
+        return [player.name for player in self._players.values()]
 
     @property
     def players(self) -> list[Player]:
@@ -114,9 +116,36 @@ class GameState():
         """Returns a dictionary representation of players"""
         return {key: dataclasses.asdict(player) for key, player in self._players.items()}
 
+    def has_player(self, player_id: str) -> bool:
+        """Checks if a player ID exists in the current game state"""
+        return player_id in self._players
+
     def add_player(self, data: dict[str, DictAny]) -> Player:
         """Adds a player to the current game settings"""
         player = Player(**data)
         self._players[player.id] = player
         self.player_count += 1
         return player
+
+    def increase_round(self) -> None:
+        self.current_round += 1
+
+    def add_played_song(self, song_id: int) -> None:
+        self.played_songs.add(song_id)
+
+    def has_name(self, name: str):
+        """Checks if a player name exists in the current game state"""
+        return name in self.player_names
+
+    def remove_player(self, player_id: str) -> None:
+        """Removes a player from the current game state"""
+        if player_id in self._players:
+            del self._players[player_id]
+            self.player_count -= 1
+
+
+@dataclasses.dataclass
+class SongPossibilities():
+    currentChoiceAnswers: ListDictType = dataclasses.field(
+        default_factory=list)
+    playerChoices: ListDictType = dataclasses.field(default_factory=list)
