@@ -110,6 +110,7 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
         })
 
     async def disconnect(self, code):
+        self.game_state.reset()
         message = self.base_room_message(**{'type': 'game.disconnected'})
         await self.channel_layer.group_send(self.indexed_diffusion_group_name, message)
         await self.channel_layer.group_discard(self.indexed_diffusion_group_name, self.channel_name)
@@ -130,7 +131,7 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
                     return
 
             if action == 'start_game':
-                self.game_state.played_songs.clear()
+                self.game_state.reset()
                 self.game_state.is_started = True
 
                 await self.channel_layer.group_send(
@@ -217,8 +218,6 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
             await self.send_error('Invalid action')
 
     async def accept_device(self, content: dict[str, str | int]):
-        # print("Accepting device...", content)
-
         device_session_id = content['session_id']
 
         if device_session_id != self.session_id:
@@ -234,17 +233,19 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
             player = self.game_state.add_player(content['player'])
 
             await self.send_json({
-                'action': 'device_accepted', 
-                'player': dataclasses.asdict(player), 
+                'action': 'device_accepted',
+                'player': dataclasses.asdict(player),
                 'players': self.game_state.player_values
             })
 
     async def disconnect_device(self, content: dict[str, str | int]):
         device_id = content['device_id']
+        state = self.game_state.remove_player(device_id)
 
-        if self.game_state.has_player(device_id):       
-            self.game_state.remove_player(device_id)
-            
+        if not state:
+            await self.send_error('Device not found for disconnection')
+            return
+        
         await self.send_json({'action': 'device_disconnected', 'players': self.game_state.player_values})
 
     async def update_player(self, content: dict[str, str | int]):

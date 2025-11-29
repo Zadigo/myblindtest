@@ -115,6 +115,14 @@ class GameState():
     def player_values(self) -> dict[str, dict[str, str | int]]:
         """Returns a dictionary representation of players"""
         return {key: dataclasses.asdict(player) for key, player in self._players.items()}
+    
+    def reset(self):
+        self.current_round = 0
+        self.current_song = None
+        self.played_songs.clear()
+        self.paused = False
+        self.player_count = 0
+        self._players.clear()
 
     def has_player(self, player_id: str) -> bool:
         """Checks if a player ID exists in the current game state"""
@@ -137,11 +145,13 @@ class GameState():
         """Checks if a player name exists in the current game state"""
         return name in self.player_names
 
-    def remove_player(self, player_id: str) -> None:
+    def remove_player(self, player_id: str) -> bool:
         """Removes a player from the current game state"""
         if player_id in self._players:
             del self._players[player_id]
             self.player_count -= 1
+            return True
+        return False
 
 
 @dataclasses.dataclass
