@@ -78,6 +78,7 @@ class BaseGameLogicMixin:
 
         if self.game_settings.genreSelected != 'All':
             qs = qs.filter(genre__icontains=self.game_settings.genreSelected)
+
         if exclude:
             qs = qs.exclude(id__in=exclude)
 
@@ -297,8 +298,6 @@ class GameLogicMixin(BaseGameLogicMixin):
                 self.game_state.is_started = False
                 return
 
-        print(self.song_possibilities.currentChoiceAnswers)
-
         if self.game_settings.multipleChoiceAnswers:
             message = {
                 'action': 'update_possibilities',
@@ -309,8 +308,3 @@ class GameLogicMixin(BaseGameLogicMixin):
             message['choices'] = picks
 
             await self.send_json(message)
-
-            # self.channel_layer.group_send(self.indexed_diffusion_group_name, {
-            #     'type': 'game.updates',
-            #     'message': message
-            # })
