@@ -14,6 +14,7 @@ import { useDocument, useFirestore } from 'vuefire'
  * Websocket for individual player (smartphone)
  */
 export const usePlayerWebsocket = createSharedComposable(() => {
+  const router = useRouter()
   const route = useRoute()
 
   const toast = useToast()
@@ -45,7 +46,6 @@ export const usePlayerWebsocket = createSharedComposable(() => {
    */
 
   const isStarted = ref(false)
-  const router = useRouter()
   
   const goToGamePage = useDebounceFn(() => {
     router.push({ name: 'player_page', params: { locale: route.params.locale, id: route.params.id } })
@@ -56,6 +56,11 @@ export const usePlayerWebsocket = createSharedComposable(() => {
       goToGamePage()
     }
   })
+
+  // Indicates if the game was started before (to avoid re-navigation)
+  // and in case of reconnection just automatically open the websocket
+  // connection once again
+  const wasStarted = useLocalStorage<boolean>('blindtestWasStarted', false)
 
   /**
    * Websocket
@@ -77,6 +82,7 @@ export const usePlayerWebsocket = createSharedComposable(() => {
       if (message.action === 'idle_connect') {
         playerId.value = message.player.name
         query.player = playerId.value
+        wasStarted.value = true
       }
 
       if (message.action === 'game_started') {
@@ -152,6 +158,12 @@ export const usePlayerWebsocket = createSharedComposable(() => {
   tryOnMounted(async () => {
     await promiseTimeout(3000)
     set(isReady, true)
+
+    // On mount, if the game was already started before,
+    // and the player was disconnected, just reconnect automatically
+    if (wasStarted.value && !isConnected.value) {
+      wsObject.open()
+    }
   })
 
   return {
@@ -206,14 +218,17 @@ export const usePlayerWebsocket = createSharedComposable(() => {
     players,
     /**
      * The current player object
+     * @default null
      */
     player,
     /**
      * The selected answer index
+     * @default null
      */
     selected,
     /**
      * Indicates if the player has answered the current question
+     * @default false
      */
     isAnswered
   }

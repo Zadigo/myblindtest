@@ -6,6 +6,7 @@ import pathlib
 import random
 from collections import defaultdict
 from functools import cached_property, lru_cache
+import select
 from typing import List, Optional, Union
 
 from asgiref.sync import async_to_sync
@@ -57,9 +58,49 @@ class BaseGameLogicMixin:
     def genres_categories(self) -> list[str]:
         return list(self.load_json_genres.keys())
 
+
+    @staticmethod
+    def create_cache_key(*args: str):
+        return 'songs_' + '_'.join(str(arg) for arg in args)
+    
+    @lru_cache(maxsize=32)
+    def flat_genre_categories(self) -> list[tuple[str, List[str]]]:
+        return [(category, values) for category, values in self.load_json_genres.items()]
+
+    @database_sync_to_async
+    def get_songs_by_category(self, genre: str):
+        """Returns a tuple of (category, list of song IDs) contained
+        with the given genre. This function does not shuffle the results.
+        This function is particularly useful when wanting to select songs
+        by a specific genre category for multiple-choice answers.
+
+        >>> self.get_songs_by_category('Rock')
+        ... ('Rock', [1, 2, 3, 4, 5])
+        """
+        selected_category = None
+        selected_values = []
+
+        for item, values in self.flat_genre_categories():
+            truth_array = map(lambda x: x.lower() == genre.lower(), values)
+
+            if any(truth_array):
+                selected_category = item
+                selected_values = values
+                break
+
+        if not selected_values:
+            return []
+
+        qs = Song.objects.filter(genre__in=selected_values)
+        return selected_category, list(qs.values_list('id', flat=True))
+
     @database_sync_to_async
     def get_songs(self, temporary_genre: Optional[str] = None, exclude: List[int] = []) -> List[int]:
-        cache_key = f'songs_{self.game_settings.difficultyLevel}_{self.game_settings.genreSelected}'
+        cache_key = self.create_cache_key(
+            self.game_settings.difficultyLevel, 
+            self.game_settings.genreSelected
+        )
+
         cached_songs = cache.get(cache_key)
 
         if cached_songs is not None:
@@ -125,10 +166,13 @@ class BaseGameLogicMixin:
     @lru_cache(maxsize=128)
     async def random_choice_answers(self, current_song_id: int) -> list[dict[str, Union[str, int]]]:
         """Returns a list of 4 songs including the current song ID"""
-        songs = await self.get_songs(exclude=[current_song_id])
+        # songs = await self.get_songs(exclude=[current_song_id])
+        category, songs = await self.get_songs_by_category(self.game_state.current_song['genre'])
 
         selected_ids = random.sample(
-            songs or [], k=self.game_settings.numberOfChoices)
+            songs or [],
+            k=self.game_settings.numberOfChoices
+        )
         selected_ids.append(current_song_id)
 
         choices = await self.queryset(selected_ids, current_song_id)
@@ -166,8 +210,9 @@ class BaseGameLogicMixin:
 
         return base_points
 
-    async def calculate_multiple_choice_points(self):
+    async def calculate_multiple_choice_points(self) -> List[str]:
         """Calculates points for multiple choice answers"""
+        errors = []
         for item in self.song_possibilities.playerChoices:
             player = self.game_state._players.get(item['player_id'], None)
 
@@ -177,12 +222,14 @@ class BaseGameLogicMixin:
                 try:
                     answer = self.song_possibilities.currentChoiceAnswers[index]
                 except IndexError:
-                    await self.send_error('Invalid answer index submitted')
+                    errors.append(
+                        f'Invalid answer index {index} for player {player.id}')
                     continue
                 else:
                     if answer.get('is_correct_answer', False):
                         points = await self.calculate_points(True, False)
                         player.points += points
+        return errors
 
     async def calculate_loosers_loses_points(self, winner_id: str, title_match: bool = False, artist_match: bool = False):
         """Calculates the points for the winner and then

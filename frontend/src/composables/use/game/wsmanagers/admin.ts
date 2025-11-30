@@ -68,6 +68,19 @@ export const useAdminWebsocket = createSharedComposable(() => {
 
             if (isDefined(currentSettings) && currentSettings.value.settings.multipleChoiceAnswers) {
               currentSettings.value.playerAnswers = []
+              
+              // When loading a new song, if there are pending score updates,
+              // apply them to the players
+              if (isDefined(currentSettings.value.pendingScoresUpdate)) {
+                currentSettings.value.playerAnswers = []
+
+                Object.keys(currentSettings.value.pendingScoresUpdate).forEach((playerId) => {
+                  const playerValue = currentSettings.value.players[playerId]
+                  if (isDefined(playerValue)) {
+                    playerValue.points = currentSettings.value.pendingScoresUpdate[playerId]?.points || playerValue.points
+                  }
+                })
+              }
             }
           }
         }
@@ -285,8 +298,8 @@ export function useMultiChoiceGameActions(wsObject: VueUseWsReturnType) {
   async function _updateAnswersWithCountdown() {
     if (isDefined(currentSettings)) {
       currentSettings.value.players = currentSettings.value.pendingScoresUpdate
-      resetContainers()
       wsObject.send(stringify({ action: 'next_song' }))
+      resetContainers()
     }
   }
 

@@ -158,8 +158,9 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
 
             message = self.base_room_message(
                 **{
-                        'type': 'game.updates', 
-                        'message': {'action': 'next_song_loaded'
+                    'type': 'game.updates',
+                    'message': {
+                        'action': 'next_song_loaded'
                     }
                 }
             )
@@ -307,6 +308,7 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
             # print('Updated players', self.game_state._players)
 
     async def player_submitted_answer(self, content: dict[str, str | int]):
+        print('Admin received player_submitted_answer', content)
         player_id = content.get('player_id', None)
         answer_index = content.get('answer_index', None)
 
@@ -324,5 +326,8 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
         # Calculate the points of the Admin. The players
         # will know their points slightly before the
         # next song is loaded
-        await self.calculate_multiple_choice_points()
+        errors = await self.calculate_multiple_choice_points()
+        if errors:
+            await self.send_error('; '.join(errors))
+            return
         await self.send_json({'action': 'multi_choice_updated_scores', 'players': self.game_state.player_values})

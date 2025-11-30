@@ -32,7 +32,7 @@ const { showConnectionUrl } = useGlobalState()
 
 const { locale } = useI18n()
 const { sessionId } = useSession()
-const url = ref(`${import.meta.env.VITE_SITE_URL}/${locale.value}/${sessionId.value}/player`)
+const url = ref(`${import.meta.env.VITE_SITE_URL}/${locale.value}/game/${sessionId.value}`)
 
 const qrcode = useQRCode(url, { size: 300 })
 
