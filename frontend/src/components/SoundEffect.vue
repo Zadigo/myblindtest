@@ -8,7 +8,7 @@
 import { useSound } from '@vueuse/sound'
 
 const props = defineProps<{ id: string, name: string }>()
-const { play } = useSound(`${props.name}.mp3`, { volume: 0.5 })
+const { play } = useSound(`/${props.name}.mp3`, { volume: 0.5 })
 
 function playSound(callback?: () => void) {
   play()

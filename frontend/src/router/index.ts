@@ -48,15 +48,31 @@ const router = createRouter({
       ]
     },
     {
+      path:  '/:locale/game',
+      component: async () => import('../layouts/PlayerPageLayout.vue'),
+      children: [
+        {
+          path: ':id',
+          component: async () => import('../pages/blindtest/player/IndexPage.vue'),
+          name: 'lobby_page'
+        },
+        {
+          path: ':id/active',
+          component: async () => import('../pages/blindtest/player/GamePage.vue'),
+          name: 'player_page'
+        }
+      ]
+    },
+    {
       path: '/:locale/:id/blind-test',
       component: async () => import('../pages/blindtest/IndexPage.vue'),
       name: 'blind_test'
     },
-    {
-      path: '/:locale/:id/player',
-      component: async () => import('../pages/blindtest/PlayerPage.vue'),
-      name: 'player_page'
-    },
+    // {
+    //   path: '/:locale/:id/player',
+    //   component: async () => import('../pages/blindtest/player/GamePage.vue'),
+    //   name: 'player_page'
+    // },
     {
       path: '/:locale/(.*)',
       component: async () => import('../pages/ErrorPage.vue'),

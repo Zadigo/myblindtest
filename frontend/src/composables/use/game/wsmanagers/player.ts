@@ -24,6 +24,13 @@ export const usePlayerWebsocket = createSharedComposable(() => {
   const playerId = useLocalStorage<string>('playerId', '')
 
   /**
+   * Answer states
+   */
+
+  const selected = ref<number | null>(null)
+  const isAnswered = computed(() => selected.value !== null)
+
+  /**
    * Good answer states
    */
 
@@ -34,10 +41,21 @@ export const usePlayerWebsocket = createSharedComposable(() => {
   const showAnswer = refAutoReset<boolean>(false, 10000)
 
   /**
-   * Choices state
+   * Start state
    */
-  // const _multipleChoiceAnswers = ref<MultiChoiceAnswer[]>([])
-  // const multipleChoiceAnswers = refDebounced(_multipleChoiceAnswers, 2000)
+
+  const isStarted = ref(false)
+  const router = useRouter()
+  
+  const goToGamePage = useDebounceFn(() => {
+    router.push({ name: 'player_page', params: { locale: route.params.locale, id: route.params.id } })
+  }, 2000)
+
+  watchOnce(isStarted, async (newVal) => {
+    if (newVal) {
+      goToGamePage()
+    }
+  })
 
   /**
    * Websocket
@@ -62,7 +80,7 @@ export const usePlayerWebsocket = createSharedComposable(() => {
       }
 
       if (message.action === 'game_started') {
-        toast.add({ severity: 'info', summary: 'Game started', detail: 'The game has started!', life: 10000 })
+        isStarted.value = true
       }
 
       if (message.action === 'guess_correct') {
@@ -101,6 +119,14 @@ export const usePlayerWebsocket = createSharedComposable(() => {
 
       if (message.action === 'game_paused') {
         toast.add({ severity: 'info', summary: 'Game paused', detail: 'The game has been paused by the host.', life: 10000 })
+      }
+
+      if (message.action === 'try_reconnection') {
+        goToGamePage()
+      }
+
+      if (message.action === 'next_song_loaded') {
+        selected.value = null
       }
     }
   })
@@ -183,9 +209,12 @@ export const usePlayerWebsocket = createSharedComposable(() => {
      */
     player,
     /**
-     * Multiple choice answers
-     * @default {} --- IGNORE ---
+     * The selected answer index
      */
-    // multipleChoiceAnswers
+    selected,
+    /**
+     * Indicates if the player has answered the current question
+     */
+    isAnswered
   }
 })

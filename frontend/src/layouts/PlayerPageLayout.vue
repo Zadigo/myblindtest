@@ -5,27 +5,14 @@
 
     <!-- Content -->
     <volt-container size="sm">
-      <div class="absolute top-50 left-1/2 transform -translate-x-1/2 z-50">
-        <transition mode="out-in" enter-from-class="animate-zoomout opacity-0" enter-active-class="" enter-to-class="animate-zoomin opacity-100" leave-from-class="animate-zoomin opacity-100" leave-active-class="" leave-to-class="animate-zoomout opacity-0">
-          <guess-state v-if="showAnswer" :is-correct-guess="isCorrectGuess" :is-incorrect-guess="isIncorrectGuess" :correct-song="correctSong" class="mt-5" />
-          <template v-else>
-            <ranking-state v-if="showGraph" />
-            <main-card v-else :player="player" :is-ready="isReady" @toggle-settings-modal="toggleSettingsModal" />
-          </template>
-        </transition>
-        
-        <!-- Multiple Choices -->
-        <multiple-choices class="mt-3 z-20" />
+      <div class="relative h-screen w-full overflow-hidden transition-all ease-in">
+        <router-view />
       </div>
-
       <!-- Background -->
       <div ref="bgEl" :class="bgTheme" class="absolute top-0 left-0 w-full h-screen bg-no-repeat bg-center bg-cover bg-fixed overflow-hidden" :style="{ backgroundImage: `url(${backgroundImage})` }"></div>
 
       <!-- Overlay -->
       <div ref="overlayEl" :class="overlayTheme" id="overlay" class="absolute top-0 left-0 w-full h-screen opacity-90 z-10" />
-
-      <!-- Modals -->
-      <settings-modal v-model:show="showSettingsModal" :player="player" />
     </volt-container>
   </div>
 
@@ -36,8 +23,7 @@
  * Websocket
  */
 
-const { wsObject, player, isReady, showAnswer, players, backgroundImage, isCorrectGuess, isIncorrectGuess, correctSong } = usePlayerWebsocket()
-wsObject.open()
+const { backgroundImage, isCorrectGuess, isIncorrectGuess } = usePlayerWebsocket()
 
 /**
  * Background
@@ -63,12 +49,6 @@ const showGraph = useLocalStorage('blindtest-show-graph', false)
 const toggleShowGraph = useToggle(showGraph)
 
 /**
- * Modals (Name Update)
- */
-
-const [showSettingsModal, toggleSettingsModal] = useToggle()
-
-/**
  * Themes
  */
 
@@ -87,20 +67,6 @@ const bgTheme = computed(() => {
     'blur-xs': isCorrectGuess.value || isIncorrectGuess.value,
     'filter grayscale-50 brightness-50 blur-md': !isCorrectGuess.value && !isIncorrectGuess.value,
   }
-})
-
-/**
- * SEO
- */
-
-useHead({
-  title: 'Player - MyBlindTest',
-  meta: [
-    {
-      name: 'keywords',
-      content: 'blind test, music quiz, player, join game, compete, fun, multiplayer, MyBlindTest',
-    }
-  ]
 })
 </script>
 

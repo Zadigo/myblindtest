@@ -89,16 +89,21 @@ class PlayerConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):
         # Forwards game updates to the smartphone
         # using an undeerlying dictionnary with
         # actions like: guess_correct, guess_incorrect...
-
-        # print("Forwarding game update to smartphone:", content)
-
+        
         action = content['message']['action']
         await self.send_json(content['message'])
 
         print('action', action)
 
+        message: dict[str, str] = {}
+
         if action == 'guess_incorrect' or action == 'guess_correct':
-            await self.send_json({'action': 'show_answer'})
+            message = {'action': 'show_answer'}
+
+        if action == 'next_song':
+            message = {'action': 'next_song_loaded'}
+
+        await self.send_json(message)
 
     async def game_disconnected(self, content):
         await self.send_json({'action': 'game_disconnected'})
@@ -113,3 +118,9 @@ class PlayerConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):
     async def game_paused(self, content):
         # TODO: Implement game pausing
         await self.send_json({'action': 'game_paused'})
+
+    async def try_reconnection(self, content):
+        print(content)
+        player_id = content['player_id']
+        if player_id == self.player.id:
+            await self.send_json({'action': 'try_reconnection'})

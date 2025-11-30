@@ -2,33 +2,9 @@
   <volt-card class="h-auto min-h-[207px] min-w-[207px]">
     <template #content>
       <div v-if="player" ref="cardEl" class="text-center flex-row justify-center items-center w-full">
-        <div v-if="isHovered" class="space-y-2">
-          <sound-effect id="sound-title" name="camera">
-            <template #default="{ attrs }">
-              <volt-secondary-button class="w-full" size="small" @click="attrs.playSound(() => sendCorrectAnswer(playerId, 'Artist'))">
-                <vue-icon icon="lucide:star-half" />
-                Artist
-              </volt-secondary-button>
-            </template>
-          </sound-effect>
-
-          <sound-effect id="sound-title" name="camera">
-            <template #default="{ attrs }">
-              <volt-secondary-button class="w-full" size="small" @click="attrs.playSound(() => sendCorrectAnswer(playerId, 'Title'))">
-                <vue-icon icon="lucide:star-half" />
-                Title
-              </volt-secondary-button>
-            </template>
-          </sound-effect>
-
-          <sound-effect id="sound-title" name="camera">
-            <template #default="{ attrs }">
-              <volt-secondary-button class="w-full" size="small" @click="attrs.playSound(() => sendCorrectAnswer(playerId, 'Both'))">
-                <vue-icon icon="lucide:star" />
-                Both
-              </volt-secondary-button>
-            </template>
-          </sound-effect>
+        <div v-if="isHovered" id="player-actions">
+          <multi-choice-actions v-if="currentSettings && currentSettings.settings.multipleChoiceAnswers" :player-id="playerId" />
+          <admin-actions v-else :player-id="playerId" />
         </div>
 
         <div v-else>
@@ -70,11 +46,4 @@ const player = computed(() => currentSettings.value?.players[props.playerId])
  */
 
 const { consecutiveAnswers } = useConsecutiveAnswers(player)
-
-/**
- * Actions
- */
-
-const { wsObject, gameStarted } = useAdminWebsocket()
-const { sendCorrectAnswer } = useGameActions(wsObject, gameStarted)
 </script>

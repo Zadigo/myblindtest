@@ -168,14 +168,14 @@ class BaseGameLogicMixin:
 
     async def calculate_multiple_choice_points(self):
         """Calculates points for multiple choice answers"""
-        for item in self.game_state.player_choices:
+        for item in self.song_possibilities.playerChoices:
             player = self.game_state._players.get(item['player_id'], None)
 
             if player is not None:
                 index = item['answer_index']
 
                 try:
-                    answer = self.game_state.current_choice_answers[index]
+                    answer = self.song_possibilities.currentChoiceAnswers[index]
                 except IndexError:
                     await self.send_error('Invalid answer index submitted')
                     continue

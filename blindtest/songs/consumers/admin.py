@@ -39,6 +39,16 @@ class ChannelEventsMixin:
         return self.waiting_room_name
 
     def base_room_message(self, **kwargs: str | int):
+        """Generates a base message for sending to
+        the channels groups with device information
+
+        >>> self.base_room_message(type='game.started', player_id='player_1234')
+
+        Or, if you need to transfer a full message to the group:
+        >>> self.base_room_message(**{'type': 'game.started', 'message': {...}})
+
+        The `device_name` and `device_id` of the sender are automatically included in the message.
+        """
         base_message = {
             'device_name': self.device_name,
             'device_id': self.device_id,
@@ -91,6 +101,9 @@ class ChannelEventsMixin:
         """Channels handler to indicate that a player has submitted an answer
         when using multiple choice answers"""
 
+    async def try_reconnection(self, content: dict[str, str | int]):
+        """Channels handler to attempt reconnection of a player by their ID"""
+
 
 class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsumer):
     """This consumer handles connections specifically from admin devices
@@ -142,6 +155,15 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
                 await self.send_json({'action': 'game_started'})
 
             await self.next_song()
+
+            message = self.base_room_message(
+                **{
+                        'type': 'game.updates', 
+                        'message': {'action': 'next_song_loaded'
+                    }
+                }
+            )
+            await self.channel_layer.group_send(self.indexed_diffusion_group_name, message)
         elif action == 'stop_game':
             if not self.game_state.is_started:
                 await self.send_error("Game not started")
@@ -214,6 +236,15 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
             # message = self.base_room_message(**{'type': 'game.paused'})
             # await self.channel_layer.group_send(self.indexed_diffusion_group_name, message)
             pass
+        elif action == 'reconnect_player':
+            await self.channel_layer.group_send(
+                self.indexed_diffusion_group_name,
+                self.base_room_message(**{
+                    'type': 'try.reconnection',
+                    'game_id': self.session_id,
+                    'player_id': content.get('player_id', '')
+                })
+            )
         else:
             await self.send_error('Invalid action')
 
@@ -245,7 +276,7 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
         if not state:
             await self.send_error('Device not found for disconnection')
             return
-        
+
         await self.send_json({'action': 'device_disconnected', 'players': self.game_state.player_values})
 
     async def update_player(self, content: dict[str, str | int]):

@@ -4,7 +4,7 @@
  * management for the admin side of the game
  */
 
-import type { VueUseWsReturnType } from '@/types'
+import type { Undefineable, VueUseWsReturnType } from '@/types'
 import { useSound } from '@vueuse/sound'
 import { arrayUnion, doc, updateDoc } from 'firebase/firestore'
 import { useToast } from 'primevue/usetoast'
@@ -63,7 +63,12 @@ export const useAdminWebsocket = createSharedComposable(() => {
           if (message.song) {
             songsPlayed.value.push(message.song)
             songStore.incrementStep()
+
             await updateDoc(docRef, { songsPlayed: arrayUnion(message.song.id) })
+
+            if (isDefined(currentSettings) && currentSettings.value.settings.multipleChoiceAnswers) {
+              currentSettings.value.playerAnswers = []
+            }
           }
         }
 
@@ -77,8 +82,10 @@ export const useAdminWebsocket = createSharedComposable(() => {
         }
 
         if (message.action === 'update_possibilities') {
-          console.log('Updating possibilities for multiple choice answers:', message.choices)
-          currentSettings.value.availableAnswers = message.choices
+          if (isDefined(currentSettings)) {
+            console.log('Updating possibilities for multiple choice answers:', message.choices)
+            currentSettings.value.availableAnswers = message.choices
+          }
         }
 
         if (message.action === 'player_submitted_answer') {
@@ -224,6 +231,10 @@ export function useGameActions(wsObject: VueUseWsReturnType, gameStarted: Ref<bo
       }
     }
   }
+
+  function _reconnectPlayer(playerId: Undefineable<string>) {
+    wsObject.send(stringify({ action: 'reconnect_player', player_id: playerId }))
+  }
   
   return {
     /**
@@ -248,7 +259,12 @@ export function useGameActions(wsObject: VueUseWsReturnType, gameStarted: Ref<bo
     /**
      * Sends an incorrect answer message over the websocket
      */
-    sendIncorrectAnswer: useThrottleFn(_sendIncorrectAnswer, 500)
+    sendIncorrectAnswer: useThrottleFn(_sendIncorrectAnswer, 500),
+    /**
+     * Attempts to reconnect a player by their ID
+     * @param playerId The ID of the player to reconnect
+     */
+    reconnectPlayer: useThrottleFn(_reconnectPlayer, 5000)
   }
 }
 

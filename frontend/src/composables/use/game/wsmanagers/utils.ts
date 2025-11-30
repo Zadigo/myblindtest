@@ -9,6 +9,7 @@ export type WsSendMessage = { action: 'start_game' }
   | { action: 'pause_game' }
   | { action: 'submit_answer', answer_index: number }
   | { action: 'next_song' }
+  | { action: 'reconnect_player', player_id: Undefineable<string> }
 
 export type WsReceiveMessage = { action: 'device_accepted', player: BlindtestPlayer, players: Record<string, BlindtestPlayer> }
   | { action: 'device_disconnected', players: Record<string, BlindtestPlayer> }
@@ -25,7 +26,8 @@ export type WsReceiveMessage = { action: 'device_accepted', player: BlindtestPla
   | { action: 'update_possibilities', choices: MultiChoiceAnswer[] }
   | { action: 'player_submitted_answer', player_id: string, answer_index: number }
   | { action: 'multi_choice_updated_scores', players: MultiDictType<BlindtestPlayer> }
-
+  | { action: 'try_reconnection', player_id: string }
+  | { action: 'next_song_loaded' }
 
 /**
  * This is a special composable that helps with parsing and stringifying
