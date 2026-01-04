@@ -162,3 +162,46 @@ export const usePlayerSession = createGlobalState(() => {
     currentSettings
   }
 })
+
+/**
+ * This composable is used to get the songs played
+ * in the current blindtest session
+ */
+// export const useSongsPlayedSession = createGlobalState(() => {
+//   const fireStore = useFirestore()
+//   const sessionId = useSessionStorage<string>('blindtestId', null)
+
+//   if (!isDefined(sessionId)) {
+//     return {
+//       docRef: null
+//     }
+//   }
+
+//   const songsPlayed = ref<Song[]>([])
+//   const docRef = doc(fireStore, 'blindtests', sessionId.value)
+//   const _songsPlayed = useDocument<Song[]>(docRef)
+
+//   watch(_songsPlayed, (newValue) => {
+//     if (isDefined(newValue)) {
+//       songsPlayed.value = songsPlayed.value || []
+//     }
+//   }, {
+//     immediate: true,
+//     deep: true
+//   })
+
+//   watchDebounced(songsPlayed, async (newValue) => {
+//     if (isDefined(newValue) && isDefined(sessionId)) {
+//       await updateDoc(docRef, {
+//         songsPlayed: newValue
+//       })
+//     }
+//   }, {
+//     debounce: 1000,
+//     deep: true
+//   })
+
+//   return {
+//     docRef
+//   }
+// })
