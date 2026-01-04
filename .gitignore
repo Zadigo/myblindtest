@@ -8,13 +8,14 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+node_modules
 nodemodules
 dist
 dist-ssr
 *.local
 
 # Editor directories and files
-.vscode/*
+# .vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store
@@ -25,7 +26,6 @@ dist-ssr
 *.sw?
 
 *.sqlite3
-node_modules
 
 # Translations
 *.mo
@@ -59,7 +59,7 @@ ipython_config.py
 # pyenv
 .python-version
 
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow
+# PEP 582
 __pypackages__/
 
 # Celery stuff
@@ -78,7 +78,7 @@ ENV/
 env.bak/
 venv.bak/
 
-# local env files
+# Local env files
 .env.local
 .env.*.local
 
@@ -107,8 +107,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Specifies intentionally untracked files to ignore when using Git
-# http://git-scm.com/docs/gitignore
+# Misc files
 *~
 *.sw[mnpcod]
 .tmp
@@ -137,36 +136,6 @@ components.d.ts
 .eslintcache
 *.dump
 
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-node_modules
-.DS_Store
-dist
-dist-ssr
-coverage
-*.local
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-*.tsbuildinfo
-
-.eslintcache
-
 # Cypress
 /cypress/videos/
 /cypress/screenshots/
@@ -178,8 +147,9 @@ test-results/
 playwright-report/
 
 # Other
-
 test-service.json
 
 .devcontainer/
 .ansible/
+
+*.tsbuildinfo
