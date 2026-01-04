@@ -11,6 +11,13 @@
         "nuxt": {
             "type": "http",
             "url": "https://nuxt.com/mcp"
+        },
+        "primevue": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@primevue/mcp"
+            ]
         }
     }
 }
