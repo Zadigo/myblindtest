@@ -73,6 +73,13 @@ class Artist(models.Model):
     class Meta:
         ordering = ['name']
         verbose_name = _('artist')
+        indexes = [
+            models.Index(
+                condition=models.Q(is_group=True),
+                fields=['is_group'],
+                name='musical_groups'
+            )
+        ]
 
     def __str__(self):
         return f'{self.name}'
@@ -188,6 +195,11 @@ class Song(AbstractSong):
             )
         ]
         indexes = [
+            models.Index(
+                condition=models.Q(difficulty=1),
+                fields=['difficulty'],
+                name='difficulty_easy'
+            ),
             models.Index(
                 condition=(
                     models.Q(difficulty=4) |

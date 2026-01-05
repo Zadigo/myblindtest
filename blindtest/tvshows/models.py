@@ -1,8 +1,6 @@
 from django.db import models
 from songs.models import Artist, AbstractSong
 from django.utils.translation import gettext_lazy as _
-from blindtest.validators import validate_year
-from blindtest.validators import validate_difficulty
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
 from urllib.parse import urlparse, parse_qs
