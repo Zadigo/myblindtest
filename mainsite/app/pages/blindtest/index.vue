@@ -2,20 +2,20 @@
   <section id="blindtest">
     <blind-test-layout>
       <template #video>
-        <video-block />
+        <blindtest-video-block />
       </template>
 
       <template #default="attrs">
         <div id="players" :class="attrs.theme" class="h-full w-full p-5 overflow-hidden">
           <div class="flex items-start overflow-y-scroll gap-2 space-y-3 w-full">
-            <player-card :id="`player-${idx}`" v-for="(player, idx) in players" :key="idx" :player-id="player"  />
+            <blindtest-player-card :id="`player-${idx}`" v-for="(player, idx) in players" :key="idx" :player-id="player"  />
           </div>
         </div>
       </template>
     </blind-test-layout>
 
     <!-- Modals -->
-    <active-game v-model="warnActiveGameModal" @proceed="() => stopGame(stopGameCallback)" />
+    <blindtest-modals-active-game v-model="warnActiveGameModal" @proceed="() => stopGame(stopGameCallback)" />
   </section>
 </template>
 

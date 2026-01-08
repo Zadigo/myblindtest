@@ -6,18 +6,18 @@
         <template #content>
           <div class="flex items-center gap-2 mb-3 w-full">
             <volt-button @click="handleBack">
-              <VueIcon icon="fa-solid:arrow-left" /> {{ $t('Back') }}
+              <icon name="fa-solid:arrow-left" /> {{ $t('Back') }}
             </volt-button>
 
             <div class="ml-auto space-x-2 flex items-center">
               <volt-button @click="getPrevious">
-                <VueIcon icon="fa-solid:caret-left" />
+                <icon name="fa-solid:caret-left" />
                 {{ $t('Previous') }}
               </volt-button>
 
               <volt-button @click="getNextPage">
                 {{ $t('Next') }}
-                <VueIcon icon="fa-solid:caret-right" />
+                <icon name="fa-solid:caret-right" />
               </volt-button>
             </div>
           </div>
@@ -62,8 +62,8 @@
 
                       <div class="inline-flex items-center gap-1">
                         <template v-for="i in 5" :key="i">
-                          <icon v-if="i <= song.difficulty" icon="fa-solid:star" class="dark:text-surface-300" />
-                          <icon v-else icon="fa-solid:star" class="text-surface-50" />
+                          <icon v-if="i <= song.difficulty" name="fa-solid:star" class="dark:text-surface-300" />
+                          <icon v-else name="fa-solid:star" class="text-surface-50" />
                         </template>
                       </div>
                     </div>

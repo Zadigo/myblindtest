@@ -24,7 +24,7 @@
 
         <!-- Difficulty -->
         <volt-badge severity="contrast">
-          <icon v-for="i in currentSong.difficulty" :key="i" icon="lucide:star" />
+          <icon v-for="i in currentSong.difficulty" :key="i" name="lucide:star" />
         </volt-badge>
       </div>
 

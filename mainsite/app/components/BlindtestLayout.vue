@@ -1,7 +1,7 @@
 <template>
   <section id="blindtest" class="relative h-screen w-full bg-primary-200 dark:bg-primary-800">
     <!-- Action Bar -->
-    <action-bar />
+    <blindtest-action-bar />
 
     <!-- Main Content -->
     <div class="grid grid-cols-12 grid-rows-12 w-full h-full">
@@ -26,12 +26,12 @@
     </div>
 
     <!-- Dock -->
-    <action-dock />
+    <blindtest-action-dock />
 
     <!-- Modals -->
-    <devices-modal v-model="showDevices" />
-    <connection-url v-model:show="showConnectionUrl" />
-    <genre-randomizer ref="randomizerEl" v-model:show="showWheel" :items="wheelDefaults" @completed="randomizerComplete" />
+    <blindtest-modals-devices-modal v-model="showDevices" />
+    <blindtest-modals-connection-url v-model:show="showConnectionUrl" />
+    <blindtest-randomizer-genre ref="randomizerEl" v-model:show="showWheel" :items="wheelDefaults" @completed="randomizerComplete" />
   </section>
 </template>
 

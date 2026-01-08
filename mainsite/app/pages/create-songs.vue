@@ -32,7 +32,7 @@
           <template #content>
             <transition-group name="opacity">
               <template v-for="(_, idx) in blocks" :key="idx">
-                <create-block :index="idx" />
+                <creation-create-block :index="idx" />
                 <volt-divider v-if="blocks.length > 1 && idx !== blocks.length - 1" class="my-5" />
               </template>
             </transition-group>
@@ -63,7 +63,7 @@
 
 <script setup lang="ts">
 const AsyncListSongs = defineAsyncComponent({
-  loader: async () => import('@/components/creation/ListSongs.vue'),
+  loader: async () => import('~/components/creation/ListSongs.vue'),
   timeout: 20000
 })
 

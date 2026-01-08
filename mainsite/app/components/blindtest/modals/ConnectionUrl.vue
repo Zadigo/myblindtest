@@ -17,7 +17,6 @@
 </template>
 
 <script setup lang="ts">
-import { useGlobalState } from '@/composables'
 import { useQRCode } from '@vueuse/integrations/useQRCode'
 
 /**

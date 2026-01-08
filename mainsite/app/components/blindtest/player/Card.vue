@@ -3,8 +3,8 @@
     <template #content>
       <div v-if="player" ref="cardEl" class="text-center flex-row justify-center items-center w-full">
         <div v-if="isHovered" id="player-actions">
-          <multi-choice-actions v-if="currentSettings && currentSettings.settings.multipleChoiceAnswers" :player-id="playerId" />
-          <admin-actions v-else :player-id="playerId" />
+          <blindtest-player-multi-choice-actions v-if="currentSettings && currentSettings.settings.multipleChoiceAnswers" :player-id="playerId" />
+          <blindtest-player-admin-actions v-else :player-id="playerId" />
         </div>
 
         <div v-else>

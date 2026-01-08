@@ -17,7 +17,7 @@
 import TimesIcon from '@primevue/icons/times'
 import Drawer, { type DrawerPassThroughOptions, type DrawerProps } from 'primevue/drawer'
 import { ref } from 'vue'
-import SecondaryButton from './VoltSecondaryButton.vue'
+import SecondaryButton from './SecondaryButton.vue'
 import { ptViewMerge } from './utils'
 
 interface Props extends /* @vue-ignore */ DrawerProps { }

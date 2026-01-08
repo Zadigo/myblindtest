@@ -13,7 +13,7 @@
     </div>
 
     <!-- Actions -->
-    <team-actions :team="team" @animate="handleAnimations" />
+    <blindtest-team-actions :team="team" @animate="handleAnimations" />
 
     <!-- Consecutive Answers -->
     <transition class="animate__animated" enter-to-class="animate__zoomInLeft" leave-to-class="animate__fadeOutLeft">
