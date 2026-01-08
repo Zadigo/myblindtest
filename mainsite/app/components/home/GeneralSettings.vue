@@ -54,6 +54,8 @@
 </template>
 
 <script setup lang="ts">
+import { difficultyLevels } from '~/data'
+
 const { genres, autocomplete } = useLoadAutocompleteData(true)
 const { currentSettings } = useSession()
 </script>

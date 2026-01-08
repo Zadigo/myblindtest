@@ -20,8 +20,6 @@
 </template>
 
 <script setup lang="ts">
-import { useAdminWebsocket } from '@/composables'
-
 definePageMeta({
   layout: 'blindtest'
 })

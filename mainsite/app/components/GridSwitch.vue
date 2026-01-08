@@ -9,6 +9,6 @@
 </template>
 
 <script setup lang="ts">
-const switchValue = defineModel('switchValue', { default: false })
+const switchValue = defineModel('switchValue', { type: Boolean, default: false })
 </script>
 s

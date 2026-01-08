@@ -31,13 +31,11 @@
     <!-- Modals -->
     <blindtest-modals-devices-modal v-model="showDevices" />
     <blindtest-modals-connection-url v-model:show="showConnectionUrl" />
-    <blindtest-randomizer-genre ref="randomizerEl" v-model:show="showWheel" :items="wheelDefaults" @completed="randomizerComplete" />
+    <blindtest-randomizer-genre ref="randomizerEl" v-model:show="showWheel" :items="wheelDefaults" @completed="onComplete" />
   </section>
 </template>
 
 <script setup lang="ts">
-import { wheelDefaults } from '@/composables'
-
 /**
  * Background artist image
  */
@@ -57,8 +55,7 @@ provide<boolean>('gameStarted', gameStarted.value)
  * Wheel Randomizer
  */
 
-// const randomizeEl = useTemplateRef('randomizerEl')
-const { showWheel, randomizerEl, randomizerComplete } = useWheelRandomizer(wsObject)
+const { showWheel, randomizerEl, onComplete } = useWheelRandomizer(wsObject)
 
 /**
  * Modals

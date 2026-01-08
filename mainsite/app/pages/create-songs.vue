@@ -76,8 +76,6 @@ const AsyncListSongs = defineAsyncComponent({
 const searchParam = useUrlSearchParams('history', {
   initialValue: {
     v: 'c'
-  } as {
-    v: 'l' | 'c'
   }
 })
 
@@ -105,12 +103,24 @@ onMounted(async () => {
  * SEO
  */
 
+const { locale } = useI18n()
+
+const titles = {
+  en: 'Create songs',
+  fr: 'Créer des chansons',
+}
+
+const descriptions = {
+  en: 'Create new songs for MyBlindTest',
+  fr: 'Créer de nouvelles chansons pour MyBlindTest',
+}
+
 useHead({
-  title: 'Create songs',
+  title: titles[locale.value],
   meta: [
     {
       name: 'description',
-      content: 'Create new songs for MyBlindTest'
+      content: descriptions[locale.value]
     }
   ]
 })

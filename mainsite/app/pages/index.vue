@@ -74,13 +74,24 @@ const { isDark } = useDarkMode()
  * SEO
  */
 
+const { locale } = useI18n()
+
+const titles = {
+  en: 'Blindtest challenge',
+  fr: 'Défi Blindtest',
+}
+
+const descriptions = {
+  'en': 'Join the ultimate blindtest challenge! Test your music knowledge with friends and climb the leaderboard. Are you ready to take on the challenge?',
+  'fr': "Rejoignez le défi blindtest ultime ! Testez vos connaissances musicales avec des amis et grimpez dans le classement. Êtes-vous prêt à relever le défi ?",
+}
+
 useHead({
-  title: 'Blindtest challenge',
+  title: titles[locale.value],
   meta: [
     {
       name: 'description',
-      content:
-        'Welcome to Volt Scorekeeper! Manage your sports scoring with ease using our intuitive platform designed for efficiency and accuracy.',
+      content: descriptions[locale.value],
     },
   ],
 })

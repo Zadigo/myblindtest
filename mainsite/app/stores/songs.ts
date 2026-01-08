@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-import type { Answer, Song } from '@/types'
+import type { Answer, Song } from '~/types'
 
 /**
  * A store that manages the songs (songs played, current song...)
