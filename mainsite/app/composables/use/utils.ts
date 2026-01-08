@@ -93,7 +93,12 @@ export const useLoadAutocompleteData = createSharedComposable((_fromCache = fals
 
   // TODO: Memoize does not work properly
   const { load } = useMemoize(async (path: string) => {
-    return await $fetch<SettingsApiResponse>(path, { baseURL: useRuntimeConfig().public.apiBaseUrl })
+    try {
+      return await $fetch<SettingsApiResponse>(path, { baseURL: useRuntimeConfig().public.apiBaseUrl })
+    } catch (error) {
+      console.error('Failed to load autocomplete data:', error)
+      return undefined
+    }
   })
 
   tryOnMounted(async () => { 
