@@ -28,7 +28,6 @@
 </template>
 
 <script setup lang="ts">
-
 const { teamIndex = 1 } = defineProps<{ teamIndex: number }>()
 
 /**

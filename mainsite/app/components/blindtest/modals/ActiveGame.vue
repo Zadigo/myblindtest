@@ -17,7 +17,5 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{ modelValue: boolean }>()
-const emit = defineEmits<{ 'update:modelValue': [boolean], proceed: [] }>()
-const show = useVModel(props, 'modelValue', emit)
+const show = defineModel<boolean>('show')
 </script>

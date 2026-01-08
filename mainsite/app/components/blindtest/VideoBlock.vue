@@ -3,7 +3,7 @@
     <div class="bg-primary-300/30 dark:bg-primary-900 flex justify-left items-center overflow-hidden rounded-xl w-[400px] h-[300px] min-height-[200px]">
       <!-- frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" -->
       <iframe v-if="gameStarted && currentSong" id="player" :src="currentSong.youtube" class="max-w-full h-auto block" width="400" height="200" />
-      <volt-bars-loader v-else />
+      <volt-loaders-bars-loader v-else />
     </div>
 
     <div v-if="gameStarted && currentSong" class="mt-10 space-y-2">

@@ -1,7 +1,7 @@
 <template>
   <div class="relative h-screen w-full overflow-hidden transition-all ease-in">
     <!-- Acton Bar -->
-    <top-action-bar @toggle-graph="toggleShowGraph" />
+    <blindtest-score-top-action-bar @toggle-graph="toggleShowGraph" />
 
     <!-- Content -->
     <volt-container size="sm">

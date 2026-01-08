@@ -1,5 +1,5 @@
 <template>
-  <section ref="sectionEl" id="layout-site">
+  <section id="layout-site" ref="sectionEl">
     <!-- Navbar -->
     <header class="hidden md:flex">
       <base-navbar>

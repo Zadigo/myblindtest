@@ -15,12 +15,16 @@
     </blind-test-layout>
 
     <!-- Modals -->
-    <blindtest-modals-active-game v-model="warnActiveGameModal" @proceed="() => stopGame(stopGameCallback)" />
+    <blindtest-modals-active-game v-model:show="warnActiveGameModal" @proceed="() => stopGame(stopGameCallback)" />
   </section>
 </template>
 
 <script setup lang="ts">
 import { useAdminWebsocket } from '@/composables'
+
+definePageMeta({
+  layout: 'blindtest'
+})
 
 /**
  * Websocket

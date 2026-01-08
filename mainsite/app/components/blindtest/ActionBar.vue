@@ -40,7 +40,6 @@
 </template>
 
 <script setup lang="ts">
-import { useGlobalState } from '@/composables'
 import type { MenuItem } from 'primevue/menuitem'
 
 /**
