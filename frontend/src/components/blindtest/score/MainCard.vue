@@ -22,10 +22,6 @@
         </div>
       </template>
     </volt-card>
-
-    <base-game-loader v-else class="my-5" />
-
-    <!-- <div class="animate-slidedown"></div> -->
   </transition>
 </template>
 

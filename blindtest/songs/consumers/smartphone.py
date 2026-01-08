@@ -73,6 +73,14 @@ class PlayerConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):
                     player=dataclasses.asdict(self.player)
                 )
                 await self.channel_layer.group_send(self.indexed_diffusion_group_name, group_message)
+        elif action == 'submit_answer':
+            await self.channel_layer.group_send(self.indexed_diffusion_group_name, self.base_room_message(
+                type='player.submitted_answer',
+                player_id=self.player.id,
+                answer_index=content.get('answer_index')
+            ))
+        else:
+            await self.send_error(f'Unknown action: {action}')
 
     async def game_started(self, content):
         await self.send_json({'action': 'game_started'})
@@ -81,9 +89,38 @@ class PlayerConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):
         # Forwards game updates to the smartphone
         # using an undeerlying dictionnary with
         # actions like: guess_correct, guess_incorrect...
-        print("Forwarding game update to smartphone:", content)
+        
+        action = content['message']['action']
         await self.send_json(content['message'])
-        await self.send_json({'action': 'show_answer'})
+
+        print('action', action)
+
+        message: dict[str, str] = {}
+
+        if action == 'guess_incorrect' or action == 'guess_correct':
+            message = {'action': 'show_answer'}
+
+        if action == 'next_song':
+            message = {'action': 'next_song_loaded'}
+
+        await self.send_json(message)
 
     async def game_disconnected(self, content):
         await self.send_json({'action': 'game_disconnected'})
+
+    async def update_player_failed(self, content):
+        player_id = content.get('player_id', None)
+        if player_id != self.player.id:
+            return
+
+        await self.send_error(content.get('message', 'Player update failed'))
+
+    async def game_paused(self, content):
+        # TODO: Implement game pausing
+        await self.send_json({'action': 'game_paused'})
+
+    async def try_reconnection(self, content):
+        print(content)
+        player_id = content['player_id']
+        if player_id == self.player.id:
+            await self.send_json({'action': 'try_reconnection'})

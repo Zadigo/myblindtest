@@ -4,11 +4,12 @@
  * management for the admin side of the game
  */
 
-import type { VueUseWsReturnType } from '@/types'
+import type { Undefineable, VueUseWsReturnType } from '@/types'
 import { useSound } from '@vueuse/sound'
 import { arrayUnion, doc, updateDoc } from 'firebase/firestore'
 import { useToast } from 'primevue/usetoast'
 import { useDocument, useFirestore } from 'vuefire'
+
 
 /**
  * Websocket for individual game (admin)
@@ -36,6 +37,10 @@ export const useAdminWebsocket = createSharedComposable(() => {
 
   const { play } = useSound('tick.mp3')
 
+  /**
+   * Player Answers
+   */
+
   const wsObject = useWebSocket(`ws://127.0.0.1:8000/ws/songs/${sessionId.value}/single-player`, {
     immediate: false,
     onMessage: async (_ws, event: MessageEvent) => {
@@ -58,7 +63,25 @@ export const useAdminWebsocket = createSharedComposable(() => {
           if (message.song) {
             songsPlayed.value.push(message.song)
             songStore.incrementStep()
+
             await updateDoc(docRef, { songsPlayed: arrayUnion(message.song.id) })
+
+            if (isDefined(currentSettings) && currentSettings.value.settings.multipleChoiceAnswers) {
+              currentSettings.value.playerAnswers = []
+              
+              // When loading a new song, if there are pending score updates,
+              // apply them to the players
+              if (isDefined(currentSettings.value.pendingScoresUpdate)) {
+                currentSettings.value.playerAnswers = []
+
+                Object.keys(currentSettings.value.pendingScoresUpdate).forEach((playerId) => {
+                  const playerValue = currentSettings.value.players[playerId]
+                  if (isDefined(playerValue)) {
+                    playerValue.points = currentSettings.value.pendingScoresUpdate[playerId]?.points || playerValue.points
+                  }
+                })
+              }
+            }
           }
         }
 
@@ -69,6 +92,26 @@ export const useAdminWebsocket = createSharedComposable(() => {
 
         if (message.action === 'error') {
           toast.add({ severity: 'error', summary: 'Error', detail: `Error from server: ${message.message}`, life: 10000 })
+        }
+
+        if (message.action === 'update_possibilities') {
+          if (isDefined(currentSettings)) {
+            console.log('Updating possibilities for multiple choice answers:', message.choices)
+            currentSettings.value.availableAnswers = message.choices
+          }
+        }
+
+        if (message.action === 'player_submitted_answer') {
+          console.log(`Player ${message.player_id} submitted answer index ${message.answer_index}`)
+
+          await updateDoc(docRef, { playerAnswers: arrayUnion({ player_id: message.player_id, answer_index: message.answer_index }) })
+        }
+
+        if (message.action === 'multi_choice_updated_scores') {
+          // Do not update the doc immediately. We will update it
+          // when the admin loads the next song
+          console.log('Received updated scores for multiple choice:', message.players)
+          await updateDoc(docRef, { pendingScoresUpdate: message.players })
         }
       }
     },
@@ -88,7 +131,6 @@ export const useAdminWebsocket = createSharedComposable(() => {
    * Players
    */
   const players = computed(() => Object.keys(blindTestDoc.value?.players || []))
-
 
   return {
     /**
@@ -133,10 +175,24 @@ export function useGameActions(wsObject: VueUseWsReturnType, gameStarted: Ref<bo
     gameStarted.value = true
   }
 
+  function _pauseGame() {
+    wsObject.send(stringify({ action: 'pause_game' }))
+  }
+
+  const toast = useToast()
+  const songsStore = useSongs()
+  const { currentSong, answers, correctAnswers } = storeToRefs(songsStore)
+
   function _stopGame(callback?: () => void) {
     gameStarted.value = false
     wsObject.send(stringify({ action: 'stop_game' }))
     wsObject.close()
+
+    correctAnswers.value = []
+
+    songsStore.songsPlayed = []
+    songsStore.resetStep()
+    toast.add({ severity: 'info', summary: 'Game Stopped', detail: 'The game has been successfully stopped and reset.', life: 8000 })
 
     callback?.()
   }
@@ -148,9 +204,6 @@ export function useGameActions(wsObject: VueUseWsReturnType, gameStarted: Ref<bo
       wsObject.send(result)
     }
   }
-
-  const songsStore = useSongs()
-  const { currentSong, correctAnswers, answers } = storeToRefs(songsStore)
 
   function _sendCorrectAnswer(id: string, match: MatchedPart) {
     let title_match = true
@@ -192,29 +245,72 @@ export function useGameActions(wsObject: VueUseWsReturnType, gameStarted: Ref<bo
     }
   }
 
-  const startGame = useThrottleFn(_startGame, 3000)
-  const stopGame = useThrottleFn(_stopGame, 3000)
-  const sendCorrectAnswer = useThrottleFn(_sendCorrectAnswer, 500)
-  const sendIncorrectAnswer = useThrottleFn(_sendIncorrectAnswer, 500)
-
+  function _reconnectPlayer(playerId: Undefineable<string>) {
+    wsObject.send(stringify({ action: 'reconnect_player', player_id: playerId }))
+  }
+  
   return {
+    /**
+     * Pauses the game
+     * @param callback Optional callback to be called after pausing the game
+     */
+    pauseGame: useThrottleFn(_pauseGame, 3000),
     /**
      * Starts the game
      * @param callback Optional callback to be called after starting the game
      */
-    startGame,
+    startGame: useThrottleFn(_startGame, 3000),
     /**
      * Stops the game
      * @param callback Optional callback to be called after stopping the game
      */
-    stopGame,
+    stopGame: useThrottleFn(_stopGame, 3000),
     /**
      * Sends a "not guessed" message over the websocket
      */
-    sendCorrectAnswer,
+    sendCorrectAnswer: useThrottleFn(_sendCorrectAnswer, 500),
     /**
      * Sends an incorrect answer message over the websocket
      */
-    sendIncorrectAnswer
+    sendIncorrectAnswer: useThrottleFn(_sendIncorrectAnswer, 500),
+    /**
+     * Attempts to reconnect a player by their ID
+     * @param playerId The ID of the player to reconnect
+     */
+    reconnectPlayer: useThrottleFn(_reconnectPlayer, 5000)
   }
+}
+
+export function useMultiChoiceGameActions(wsObject: VueUseWsReturnType) {
+  const {  currentSettings } = useSession()
+  const { isActive, remaining } = useCountdown(3, { immediate: false })
+
+  const { stringify } = useWebsocketMessage()
+
+  function resetContainers() {
+    if (isDefined(currentSettings)) {
+      currentSettings.value.pendingScoresUpdate = {}
+      currentSettings.value.availableAnswers = []
+      currentSettings.value.playerAnswers = []
+    }
+  }
+
+  async function _updateAnswersWithCountdown() {
+    if (isDefined(currentSettings)) {
+      currentSettings.value.players = currentSettings.value.pendingScoresUpdate
+      wsObject.send(stringify({ action: 'next_song' }))
+      resetContainers()
+    }
+  }
+
+  tryOnBeforeUnmount(( ) => {
+    resetContainers()
+  })
+
+  return {
+    countDownActive: isActive,
+    remaining,
+    updateAnswersWithCountdown: useThrottleFn(_updateAnswersWithCountdown, 500)
+  }
+
 }

@@ -57,6 +57,13 @@ const { showDevicesModal } = storeToRefs(devicesStore)
 const { toggleShowConnectionUrl } = useGlobalState()
 
 /**
+ * State
+ */
+
+const { isConnected, wsObject, gameStarted } = useAdminWebsocket()
+const { stopGame } = useGameActions(wsObject, gameStarted)
+
+/**
  * Dark mode
  */
 
@@ -83,17 +90,15 @@ const items: MenuItem = ref([
         command: () => toggleDark()
       },
       {
+        label: t('Stop game'),
+        command: () => stopGame()
+      },
+      {
         label: t('About')
       }
     ]
   }
 ])
-
-/**
- * State
- */
-
-const { isConnected, wsObject } = useAdminWebsocket()
 
 /**
  * Session copy

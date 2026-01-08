@@ -1,8 +1,9 @@
 from django.db import models
 from songs.models import Artist, AbstractSong
 from django.utils.translation import gettext_lazy as _
-from blindtest.validators import validate_year
-from blindtest.validators import validate_difficulty
+from django.dispatch import receiver
+from django.db.models.signals import pre_save
+from urllib.parse import urlparse, parse_qs
 
 
 class TVShow(models.Model):
@@ -75,3 +76,17 @@ class ThemeSong(AbstractSong):
         if self.artist is None or self.name is None:
             return f"Theme song from {self.series.title}"
         return f"{self.name} by {self.artist} from {self.series.title}"
+
+
+@receiver(pre_save, sender=ThemeSong)
+def extract_youtube_id(instance, **kwargs):
+    if instance.youtube_id and instance.youtube_id.startswith(('http://', 'https://')):
+        parsed_url = urlparse(instance.youtube_id)
+        if parsed_url.hostname in ['www.youtube.com', 'youtube.com']:
+            query_params = parse_qs(parsed_url.query)
+            video_ids = query_params.get('v')
+
+            if video_ids:
+                instance.youtube_id = video_ids[0]
+        elif parsed_url.hostname == 'youtu.be':
+            instance.youtube_id = parsed_url.path.lstrip('/')

@@ -14,6 +14,7 @@ import { useDocument, useFirestore } from 'vuefire'
  * Websocket for individual player (smartphone)
  */
 export const usePlayerWebsocket = createSharedComposable(() => {
+  const router = useRouter()
   const route = useRoute()
 
   const toast = useToast()
@@ -24,6 +25,13 @@ export const usePlayerWebsocket = createSharedComposable(() => {
   const playerId = useLocalStorage<string>('playerId', '')
 
   /**
+   * Answer states
+   */
+
+  const selected = ref<number | null>(null)
+  const isAnswered = computed(() => selected.value !== null)
+
+  /**
    * Good answer states
    */
 
@@ -32,6 +40,27 @@ export const usePlayerWebsocket = createSharedComposable(() => {
   const isCorrectGuess = refAutoReset<boolean>(false, 10000)
   const isIncorrectGuess = refAutoReset<boolean>(false, 10000)
   const showAnswer = refAutoReset<boolean>(false, 10000)
+
+  /**
+   * Start state
+   */
+
+  const isStarted = ref(false)
+  
+  const goToGamePage = useDebounceFn(() => {
+    router.push({ name: 'player_page', params: { locale: route.params.locale, id: route.params.id } })
+  }, 2000)
+
+  watchOnce(isStarted, async (newVal) => {
+    if (newVal) {
+      goToGamePage()
+    }
+  })
+
+  // Indicates if the game was started before (to avoid re-navigation)
+  // and in case of reconnection just automatically open the websocket
+  // connection once again
+  const wasStarted = useLocalStorage<boolean>('blindtestWasStarted', false)
 
   /**
    * Websocket
@@ -53,10 +82,11 @@ export const usePlayerWebsocket = createSharedComposable(() => {
       if (message.action === 'idle_connect') {
         playerId.value = message.player.name
         query.player = playerId.value
+        wasStarted.value = true
       }
 
       if (message.action === 'game_started') {
-        toast.add({ severity: 'info', summary: 'Game started', detail: 'The game has started!', life: 10000 })
+        isStarted.value = true
       }
 
       if (message.action === 'guess_correct') {
@@ -88,6 +118,22 @@ export const usePlayerWebsocket = createSharedComposable(() => {
       if (message.action === 'show_answer') {
         showAnswer.value = true
       }
+
+      if (message.action === 'error') {
+        toast.add({ severity: 'error', summary: 'Error', detail: `Error from server: ${message.message}`, life: 10000 })
+      }
+
+      if (message.action === 'game_paused') {
+        toast.add({ severity: 'info', summary: 'Game paused', detail: 'The game has been paused by the host.', life: 10000 })
+      }
+
+      if (message.action === 'try_reconnection') {
+        goToGamePage()
+      }
+
+      if (message.action === 'next_song_loaded') {
+        selected.value = null
+      }
     }
   })
 
@@ -112,6 +158,12 @@ export const usePlayerWebsocket = createSharedComposable(() => {
   tryOnMounted(async () => {
     await promiseTimeout(3000)
     set(isReady, true)
+
+    // On mount, if the game was already started before,
+    // and the player was disconnected, just reconnect automatically
+    if (wasStarted.value && !isConnected.value) {
+      wsObject.open()
+    }
   })
 
   return {
@@ -166,7 +218,18 @@ export const usePlayerWebsocket = createSharedComposable(() => {
     players,
     /**
      * The current player object
+     * @default null
      */
-    player
+    player,
+    /**
+     * The selected answer index
+     * @default null
+     */
+    selected,
+    /**
+     * Indicates if the player has answered the current question
+     * @default false
+     */
+    isAnswered
   }
 })

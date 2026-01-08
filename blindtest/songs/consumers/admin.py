@@ -6,8 +6,7 @@ from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from django.utils.crypto import get_random_string
 from songs.logic.base import GameLogicMixin, Player
 from songs.utils import create_token
-
-DictAny = dict[str, str | int | bool | dict[str, Any]]
+from songs.song_typings import DictAny
 
 
 class ChannelEventsMixin:
@@ -40,6 +39,16 @@ class ChannelEventsMixin:
         return self.waiting_room_name
 
     def base_room_message(self, **kwargs: str | int):
+        """Generates a base message for sending to
+        the channels groups with device information
+
+        >>> self.base_room_message(type='game.started', player_id='player_1234')
+
+        Or, if you need to transfer a full message to the group:
+        >>> self.base_room_message(**{'type': 'game.started', 'message': {...}})
+
+        The `device_name` and `device_id` of the sender are automatically included in the message.
+        """
         base_message = {
             'device_name': self.device_name,
             'device_id': self.device_id,
@@ -81,6 +90,20 @@ class ChannelEventsMixin:
     async def update_player(self, content: dict[str, str | int]):
         """Channels handler for updating a player's information"""
 
+    async def update_player_failed(self, content: dict[str, str | int]):
+        """Channels handler for notifying that a player's update has failed for
+        example because the name is already taken"""
+
+    async def game_paused(self, content: dict[str, str | int]):
+        """Channels handler to indicate to devices that game has been paused"""
+
+    async def player_submitted_answer(self, content: dict[str, str | int]):
+        """Channels handler to indicate that a player has submitted an answer
+        when using multiple choice answers"""
+
+    async def try_reconnection(self, content: dict[str, str | int]):
+        """Channels handler to attempt reconnection of a player by their ID"""
+
 
 class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsumer):
     """This consumer handles connections specifically from admin devices
@@ -96,10 +119,13 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
         await self.send_json({
             'action': 'idle_response',
             'code': self.pin_code,
-            'connection_url': f'/{self.session_id}/single-player'
+            'connection_url': f'/ws/songs/{self.session_id}/single-player'
         })
 
     async def disconnect(self, code):
+        self.game_state.reset()
+        message = self.base_room_message(**{'type': 'game.disconnected'})
+        await self.channel_layer.group_send(self.indexed_diffusion_group_name, message)
         await self.channel_layer.group_discard(self.indexed_diffusion_group_name, self.channel_name)
         await self.channel_layer.group_discard(self.indexed_waiting_room_name, self.channel_name)
         await self.close(code=code or 1000)
@@ -111,35 +137,47 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
             await self.send_error('No action was provided')
             return
 
-        if action == 'start_game':
-            if self.is_started:
-                await self.send_error("Game already started")
-                return
+        if action == 'start_game' or action == 'next_song':
+            if self.game_state.is_started:
+                if action == 'start_game':
+                    await self.send_error("Game already started")
+                    return
 
-            self.played_songs.clear()
+            if action == 'start_game':
+                self.game_state.reset()
+                self.game_state.is_started = True
 
-            self.is_started = True
+                await self.channel_layer.group_send(
+                    self.indexed_diffusion_group_name,
+                    self.base_room_message(**{'type': 'game.started'})
+                )
 
-            await self.channel_layer.group_send(
-                self.indexed_diffusion_group_name,
-                self.base_room_message(**{'type': 'game.started'})
-            )
+                await self.send_json({'action': 'game_started'})
 
-            await self.send_json({'action': 'game_started'})
             await self.next_song()
+
+            message = self.base_room_message(
+                **{
+                    'type': 'game.updates',
+                    'message': {
+                        'action': 'next_song_loaded'
+                    }
+                }
+            )
+            await self.channel_layer.group_send(self.indexed_diffusion_group_name, message)
         elif action == 'stop_game':
-            if not self.is_started:
+            if not self.game_state.is_started:
                 await self.send_error("Game not started")
                 return
 
-            self.is_started = False
+            self.game_state.is_started = False
 
             await self.channel_layer.group_send(
                 self.indexed_diffusion_group_name,
                 self.base_room_message(**{'type': 'game.stopped'})
             )
         elif action == 'submit_guess':
-            if not self.is_started:
+            if not self.game_state.is_started:
                 await self.send_error("Game not started")
                 return
 
@@ -163,14 +201,11 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
             await self.send_json(message)
             await self.next_song()
         elif action == 'not_guessed':
-            if self.is_started and self.current_song:
-                # message = {'action': 'guess_incorrect', 'song': self.current_song}
-                # await self.send_json(message)
-
+            if self.game_state.is_active:
                 group_message = self.base_room_message(
                     **{
                         'type': 'game.updates',
-                        'message': {'action': 'guess_incorrect', 'song': self.current_song}
+                        'message': {'action': 'guess_incorrect', 'song': self.game_state.current_song}
                     }
                 )
                 await self.channel_layer.group_send(self.indexed_diffusion_group_name, group_message)
@@ -178,7 +213,7 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
             else:
                 await self.send_error('Game not started or no current song')
         elif action == 'randomize_genre':
-            if not self.is_started:
+            if not self.game_state.is_started:
                 await self.send_error("Cannot randomize. Game not started")
                 return
 
@@ -195,25 +230,26 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
                 await self.send_error('No settings were provided')
                 return
 
-            self.difficulty = settings.get('difficultyLevel', 'All')
-            self.genre = settings.get('songType', 'All')
-
-            self.point_value = settings.get('pointValue', 1)
-            self.difficulty_bonus = settings.get('songDifficultyBonus', False)
-            self.time_bonus = settings.get('timeBonus', False)
-            self.number_of_rounds = content.get('rounds', None)
-            self.solo_mode = settings.get('soloMode', False)
-            self.admin_plays = settings.get('adminPlays', False)
-
-            self.time_range = settings.get('timeRange', [])
-            # self.speed_bonus = settings.get('speedBonus', 0)
-            self.time_limit = settings.get('timeLimit', 0)
+            self.game_settings.config_from_dict(settings)
+        elif action == 'pause_game':
+            # TODO: Implement game pausing
+            # self.paused = True if not self.paused else False
+            # message = self.base_room_message(**{'type': 'game.paused'})
+            # await self.channel_layer.group_send(self.indexed_diffusion_group_name, message)
+            pass
+        elif action == 'reconnect_player':
+            await self.channel_layer.group_send(
+                self.indexed_diffusion_group_name,
+                self.base_room_message(**{
+                    'type': 'try.reconnection',
+                    'game_id': self.session_id,
+                    'player_id': content.get('player_id', '')
+                })
+            )
         else:
             await self.send_error('Invalid action')
 
     async def accept_device(self, content: dict[str, str | int]):
-        # print("Accepting device...", content)
-
         device_session_id = content['session_id']
 
         if device_session_id != self.session_id:
@@ -223,32 +259,75 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
         device_name = content['device_name']
 
         if device_name == 'player_smartphone':
-            self.player_count += 1
+            # NOTE: The player is initially creatd on the
+            # SmartphoneConsumer and then updated here as
+            # a duplicate for admin tracking
+            player = self.game_state.add_player(content['player'])
 
-            player = Player(**content['player'])
-            player.position = self.player_count
-
-            self._players[content['device_id']] = player
-            # self.pending_devices.append((content['device_id'], player))
-            await self.send_json({'action': 'device_accepted', 'player': dataclasses.asdict(player), 'players': self.players})
+            await self.send_json({
+                'action': 'device_accepted',
+                'player': dataclasses.asdict(player),
+                'players': self.game_state.player_values
+            })
 
     async def disconnect_device(self, content: dict[str, str | int]):
         device_id = content['device_id']
+        state = self.game_state.remove_player(device_id)
 
-        if device_id in self._players:
-            del self._players[device_id]
-        await self.send_json({'action': 'device_disconnected', 'players': self.players})
-
-    async def update_player(self, content):
-        player = content.get('player', None)
-        if player is None:
+        if not state:
+            await self.send_error('Device not found for disconnection')
             return
 
-        player_id = player.get('id', None)
+        await self.send_json({'action': 'device_disconnected', 'players': self.game_state.player_values})
+
+    async def update_player(self, content: dict[str, str | int]):
+        updated_player = content.get('player', None)
+        if updated_player is None:
+            return
+
+        player_id = updated_player.get('id', None)
         if player_id is None:
             return
 
-        if player_id in self._players:
-            selected_player = self._players[player_id]
-            selected_player.name = player.get('name', selected_player.id)
-            # print('Updated players', self._players)
+        if player_id in self.game_state._players:
+            selected_player = self.game_state._players[player_id]
+
+            # Check if the updated name is already taken
+            updated_name = updated_player.get('name', None)
+            if updated_name is not None:
+                if updated_name in self.players:
+                    message = self.base_room_message(
+                        type='update.player.failed',
+                        player_id=player_id,
+                        message='Name already taken by another player'
+                    )
+                    await self.channel_layer.group_send(self.indexed_diffusion_group_name, message)
+                    return
+
+            selected_player.name = updated_name
+            # print('Updated players', self.game_state._players)
+
+    async def player_submitted_answer(self, content: dict[str, str | int]):
+        print('Admin received player_submitted_answer', content)
+        player_id = content.get('player_id', None)
+        answer_index = content.get('answer_index', None)
+
+        if player_id is None or answer_index is None:
+            return
+
+        message = {
+            'action': 'player_submitted_answer',
+            'player_id': player_id,
+            'answer_index': answer_index
+        }
+        self.song_possibilities.playerChoices.append(message)
+        await self.send_json(message)
+
+        # Calculate the points of the Admin. The players
+        # will know their points slightly before the
+        # next song is loaded
+        errors = await self.calculate_multiple_choice_points()
+        if errors:
+            await self.send_error('; '.join(errors))
+            return
+        await self.send_json({'action': 'multi_choice_updated_scores', 'players': self.game_state.player_values})

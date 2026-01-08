@@ -1,3 +1,3 @@
-export * from './admin';
-export * from './player';
-export * from './utils';
+export * from './admin'
+export * from './player'
+export * from './utils'

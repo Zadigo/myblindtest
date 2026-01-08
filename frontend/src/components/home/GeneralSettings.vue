@@ -17,7 +17,7 @@
         </volt-input-label>
 
         <volt-input-label :label="$t('Genre')">
-          <volt-select v-model="currentSettings.settings.songType" :options="genres" class="w-4/6" option-label="name" option-value="name" />
+          <volt-select v-model="currentSettings.settings.genreSelected" :options="genres" class="w-4/6" option-label="name" option-value="name" />
         </volt-input-label>
       </div>
 
@@ -25,6 +25,12 @@
         <volt-input-label :label="$t('Time limit')">
           <volt-input-number id="game-difficulty" v-model.number="currentSettings.settings.timeLimit" :min="0" :step="1" />
         </volt-input-label>
+      </div>
+
+      <div class="my-5">
+        <volt-label label-for="multiple-choice-answers" :label="$t('Multiple choice answers')">
+          <volt-toggle-switch id="multiple-choice-answers" v-model="currentSettings.settings.multipleChoiceAnswers" />
+        </volt-label>
       </div>
 
       <p class="font-semibold mt-10">

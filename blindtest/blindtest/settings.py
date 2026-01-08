@@ -1,7 +1,6 @@
 import os
 from datetime import timedelta
 from pathlib import Path
-from re import I
 
 import dotenv
 
@@ -49,10 +48,12 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'debug_toolbar',
     'import_export',
+    'django_filters',
     'django_extensions',
 
     'rest_framework',
     'rest_framework.authtoken',
+    'graphene_django',
 
     'songs',
     'tvshows',
@@ -308,3 +309,12 @@ FIXTURE_DIRS = [
 # https://firebase.google.com/docs/admin/setup
 
 GOOGLE_APPLICATION_CREDENTIALS = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+
+
+# Graphene
+# https://docs.graphene-python.org/projects/django/en/latest/
+
+GRAPHENE = {
+    'SCHEMA': 'blindtest.schema.schema',
+    'SUBSCRIPTION_PATH': '/ws/graphql'
+}

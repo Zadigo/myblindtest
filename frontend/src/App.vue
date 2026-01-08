@@ -26,4 +26,29 @@ onMounted(() => {
 onUnmounted(() => {
   document.documentElement.classList.remove(...bgTheme)
 })
+
+/**
+ * For Testing GraphQL
+ */
+// const { responseData, execute } = useRequest('djangoGraphQL', '/graphql/', {
+//   method: 'post',
+//   body: {
+//     query: `
+//       {
+//         allSongs {
+//           id
+//           name
+//           artist {
+//             id
+//             name}
+//         }
+//       }
+//     `
+//   }
+// })
+
+// onMounted( async () => {
+//   const res = await execute()
+//   console.log('GraphQL Response:', res)
+// })
 </script>

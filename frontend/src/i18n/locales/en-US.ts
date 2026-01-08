@@ -46,5 +46,13 @@ export const messagesEn = {
   "Difficulty": "Difficulty",
   "Wikipedia page": "Wikipedia page",
   "Artist name": "Artist name",
-  "Is group?": "Is group?"
+  "Is group?": "Is group?",
+  "Multiple choice answers": "Allow multiple choice answers",
+  "Name": "Name",
+  "Close": "Close",
+  "Settigs": "Settings",
+  "Genre speciality": "Genre speciality",
+  "Stop game": "Stop game",
+  "Pause": "Pause",
+  "Show Scores": "Show scores"
 }

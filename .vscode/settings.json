@@ -1,0 +1,18 @@
+{
+    "tailwind-fold.autoFold": false,
+    "tailwind-fold.foldedText": "...",
+    "tailwind-fold.foldLengthThreshold": 50,
+    "exportall.config.folderListener": [],
+    "ansible.python.interpreterPath": "/usr/local/bin/python3",
+    "[typescript]": {
+        "editor.codeActionsOnSave": {
+            "source.removeUnused.ts": "always"
+        }   
+    },
+    "[python]": {
+        "editor.codeActionsOnSave": {
+            "source.unusedImports": "always",
+            "source.sortImports": "always"
+        }
+    }
+}

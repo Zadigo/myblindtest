@@ -24,6 +24,8 @@ export type VueUseWsReturnType<T = unknown> = ReturnType<typeof import('@vueuse/
 
 export type CastToString<T> = T extends object ? { [K in keyof T]: CastToString<T[K]> } : T extends Array<infer U> ? Array<CastToString<U>> : string
 
+export type MultiDictType<T> = Record<string, T>
+
 export interface BaseApiResponse<T> {
   next: number
   previous: number

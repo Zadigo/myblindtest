@@ -66,6 +66,7 @@ export const useSession = createGlobalState(() => {
   const docRef = doc(fireStore, 'blindtests', sessionId.value)
   const currentSettings = useDocument<CacheSession>(docRef)
 
+  // TODO: Transform into a writable computed property
   // Watch for changes and update the Firestore document
   watchDebounced(currentSettings, async (newValue) => {
     if (sessionId.value) {
@@ -80,7 +81,8 @@ export const useSession = createGlobalState(() => {
             color: '#FF0000',
             correctAnswers: [],
             team: null,
-            position: 1
+            position: 1,
+            speciality: null
           }
         } else {
           delete newValue.players['admin']
@@ -142,3 +144,64 @@ export const useSession = createGlobalState(() => {
     reset
   }
 })
+
+/**
+ * This composable is used to manage the player session state
+ * across the application. It takes the firebase session ID
+ * directly from the current url
+ * 
+ */
+export const usePlayerSession = createGlobalState(() => {
+  const fireStore = useFirestore()
+  const route = useRoute()
+
+  const docRef = doc(fireStore, 'blindtests', route.params.id as string)
+  const currentSettings = useDocument<CacheSession>(docRef)
+
+  return {
+    currentSettings
+  }
+})
+
+/**
+ * This composable is used to get the songs played
+ * in the current blindtest session
+ */
+// export const useSongsPlayedSession = createGlobalState(() => {
+//   const fireStore = useFirestore()
+//   const sessionId = useSessionStorage<string>('blindtestId', null)
+
+//   if (!isDefined(sessionId)) {
+//     return {
+//       docRef: null
+//     }
+//   }
+
+//   const songsPlayed = ref<Song[]>([])
+//   const docRef = doc(fireStore, 'blindtests', sessionId.value)
+//   const _songsPlayed = useDocument<Song[]>(docRef)
+
+//   watch(_songsPlayed, (newValue) => {
+//     if (isDefined(newValue)) {
+//       songsPlayed.value = songsPlayed.value || []
+//     }
+//   }, {
+//     immediate: true,
+//     deep: true
+//   })
+
+//   watchDebounced(songsPlayed, async (newValue) => {
+//     if (isDefined(newValue) && isDefined(sessionId)) {
+//       await updateDoc(docRef, {
+//         songsPlayed: newValue
+//       })
+//     }
+//   }, {
+//     debounce: 1000,
+//     deep: true
+//   })
+
+//   return {
+//     docRef
+//   }
+// })
