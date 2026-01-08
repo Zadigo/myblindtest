@@ -1,0 +1,132 @@
+import type { NewSong, Song } from '~/types'
+import { useToast } from 'primevue/usetoast'
+
+export * from './utils'
+
+interface SongCreationApiResponse {
+  errors: string[]
+  items: Song[]
+}
+
+export interface SearchedGenreApiResponse {
+  category: string
+  items: { label: string }[]
+}
+
+/**
+ * Composable for editing a song
+ */
+export const useEditSong = createSharedComposable(() => {
+  const toast = useToast()
+
+  const blocks = ref<NewSong[]>([
+    {
+      name: '',
+      genre: '',
+      artist_name: '',
+      featured_artists: [],
+      youtube_id: '',
+      year: 0,
+      difficulty: 1,
+      is_group: false,
+      wikipedia_page: ''
+    }
+  ])
+
+  const cleanedData = computed(() => {
+    return blocks.value.map((block) => ({
+      ...block,
+      // featured_artists: block.featured_artists.join(','),
+      genre: typeof block.genre === 'string' ? block.genre : block.genre.label,
+      artist_name: typeof block.artist_name === 'string' ? block.artist_name : block.artist_name.label
+    })) as NewSong[]
+  })
+
+  async function _save() {
+    const responseData = await $fetch<SongCreationApiResponse>('/api/v1/songs/create', {
+      method: 'post',
+      baseURL: useRuntimeConfig().public.apiBaseUrl,
+      body: cleanedData.value
+    })
+
+    if (responseData) {
+      if (responseData.errors.length > 0) {
+        toast.add({
+          severity: 'error',
+          summary: 'Error when creating songs',
+          detail: responseData.errors.join(', '),
+          life: 10000
+        })
+      }
+
+      blocks.value = [
+        {
+          name: '',
+          genre: '',
+          artist_name: '',
+          featured_artists: [],
+          youtube_id: '',
+          year: 0,
+          difficulty: 1,
+          is_group: false,
+          wikipedia_page: ''
+        }
+      ]
+    }
+  }
+
+  const save = useThrottleFn(async () => { await _save() }, 5000)
+
+  function addBlock() {
+    blocks.value.push({
+      name: '',
+      genre: '',
+      artist_name: '',
+      featured_artists: [],
+      youtube_id: '',
+      year: 0,
+      difficulty: 1,
+      is_group: false,
+      wikipedia_page: ''
+    })
+  }
+
+  function deleteBlock(index: number) {
+    blocks.value.splice(index, 1)
+  }
+
+  /**
+   * Block
+   */
+
+  const getCurrentBlock = reactify((index: number) => blocks.value[index])
+
+  return {
+    /**
+     * Songs to create
+     */
+    blocks,
+    /**
+     * Cleaned data to send to the API
+     * @private
+     */
+    cleanedData,
+    /**
+     * Save the songs
+     */
+    save,
+    /**
+     * Add a new block to the songs
+     */
+    addBlock,
+    /**
+     * Delete a block from the songs
+     */
+    deleteBlock,
+    /**
+     * Get the current block by index to edit
+     * @param index Index of the block
+     */
+    getCurrentBlock
+  }
+})
