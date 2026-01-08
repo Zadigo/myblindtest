@@ -282,6 +282,10 @@ export function useGameActions(wsObject: VueUseWsReturnType, gameStarted: Ref<bo
   }
 }
 
+/**
+ * Composable to manage actions from multiple choice games
+ * @param wsObject The websocket object
+ */
 export function useMultiChoiceGameActions(wsObject: VueUseWsReturnType) {
   const {  currentSettings } = useSession()
   const { isActive, remaining } = useCountdown(3, { immediate: false })

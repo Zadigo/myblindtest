@@ -1,8 +1,8 @@
-import type { CacheSession } from '~/types'
 import { promiseTimeout } from '@vueuse/core'
 import { addDoc, collection, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore'
 import { useDocument, useFirestore } from 'vuefire'
 import { defaultCacheOptions } from '~/data'
+import type { CacheSession } from '~/types'
 
 /**
  * This composable manages the blindtest session. It handles creating,
