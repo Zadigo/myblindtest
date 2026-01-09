@@ -1,8 +1,8 @@
 import dataclasses
-from typing import Any, Union
+from typing import Any
 
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
-from blindtest.songs.logic.base_models import ContentModel
+# from songs.logic.base_models import ContentModel
 from songs.logic.base import GameLogicMixin
 from songs.song_typings import DictAny
 

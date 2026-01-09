@@ -1,16 +1,14 @@
-import os
 from datetime import timedelta
 from pathlib import Path
 
-import dotenv
+import environ
+
+env = environ.Env(DEBUG=(bool, False))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-ENV_FILE = BASE_DIR / '.env'
-
-if ENV_FILE.exists():
-    dotenv.load_dotenv(ENV_FILE)
+environ.Env.read_env(BASE_DIR / '.env')
 
 
 # Quick-start development settings - unsuitable for production
@@ -18,10 +16,10 @@ if ENV_FILE.exists():
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -171,19 +169,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Celery
 # https://docs.celeryq.dev/en/stable/
 
-REDIS_USER = os.getenv('REDIS_USER')
+REDIS_USER = env('REDIS_USER', default='default')
 
-REDIS_HOST = os.getenv('REDIS_HOST', '127.0.0.1')
+REDIS_HOST = env('REDIS_HOST', default='127.0.0.1')
 
-REDIS_PASSWORD = os.getenv('REDIS_PASSWORD')
+REDIS_PASSWORD = env('REDIS_PASSWORD', default='')
 
 REDIS_URL = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:6379'
 
-RABBITMQ_HOST = os.getenv('RABBITMQ_DEFAULT_HOST', 'localhost')
+RABBITMQ_HOST = env('RABBITMQ_DEFAULT_HOST', default='localhost')
 
-RABBITMQ_USER = os.getenv('RABBITMQ_DEFAULT_USER', 'guest')
+RABBITMQ_USER = env('RABBITMQ_DEFAULT_USER', default='guest')
 
-RABBITMQ_PASSWORD = os.getenv('RABBITMQ_DEFAULT_PASSWORD', 'guest')
+RABBITMQ_PASSWORD = env('RABBITMQ_DEFAULT_PASSWORD', default='guest')
 
 CELERY_BROKER_URL = f'amqp://{RABBITMQ_USER}:{RABBITMQ_PASSWORD}@{RABBITMQ_HOST}:5672'
 
@@ -214,11 +212,11 @@ CACHES = {
 
 # Emailing
 
-EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_HOST = env('EMAIL_HOST', default='smtp.gmail.com')
 
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='')
 
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='')
 
 EMAIL_USE_TLS = True
 
@@ -308,7 +306,7 @@ FIXTURE_DIRS = [
 # Google Firebase
 # https://firebase.google.com/docs/admin/setup
 
-GOOGLE_APPLICATION_CREDENTIALS = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+GOOGLE_APPLICATION_CREDENTIALS = env('GOOGLE_APPLICATION_CREDENTIALS')
 
 
 # Graphene
