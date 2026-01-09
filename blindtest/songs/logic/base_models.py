@@ -1,8 +1,11 @@
 import dataclasses
 from collections import defaultdict
-from typing import List, Optional, Self, Union
+from typing import List, Optional, Union
 
+import pydantic
 from songs.song_typings import DictAny, ListDictType
+
+from blindtest.typings import DifficultyLevels
 
 
 @dataclasses.dataclass
@@ -88,7 +91,7 @@ class GameState():
     player_count: int = 0
     _players: defaultdict[str, Player] = dataclasses.field(
         default_factory=lambda: defaultdict(Player))
-    
+
     @property
     def is_active(self):
         """Returns whether the game is active and 
@@ -115,7 +118,7 @@ class GameState():
     def player_values(self) -> dict[str, dict[str, str | int]]:
         """Returns a dictionary representation of players"""
         return {key: dataclasses.asdict(player) for key, player in self._players.items()}
-    
+
     def reset(self):
         self.current_round = 0
         self.current_song = None
@@ -159,3 +162,28 @@ class SongPossibilities():
     currentChoiceAnswers: ListDictType = dataclasses.field(
         default_factory=list)
     playerChoices: ListDictType = dataclasses.field(default_factory=list)
+
+
+class GameSettingsModel(pydantic.BaseModel):
+    """Model representing game settings coming from Firebase
+    and used to validate settings in the backend."""
+
+    pointLimit: int = pydantic.Field(default=0, ge=0)
+
+    difficultyLevel: str = pydantic.Field(default=DifficultyLevels.ALL.value)
+    genreSelected: str = pydantic.Field(default='All')
+
+    numberOfRounds: int = None
+
+    pointValue: int = pydantic.Field(default=1, ge=1)
+    songDifficultyBonus: bool = pydantic.Field(default=False)
+    speedBonus: bool = pydantic.Field(default=False)
+
+    connectionToken: str = None
+    soloMode: bool = pydantic.Field(default=False)
+    adminPlays: bool = pydantic.Field(default=False)
+    timeLimit: int = None
+    timeRange: list[int] = pydantic.Field(default_factory=list)
+
+    multipleChoiceAnswers: bool = pydantic.Field(default=False)
+    numberOfChoices: int = pydantic.Field(default=4, ge=2)

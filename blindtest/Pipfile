@@ -41,6 +41,9 @@ autobahn = "==22.4.2"
 firebase-admin = "*"
 graphene-django = "*"
 django-filter = "*"
+django-environ = "*"
+pydantic = "*"
+factory-boy = "*"
 
 [dev-packages]
 autopep8 = "*"
