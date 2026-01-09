@@ -1,19 +1,17 @@
 import datetime
 import locale
-from math import inf
 import pathlib
 import re
 import ssl
 import unicodedata
+import httpx
 
-import certifi
 import kagglehub
 import nltk
 import pandas
 import requests
 from bs4 import BeautifulSoup
-from bs4.element import PageElement, Tag
-from googlesearch import search
+from bs4.element import Tag
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from songs.models import Artist
@@ -68,7 +66,7 @@ class Wikipedia:
         infobox = soup.find('div', attrs={'class': 'infobox_v3'})
         if infobox is None:
             return []
-        
+
         infos = infobox.find_all('tr')
 
         values: list[str] = [
@@ -219,7 +217,7 @@ class Wikipedia:
             return None
 
 
-def nrj(artist: Artist):
+def nrj(artist: Artist) -> dict[str, datetime.date | str | None]:
     name = artist.name.lower().replace(' ', '-')
     url = f'https://www.nrj.fr/artistes/{name}/biographie'
 
@@ -229,12 +227,12 @@ def nrj(artist: Artist):
     }
 
     try:
-        response = requests.get(url, headers=HEADERS)
+        response = httpx.get(url, headers=HEADERS)
+        response.raise_for_status()
     except:
         return metadata
     else:
-
-        if response.ok:
+        if response.status_code == 200:
             soup = BeautifulSoup(response.content, 'html.parser')
             header = soup.find('div', attrs={'class': 'headerArtist-content'})
 

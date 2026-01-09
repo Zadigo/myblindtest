@@ -17,7 +17,7 @@ from songs.logic.base_models import (GameSettings, GameState, Player,
 from songs.models import Song
 
 
-class BaseGameLogicMixin:
+class BaseGameLogicMixin[T: 'GameLogicMixin']:
     """Base game logic mixin containing shared logic between
     individual and team-based blindtests."""
 
@@ -26,15 +26,15 @@ class BaseGameLogicMixin:
     cache_timeout: int = 3600
 
     @property
-    def players(self) -> list[Player]:
+    def players(self: T) -> list[Player]:
         return list(self.game_state._players.values())
 
     @property
-    def player_values(self) -> dict[str, dict[str, str | int]]:
+    def player_values(self: T) -> dict[str, dict[str, str | int]]:
         return {key: dataclasses.asdict(player) for key, player in self.game_state._players.items()}
 
     @property
-    def load_json_genres(self) -> dict[str, List[str]]:
+    def load_json_genres(self: T) -> dict[str, List[str]]:
         genres = cache.get('all_genres', None)
         if genres is not None:
             return genres
@@ -46,7 +46,7 @@ class BaseGameLogicMixin:
             return data
 
     @cached_property
-    def genres_categories(self) -> list[str]:
+    def genres_categories(self: T) -> list[str]:
         return list(self.load_json_genres.keys())
 
     @staticmethod
@@ -54,11 +54,11 @@ class BaseGameLogicMixin:
         return 'songs_' + '_'.join(str(arg) for arg in args)
 
     @lru_cache(maxsize=32)
-    def flat_genre_categories(self) -> list[tuple[str, List[str]]]:
+    def flat_genre_categories(self: T) -> list[tuple[str, List[str]]]:
         return [(category, values) for category, values in self.load_json_genres.items()]
 
     @database_sync_to_async
-    def get_songs_by_category(self, genre: str):
+    def get_songs_by_category(self, genre: str) -> tuple[Optional[str], List[int]]:
         """Returns a tuple of (category, list of song IDs) contained
         with the given genre. This function does not shuffle the results.
         This function is particularly useful when wanting to select songs
@@ -79,13 +79,15 @@ class BaseGameLogicMixin:
                 break
 
         if not selected_values:
-            return []
+            return selected_category, []
 
         qs = Song.objects.filter(genre__in=selected_values)
+        if not qs.exists():
+            return selected_category, []
         return selected_category, list(qs.values_list('id', flat=True))
 
     @database_sync_to_async
-    def get_songs(self, temporary_genre: Optional[str] = None, exclude: List[int] = []) -> List[int]:
+    def get_songs(self: T, temporary_genre: Optional[str] = None, exclude: List[int] = []) -> List[int]:
         cache_key = self.create_cache_key(
             self.game_settings.difficultyLevel,
             self.game_settings.genreSelected
@@ -126,7 +128,7 @@ class BaseGameLogicMixin:
         return song_ids
 
     @database_sync_to_async
-    def get_song(self, song_id: int) -> dict[str, Union[str, int]]:
+    def get_song(self: T, song_id: int) -> dict[str, Union[str, int]]:
         """Returns a serialized song by its ID"""
         try:
             song = Song.objects.get(id=song_id)
@@ -137,7 +139,7 @@ class BaseGameLogicMixin:
             return serializer.data
 
     @database_sync_to_async
-    def queryset(self, selected_ids, current_song_id) -> list[dict[str, Union[str, int]]]:
+    def queryset(self: T, selected_ids, current_song_id) -> list[dict[str, Union[str, int]]]:
         qs = Song.objects.filter(id__in=selected_ids)
         logic = models.When(models.Q(id=current_song_id), then=True)
         case = models.Case(
@@ -154,7 +156,7 @@ class BaseGameLogicMixin:
         return picks
 
     @lru_cache(maxsize=128)
-    async def random_choice_answers(self, current_song_id: int) -> list[dict[str, Union[str, int]]]:
+    async def random_choice_answers(self: T, current_song_id: int) -> list[dict[str, Union[str, int]]]:
         """Returns a list of 4 songs including the current song ID"""
         # songs = await self.get_songs(exclude=[current_song_id])
         category, songs = await self.get_songs_by_category(self.game_state.current_song['genre'])
@@ -169,7 +171,7 @@ class BaseGameLogicMixin:
         self.song_possibilities.currentChoiceAnswers = choices
         return choices
 
-    async def next_song(self, temporary_genre: Optional[str] = None):
+    async def next_song(self: T, temporary_genre: Optional[str] = None):
         """Returns a song using IDs present in the datbase.
 
         Or, returns a song within the genre that is passed within
@@ -177,7 +179,7 @@ class BaseGameLogicMixin:
         of all the songs"""
         return await self.get_songs(temporary_genre=temporary_genre, exclude=list(self.game_state.played_songs))
 
-    async def calculate_points(self, title_match: bool, artist_match: bool) -> int:
+    async def calculate_points(self: T, title_match: bool, artist_match: bool) -> int:
         """Calculate points based on match type (title/artist) for
         the player that made the guess"""
         base_points = 0
@@ -200,7 +202,7 @@ class BaseGameLogicMixin:
 
         return base_points
 
-    async def calculate_multiple_choice_points(self) -> List[str]:
+    async def calculate_multiple_choice_points(self: T) -> List[str]:
         """Calculates points for multiple choice answers"""
         errors = []
         for item in self.song_possibilities.playerChoices:
@@ -221,7 +223,7 @@ class BaseGameLogicMixin:
                         player.points += points
         return errors
 
-    async def calculate_loosers_loses_points(self, winner_id: str, title_match: bool = False, artist_match: bool = False):
+    async def calculate_loosers_loses_points(self: T, winner_id: str, title_match: bool = False, artist_match: bool = False):
         """Calculates the points for the winner and then
         deducts points from the losers"""
         winners_points = await self.calculate_points(title_match, artist_match)
@@ -234,7 +236,7 @@ class BaseGameLogicMixin:
             # Deduct points from losers
             player.points = max(0, player.points - 2)
 
-    async def handle_guess(self, player_id: str, title_match: bool, artist_match: bool):
+    async def handle_guess(self: T, player_id: str, title_match: bool, artist_match: bool):
         """Proxy method that handle the guess for either player by calculating
         points and returning a message dictionary for the frontend. This should be
         implemented in subclasses."""

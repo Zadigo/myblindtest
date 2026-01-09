@@ -1,9 +1,8 @@
 import dataclasses
 from collections import defaultdict
-from typing import Annotated, List, Optional, Union
+from typing import Annotated, Any, List, Optional, Union
 
 import pydantic
-from songs.song_typings import DictAny, ListDictType
 
 from blindtest.typings import DifficultyLevels
 
@@ -131,7 +130,7 @@ class GameState():
         """Checks if a player ID exists in the current game state"""
         return player_id in self._players
 
-    def add_player(self, data: dict[str, DictAny]) -> Player:
+    def add_player(self, data: dict[str, Any]) -> Player:
         """Adds a player to the current game settings"""
         player = Player(**data)
         self._players[player.id] = player
@@ -159,9 +158,10 @@ class GameState():
 
 @dataclasses.dataclass
 class SongPossibilities():
-    currentChoiceAnswers: ListDictType = dataclasses.field(
+    currentChoiceAnswers: list[dict[str, Any]
+                               ] = dataclasses.field(default_factory=list)
+    playerChoices: list[dict[str, int | str | Any]] = dataclasses.field(
         default_factory=list)
-    playerChoices: ListDictType = dataclasses.field(default_factory=list)
 
 
 def validate_connection_token(token: str) -> bool:

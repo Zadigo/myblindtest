@@ -4,7 +4,6 @@ from typing import Any
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 # from songs.logic.base_models import ContentModel
 from songs.logic.base import GameLogicMixin
-from songs.song_typings import DictAny
 
 from blindtest.typings import GameActions, TypeContent
 
@@ -154,7 +153,7 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
                     self.base_room_message(**{'type': 'game.started'})
                 )
 
-                await self.send_json({'action': 'game_started'})
+                await self.send_json({'action': GameActions.GAME_STARTED.value})
 
             await self.next_song()
 
@@ -162,7 +161,7 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
                 **{
                     'type': 'game.updates',
                     'message': {
-                        'action': 'next_song_loaded'
+                        'action': GameActions.NEXT_SONG_LOADED.value
                     }
                 }
             )
@@ -178,7 +177,7 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
                 self.indexed_diffusion_group_name,
                 self.base_room_message(**{'type': 'game.stopped'})
             )
-        elif action == 'submit_guess':
+        elif action == GameActions.SUBMIT_GUESS.value:
             if not self.game_state.is_started:
                 await self.send_error("Game not started")
                 return
@@ -207,7 +206,10 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
                 group_message = self.base_room_message(
                     **{
                         'type': 'game.updates',
-                        'message': {'action': 'guess_incorrect', 'song': self.game_state.current_song}
+                        'message': {
+                            'action': GameActions.GUESS_INCORRECT.value, 
+                            'song': self.game_state.current_song
+                        }
                     }
                 )
                 await self.channel_layer.group_send(self.indexed_diffusion_group_name, group_message)
@@ -226,7 +228,7 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
 
             await self.next_song(temporary_genre=temporary_genre)
         elif action == GameActions.GAME_SETTINGS.value:
-            settings: dict[str, DictAny] = content.get('settings', {})
+            settings: dict[str, Any] = content.get('settings', {})
 
             if settings is None:
                 await self.send_error('No settings were provided')

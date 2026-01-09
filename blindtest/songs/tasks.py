@@ -1,8 +1,7 @@
 import celery
-from celery import chain
 from celery.utils.log import get_task_logger
 from songs.completion import Wikipedia, nrj
-from songs.models import Artist, Song
+from songs.models import Artist
 
 from blindtest.rapidapi.client import Spotify
 

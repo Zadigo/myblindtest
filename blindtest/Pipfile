@@ -44,6 +44,7 @@ django-filter = "*"
 django-environ = "*"
 pydantic = "*"
 factory-boy = "*"
+httpx = "*"
 
 [dev-packages]
 autopep8 = "*"

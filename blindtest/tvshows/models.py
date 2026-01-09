@@ -1,9 +1,10 @@
+from urllib.parse import parse_qs, urlparse
+
 from django.db import models
-from songs.models import Artist, AbstractSong
-from django.utils.translation import gettext_lazy as _
-from django.dispatch import receiver
 from django.db.models.signals import pre_save
-from urllib.parse import urlparse, parse_qs
+from django.dispatch import receiver
+from django.utils.translation import gettext_lazy as _
+from songs.models import AbstractSong, Artist
 
 
 class TVShow(models.Model):
