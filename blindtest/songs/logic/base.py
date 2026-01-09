@@ -1,15 +1,9 @@
-import asyncio
 import dataclasses
 import json
-import os
-import pathlib
 import random
-from collections import defaultdict
 from functools import cached_property, lru_cache
-import select
 from typing import List, Optional, Union
 
-from asgiref.sync import async_to_sync
 # import firebase_admin
 # from firebase_admin import firestore, credentials
 from channels.db import database_sync_to_async
@@ -17,13 +11,10 @@ from django.conf import settings
 from django.core import exceptions
 from django.core.cache import cache
 from django.db import models
-from django.utils.crypto import get_random_string
 from songs.api import serializers
 from songs.logic.base_models import (GameSettings, GameState, Player,
                                      SongPossibilities)
 from songs.models import Song
-from songs.processors import FuzzyMatcher
-from songs.song_typings import DictAny
 
 
 class BaseGameLogicMixin:
@@ -58,11 +49,10 @@ class BaseGameLogicMixin:
     def genres_categories(self) -> list[str]:
         return list(self.load_json_genres.keys())
 
-
     @staticmethod
     def create_cache_key(*args: str):
         return 'songs_' + '_'.join(str(arg) for arg in args)
-    
+
     @lru_cache(maxsize=32)
     def flat_genre_categories(self) -> list[tuple[str, List[str]]]:
         return [(category, values) for category, values in self.load_json_genres.items()]
@@ -97,7 +87,7 @@ class BaseGameLogicMixin:
     @database_sync_to_async
     def get_songs(self, temporary_genre: Optional[str] = None, exclude: List[int] = []) -> List[int]:
         cache_key = self.create_cache_key(
-            self.game_settings.difficultyLevel, 
+            self.game_settings.difficultyLevel,
             self.game_settings.genreSelected
         )
 

@@ -44,5 +44,10 @@ class DifficultyLevels(Enum):
 
     EASY = 'Easy'
     MEDIUM = 'Medium'
-    HARD = 'Hard'
+    SEMI_PRO = 'Semi-Pro'
+    DIFFICULT = 'Difficult'
+    EXPERT = 'Expert'
     ALL = 'All'
+
+
+DIFFICULTY_LEVELS = [level.value for level in DifficultyLevels]
