@@ -1,8 +1,15 @@
-import pydantic
 from enum import Enum
+
+type TypeContent = dict[str, str | int | bool | list | dict]
 
 
 class GameActions(Enum):
+    """Game actions used in the backend to communicate
+    between consumers and the frontend."""
+
+    IDLE_RESPONSE = 'idle_response'
+    DEVICE_ACCEPTED = 'device_accepted'
+    DEVICE_DISCONNECTED = 'device_disconnected'
     START_GAME = 'start_game'
     NEXT_SONG = 'next_song'
     GAME_STARTED = 'game_started'
@@ -14,12 +21,28 @@ class GameActions(Enum):
     GAME_SETTINGS = 'game_settings'
     PAUSE_GAME = 'pause_game'
     RECONNECT_PLAYER = 'reconnect_player'
+    PLAYER_SUBMITTED_ANSWER = 'player_submitted_answer'
+    MULTI_CHOICE_UPDATED_SCORES = 'multi_choice_updated_scores'
+
+
+GAME_ACTIONS = [action.value for action in GameActions]
+
+
+class ChannelActions(Enum):
+    """Channel actions used in the backend to communicate
+    between different consumers."""
+
+    GAME_STARTED = 'game.started'
+    GAME_UPDATES = 'game.updates'
+    GAME_STOPPED = 'game.stopped'
+    GAME_DISCONNECTED = 'game.disconnected'
+    TRY_RECONNECTION = 'try.reconnection'
 
 
 class DifficultyLevels(Enum):
+    """Game difficulty levels."""
+
     EASY = 'Easy'
     MEDIUM = 'Medium'
     HARD = 'Hard'
     ALL = 'All'
-
-

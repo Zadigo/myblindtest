@@ -1,12 +1,12 @@
 import dataclasses
 from typing import Any, Union
 
-import pyotp
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
-from django.utils.crypto import get_random_string
-from songs.logic.base import GameLogicMixin, Player
-from songs.utils import create_token
+from blindtest.songs.logic.base_models import ContentModel
+from songs.logic.base import GameLogicMixin
 from songs.song_typings import DictAny
+
+from blindtest.typings import GameActions, TypeContent
 
 
 class ChannelEventsMixin:
@@ -70,38 +70,38 @@ class ChannelEventsMixin:
             'message': message
         })
 
-    async def accept_device(self, content: dict[str, str | int]):
+    async def accept_device(self, content: TypeContent):
         """Channels handler for accepting a device into the game"""
 
-    async def disconnect_device(self, content: dict[str, str | int]):
+    async def disconnect_device(self, content: TypeContent):
         """Channels handler for disconnecting a device from the game"""
 
-    async def game_started(self, content: dict[str, str | int]):
+    async def game_started(self, content: TypeContent):
         """Channels handler for indicating that the game has started"""
 
-    async def game_updates(self, content: dict[str, str | int]):
+    async def game_updates(self, content: TypeContent):
         """Channels handler for connected devices to receive updates on
         the current game: scores, correct answer, song skipped etc"""
 
-    async def game_disconnected(self, content: dict[str, str | int]):
+    async def game_disconnected(self, content: TypeContent):
         """Channels handler to indicate to devices that game has either
         disconnected or simply over"""
 
-    async def update_player(self, content: dict[str, str | int]):
+    async def update_player(self, content: TypeContent):
         """Channels handler for updating a player's information"""
 
-    async def update_player_failed(self, content: dict[str, str | int]):
+    async def update_player_failed(self, content: TypeContent):
         """Channels handler for notifying that a player's update has failed for
         example because the name is already taken"""
 
-    async def game_paused(self, content: dict[str, str | int]):
+    async def game_paused(self, content: TypeContent):
         """Channels handler to indicate to devices that game has been paused"""
 
-    async def player_submitted_answer(self, content: dict[str, str | int]):
+    async def player_submitted_answer(self, content: TypeContent):
         """Channels handler to indicate that a player has submitted an answer
         when using multiple choice answers"""
 
-    async def try_reconnection(self, content: dict[str, str | int]):
+    async def try_reconnection(self, content: TypeContent):
         """Channels handler to attempt reconnection of a player by their ID"""
 
 
@@ -117,7 +117,7 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
         await self.channel_layer.group_add(self.indexed_waiting_room_name, self.channel_name)
 
         await self.send_json({
-            'action': 'idle_response',
+            'action': GameActions.IDLE_RESPONSE.value,
             'code': self.pin_code,
             'connection_url': f'/ws/songs/{self.session_id}/single-player'
         })
@@ -130,20 +130,22 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
         await self.channel_layer.group_discard(self.indexed_waiting_room_name, self.channel_name)
         await self.close(code=code or 1000)
 
-    async def receive_json(self, content: dict[str, Union[str, int, bool]], **kwargs: Any):
+    async def receive_json(self, content: TypeContent, **kwargs: Any):
+        # model = ContentModel(**content)
+
         action = content.get('action')
 
         if action is None:
             await self.send_error('No action was provided')
             return
 
-        if action == 'start_game' or action == 'next_song':
+        if action == GameActions.START_GAME.value or action == GameActions.NEXT_SONG.value:
             if self.game_state.is_started:
-                if action == 'start_game':
+                if action == GameActions.START_GAME.value:
                     await self.send_error("Game already started")
                     return
 
-            if action == 'start_game':
+            if action == GameActions.START_GAME.value:
                 self.game_state.reset()
                 self.game_state.is_started = True
 
@@ -165,7 +167,7 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
                 }
             )
             await self.channel_layer.group_send(self.indexed_diffusion_group_name, message)
-        elif action == 'stop_game':
+        elif action == GameActions.STOP_GAME.value:
             if not self.game_state.is_started:
                 await self.send_error("Game not started")
                 return
@@ -200,7 +202,7 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
 
             await self.send_json(message)
             await self.next_song()
-        elif action == 'not_guessed':
+        elif action == GameActions.NOT_GUESSED.value:
             if self.game_state.is_active:
                 group_message = self.base_room_message(
                     **{
@@ -212,7 +214,7 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
                 await self.next_song()
             else:
                 await self.send_error('Game not started or no current song')
-        elif action == 'randomize_genre':
+        elif action == GameActions.RANDOMIZE_GENRE.value:
             if not self.game_state.is_started:
                 await self.send_error("Cannot randomize. Game not started")
                 return
@@ -223,7 +225,7 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
                 return
 
             await self.next_song(temporary_genre=temporary_genre)
-        elif action == 'game_settings':
+        elif action == GameActions.GAME_SETTINGS.value:
             settings: dict[str, DictAny] = content.get('settings', {})
 
             if settings is None:
@@ -231,13 +233,13 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
                 return
 
             self.game_settings.config_from_dict(settings)
-        elif action == 'pause_game':
+        elif action == GameActions.PAUSE_GAME.value:
             # TODO: Implement game pausing
             # self.paused = True if not self.paused else False
             # message = self.base_room_message(**{'type': 'game.paused'})
             # await self.channel_layer.group_send(self.indexed_diffusion_group_name, message)
             pass
-        elif action == 'reconnect_player':
+        elif action == GameActions.RECONNECT_PLAYER.value:
             await self.channel_layer.group_send(
                 self.indexed_diffusion_group_name,
                 self.base_room_message(**{
@@ -249,7 +251,7 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
         else:
             await self.send_error('Invalid action')
 
-    async def accept_device(self, content: dict[str, str | int]):
+    async def accept_device(self, content: TypeContent):
         device_session_id = content['session_id']
 
         if device_session_id != self.session_id:
@@ -265,12 +267,12 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
             player = self.game_state.add_player(content['player'])
 
             await self.send_json({
-                'action': 'device_accepted',
+                'action': GameActions.DEVICE_ACCEPTED.value,
                 'player': dataclasses.asdict(player),
                 'players': self.game_state.player_values
             })
 
-    async def disconnect_device(self, content: dict[str, str | int]):
+    async def disconnect_device(self, content: TypeContent):
         device_id = content['device_id']
         state = self.game_state.remove_player(device_id)
 
@@ -278,9 +280,12 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
             await self.send_error('Device not found for disconnection')
             return
 
-        await self.send_json({'action': 'device_disconnected', 'players': self.game_state.player_values})
+        await self.send_json({
+            'action': GameActions.DEVICE_DISCONNECTED.value,
+            'players': self.game_state.player_values
+        })
 
-    async def update_player(self, content: dict[str, str | int]):
+    async def update_player(self, content: TypeContent):
         updated_player = content.get('player', None)
         if updated_player is None:
             return
@@ -307,7 +312,7 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
             selected_player.name = updated_name
             # print('Updated players', self.game_state._players)
 
-    async def player_submitted_answer(self, content: dict[str, str | int]):
+    async def player_submitted_answer(self, content: TypeContent):
         print('Admin received player_submitted_answer', content)
         player_id = content.get('player_id', None)
         answer_index = content.get('answer_index', None)
@@ -316,7 +321,7 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
             return
 
         message = {
-            'action': 'player_submitted_answer',
+            'action': GameActions.PLAYER_SUBMITTED_ANSWER.value,
             'player_id': player_id,
             'answer_index': answer_index
         }
@@ -330,4 +335,8 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
         if errors:
             await self.send_error('; '.join(errors))
             return
-        await self.send_json({'action': 'multi_choice_updated_scores', 'players': self.game_state.player_values})
+
+        await self.send_json({
+            'action': GameActions.MULTI_CHOICE_UPDATED_SCORES.value,
+            'players': self.game_state.player_values
+        })

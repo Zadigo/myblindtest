@@ -1,6 +1,6 @@
 import dataclasses
 from collections import defaultdict
-from typing import List, Optional, Union
+from typing import Annotated, List, Optional, Union
 
 import pydantic
 from songs.song_typings import DictAny, ListDictType
@@ -164,6 +164,10 @@ class SongPossibilities():
     playerChoices: ListDictType = dataclasses.field(default_factory=list)
 
 
+def validate_connection_token(token: str) -> bool:
+    return True
+
+
 class GameSettingsModel(pydantic.BaseModel):
     """Model representing game settings coming from Firebase
     and used to validate settings in the backend."""
@@ -179,11 +183,45 @@ class GameSettingsModel(pydantic.BaseModel):
     songDifficultyBonus: bool = pydantic.Field(default=False)
     speedBonus: bool = pydantic.Field(default=False)
 
-    connectionToken: str = None
-    soloMode: bool = pydantic.Field(default=False)
-    adminPlays: bool = pydantic.Field(default=False)
+    connectionToken: Annotated[
+        str,
+        pydantic.AfterValidator(validate_connection_token)
+    ] = None
+
+    soloMode: bool = False
+    adminPlays: bool = False
     timeLimit: int = None
     timeRange: list[int] = pydantic.Field(default_factory=list)
 
-    multipleChoiceAnswers: bool = pydantic.Field(default=False)
-    numberOfChoices: int = pydantic.Field(default=4, ge=2)
+    multipleChoiceAnswers: bool = False
+    numberOfChoices: int = pydantic.Field(default=4, ge=2, le=10)
+
+    @pydantic.model_validator(mode='after')
+    def check_time_range(self):
+        return self
+
+
+def validate_action(action: str) -> bool:
+    """Function to validate if the action is valid."""
+    from blindtest.typings import GAME_ACTIONS
+    if action is None:
+        return None
+
+    if action not in GAME_ACTIONS:
+        raise ValueError(f'Invalid action: {action}')
+
+    return action
+
+
+class ContentModel(pydantic.BaseModel):
+    """Model for the content parameter in websocket consumers."""
+
+    action: Annotated[str, pydantic.AfterValidator(validate_action)] = None
+    team_or_player_id: Optional[str] = None
+    title_match: Optional[bool] = False
+    artist_match: Optional[bool] = False
+    temporary_genre: Optional[str] = None
+    settings: Optional[GameSettingsModel] = None
+    player_id: Optional[str] = None
+    session_id: Optional[str] = None
+    device_name: Optional[str] = None
