@@ -1,8 +1,38 @@
 import { promiseTimeout } from '@vueuse/core'
-import { addDoc, collection, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, setDoc, updateDoc } from 'firebase/firestore'
 import { useDocument, useFirestore } from 'vuefire'
 import { defaultCacheOptions } from '~/data'
-import type { CacheSession } from '~/types'
+import type { CacheSession, Empty } from '~/types'
+
+
+export function useCreateSession() {
+  if (import.meta.server) {
+    return {
+      create: async () => { }
+    }
+  }
+
+  const fireStore = useFirestore()
+  const sessionId = useSessionStorage<string>('blindtestId', null)
+
+  async function create() {
+    if (!isDefined(sessionId)) {
+      try {
+        const collectionRef = collection(fireStore, 'blindtests')
+        const data = await addDoc(collectionRef, { ...defaultCacheOptions })
+        await promiseTimeout(800) // Wait a bit to ensure Firestore is ready
+
+        sessionId.value = data.id
+      } catch (error) {
+        throw new Error('Error creating blindtest session:' + error)
+      }
+    }
+  }
+
+  return {
+    create
+  }
+}
 
 /**
  * This composable manages the blindtest session. It handles creating,
@@ -11,122 +41,84 @@ import type { CacheSession } from '~/types'
  * in a blindtest
  */
 export const useSession = createGlobalState(() => {
-  const fireStore = useFirestore()
-  const sessionId = useSessionStorage<string>('blindtestId', null)
+  const currentSettings = ref<Empty<CacheSession>>()
 
-  /**
-   * Key in url
-   * @description If there is an ID in the route, use that as session ID
-   */
+  if (import.meta.server) {
+    return {
+      docRef: null,
+      sessionId: null,
+      currentSettings,
+      hasExistingSession: ref(false),
+      reset: async () => { },
+      remove: async () => { },
+      // create: async () => { }
+    }
+  }
+  
+  const sessionId = useSessionStorage<string>('blindtestId', null)
+  const hasExistingSession = computed(() => isDefined(sessionId))
+
+  // If there is an ID in the route, use that as session ID
 
   const route = useRoute()
-
   if (route.params.id && typeof route.params.id === 'string') {
     sessionId.value = route.params.id
   }
 
-  /**
-   * Key in local storage but not on Firebase
-   */
-  
-  if (isDefined(sessionId)) {
-    const docRef = doc(fireStore, 'blindtests', sessionId.value)
+  // Key in local storage but not on Firebase. If there's
+  // no document just clear the local storage
 
-    getDoc(docRef).then((docSnap) => {
-      if (!docSnap.exists()) {
-        sessionId.value = null
-      }
-    })
-  }
+  const fireStore = useFirestore()
 
-  /**
-   * Initialize session
-   */
-
-  async function create() {
-    if (!isDefined(sessionId)) {
-      const collectionRef = collection(fireStore, 'blindtests')
-
-      try {
-        const baseDefaults = { ...defaultCacheOptions }
-        const data = await addDoc(collectionRef, baseDefaults)
-        sessionId.value = data.id
-      } catch (error) {
-        console.error('Error creating blindtest session:', error)
-        return
-      }
+  if (!isDefined(sessionId)) {
+    console.info('❌ Call useCreateSession() before using the session')
+    return {
+      docRef: null,
+      sessionId: null,
+      currentSettings,
+      hasExistingSession: ref(false),
+      reset: async () => { },
+      remove: async () => { },
+      // create: async () => { }
     }
-
-    // Wait a bit to ensure Firestore is ready and
-    // ensure that the document can be accessed
-    await promiseTimeout(1000)
   }
-  
-  create()
 
   const docRef = doc(fireStore, 'blindtests', sessionId.value)
-  const currentSettings = useDocument<CacheSession>(docRef)
+  const _currentSettings = useDocument<CacheSession>(docRef)
 
-  // TODO: Transform into a writable computed property
-  // Watch for changes and update the Firestore document
+  tryOnMounted(() => { currentSettings.value = _currentSettings.value })
+
   watchDebounced(currentSettings, async (newValue) => {
-    if (sessionId.value) {
-      if (isDefined(newValue)) {
-        await updateDoc(docRef, newValue)
-
-        if (newValue.settings.soloMode) {
-          newValue.players['admin'] = {
-            id: 'admin',
-            name: 'Admin',
-            points: 0,
-            color: '#FF0000',
-            correctAnswers: [],
-            team: null,
-            position: 1,
-            speciality: null
-          }
-        } else {
-          delete newValue.players['admin']
+    if (isDefined(docRef) && isDefined(sessionId)) {
+      try {
+        if (isDefined(newValue)) {
+          await setDoc(docRef, newValue, { merge: true })
         }
+      } catch (e) {
+        console.error('Error updating session settings:', e)
       }
     }
-  }, {
-    debounce: 2000,
-    deep: true
-  })
+  }, { debounce: 1000, deep: true, immediate: false })
 
-  /**
-   * Actions
-   */
-
-  const hasExistingSession = computed(() => sessionId.value !== null)
+  async function reset() {
+    if (isDefined(sessionId)) {
+      await updateDoc(docRef, { ...defaultCacheOptions  })
+    }
+  }
 
   async function remove() {
-    if (sessionId.value) {
-      await deleteDoc(doc(fireStore, 'blindtests', sessionId.value))
+    if (isDefined(sessionId)) {
+      await deleteDoc(docRef)
       sessionId.value = null
     }
   }
 
-  const sonsStore = useSongs()
-
-  async function reset() {
-    if (sessionId.value) {
-      const collectionRef = collection(fireStore, 'blindtests')
-      const docRef = doc(collectionRef, sessionId.value)
-
-      const baseDefaults = { ...defaultCacheOptions }
-      await updateDoc(docRef, baseDefaults)
-
-      sonsStore.reset()
-    }
-  }
-
   return {
+    docRef,
     /**
      * Current session ID
      */
-    sessionId,
+    sessionId: readonly(sessionId),
     /**
      * Blindtest settings for the current session
      */
@@ -136,13 +128,14 @@ export const useSession = createGlobalState(() => {
      */
     hasExistingSession,
     /**
+     * Resets an existing session.
+     */
+    reset,
+    /**
      * Remove an existing session
      */
     remove,
-    /**
-     * Resets an existing session.
-     */
-    reset
+    // create
   }
 })
 

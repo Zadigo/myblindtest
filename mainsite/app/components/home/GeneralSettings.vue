@@ -5,7 +5,7 @@
         {{ $t('General settings') }}
       </h3>
     </template>
-
+    
     <template v-if="currentSettings" #content>
       <volt-input-label :label="$t('Number of rounds')">
         <volt-input-number v-model="currentSettings.settings.rounds" :min="0" :max="100" class="w-full" />
@@ -44,6 +44,7 @@
     </template>
 
     <template v-else #content>
+      {{ currentSettings }}
       <div class="space-y-2">
         <volt-skeleton height="100px" />
         <volt-skeleton height="100px" />
@@ -58,4 +59,5 @@ import { difficultyLevels } from '~/data'
 
 const { genres, autocomplete } = useLoadAutocompleteData(true)
 const { currentSettings } = useSession()
+console.log(currentSettings.value)
 </script>

@@ -3,25 +3,27 @@
     <volt-card id="second-header" class="mt-10 mb-5 shadow-none">
       <template #content>
         <div class="grid grid-cols-2">
-          <volt-label id="dark-mode" label-for="dark-mode">
-            <volt-secondary-button>
+          <div class="inline-flex gap-2">
+            <volt-secondary-button aria-label="Switch to enlish">
               <nuxt-link-locale to="/" locale="en">
                 <icon name="circle-flags:us-um" />
               </nuxt-link-locale>
             </volt-secondary-button>
-
-            <volt-secondary-button>
+            
+            <volt-secondary-button aria-label="Switch to french">
               <nuxt-link-locale to="/" locale="fr">
                 <icon name="circle-flags:fr" />
               </nuxt-link-locale>
             </volt-secondary-button>
-
-            <volt-toggle-switch id="dark-mode" v-model="isDark">
-              <template #handle="{ checked }">
-                <icon :name="checked ? 'fa6-solid:moon' : 'fa6-solid:sun'" class="text-lg" />
-              </template>
-            </volt-toggle-switch>
-          </volt-label>
+            
+            <volt-label id="dark-mode" label-for="dark-mode">
+              <volt-toggle-switch id="dark-mode" v-model="isDark">
+                <template #handle="{ checked }">
+                  <icon :name="checked ? 'fa6-solid:moon' : 'fa6-solid:sun'" class="text-lg" />
+                </template>
+              </volt-toggle-switch>
+            </volt-label>
+          </div>
 
           <div id="actions" class="flex justify-end gap-2">
             <volt-secondary-button :disabled="!hasExistingSession" rounded @click="() => reset()">
@@ -60,9 +62,9 @@
 
 <script setup lang="ts">
 /**
- * Initiate session
+ * Session
  */
-const { reset, hasExistingSession, sessionId } = useSession()
+const { sessionId, hasExistingSession, reset } = useSession()
 
 /**
  * Dark mode

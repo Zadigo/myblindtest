@@ -8,6 +8,13 @@
 useDarkMode()
 
 /**
+ * Session
+ */
+
+const { create } = useCreateSession()
+await create()
+
+/**
  * Theme
  */
 

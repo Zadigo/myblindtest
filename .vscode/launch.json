@@ -13,7 +13,26 @@
             "envFile": "${workspaceFolder}/blindtest/.env",
             "console": "integratedTerminal",
             "justMyCode": true
-        }
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "client: chrome",
+            "url": "http://localhost:3000",
+            "cwd": "${workspaceFolder}/mainsite",
+            "webRoot": "${workspaceFolder}/mainsite/app"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "server: nuxt",
+            "outputCapture": "std",
+            "cwd": "${workspaceFolder}/mainsite",
+            "program": "${workspaceFolder}/mainsite/node_modules/nuxt/bin/nuxt.mjs",
+            "args": [
+                "dev"
+            ],
+        }    
     ],
     "explorer.fileNesting.enabled": true,
     "explorer.fileNesting.patterns": {
@@ -23,5 +42,14 @@
     },
     "editor.codeActionsOnSave": {
         "source.fixAll": "explicit"
-    }
+    },
+    "compounds": [
+        {
+            "name": "Fullstack: Nuxt",
+            "configurations": [
+                "server: nuxt",
+                "client: chrome"
+            ]
+        }
+    ]
 }
