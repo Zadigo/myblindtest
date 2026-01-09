@@ -2,7 +2,7 @@
  * Returns the list of genres from the API
  */
 export function useAutocompleteGenres<T = SearchedGenreApiResponse>() {
-  const genres = useStorage<T[]>('genres')
+  const genres = useLocalStorage<T[]>('genres', [])
 
   // TODO: Memoize does not work properly
   const { load } = useMemoize(async (_key: number) => {
@@ -11,7 +11,7 @@ export function useAutocompleteGenres<T = SearchedGenreApiResponse>() {
         method: 'GET',
         baseURL: useRuntimeConfig().public.apiBaseUrl
       })
-      return responseData || []
+      return responseData
     } catch (error) {
       console.error('Error fetching genres:', error)
       return []

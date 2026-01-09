@@ -17,8 +17,6 @@ export interface SearchedGenreApiResponse {
  * Composable for editing a song
  */
 export const useEditSong = createSharedComposable(() => {
-  const toast = useToast()
-
   const blocks = ref<NewSong[]>([
     {
       name: '',
@@ -42,25 +40,15 @@ export const useEditSong = createSharedComposable(() => {
     })) as NewSong[]
   })
 
-  async function _save() {
-    const responseData = await $fetch<SongCreationApiResponse>('/api/v1/songs/create', {
-      method: 'post',
-      baseURL: useRuntimeConfig().public.apiBaseUrl,
-      body: cleanedData.value
-    })
-
-    if (responseData) {
-      if (responseData.errors.length > 0) {
-        toast.add({
-          severity: 'error',
-          summary: 'Error when creating songs',
-          detail: responseData.errors.join(', '),
-          life: 10000
-        })
-      }
-
-      blocks.value = [
-        {
+  if (import.meta.server) {
+    return {
+      blocks,
+      cleanedData,
+      save: async () => { /* no-op on server */ },
+      addBlock: () => { /* no-op on server */ },
+      deleteBlock: (_index: number) => { /* no-op on server */ },
+      getCurrentBlock: (_index: number) => {
+        return ref({
           name: '',
           genre: '',
           artist_name: '',
@@ -70,9 +58,43 @@ export const useEditSong = createSharedComposable(() => {
           difficulty: 1,
           is_group: false,
           wikipedia_page: ''
-        }
-      ]
+        })
+      }
     }
+  }
+
+  const toast = useToast()
+
+
+  async function _save() {
+    const responseData = await $fetch<SongCreationApiResponse>('/api/v1/songs/create', {
+      method: 'post',
+      baseURL: useRuntimeConfig().public.apiBaseUrl,
+      body: cleanedData.value
+    })
+
+    if (responseData.errors.length > 0) {
+      toast.add({
+        severity: 'error',
+        summary: 'Error when creating songs',
+        detail: responseData.errors.join(', '),
+        life: 10000
+      })
+    }
+
+    blocks.value = [
+      {
+        name: '',
+        genre: '',
+        artist_name: '',
+        featured_artists: [],
+        youtube_id: '',
+        year: 0,
+        difficulty: 1,
+        is_group: false,
+        wikipedia_page: ''
+      }
+    ]
   }
 
   const save = useThrottleFn(async () => { await _save() }, 5000)

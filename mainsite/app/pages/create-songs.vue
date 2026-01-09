@@ -30,12 +30,14 @@
       <div v-else id="song-creation">
         <volt-card class="border-none">
           <template #content>
-            <transition-group name="opacity">
-              <template v-for="(_, idx) in blocks" :key="idx">
-                <creation-create-block :index="idx" />
-                <volt-divider v-if="blocks.length > 1 && idx !== blocks.length - 1" class="my-5" />
-              </template>
-            </transition-group>
+            <client-only>
+              <div v-auto-animate>
+                <template v-for="(_, idx) in blocks" :key="idx">
+                  <creation-create-block :index="idx" />
+                  <volt-divider v-if="blocks.length > 1 && idx !== blocks.length - 1" class="my-5" />
+                </template>
+              </div>
+            </client-only>
           </template>
   
           <template #footer>

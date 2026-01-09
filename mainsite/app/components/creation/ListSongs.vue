@@ -120,23 +120,22 @@ const apiResult = ref<ApiResponse>()
  * Return all the songs in the database
  * @param offset The next offset page to get
  */
-const { execute, responseData } = useRequest<ApiResponse>('django', '/api/v1/songs/by-artists', {
+apiResult.value = await $fetch<ApiResponse>('/api/v1/songs/by-artists', {
   method: 'get',
+  baseURL: useRuntimeConfig().public.apiBaseUrl,
   query: searchParam
 })
-
-await execute()
-
-if (responseData.value) {
-  apiResult.value = responseData.value
-}
 
 // Get the previous page
 async function getPrevious() {
   if (apiResult.value) {
     searchParam.offset = apiResult.value.previous
-    await execute()
-    apiResult.value = responseData.value
+
+    apiResult.value = await $fetch<ApiResponse>('/api/v1/songs/by-artists', {
+      method: 'get',
+      baseURL: useRuntimeConfig().public.apiBaseUrl,
+      query: searchParam
+    })
   }
 }
 
@@ -144,8 +143,12 @@ async function getPrevious() {
 async function getNextPage() {
   if (apiResult.value) {
     searchParam.offset = apiResult.value.next
-    await execute()
-    apiResult.value = responseData.value
+
+    apiResult.value = await $fetch<ApiResponse>('/api/v1/songs/by-artists', {
+      method: 'get',
+      baseURL: useRuntimeConfig().public.apiBaseUrl,
+      query: searchParam
+    })  
   }
 }
 
@@ -184,8 +187,16 @@ const debouncedSearch = debouncedRef(search, 2000)
 
 watch(debouncedSearch, async (newSearch) => {
   searchParam.q = newSearch
-  await execute()
-  apiResult.value = responseData.value
+  
+  try {
+    apiResult.value = await $fetch<ApiResponse>('/api/v1/songs/by-artists', {
+      method: 'get',
+      baseURL: useRuntimeConfig().public.apiBaseUrl,
+      query: searchParam
+    })
+  } catch {
+    toast.add({ severity: 'error', summary: 'Error', detail: 'An error occurred while searching for songs.', life: 5000 })
+  }
 })
 
 /**

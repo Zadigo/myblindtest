@@ -22,10 +22,10 @@
 
       <div class="space-y-2">
         <volt-label label-for="is-group" :label="$t('Is group?')">
-          <volt-toggle-switch v-model="newArtistSong.is_group" id="is-group" />
+          <volt-toggle-switch id="is-group" v-model="newArtistSong.is_group" />
         </volt-label>
 
-        <volt-input-text type="url" v-model="newArtistSong.wikipedia_page" :placeholder="$t('Wikipedia page')" class="w-6/12" />
+        <volt-input-text v-model="newArtistSong.wikipedia_page" type="url" :placeholder="$t('Wikipedia page')" class="w-6/12" />
       </div>
     </form>
   </div>
@@ -80,6 +80,7 @@ function searchGenreComplete(event: SearchEvent) {
 
 const { deleteBlock, getCurrentBlock } = useEditSong()
 const newArtistSong = getCurrentBlock(defaultProps.index)
+
 const _artistName = computed(() => {
   if (isDefined(newArtistSong)) {
     return typeof newArtistSong.value.artist_name === 'string' ? newArtistSong.value.artist_name : newArtistSong.value.artist_name.label
@@ -92,13 +93,17 @@ const _artistName = computed(() => {
  * Artists suggestions
  */
 
-const { responseData, execute: searchArtists } = useRequest<Artist[]>('django', '/api/v1/songs/artists', {
+const { data, execute: searchArtists } = await useFetch<Artist[]>('/api/v1/songs/artists', {
+  method: 'GET',
+  baseURL: useRuntimeConfig().public.apiBaseUrl,
   query: { q: _artistName }
 })
 
 const artistSuggestions = computed(() => {
-  if (responseData.value) {
-    return responseData.value.map(artist => ({ label: artist.name, genre: artist.genre }))
+  if (data.value) {
+    return data.value.map(artist => ({ label: artist.name, genre: artist.genre }))
+  } else {
+    return []
   }
 })
 

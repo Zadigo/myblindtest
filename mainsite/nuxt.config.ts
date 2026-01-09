@@ -18,6 +18,7 @@ export default defineNuxtConfig({
     '@vueuse/motion',
     '@pinia/nuxt',
     '@nuxtjs/i18n',
+    '@formkit/auto-animate/nuxt',
     'nuxt-vuefire',
     'nuxt-charts'
   ],
