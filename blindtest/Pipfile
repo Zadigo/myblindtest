@@ -4,7 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "*"
 daphne = "*"
 django-redis = "*"
 celery = "*"
@@ -45,6 +44,7 @@ django-environ = "*"
 pydantic = "*"
 factory-boy = "*"
 httpx = "*"
+django = "*"
 
 [dev-packages]
 autopep8 = "*"
