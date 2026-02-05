@@ -1,10 +1,13 @@
-from songs.models import Song, Artist, PopSong
+import graphene
 from graphene import relay
 from graphene_django import DjangoObjectType
-import graphene
+from songs.models import Artist, PopSong, Song
 
 
 class ArtistType(DjangoObjectType):
+    genre = graphene.String()
+    birthname = graphene.String()
+
     class Meta:
         model = Artist
         fields = '__all__'
@@ -18,6 +21,24 @@ class ArtistType(DjangoObjectType):
     @classmethod
     def get_queryset(cls, queryset, info):
         return super().get_queryset(queryset, info)
+
+    def resolve_genre(self, info):
+        if self.genre == 'nan':
+            return None
+
+        if self.genre is not None:
+            return str(self.genre)
+
+        return None
+    
+    def resolve_birthname(self, info):
+        if self.birthname == 'nan':
+            return None
+
+        if self.birthname is not None:
+            return str(self.birthname)
+
+        return None
 
 
 class SongType(DjangoObjectType):
