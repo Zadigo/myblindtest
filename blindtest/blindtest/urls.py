@@ -12,7 +12,8 @@ from blindtest.views import HomePage
 urlpatterns = [
     path(
         'graphql/',
-        csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema))
+        csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema)),
+        name='graphql'
     ),
     path(
         '__debug__/',

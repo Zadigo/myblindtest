@@ -4,7 +4,7 @@ from typing import Annotated, Any, List, Optional, Union
 
 import pydantic
 
-from blindtest.typings import DifficultyLevels
+from blindtest.typings import DIFFICULTY_LEVELS, DifficultyLevels
 
 
 @dataclasses.dataclass
@@ -14,6 +14,7 @@ class Player:
     name: str = None
     color: str = None
     points: int = 0
+    gain: int = 0
     team: Optional[str] = None
     correctAnswers: List[int] = dataclasses.field(default_factory=list)
     speciality: Optional[str] = None
@@ -89,7 +90,8 @@ class GameState():
 
     player_count: int = 0
     _players: defaultdict[str, Player] = dataclasses.field(
-        default_factory=lambda: defaultdict(Player))
+        default_factory=lambda: defaultdict(Player)
+    )
 
     @property
     def is_active(self):
@@ -114,8 +116,8 @@ class GameState():
         return None
 
     @property
-    def player_values(self) -> dict[str, dict[str, str | int]]:
-        """Returns a dictionary representation of players"""
+    def player_values(self) -> dict[str, dict[str, str | int | None]]:
+        """Returns a dictionary representation of the players"""
         return {key: dataclasses.asdict(player) for key, player in self._players.items()}
 
     def reset(self):
@@ -158,10 +160,12 @@ class GameState():
 
 @dataclasses.dataclass
 class SongPossibilities():
-    currentChoiceAnswers: list[dict[str, Any]
-                               ] = dataclasses.field(default_factory=list)
+    currentChoiceAnswers: list[
+        dict[str, Any]
+    ] = dataclasses.field(default_factory=list)
     playerChoices: list[dict[str, int | str | Any]] = dataclasses.field(
-        default_factory=list)
+        default_factory=list
+    )
 
 
 def validate_connection_token(token: str) -> bool:
@@ -174,14 +178,14 @@ class GameSettingsModel(pydantic.BaseModel):
 
     pointLimit: int = pydantic.Field(default=0, ge=0)
 
-    difficultyLevel: str = pydantic.Field(default=DifficultyLevels.ALL.value)
+    difficultyLevel: str = DifficultyLevels.ALL.value
     genreSelected: str = pydantic.Field(default='All')
 
-    numberOfRounds: int = None
+    numberOfRounds: Optional[int] = pydantic.Field(default=None, ge=10)
 
     pointValue: int = pydantic.Field(default=1, ge=1)
-    songDifficultyBonus: bool = pydantic.Field(default=False)
-    speedBonus: bool = pydantic.Field(default=False)
+    songDifficultyBonus: bool = False
+    speedBonus: bool = False
 
     connectionToken: Annotated[
         str,
@@ -190,11 +194,18 @@ class GameSettingsModel(pydantic.BaseModel):
 
     soloMode: bool = False
     adminPlays: bool = False
-    timeLimit: int = None
+    timeLimit: Optional[int] = None
     timeRange: list[int] = pydantic.Field(default_factory=list)
 
     multipleChoiceAnswers: bool = False
     numberOfChoices: int = pydantic.Field(default=4, ge=2, le=10)
+
+    @pydantic.model_validator(mode='before')
+    def check_difficulty_level(cls, values: dict[str, Any]) -> dict[str, Any]:
+        difficulty_level = values.get('difficultyLevel')
+        if difficulty_level not in DIFFICULTY_LEVELS:
+            raise ValueError(f'Invalid difficulty level: {difficulty_level}')
+        return values
 
     @pydantic.model_validator(mode='after')
     def check_time_range(self):
@@ -204,6 +215,7 @@ class GameSettingsModel(pydantic.BaseModel):
 def validate_action(action: str) -> bool:
     """Function to validate if the action is valid."""
     from blindtest.typings import GAME_ACTIONS
+
     if action is None:
         return None
 

@@ -1,5 +1,9 @@
-from django.urls import reverse
+import json
+
+from django.urls import reverse, reverse_lazy
+from graphene_django.utils.testing import GraphQLTestCase
 from rest_framework.test import APITransactionTestCase
+from songs.tests.utils import RandomSong
 
 
 class TestRestApiView(APITransactionTestCase):
@@ -95,3 +99,29 @@ class TestRestApiView(APITransactionTestCase):
         for item in response_data['items']:
             with self.subTest(item=item):
                 self.assertEqual(item['name'], data[0]['name'])
+
+
+class TestGraphQlViews(GraphQLTestCase):
+    GRAPHQL_URL = reverse_lazy('graphql')
+
+    def setUp(self):
+        self.songs = RandomSong.create_batch(5)
+
+    def test_allsongs(self):
+        response = self.query(
+            '''
+            query {
+                allSongs {
+                    id
+                    name
+                    artist {
+                        name
+                    }
+                }
+            }
+            '''
+        )
+        self.assertResponseNoErrors(response, response.content)
+        data = json.loads(response.content)
+        self.assertIn('data', data)
+        self.assertIn('allSongs', data['data'])

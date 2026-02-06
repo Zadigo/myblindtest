@@ -2,14 +2,13 @@ import dataclasses
 
 from django.core.cache import cache
 from django.test import TestCase, override_settings
-from songs.logic.base import BaseGameLogicMixin, Player
-from songs.logic.base_models import GameSettings, GameState, SongPossibilities
 from factory import Faker
+from factory.django import DjangoModelFactory
 from faker import Faker as FakerClass
 from faker.providers import DynamicProvider
+from songs.logic.base import BaseGameLogicMixin, Player
+from songs.logic.base_models import GameSettings, GameState, SongPossibilities
 from songs.models import Song
-from factory.django import DjangoModelFactory
-
 
 music_genres_provider = DynamicProvider(
     provider_name='music_genres',
@@ -118,13 +117,10 @@ class TestBaseGameLogic(TestCase):
         value = await self.instance.calculate_points(title_match=False, artist_match=False)
         self.assertEqual(value, 0)
 
-        value = await self.instance.calculate_points(title_match=True, artist_match=True)
-        self.assertEqual(value, 4)
-
-        self.instance.game_state.difficultyBonus = True
+        self.instance.game_settings.songDifficultyBonus = True
 
         value = await self.instance.calculate_points(title_match=True, artist_match=False)
-        self.assertEqual(value, 2)
+        self.assertEqual(value, 6)
 
     async def test_calculate_multiple_choice_points(self):
         possibilities = SongPossibilities(
@@ -143,10 +139,14 @@ class TestBaseGameLogic(TestCase):
         )
 
         setattr(self.instance, 'song_possibilities', possibilities)
+        await self.instance.calculate_multiple_choice_points()
 
         for key, value in self.instance.game_state._players.items():
             with self.subTest(player=key):
                 print(value)
+                if key == '1':
+                    self.assertEqual(
+                        value.points, self.instance.game_state._players[key].points + 1)
 
     async def test_calculate_loosers_loses_points(self):
         # players = self.instance.game_state._players

@@ -10,13 +10,11 @@ from django.db.models import (Count, ExpressionWrapper, F, IntegerField, Max,
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import generics, status
-from rest_framework.decorators import api_view
 from rest_framework.mixins import Response
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import AllowAny
 from songs import tasks
 from songs.api import serializers
-from songs.choices import MusicGenre
 from songs.models import Artist, Song
 
 
@@ -253,13 +251,6 @@ class GameSettings(generics.GenericAPIView):
             'count_by_genre': distribution_by_genre_list
         }
         return Response(template, status=status.HTTP_200_OK)
-
-
-@api_view(http_method_names=['get'])
-def test(request):
-    from songs import tasks
-    tasks.song_information_completion.s()
-    return Response({'status': 'ok'})
 
 
 class SongsUpdateAutomation(generics.UpdateAPIView):

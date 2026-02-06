@@ -10,11 +10,6 @@ urlpatterns = [
         name='song_statistics'
     ),
     re_path(
-        r'^test$',
-        views.test,
-        name='test'
-    ),
-    re_path(
         r'^(?P<pk>\d+)/automate$',
         views.SongsUpdateAutomation.as_view(),
         name='automate'

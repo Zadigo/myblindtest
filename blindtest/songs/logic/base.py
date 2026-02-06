@@ -159,7 +159,7 @@ class BaseGameLogicMixin[T: 'GameLogicMixin']:
     async def random_choice_answers(self: T, current_song_id: int) -> list[dict[str, Union[str, int]]]:
         """Returns a list of 4 songs including the current song ID"""
         # songs = await self.get_songs(exclude=[current_song_id])
-        category, songs = await self.get_songs_by_category(self.game_state.current_song['genre'])
+        _, songs = await self.get_songs_by_category(self.game_state.current_song['genre'])
 
         selected_ids = random.sample(
             songs or [],
@@ -206,21 +206,23 @@ class BaseGameLogicMixin[T: 'GameLogicMixin']:
         """Calculates points for multiple choice answers"""
         errors = []
         for item in self.song_possibilities.playerChoices:
-            player = self.game_state._players.get(item['player_id'], None)
+            player = self.game_state._players.get(item['playerId'], None)
 
             if player is not None:
-                index = item['answer_index']
+                index = item['choiceId']
 
                 try:
                     answer = self.song_possibilities.currentChoiceAnswers[index]
                 except IndexError:
                     errors.append(
-                        f'Invalid answer index {index} for player {player.id}')
+                        f'Invalid answer index {index} for player {player.id}'
+                    )
                     continue
                 else:
                     if answer.get('is_correct_answer', False):
                         points = await self.calculate_points(True, False)
                         player.points += points
+                        player.gain = points
         return errors
 
     async def calculate_loosers_loses_points(self: T, winner_id: str, title_match: bool = False, artist_match: bool = False):
