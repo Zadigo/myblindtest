@@ -1,0 +1,14 @@
+{% if url_name %}
+    <a type="button" href="{% url url_name %}" class="px-5 py-1 rounded-full bg-blue-500 text-white inline-flex items-center justify-center cursor-pointer">
+        <i class="fas fa-link me-2"></i>
+        {{ title }}
+    </a>
+{% elif href %}
+    <a type="button" href="{{ href }}" class="px-5 py-1 rounded-full bg-blue-500 text-white inline-flex items-center justify-center cursor-pointer">
+        {{ title }}
+    </a>
+{% else %}
+    <button {% if is_submit%}type="submit"{% else %}type="button"{% endif %} class="px-5 py-1 rounded-full bg-blue-500 text-white inline-flex items-center justify-center cursor-pointer">
+        {{ title }}
+    </button>
+{% endif %}

@@ -146,7 +146,9 @@ class TestBaseGameLogic(TestCase):
                 print(value)
                 if key == '1':
                     self.assertEqual(
-                        value.points, self.instance.game_state._players[key].points + 1)
+                        value.points, 
+                        self.instance.game_state._players[key].points + 1
+                    )
 
     async def test_calculate_loosers_loses_points(self):
         # players = self.instance.game_state._players

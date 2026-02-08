@@ -7,7 +7,7 @@ from graphene_django.views import GraphQLView
 from blindtest.schema import schema
 from django.views.decorators.csrf import csrf_exempt
 
-from blindtest.views import HomePage
+from blindtest.views import HomePage, SearchPage
 
 urlpatterns = [
     path(
@@ -37,6 +37,11 @@ urlpatterns = [
     path(
         'api/v1/songs/',
         include('songs.urls')
+    ),
+    re_path(
+        r'^search/$',
+        SearchPage.as_view(),
+        name='search'
     ),
     re_path(
         r'^$',

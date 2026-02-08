@@ -1,0 +1,17 @@
+{% extends "base_site.html" %}
+
+{% block container %}
+    <div class="max-w-3xl mx-auto space-y-2">
+        {% include "link.html" with title="Home" href="/" %}
+        {% for song in songs %}
+            <div class="p-5 bg-slate-100 rounded-lg">
+                <img src="{{ song.artist.spotify_avatar }}" class="rounded-full aspect-square object-cover w-30 h-30" alt="">
+                {{ song.name }} by {{ song.artist.name }}                
+                <a type="button" href="{% url 'home' %}{% querystring mode='create' search=None name=song.artist.name date_of_birth=song.artist.date_of_birth is_group=song.artist.is_group wikipedia_page=song.artist.wikipedia_page genre=song.artist.genre %}">
+                    Create song
+                </a>
+        {% empty %}
+            <p>No songs found.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -274,6 +274,16 @@ class PopArtist(Artist):
         proxy = True
 
 
+class IncompleteArtist(Artist):
+    """Proxy model for representing artists with incomplete data"""
+
+    objects = managers.IncompleteArtistManager()
+
+    class Meta:
+        ordering = ['name']
+        proxy = True
+
+
 @receiver(pre_save, sender=Artist)
 def update_birthname(instance, **kwargs):
     if instance.is_group:

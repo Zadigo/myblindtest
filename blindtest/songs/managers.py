@@ -34,7 +34,7 @@ class RnBManager(models.Manager):
             models.Q(genre__icontains='rhythm and blues') |
             models.Q(genre__icontains='blues')
         )
-    
+
 
 class AfroSongManager(models.Manager):
     def get_queryset(self):
@@ -59,3 +59,14 @@ class PopArtistManager(models.Manager):
     def get_queryset(self):
         qs = super().get_queryset()
         return qs.filter(genre__icontains='pop')
+
+
+class IncompleteArtistManager(models.Manager):
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(
+            models.Q(birthname__isnull=True) |
+            models.Q(genre__isnull=True) |
+            models.Q(birthname=''),
+            is_group=False
+        )

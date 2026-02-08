@@ -3,44 +3,66 @@
 {% block title %}Home{% endblock %}
 
 {% block container %}
-    <div class="row">
-        <div class="col-sm-12 col-md-4 offset-md-4 my-5">
-            <div class="flex align-items-center vh-100">
-                <div class="card text-center shadow-sm">
-                    <div class="card-body">
-                        <h3 class="card-title">
-                            Welcome!
-                        </h3>
+    <div class="h-screen">
+        <div class="flex-col justify-center my-10">
+            <div class="p-10 rounded-lg text-center shadow-md bg-blue-100">
+                <h3 class="font-bold text-4xl">
+                    Welcome!
+                </h3>
     
-                        <div class="card-text">
-                            <p>
-                                {{ statistics }}
-                            </p>
-    
-                            <a type="button" href="{% url 'admin:login' %}" class="btn btn-primary btn-rounded">
-                                <i class="fas fa-link me-2"></i>
-                                Admin
-                            </a>
-    
-                            <a type="button" href="{% url 'redoc' %}" class="btn btn-primary btn-rounded">
-                                <i class="fas fa-link me-2"></i>
-                                Api
-                            </a>
-                            
-                            <a type="button" href="{% url 'swagger-ui' %}" class="btn btn-primary btn-rounded">
-                                <i class="fas fa-link me-2"></i>
-                                Api
-                            </a>
-                        </p>
-                    </div>
+                <p>
+                    {{ statistics }}
+                </p>
+                
+                <div class="mt-10 space-x-2">
+                    {% include "link.html" with url_name="admin:login" title="Admin" %}  
+                    {% include "link.html" with url_name="redoc" title="Api" %}           
+                    {% include "link.html" with url_name="swagger-ui" title="Swagger" %}
                 </div>
             </div>
+
+            <div class="p-10 rounded-lg text-center shadow-md bg-blue-100">
+                <form action="{% url 'search' %}" method="get" enctype="multipart/form-data" class="flex space-x-2">
+                    <input type="search" name="search" label="search" placeholder="Search" class="bg-primary-50 p-3 ring rounded-lg w-full">
+                    {% include "link.html" with url_name="search" title="Search" is_submit=True %}
+                </form>
+            </div>
+
+            <form action="{% url 'home' %}"  method="post" enctype="multipart/form-data" class="p-10 rounded-lg text-center shadow-md bg-blue-100 mt-2 flex-col justify-end space-y-2">
+                {% csrf_token %}
+
+                {% for key, value in form.errors.items %}
+                    <div class="p-3 bg-red-300 text-red-50 rounded-lg">
+                        {{ key }}: {{ value }}
+                    </div>
+                {% endfor %}
+
+                {% for error in form.non_field_errors %}
+                    <p class="p-2 text-red-50 bg-red-500">{{ error }}</p>        
+                {% endfor %}
+
+                {% for field in form %}
+                    {% if field.name == "genre" %}
+                        <select id="{{ field.name }}" name="{{ field.name }}" class="p-3 ring rounded-lg w-full">
+                            {% for choice in field %}
+                                {{ choice }}
+                            {% endfor %}
+                        </select>
+                    {% elif field.name == "is_group" %}
+                        {{ field }}
+                    {% else %}
+                        <input type="{{ field.field.widget.input_type }}" value="{{  }}" id="{{ field.name }}" name="{{ field.name }}" placeholder="{{ field.label }}" {% for attr, value in field.field.widget.attrs.items %} {{ attr }}="{{ value }}" {% endfor %} class="bg-primary-50 p-3 ring rounded-lg w-full">
+                    {% endif %}
+                {% endfor %}
+
+                {% include "link.html" with title="Submit" is_submit=True %}
+            </form>
         </div>
     </div>
 {% endblock %}
 
 {% block extra_scripts %}
 <script>
-    document.body.classList.add('bg-light')
+    document.body.classList.add('bg-blue-50')
 </script>
 {% endblock %}

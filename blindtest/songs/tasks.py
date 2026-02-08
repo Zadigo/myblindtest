@@ -80,6 +80,8 @@ def artist_spotify_information(artist_name: str):
         except:
             logger.error(f'Could not get visuals for: {artist_name}')
             return {}
+        
+        logger.warning(f'Found Spotify data for: {artist_name}: {data}')
         artist.save()
 
     songs = artist.song_set.filter(year=0).values_list('id', flat=True)

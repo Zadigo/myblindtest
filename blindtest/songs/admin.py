@@ -1,4 +1,3 @@
-import time
 
 from django.contrib import admin, messages
 from django.utils.crypto import get_random_string
@@ -7,10 +6,8 @@ from import_export.admin import ImportExportModelAdmin
 from import_export.resources import ModelResource
 from import_export.widgets import ForeignKeyWidget
 from songs import tasks
-from songs.models import (AfroSong, Artist, PopArtist, PopSong, RapArtist,
+from songs.models import (AfroSong, Artist, IncompleteArtist, PopArtist, PopSong, RapArtist,
                           RapSong, RnBSong, Song)
-
-from blindtest.rapidapi.client import Spotify
 
 
 class ArtistForeignKeyWidget(ForeignKeyWidget):
@@ -53,7 +50,7 @@ class ArtistResource(ModelResource):
 
 @admin.register(Artist)
 class ArtistAdmin(ImportExportModelAdmin):
-    list_display = ['name', 'age', 'genre', 'spotify_id']
+    list_display = ['name', 'birthname', 'age', 'genre']
     fieldsets = [
         [
             'General',
@@ -82,7 +79,8 @@ class ArtistAdmin(ImportExportModelAdmin):
         'update_from_wikipedia',
         'define_genre_to_base_pop',
         'define_genre_to_base_afrobeats',
-        'full_update'
+        'full_update',
+        'remove_nan'
     ]
 
     def define_genre_to_base_pop(self, request, queryset):
@@ -111,6 +109,12 @@ class ArtistAdmin(ImportExportModelAdmin):
             tasks.wikipedia_information.apply_async((artist.id,), countdown=20)
         messages.success(
             request, f'Scheduled full update for {len(queryset)} artists')
+
+    def remove_nan(self, request, queryset):
+        qs = queryset.filter(birthname__iexact='nan')
+        if qs.exists():
+            qs.update(birthname='')
+        messages.success(request, f'Updated {len(queryset)} artists')
 
 
 @admin.register(Song)
@@ -197,4 +201,10 @@ class RapArtistAdmin(admin.ModelAdmin):
 class PopArtistAdmin(admin.ModelAdmin):
     list_display = ['name', 'birthname', 'date_of_birth', 'astrological_sign']
     # filter_horizontal = ['astrological_sign']
+    search_fields = ['name', 'birthname']
+
+
+@admin.register(IncompleteArtist)
+class IncompleteArtistAdmin(admin.ModelAdmin):
+    list_display = ['name', 'birthname', 'date_of_birth', 'genre']
     search_fields = ['name', 'birthname']
