@@ -9,13 +9,13 @@
     <template v-if="currentSettings" #content>
       <div class="py-3">
         <volt-label label-for="solo-mode" :label="$t('Run in solo mode')">
-          <volt-toggle-switch v-model="currentSettings.settings.soloMode" />
+          <volt-toggle-switch id="solo-mode" v-model="currentSettings.settings.soloMode" />
         </volt-label>
       </div>
 
       <div class="py-3">
         <volt-label label-for="admin-plays" :label="$t('Admin is registered in a team')">
-          <volt-toggle-switch v-model="currentSettings.settings.adminPlays" />
+          <volt-toggle-switch id="admin-plays" v-model="currentSettings.settings.adminPlays" />
         </volt-label>
       </div>
 
@@ -23,7 +23,7 @@
       <div class="py-3">
         <volt-fieldset legend="Epic game mode">
           <div class="space-y-3">
-            <grid-switch v-model:switch-value="testRef">Every wrong answer costs points (which can depend on the difficulty of the song)</grid-switch>
+            <grid-switch id="wrong-cost-points" v-model:switch-value="testRef">Every wrong answer costs points (which can depend on the difficulty of the song)</grid-switch>
             <grid-switch v-model:switch-value="testRef">The player who gives the right answer gains points and every other player loses a certain amount of points based on their ranking</grid-switch>
             <grid-switch v-model:switch-value="testRef">Players can multiply their points based on how fast they answer</grid-switch>
             <grid-switch v-model:switch-value="testRef">Players can multiply theirt points if they answer in a row without making mistakes</grid-switch>

@@ -45,4 +45,29 @@
 </template>
 
 <script lang="ts" setup>
+/**
+ * SEO
+ */
+
+const { locale } = useI18n()
+
+const titles = {
+  en: 'About MyBlindTest',
+  fr: 'À propos de MyBlindTest',
+}
+
+const descriptions = {
+  'en': 'Join the ultimate blind test challenge! Test your music knowledge with friends and climb the leaderboard. Are you ready to take on the challenge?',
+  'fr': "Rejoignez le défi blindtest ultime ! Testez vos connaissances musicales avec des amis et grimpez dans le classement. Êtes-vous prêt à relever le défi ?",
+}
+
+useHead({
+  title: titles[locale.value],
+  meta: [
+    {
+      name: 'description',
+      content: descriptions[locale.value],
+    },
+  ],
+})
 </script>

@@ -155,13 +155,29 @@ const timelineOptions = computed<ChartOptions>(() => ({
 //   }
 // }))
 
+/**
+ * SEO
+ */
+
+const { locale } = useI18n()
+
+const titles = {
+  en: 'Statistics',
+  fr: 'Statistiques',
+}
+
+const descriptions = {
+  'en': 'View detailed statistics about your music collection.',
+  'fr': "Rejoignez le défi blindtest ultime ! Testez vos connaissances musicales avec des amis et grimpez dans le classement. Êtes-vous prêt à relever le défi ?",
+}
+
 useHead({
-  title: 'Statistics',
+  title: titles[locale.value],
   meta: [
     {
       name: 'description',
-      content: 'View detailed statistics about your music collection.'
-    }
-  ]
+      content: descriptions[locale.value],
+    },
+  ],
 })
 </script>

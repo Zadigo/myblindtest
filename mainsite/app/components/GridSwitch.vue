@@ -3,7 +3,7 @@
     <p class="col-span-2 md:col-span-3">
       <slot />
     </p>
-
+    
     <volt-toggle-switch v-model="switchValue" class="place-self-center" :disabled="true" />
   </div>
 </template>

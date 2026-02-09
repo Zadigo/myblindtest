@@ -14,6 +14,8 @@ useDarkMode()
 const { create } = useCreateSession()
 await create()
 
+useHTMLLangAttribute()
+
 /**
  * Theme
  */
@@ -22,6 +24,9 @@ const bgTheme = ['dark:bg-primary-950', 'bg-no-repeat', 'bg-center', 'bg-gradien
 
 onMounted(() => {
   document.documentElement.classList.add(...bgTheme)
+
+  const langAttribute = document.createAttribute('lang')
+  langAttribute.value = useI18n().locale.value
 })
 
 onUnmounted(() => {

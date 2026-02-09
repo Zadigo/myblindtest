@@ -3,26 +3,28 @@
     <volt-card id="second-header" class="mt-10 mb-5 shadow-none">
       <template #content>
         <div class="grid grid-cols-2">
-          <div class="inline-flex gap-2">
-            <volt-secondary-button aria-label="Switch to enlish">
-              <nuxt-link-locale to="/" locale="en">
+          <div class="inline-flex items-center gap-2">
+            <volt-secondary-button>
+              <nuxt-link-locale to="/" locale="en" :aria-label="$t('Switch to english')">
                 <icon name="circle-flags:us-um" />
               </nuxt-link-locale>
             </volt-secondary-button>
             
-            <volt-secondary-button aria-label="Switch to french">
-              <nuxt-link-locale to="/" locale="fr">
+            <volt-secondary-button>
+              <nuxt-link-locale to="/" locale="fr" :aria-label="$t('Switch to french')">
                 <icon name="circle-flags:fr" />
               </nuxt-link-locale>
             </volt-secondary-button>
             
-            <volt-label id="dark-mode" label-for="dark-mode">
-              <volt-toggle-switch id="dark-mode" v-model="isDark">
-                <template #handle="{ checked }">
-                  <icon :name="checked ? 'fa6-solid:moon' : 'fa6-solid:sun'" class="text-lg" />
-                </template>
-              </volt-toggle-switch>
-            </volt-label>
+            <form>
+              <volt-label id="dark-mode" label-for="dark-mode">
+                <volt-toggle-switch id="dark-mode" v-model="isDark">
+                  <template #handle="{ checked }">
+                    <icon :name="checked ? 'fa6-solid:moon' : 'fa6-solid:sun'" class="text-lg" />
+                  </template>
+                </volt-toggle-switch>
+              </volt-label>
+            </form>
           </div>
 
           <div id="actions" class="flex justify-end gap-2">

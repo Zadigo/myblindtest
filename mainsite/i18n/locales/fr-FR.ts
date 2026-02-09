@@ -55,7 +55,9 @@ export default defineI18nLocale(async _locale => {
     "Genre speciality": "Spécialité musicale",
     "Stop game": "Arrêter le jeu",
     "Pause": "Pause",
-    "Show Scores": "Afficher les scores"
+    "Show Scores": "Afficher les scores",
+    "Switch to english": "Passer en anglais",
+    "Switch to french": "Passer en français"
   }
 })
 

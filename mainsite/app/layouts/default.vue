@@ -39,7 +39,9 @@
       </base-navbar>
     </header>
 
-    <slot />
+    <main>
+      <slot />
+    </main>
 
     <!-- <base-footer /> -->
   </section>

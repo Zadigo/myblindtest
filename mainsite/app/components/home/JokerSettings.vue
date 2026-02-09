@@ -6,9 +6,11 @@
           Jokers
         </h3>
 
-        <volt-label label-for="activate-jokers">
-          <volt-toggle-switch id="activate-jokers" :disabled="true" />
-        </volt-label>
+        <form>
+          <volt-label label-for="activate-jokers">
+            <volt-toggle-switch id="activate-jokers" :disabled="true" />
+          </volt-label>
+        </form>
       </div>
     </template>
 

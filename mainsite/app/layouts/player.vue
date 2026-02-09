@@ -3,17 +3,19 @@
     <!-- Acton Bar -->
     <blindtest-score-top-action-bar @toggle-graph="toggleShowGraph" />
 
-    <!-- Content -->
-    <volt-container size="sm">
-      <div class="relative h-screen w-full overflow-hidden transition-all ease-in">
-        <slot />
-      </div>
-      <!-- Background -->
-      <div ref="bgEl" :class="bgTheme" class="absolute top-0 left-0 w-full h-screen bg-no-repeat bg-center bg-cover bg-fixed overflow-hidden" :style="{ backgroundImage: `url(${backgroundImage})` }"></div>
-
-      <!-- Overlay -->
-      <div ref="overlayEl" :class="overlayTheme" id="overlay" class="absolute top-0 left-0 w-full h-screen opacity-90 z-10" />
-    </volt-container>
+    <main>
+      <!-- Content -->
+      <volt-container size="sm">
+        <div class="relative h-screen w-full overflow-hidden transition-all ease-in">
+          <slot />
+        </div>
+        <!-- Background -->
+        <div ref="bgEl" :class="bgTheme" class="absolute top-0 left-0 w-full h-screen bg-no-repeat bg-center bg-cover bg-fixed overflow-hidden" :style="{ backgroundImage: `url(${backgroundImage})` }"></div>
+  
+        <!-- Overlay -->
+        <div id="overlay" ref="overlayEl" :class="overlayTheme" class="absolute top-0 left-0 w-full h-screen opacity-90 z-10" />
+      </volt-container>
+    </main>
   </div>
 </template>
 
