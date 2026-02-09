@@ -1,5 +1,5 @@
 <template>
-  <div id="dock" ref="dockEl" class="col-span-12 bg-primary-100/30 border border-primary-100/20 backdrop-blur-xl shadow-md dark:bg-primary-950 dark:border-none dark:shadow-2xl h-auto min-w-100 w-150 absolute bottom-10 left-[calc(50%-calc(600px/2))] px-2 py-3 rounded-xl flex justify-center gap-2 z-40 overflow-hidden">
+  <div id="dock" ref="dockEl" class="col-span-12 bg-primary-100/30 border border-primary-100/20 backdrop-blur-xl shadow-md dark:bg-primary-950/30 dark:border-none dark:shadow-2xl h-auto min-w-100 w-150 absolute bottom-10 left-[calc(50%-calc(600px/2))] px-2 py-3 rounded-xl flex justify-center gap-2 z-40 overflow-hidden">
     <transition-group enter-from-class="animate-fadeinup" enter-to-class="animate-fadeindown" leave-from-class="animate-fadeindown" leave-to-class="animate-fadeinup">
       <volt-button v-for="item in items" :key="item.icon" :disabled="item.name === 'Pause'" @click="item.action">
         <icon :name="item.icon" class="text-xl" />

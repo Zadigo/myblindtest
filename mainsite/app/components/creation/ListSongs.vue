@@ -121,7 +121,7 @@ const apiResult = ref<ApiResponse>()
  * @param offset The next offset page to get
  */
 apiResult.value = await $fetch<ApiResponse>('/api/v1/songs/by-artists', {
-  method: 'get',
+  method: 'GET',
   baseURL: useRuntimeConfig().public.apiBaseUrl,
   query: searchParam
 })
@@ -132,7 +132,7 @@ async function getPrevious() {
     searchParam.offset = apiResult.value.previous
 
     apiResult.value = await $fetch<ApiResponse>('/api/v1/songs/by-artists', {
-      method: 'get',
+      method: 'GET',
       baseURL: useRuntimeConfig().public.apiBaseUrl,
       query: searchParam
     })
@@ -145,7 +145,7 @@ async function getNextPage() {
     searchParam.offset = apiResult.value.next
 
     apiResult.value = await $fetch<ApiResponse>('/api/v1/songs/by-artists', {
-      method: 'get',
+      method: 'GET',
       baseURL: useRuntimeConfig().public.apiBaseUrl,
       query: searchParam
     })  
@@ -157,18 +157,6 @@ function handleBack() {
   searchParam.v = 'c'
   emit('back')
 }
-
-/**
- * Popover
- */
-
-// const popoverEl = useTemplateRef('popoverEl')
-
-// function showPopover(e: Event) {
-//   if (isDefined(popoverEl)) {
-//     popoverEl.value.toggle(e)
-//   }
-// }
 
 /**
  * Lifecycle

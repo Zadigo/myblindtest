@@ -13,7 +13,7 @@
         <div id="artist" class="absolute top-0 left-0 w-full h-full bg-no-repeat bg-cover bg-center blur-sm z-20 bg-fixed" :style="{ backgroundImage: `url(${currentSong?.artist.spotify_avatar || '/dancing1.jpg'})` }" />
 
         <!-- Video -->
-        <div class="absolute z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-xl overflow-hidden shadow-2xl w-5xl backdrop-blur-md bg-primary-200/70">
+        <div class="absolute z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-xl overflow-hidden shadow-2xl w-5xl backdrop-blur-md bg-primary-200/70 dark:bg-primary-800/5 dark:backdrop-blur-lg">
           <slot name="video" />
         </div>
       </div>
