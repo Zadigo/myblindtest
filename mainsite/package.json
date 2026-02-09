@@ -54,6 +54,7 @@
     "firebase-functions": "^7.0.5",
     "happy-dom": "^20.5.3",
     "nuxt-vuefire": "1.1.0",
+    "oxlint": "^1.43.0",
     "pinia-plugin-persistedstate": "^4.7.1",
     "playwright": "^1.58.2",
     "playwright-core": "^1.58.2",
