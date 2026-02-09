@@ -1,6 +1,6 @@
 <template>
   <section id="blindtest">
-    <blind-test-layout>
+    <blindtest-layout>
       <template #video>
         <blindtest-video-block />
       </template>
@@ -12,7 +12,7 @@
           </div>
         </div>
       </template>
-    </blind-test-layout>
+    </blindtest-layout>
 
     <!-- Modals -->
     <blindtest-modals-active-game v-model:show="warnActiveGameModal" @proceed="() => stopGame(stopGameCallback)" />
