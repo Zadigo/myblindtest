@@ -48,7 +48,7 @@ export const usePlayerWebsocket = createSharedComposable(() => {
   const isStarted = ref(false)
   
   const goToGamePage = useDebounceFn(() => {
-    router.push(`/blindtest/player/game?game=${route.params.id}&player=${playerId.value}`)
+    router.push(`/blindtest/player/game?game=${route.query.id}&player=${playerId.value}`)
   }, 2000)
 
   watchOnce(isStarted, async (newVal) => {
@@ -91,7 +91,7 @@ export const usePlayerWebsocket = createSharedComposable(() => {
 
       if (message.action === 'guess_correct') {
         if (message.player_id === playerId.value) {
-          const docRef = doc(fireStore, 'blindtests', route.params.id as string)
+          const docRef = doc(fireStore, 'blindtests', route.query.id as string)
           await updateDoc(docRef, {
             [`players.${playerId.value}.points`]: message.points,
             [`players.${playerId.value}.correctAnswers`]: arrayUnion(message.song.id)

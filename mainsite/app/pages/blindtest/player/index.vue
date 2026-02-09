@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 definePageMeta({
-  layout: 'default'
+  layout: 'player'
 })
 
 const { wsObject, query } = usePlayerWebsocket()

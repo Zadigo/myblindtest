@@ -17,6 +17,10 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  layout: 'player'
+})
+
 /**
  * Websocket
  */

@@ -35,14 +35,13 @@ const toggleSettingsModal = useToggle(show)
  * Websocket
  */
 
-const { wsObject } = usePlayerWebsocket()
+const { wsObject, query } = usePlayerWebsocket()
 
 /**
  * Fields
  */
 
 const firestore = useFirestore()
-const route = useRoute()
 
 const { stringify } = useWebsocketMessage()
 
@@ -53,7 +52,7 @@ const { history } = useRefHistory(playerName)
 
 
 watchDebounced(playerName, async (newName) => {
-  const docRef = doc(firestore, 'blindtests', route.params.id as string)
+  const docRef = doc(firestore, 'blindtests', query.id as string)
   
   await updateDoc(docRef, { [`players.${props.player?.id}.name`]: newName })
   wsObject.send(stringify({ action: 'update_player', id: props.player?.id, name: newName }))
