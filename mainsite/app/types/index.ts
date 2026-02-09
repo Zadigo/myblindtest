@@ -34,3 +34,5 @@ export interface _DatabaseItem {
   id: number
   created_on: string
 }
+
+export type CustomLocationQuery = Partial<{ id: string, player: string }>

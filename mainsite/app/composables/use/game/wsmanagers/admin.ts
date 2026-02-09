@@ -4,12 +4,12 @@
  * management for the admin side of the game
  */
 
-import type { Undefineable, VueUseWsReturnType } from '~/types'
 import { useSound } from '@vueuse/sound'
 import { arrayUnion, doc, updateDoc } from 'firebase/firestore'
 import { useToast } from 'primevue/usetoast'
 import { useDocument, useFirestore } from 'vuefire'
 import type { MatchedPart } from '~/data/constants/websocket'
+import type { Undefineable, VueUseWsReturnType } from '~/types'
 
 
 /**
@@ -28,8 +28,8 @@ export const useAdminWebsocket = createSharedComposable(() => {
   /**
    * Websocket
    */
-  const fireStore = useFirestore()
-  const docRef = doc(fireStore, 'blindtests', sessionId.value)
+  const firestore = useFirestore()
+  const docRef = doc(firestore, 'blindtests', sessionId.value)
 
   const gameStarted = ref(false)
 
@@ -42,7 +42,7 @@ export const useAdminWebsocket = createSharedComposable(() => {
    * Player Answers
    */
 
-  const wsObject = useWebSocket(`ws://127.0.0.1:8000/ws/songs/${sessionId.value}/single-player`, {
+  const wsObject = useWebSocket(`${useRuntimeConfig().public.wsBaseUrl}/ws/songs/${sessionId.value}/single-player`, {
     immediate: false,
     onMessage: async (_ws, event: MessageEvent) => {
       const message = parse(event.data)

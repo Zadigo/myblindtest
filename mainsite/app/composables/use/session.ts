@@ -2,7 +2,7 @@ import { promiseTimeout } from '@vueuse/core'
 import { addDoc, collection, deleteDoc, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
 import { useDocument, useFirestore } from 'vuefire'
 import { defaultCacheOptions } from '~/data'
-import type { CacheSession, Empty, Nullable } from '~/types'
+import type { CacheSession, CustomLocationQuery, Empty, Nullable } from '~/types'
 
 
 export function useCreateSession() {
@@ -65,19 +65,19 @@ export const useSession = createGlobalState(() => {
   const sessionId = useSessionStorage<Nullable<string>>('blindtestId', null)
   const hasExistingSession = computed(() => isDefined(sessionId))
 
-  const route = useRoute()
+  const routeQuery = useRoute().query as CustomLocationQuery
 
   watchEffect(() => {
-    if (route.params.id && typeof route.params.id === 'string') {
-      sessionId.value = route.params.id
+    if (isDefined(routeQuery.id) && typeof routeQuery.id === 'string') {
+      sessionId.value = routeQuery.id
     }
   })
 
-  const fireStore = useFirestore()
+  const firestore = useFirestore()
 
   const docRef = computed(() => {
     if (!sessionId.value) return null
-    return doc(fireStore, 'blindtests', sessionId.value)
+    return doc(firestore, 'blindtests', sessionId.value)
   })
 
   const _currentSettings = computed(() => {
@@ -246,10 +246,10 @@ export const useSession = createGlobalState(() => {
  * 
  */
 export const usePlayerSession = createGlobalState(() => {
-  const fireStore = useFirestore()
-  const route = useRoute()
+  const firestore = useFirestore()
+  const routeQuery = useRoute().query as CustomLocationQuery
 
-  const docRef = doc(fireStore, 'blindtests', route.params.id as string)
+  const docRef = doc(firestore, 'blindtests', routeQuery.id || '')
   const currentSettings = useDocument<CacheSession>(docRef)
 
   return {
@@ -262,7 +262,7 @@ export const usePlayerSession = createGlobalState(() => {
  * in the current blindtest session
  */
 // export const useSongsPlayedSession = createGlobalState(() => {
-//   const fireStore = useFirestore()
+//   const firestore = useFirestore()
 //   const sessionId = useSessionStorage<string>('blindtestId', null)
 
 //   if (!isDefined(sessionId)) {
@@ -272,7 +272,7 @@ export const usePlayerSession = createGlobalState(() => {
 //   }
 
 //   const songsPlayed = ref<Song[]>([])
-//   const docRef = doc(fireStore, 'blindtests', sessionId.value)
+//   const docRef = doc(firestore, 'blindtests', sessionId.value)
 //   const _songsPlayed = useDocument<Song[]>(docRef)
 
 //   watch(_songsPlayed, (newValue) => {

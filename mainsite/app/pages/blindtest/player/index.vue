@@ -3,7 +3,7 @@
     <div class="flex items-center justify-center h-screen">
       <h1 class="text-3xl text-primary-50">En attente de connexion...</h1>
       <!-- <base-game-loader /> -->
-      <nuxt-link :to="`/blindtest/player/game?id=${query.id}&player=${query.player}`">
+      <nuxt-link :to="`/blindtest/player/game?id=${query.id}&player=${query.player}`" class="z-50">
         Game
       </nuxt-link>
     </div>

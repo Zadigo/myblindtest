@@ -4,7 +4,7 @@
  * handling and state management for the player side of the game.
  */
 
-import type { CacheSession, Song } from '~/types'
+import type { CacheSession, CustomLocationQuery, Song } from '~/types'
 import { promiseTimeout, set } from '@vueuse/core'
 import { arrayUnion, doc, updateDoc } from 'firebase/firestore'
 import { useToast } from 'primevue/usetoast'
@@ -18,10 +18,10 @@ export const usePlayerWebsocket = createSharedComposable(() => {
   const route = useRoute()
 
   const toast = useToast()
-  const fireStore = useFirestore()
+  const firestore = useFirestore()
   const { parse } = useWebsocketMessage()
 
-  const query = useUrlSearchParams('history')
+  const query = useUrlSearchParams<CustomLocationQuery>('history')
   const playerId = useLocalStorage<string>('playerId', '')
 
   /**
@@ -48,7 +48,7 @@ export const usePlayerWebsocket = createSharedComposable(() => {
   const isStarted = ref(false)
   
   const goToGamePage = useDebounceFn(() => {
-    router.push(`/blindtest/player/game?game=${route.query.id}&player=${playerId.value}`)
+    router.push(`/blindtest/player/game?id=${route.query.id}&player=${playerId.value}`)
   }, 2000)
 
   watchOnce(isStarted, async (newVal) => {
@@ -66,7 +66,7 @@ export const usePlayerWebsocket = createSharedComposable(() => {
    * Websocket
    */
 
-  const wsObject = useWebSocket(`ws://127.0.0.1:8000/ws/single-player/${route.query.id}/connect`, {
+  const wsObject = useWebSocket(`${useRuntimeConfig().public.wsBaseUrl}/ws/single-player/${route.query.id}/connect`, {
     immediate: false,
     onConnected: async (_ws) => {
       toast.add({ severity: 'info', summary: 'Connected', detail: 'WebSocket connected for individual player', life: 3000 })
@@ -91,7 +91,7 @@ export const usePlayerWebsocket = createSharedComposable(() => {
 
       if (message.action === 'guess_correct') {
         if (message.player_id === playerId.value) {
-          const docRef = doc(fireStore, 'blindtests', route.query.id as string)
+          const docRef = doc(firestore, 'blindtests', route.query.id as string)
           await updateDoc(docRef, {
             [`players.${playerId.value}.points`]: message.points,
             [`players.${playerId.value}.correctAnswers`]: arrayUnion(message.song.id)
@@ -147,7 +147,7 @@ export const usePlayerWebsocket = createSharedComposable(() => {
   // ID provided by the url. Since the smartphone user and the admin operate
   // on two different sides, they need to have their own way of connecting
   // to the same document (or default game settings)
-  const docRef = doc(fireStore, 'blindtests', route.query.id as string)
+  const docRef = doc(firestore, 'blindtests', route.query.id as string)
   const blindTestDoc = useDocument<CacheSession>(docRef)
 
   const players = computed(() => Object.keys(blindTestDoc.value?.players || {}))
