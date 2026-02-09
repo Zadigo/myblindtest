@@ -8,7 +8,7 @@
       <template #default="attrs">
         <div id="players" :class="attrs.theme" class="h-full w-full p-5 overflow-hidden">
           <div class="flex items-start overflow-y-scroll gap-2 space-y-3 w-full">
-            <blindtest-player-card :id="`player-${idx}`" v-for="(player, idx) in players" :key="idx" :player-id="player"  />
+            <blindtest-player-card v-for="(player, idx) in players" :id="`player-${idx}`" :key="idx" :player-id="player"  />
           </div>
         </div>
       </template>
