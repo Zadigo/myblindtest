@@ -27,7 +27,7 @@ export default defineNuxtConfig({
 
   routeRules: {
     '/': { swr: true },
-    '/blindtest/**': { },
+    '/blindtest/**': { swr: true },
     '/create-songs': { swr: true },
     '/statistics': { swr: true },
     '/logs ': { swr: true },
@@ -67,7 +67,8 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL,
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000'
     }
   },
 
@@ -76,7 +77,7 @@ export default defineNuxtConfig({
   ],
 
   i18n: {
-    baseUrl: process.env.NUXT_PUBLIC_SITE_URL,
+    baseUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
     langDir: './locales',
     defaultLocale: 'fr',
     vueI18n: './i18n.config.ts',

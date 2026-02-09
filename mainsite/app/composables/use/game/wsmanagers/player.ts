@@ -48,7 +48,7 @@ export const usePlayerWebsocket = createSharedComposable(() => {
   const isStarted = ref(false)
   
   const goToGamePage = useDebounceFn(() => {
-    router.push({ name: 'player_page', params: { locale: route.params.locale, id: route.params.id } })
+    router.push(`/blindtest/player/game?game=${route.params.id}&player=${playerId.value}`)
   }, 2000)
 
   watchOnce(isStarted, async (newVal) => {
@@ -66,7 +66,7 @@ export const usePlayerWebsocket = createSharedComposable(() => {
    * Websocket
    */
 
-  const wsObject = useWebSocket(`ws://127.0.0.1:8000/ws/single-player/${route.params.id}/connect`, {
+  const wsObject = useWebSocket(`ws://127.0.0.1:8000/ws/single-player/${route.query.id}/connect`, {
     immediate: false,
     onConnected: async (_ws) => {
       toast.add({ severity: 'info', summary: 'Connected', detail: 'WebSocket connected for individual player', life: 3000 })
@@ -147,7 +147,7 @@ export const usePlayerWebsocket = createSharedComposable(() => {
   // ID provided by the url. Since the smartphone user and the admin operate
   // on two different sides, they need to have their own way of connecting
   // to the same document (or default game settings)
-  const docRef = doc(fireStore, 'blindtests', route.params.id as string)
+  const docRef = doc(fireStore, 'blindtests', route.query.id as string)
   const blindTestDoc = useDocument<CacheSession>(docRef)
 
   const players = computed(() => Object.keys(blindTestDoc.value?.players || {}))
@@ -230,6 +230,7 @@ export const usePlayerWebsocket = createSharedComposable(() => {
      * Indicates if the player has answered the current question
      * @default false
      */
-    isAnswered
+    isAnswered,
+    query
   }
 })
