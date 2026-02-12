@@ -2,14 +2,15 @@ import re
 from urllib.parse import urlunparse
 
 from django.db import models
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from songs import managers, utils, validators
-from blindtest.validators import validate_year, validate_difficulty
 from songs.choices import MusicGenre
-from django.dispatch import receiver
-from django.db.models.signals import pre_save
+
+from blindtest.validators import validate_difficulty, validate_year
 
 
 class Artist(models.Model):
