@@ -52,6 +52,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'graphene_django',
+    'mcp_server',
+    'oauth2_provider',
+    'oauth_dcr',
 
     'songs',
     'tvshows',
@@ -318,3 +321,10 @@ GRAPHENE = {
     'SCHEMA': 'blindtest.schema.schema',
     'SUBSCRIPTION_PATH': '/ws/graphql'
 }
+
+
+# Django MCP
+
+DJANGO_MCP_AUTHENTICATION_CLASSES = [
+    'oauth2_provider.contrib.rest_framework.OAuth2Authentication'
+]

@@ -45,6 +45,9 @@ pydantic = "*"
 factory-boy = "*"
 httpx = "*"
 django = "*"
+django-mcp-server = "*"
+django-oauth-toolkit = "*"
+django-oauth-toolkit-dcr = "*"
 
 [dev-packages]
 autopep8 = "*"

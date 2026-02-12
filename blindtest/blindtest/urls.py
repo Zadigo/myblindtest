@@ -2,11 +2,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path, re_path
+from django.views.decorators.csrf import csrf_exempt
 from drf_spectacular import views as drf_views
 from graphene_django.views import GraphQLView
-from blindtest.schema import schema
-from django.views.decorators.csrf import csrf_exempt
+from oauth_dcr import views as oauth_dcr_views
 
+from blindtest.schema import schema
 from blindtest.views import HomePage, SearchPage
 
 urlpatterns = [
@@ -36,12 +37,25 @@ urlpatterns = [
     ),
     path(
         'api/v1/songs/',
-        include('songs.urls')
+        include('songs.urls'),
     ),
     re_path(
         r'^search/$',
         SearchPage.as_view(),
         name='search'
+    ),
+    path(
+        'o/',
+        include(('oauth2_provider.urls', 'oauth2_provider'), namespace='oauth2_provider')
+    ),
+    path(
+        'o/register/',
+        oauth_dcr_views.DynamicClientRegistrationView.as_view(),
+        name='oauth2_dcr'
+    ),
+    path(
+        'agents/',
+        include(('mcp_server.urls', 'mcp_server'), namespace='mcp_server')
     ),
     re_path(
         r'^$',
