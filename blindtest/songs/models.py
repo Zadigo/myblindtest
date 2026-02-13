@@ -9,6 +9,7 @@ from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from songs import managers, utils, validators
 from songs.choices import MusicGenre
+from django.db.models.functions.datetime import ExtractMonth
 
 from blindtest.validators import validate_difficulty, validate_year
 

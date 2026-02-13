@@ -1,10 +1,12 @@
+import datetime
 import random
 from base64 import b32encode
-import datetime
+
 import pyotp
 import qrcode
 from django.conf import settings
 from django.utils import timezone
+import calendar
 
 
 def create_token():
@@ -149,4 +151,29 @@ def astrologic_sign(date_of_birth: datetime.date | None, translate=False) -> str
             }
             return translations.get(sign)
         return sign
+    return None
+
+
+def month_to_text(value: int) -> str | None:
+    months = list[dict[int, str]] = []
+
+    for i, name in enumerate(calendar.month_name):
+        if name != '':
+            months.append({i: name})
+
+    for month in months:
+        if month.get(value):
+            return month.get(value)
+    return None
+
+def month_to_number(value: str) -> int | None:
+    months = list[dict[int, str]] = []
+
+    for i, name in enumerate(calendar.month_name):
+        if name != '':
+            months.append({name: i})
+
+    for month in months:
+        if month.get(value):
+            return month.get(value)
     return None

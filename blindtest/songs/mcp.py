@@ -1,8 +1,9 @@
 from django.db.models import Count
+from django.db.models.functions.datetime import ExtractMonth
 from mcp.server.fastmcp import Context
 from mcp_server import MCPToolset, ModelQueryToolset
 from mcp_server import mcp_server as mcp
-from songs import tasks
+from songs import tasks, utils
 from songs.api.serializers import ArtistSerializer, SongSerializer
 from songs.choices import MusicGenre
 from songs.models import Artist, Song
@@ -137,7 +138,7 @@ class SongTools(MCPToolset):
             qs = qs.filter(year__lte=max_year)
 
         return SongSerializer(qs, many=True).data
-    
+
     def get_by_difficulty(self, min_difficulty: int = None, max_difficulty: int = None, genre: str = None) -> list[dict]:
         """Get songs by their difficulty level.
 
@@ -159,7 +160,7 @@ class SongTools(MCPToolset):
         if max_difficulty is not None:
             qs = qs.filter(difficulty__lte=max_difficulty)
 
-        return SongSerializer(qs, many=True).data   
+        return SongSerializer(qs, many=True).data
 
 
 class ArtistTools(MCPToolset):
@@ -293,6 +294,19 @@ class ArtistTools(MCPToolset):
             qs = filter(lambda x: x.age <= max_age, age_not_none)
 
         return ArtistSerializer(qs, many=True).data
+
+    def get_by_month(self, month: str) -> list[dict]:
+        """Get artists by the month they were born.
+
+        Args:
+            month (str): The month to filter by, in the format 'January', 'February', etc.
+
+        Returns:
+            list[dict]: A list of artists that were born in the given month.
+        """
+        qs = Artist.objects.annotate(month=ExtractMonth('date_of_birth'))
+        qs1 = qs.filter(month=month)
+        return qs1.values_list('name', 'month', flat=True)
 
 
 @mcp.tool()
