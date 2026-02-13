@@ -36,6 +36,14 @@ class Artist(models.Model):
             "of formation if a group"
         )
     )
+    founding_year = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+        validators=[validate_year],
+        help_text=_(
+            "The year of formation for a musical group"
+        )
+    )
     spotify_id = models.CharField(
         max_length=100,
         blank=True,
@@ -87,8 +95,13 @@ class Artist(models.Model):
 
     @property
     def age(self):
+        current_date = timezone.now()
+
+        if self.founding_year and self.is_group:
+            d = timezone.datetime(self.founding_year, 1, 1)
+            return (current_date.year - d.year)
+
         if self.date_of_birth:
-            current_date = timezone.now()
             return (current_date.year - self.date_of_birth.year)
         return None
 
@@ -244,14 +257,25 @@ class RnBSong(Song):
 
 
 class AfroSong(Song):
-    """Proxy model for representing afrobeat songs
-    and music from the african continent"""
+    """Proxy model for representing songs 
+    from the African continent"""
 
     objects = managers.AfroSongManager()
 
     class Meta:
         ordering = ['artist']
         verbose_name = 'afro song'
+        proxy = True
+
+
+class LatinSong(Song):
+    """Proxy model for representing latin songs"""
+
+    objects = managers.LatinSongManager()
+
+    class Meta:
+        ordering = ['artist']
+        verbose_name = 'latin song'
         proxy = True
 
 

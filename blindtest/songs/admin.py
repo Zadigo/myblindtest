@@ -6,8 +6,9 @@ from import_export.admin import ImportExportModelAdmin
 from import_export.resources import ModelResource
 from import_export.widgets import ForeignKeyWidget
 from songs import tasks
-from songs.models import (AfroSong, Artist, IncompleteArtist, PopArtist, PopSong, RapArtist,
-                          RapSong, RnBSong, Song)
+from songs.models import (AfroSong, Artist, IncompleteArtist, LatinSong,
+                          PopArtist, PopSong, RapArtist, RapSong, RnBSong,
+                          Song)
 
 
 class ArtistForeignKeyWidget(ForeignKeyWidget):
@@ -42,20 +43,20 @@ class ArtistResource(ModelResource):
     class Meta:
         model = Artist
         fields = [
-            'name', 'birthname', 'date_of_birth',
+            'name', 'birthname', 'date_of_birth', 'founding_year',
             'spotify_id', 'genre', 'spotify_avatar',
-            'wikipedia_page'
+            'wikipedia_page', 'is_group'
         ]
 
 
 @admin.register(Artist)
 class ArtistAdmin(ImportExportModelAdmin):
-    list_display = ['name', 'birthname', 'age', 'genre']
+    list_display = ['name', 'birthname', 'age', 'genre', 'is_group']
     fieldsets = [
         [
             'General',
             {
-                'fields': ['name', 'birthname', 'date_of_birth', 'is_group']
+                'fields': ['name', 'birthname', 'date_of_birth', 'founding_year', 'is_group']
             }
         ],
         [
@@ -187,6 +188,11 @@ class RnBSongAdmin(ProxyModelAdmin):
 
 @admin.register(AfroSong)
 class AfroSongAdmin(ProxyModelAdmin):
+    pass
+
+
+@admin.register(LatinSong)
+class LatinSongAdmin(ProxyModelAdmin):
     pass
 
 
