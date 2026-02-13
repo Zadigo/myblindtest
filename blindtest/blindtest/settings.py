@@ -93,7 +93,6 @@ TEMPLATES = [
     },
 ]
 
-# WSGI_APPLICATION = 'blindtest.wsgi.application'
 ASGI_APPLICATION = 'blindtest.asgi.application'
 
 
@@ -162,6 +161,9 @@ STORAGES = {
 MEDIA_URL = 'media/'
 
 MEDIA_PATH = BASE_DIR / 'media'
+
+GENRES_PATH = MEDIA_PATH / 'genres.json'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

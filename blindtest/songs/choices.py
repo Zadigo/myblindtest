@@ -1,18 +1,30 @@
+import itertools
 import json
 from functools import lru_cache
+
 from django.conf import settings
-import itertools
+from django.core.cache import cache
 
 
 class MusicGenre:
-    data = {}
-    genres = []
+    data: dict[str, str] = {}
+    genres: list[str] = []
 
     @lru_cache(maxsize=100)
     def read(self) -> dict[str, str]:
-        with open(settings.MEDIA_PATH / 'genres.json', mode='r', encoding='utf-8') as f:
-            self.data = json.load(f)
-            return self.data
+        data = cache.get('music_genres', None)
+
+        if data is None:
+            path = getattr(
+                settings,
+                'GENRES_PATH',
+                settings.MEDIA_PATH / 'genres.json'
+            )
+            with open(path, mode='r', encoding='utf-8') as f:
+                data = json.load(f)
+                cache.set('music_genres', data, timeout=60 * 60 * 24)
+        self.data = data
+        return self.data
 
     @classmethod
     def choices(cls):
@@ -21,13 +33,13 @@ class MusicGenre:
 
         main_genres = instance.data.keys()
         genres = [instance.data[key] for key in main_genres]
-        items = sorted(set(list(itertools.chain(*genres))))
+        items: list[str] = sorted(set(list(itertools.chain(*genres))))
         return [(x, x) for x in items]
 
     @classmethod
-    def default(cls, name):
+    def default(cls, name: str):
         choices = cls.choices()
-        candidate = filter(lambda x: x == name, choices)
+        candidate = list(filter(lambda x: x[0] == name, choices))
         if candidate:
-            return choices[0]
+            return candidate[0]
         return choices[0]

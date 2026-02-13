@@ -47,6 +47,7 @@ django = "*"
 django-mcp-server = "*"
 django-oauth-toolkit = "*"
 django-oauth-toolkit-dcr = "*"
+requests = "*"
 
 [dev-packages]
 autopep8 = "*"
