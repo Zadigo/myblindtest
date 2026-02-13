@@ -106,7 +106,11 @@ def astrologic_sign(date_of_birth: datetime.date | None, translate=False) -> str
         # and also the end year by moving them to the next year since the
         # date of birth would be on the next year
         if key in shifts_to_next_year:
-            date_of_birth = date_of_birth.replace(year=date_of_birth.year + 1)
+            try:
+                date_of_birth = date_of_birth.replace(year=date_of_birth.year + 1)
+            except ValueError:
+                continue
+            
             if key != 'Capricorne':
                 start = start.replace(year=date_of_birth.year)
             end = end.replace(year=date_of_birth.year)
