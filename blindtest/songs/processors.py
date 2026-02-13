@@ -1,8 +1,8 @@
 import re
-from difflib import SequenceMatcher
+# from difflib import SequenceMatcher
 
 import Levenshtein
-from rapidfuzz import fuzz, process
+# from rapidfuzz import fuzz, process
 from thefuzz import fuzz as thefuzz
 from unidecode import unidecode
 
@@ -13,7 +13,7 @@ from unidecode import unidecode
 class FuzzyMatcher:
     """A processor that intends to match words
     that might be similar"""
-    
+
     def __init__(self, threshold=0.85):
         self.threshold = threshold
 

@@ -8,7 +8,6 @@ daphne = "*"
 django-redis = "*"
 celery = "*"
 pymemcache = "*"
-requests = "*"
 selenium = "*"
 webdriver-manager = "*"
 psycopg = {extras = ["binary", "pool"], version = "*"}
