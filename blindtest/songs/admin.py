@@ -80,15 +80,23 @@ class ArtistAdmin(ImportExportModelAdmin):
         'update_from_wikipedia',
         'define_genre_to_base_pop',
         'define_genre_to_base_afrobeats',
+        'define_genre_to_electro_pop',
+        'define_genre_to_rap',
         'full_update',
         'remove_nan'
     ]
 
     def define_genre_to_base_pop(self, request, queryset):
+        queryset.update(genre='Folk pop')
+
+    def define_genre_to_electro_pop(self, request, queryset):
         queryset.update(genre='Electropop')
 
     def define_genre_to_base_afrobeats(self, request, queryset):
         queryset.update(genre='Afrobeat')
+
+    def define_genre_to_rap(self, request, queryset):
+        queryset.update(genre='Rap music')
 
     def update_metadata(self, request, queryset):
         for artist in queryset:
