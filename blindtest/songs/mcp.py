@@ -3,7 +3,7 @@ from django.db.models.functions.datetime import ExtractMonth
 from mcp.server.fastmcp import Context
 from mcp_server import MCPToolset, ModelQueryToolset
 from mcp_server import mcp_server as mcp
-from songs import tasks, utils
+from songs import tasks
 from songs.api.serializers import ArtistSerializer, SongSerializer
 from songs.choices import MusicGenre
 from songs.models import Artist, Song
@@ -188,7 +188,7 @@ class ArtistTools(MCPToolset):
             is_group=is_group,
             wikipedia_page=wikipedia_page
         )
-        return artist
+        return ArtistSerializer(artist).data
 
     def update_artist(self, name: str, birthname: str = None, date_of_birth: str = None, spotify_id: str = None, genre: str = None, is_group: bool = None, wikipedia_page: str = None) -> Artist:
         """Update an existing artist with the given name and details.
@@ -229,7 +229,7 @@ class ArtistTools(MCPToolset):
                 artist.wikipedia_page = wikipedia_page
 
             artist.save()
-            return artist
+            return ArtistSerializer(artist).data
 
     def get_number_of_artists(self) -> int:
         """Get the total number of artists in the database."""
@@ -252,7 +252,7 @@ class ArtistTools(MCPToolset):
 
         if artist_name is not None:
             return qs_annoated.filter(artist__name=artist_name)
-        return qs_annoated.order_by('-number_of_songs')
+        return ArtistSerializer(qs_annoated.order_by('-number_of_songs'), many=True).data
 
     def get_by_astrological_sign(self, sign: str) -> list[dict]:
         """Get artists by their astrological sign.
@@ -306,7 +306,7 @@ class ArtistTools(MCPToolset):
         """
         qs = Artist.objects.annotate(month=ExtractMonth('date_of_birth'))
         qs1 = qs.filter(month=month)
-        return qs1.values_list('name', 'month', flat=True)
+        return ArtistSerializer(qs1, many=True).data
 
 
 @mcp.tool()
