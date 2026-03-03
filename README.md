@@ -7,12 +7,12 @@ Blind Test Game is a fun and interactive application that lets users enjoy a mus
 The application is powered by Daphne to handle WebSocket connections, enabling real-time interactions between the server and players.
 
 Features
+
 * 🎶 Dynamic Song Selection: Randomly selects songs based on difficulty and genre preferences.
 * 🎥 YouTube Integration: Displays YouTube videos related to the selected songs.
 * 📂 Comprehensive Database: Stores songs with detailed metadata like artist, genre, year, and difficulty.
 * ⚡ Real-Time Gameplay: Utilizes WebSocket connections for smooth, responsive gameplay.
 * 🏆 Customizable Gameplay: Players can adjust settings such as difficulty and genre.
-
 
 ## Django - Models Overview
 
@@ -28,18 +28,17 @@ Features
 * Features properties like enriched, youtube_watch_link, and period for enhanced functionality.
 * Supports subcategories through proxy models (PopSong, RapSong, RnBSong).
 
-
 ## Django
 
 ### AdminConsumer
 
-The `AdminConsumer` is the endpoint used by the admin interface to manage the game. It handles WebSocket 
+The `AdminConsumer` is the endpoint used by the admin interface to manage the game. It handles WebSocket
 connections and facilitates real-time communication between the admin and the game instances.
 
 * Core Features:
-    * Dynamic song fetching based on difficulty and genre
-    * Randomized song selection while avoiding duplicates
-    * Sends game events like starting the game and fetching songs
+  * Dynamic song fetching based on difficulty and genre
+  * Randomized song selection while avoiding duplicates
+  * Sends game events like starting the game and fetching songs
 
 ### PlayerConsumer 👩🏻‍💻
 
@@ -53,7 +52,7 @@ https://vuejsexamples.com/a-javascript-consent-script-that-interacts-directly-wi
 
 ## Connection process
 
-The admin of the database connects to the blindtest admin `frontend` and establishes a WebSocket connection which then creates a new Firebase ID. 
+The admin of the database connects to the blindtest admin `frontend` and establishes a WebSocket connection which then creates a new Firebase ID.
 This connection allows real-time communication between the admin interface and the players that will join the game.
 
 The Firebase ID is used to uniquely identify each game session and its associated players.
@@ -106,3 +105,21 @@ This mode is designed to make the game more competitive and strategic. It includ
 Obtained after answers a certain number of songs correctly in a row:
 
 - Perfect Combo: If a player answers 10 songs correctly in a row, they earn the "Perfect Combo" joker. This joker allows them to double their points for the next 5 songs they answer, regardless of whether they answer correctly or incorrectly.
+
+## MCP Configuration
+
+```json
+ "blindtest": {
+      "command": "/Users/MyUser/.local/share/virtualenvs/blindtest-1234/bin/python",
+      "args": [
+        "/path/to/manage.py",
+        "stdio_server"
+      ]
+    }
+```
+
+### Starting the inspector
+
+```
+npx @modelcontextprotocol/inspector uv --directory /path/to/project run manage.py stdio_server
+```

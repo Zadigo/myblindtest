@@ -109,10 +109,11 @@ def astrologic_sign(date_of_birth: datetime.date | None, translate=False) -> str
         # date of birth would be on the next year
         if key in shifts_to_next_year:
             try:
-                date_of_birth = date_of_birth.replace(year=date_of_birth.year + 1)
+                date_of_birth = date_of_birth.replace(
+                    year=date_of_birth.year + 1)
             except ValueError:
                 continue
-            
+
             if key != 'Capricorne':
                 start = start.replace(year=date_of_birth.year)
             end = end.replace(year=date_of_birth.year)
@@ -154,26 +155,51 @@ def astrologic_sign(date_of_birth: datetime.date | None, translate=False) -> str
     return None
 
 
-def month_to_text(value: int) -> str | None:
-    months = list[dict[int, str]] = []
+def translate_month(month: int):
+    translations = {
+        1: 'Janvier',
+        2: 'Février',
+        3: 'Mars',
+        4: 'Avril',
+        5: 'Mai',
+        6: 'Juin',
+        7: 'Juillet',
+        8: 'Août',
+        9: 'Septembre',
+        10: 'Octobre',
+        11: 'Novembre',
+        12: 'Décembre'
+    }
+    return translations.get(month)
+
+
+def month_to_text(value: int, translate: bool = True) -> str | None:
+    months: dict[int, str] = {}
 
     for i, name in enumerate(calendar.month_name):
         if name != '':
-            months.append({i: name})
+            months[i] = name
 
-    for month in months:
-        if month.get(value):
-            return month.get(value)
-    return None
+    result = months.get(value)
+    if result is not None and translate:
+        return translate_month(value)
+    return result
+
 
 def month_to_number(value: str) -> int | None:
-    months = list[dict[int, str]] = []
+    months: dict[str, int] = {}
+    fr_months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+                 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
 
     for i, name in enumerate(calendar.month_name):
         if name != '':
-            months.append({name: i})
+            months[name.lower()] = i
 
-    for month in months:
-        if month.get(value):
-            return month.get(value)
-    return None
+    month_number = months.get(value.lower())
+    if month_number is None:
+        month_number = (
+            fr_months.index(value.lower()) + 1
+            if value.lower() in fr_months else None
+        )
+
+    return month_number

@@ -1,8 +1,11 @@
+from typing import Any, Optional
+
 from django.db.models import Count
 from django.db.models.functions.datetime import ExtractMonth
 from mcp.server.fastmcp import Context
 from mcp_server import MCPToolset, ModelQueryToolset
 from mcp_server import mcp_server as mcp
+from songs.utils import month_to_number
 from songs import tasks
 from songs.api.serializers import ArtistSerializer, SongSerializer
 from songs.choices import MusicGenre
@@ -112,14 +115,14 @@ class SongTools(MCPToolset):
         """Get the total number of songs in the database."""
         return Song.objects.count()
 
-    def get_by_year(self, min_year: int = None, max_year: int = None, genre: str = None, artist: str = None) -> list[dict]:
+    def get_by_year(self, min_year: int = None, max_year: int = None, genre: Optional[str] = None, artist: Optional[str] = None) -> list[dict]:
         """Get songs by their release year.
 
         Args:
             min_year (int, optional): The minimum release year of the songs to filter by. Defaults to None.
             max_year (int, optional): The maximum release year of the songs to filter by. Defaults to None.
-            genre (str, optional): The genre of the songs to filter by. Defaults to None.
-            artist (str, optional): The name of the artist to filter by. Defaults to None.
+            genre (Optional[str], optional): The genre of the songs to filter by. Defaults to None.
+            artist (Optional[str], optional): The name of the artist to filter by. Defaults to None.
 
         Returns:
             list[dict]: A list of songs that match the year the songs were released.
@@ -164,17 +167,17 @@ class SongTools(MCPToolset):
 
 
 class ArtistTools(MCPToolset):
-    def create_artist(self, name: str, birthname: str = None, date_of_birth: str = None, spotify_id: str = None, genre: str = None, is_group: bool = False, wikipedia_page: str = None) -> Artist:
+    def create_artist(self, name: str, birthname: Optional[str] = None, date_of_birth: Optional[str] = None, spotify_id: Optional[str] = None, genre: Optional[str] = None, is_group: bool = False, wikipedia_page: Optional[str] = None) -> Artist:
         """Create a new artist with the given name and details.
 
         Args:
             name (str): The name of the artist.
-            birthname (str, optional): The birth name of the artist. Defaults to None.
-            date_of_birth (str, optional): The date of birth of the artist in YYYY-MM-DD format. Defaults to None.
-            spotify_id (str, optional): The Spotify ID of the artist. Defaults to None.
-            genre (str, optional): The genre of the artist. Defaults to None.
+            birthname (Optional[str], optional): The birth name of the artist. Defaults to None.
+            date_of_birth (Optional[str], optional): The date of birth of the artist in YYYY-MM-DD format. Defaults to None.
+            spotify_id (Optional[str], optional): The Spotify ID of the artist. Defaults to None.
+            genre (Optional[str], optional): The genre of the artist. Defaults to None.
             is_group (bool, optional): Whether the artist is a group or not. Defaults to False.
-            wikipedia_page (str, optional): The Wikipedia page URL of the artist. Defaults to None.
+            wikipedia_page (Optional[str], optional): The Wikipedia page URL of the artist. Defaults to None.
 
         Returns:
             Artist: The created artist object.
@@ -190,17 +193,17 @@ class ArtistTools(MCPToolset):
         )
         return ArtistSerializer(artist).data
 
-    def update_artist(self, name: str, birthname: str = None, date_of_birth: str = None, spotify_id: str = None, genre: str = None, is_group: bool = None, wikipedia_page: str = None) -> Artist:
+    def update_artist(self, name: str, birthname: Optional[str] = None, date_of_birth: Optional[str] = None, spotify_id: Optional[str] = None, genre: Optional[str] = None, is_group: Optional[bool] = None, wikipedia_page: Optional[str] = None) -> Artist:
         """Update an existing artist with the given name and details.
 
         Args:
             name (str): The name of the artist.
-            birthname (str, optional): The new birth name of the artist. Defaults to None.
-            date_of_birth (str, optional): The new date of birth of the artist in YYYY-MM-DD format. Defaults to None.
-            spotify_id (str, optional): The new Spotify ID of the artist. Defaults to None.
-            genre (str, optional): The new genre of the artist. Defaults to None.
-            is_group (bool, optional): Whether the artist is a group or not. Defaults to None.
-            wikipedia_page (str, optional): The new Wikipedia page URL of the artist. Defaults to None.
+            birthname (Optional[str], optional): The new birth name of the artist. Defaults to None.
+            date_of_birth (Optional[str], optional): The new date of birth of the artist in YYYY-MM-DD format. Defaults to None.
+            spotify_id (Optional[str], optional): The new Spotify ID of the artist. Defaults to None.
+            genre (Optional[str], optional): The new genre of the artist. Defaults to None.
+            is_group (Optional[bool], optional): Whether the artist is a group or not. Defaults to None.
+            wikipedia_page (Optional[str], optional): The new Wikipedia page URL of the artist. Defaults to None.
 
         Returns:
             Artist: The updated artist object.
@@ -235,12 +238,12 @@ class ArtistTools(MCPToolset):
         """Get the total number of artists in the database."""
         return Artist.objects.count()
 
-    def get_songs_per_artist(self, artist_name: str = None) -> list[dict[str, str | int]]:
+    def get_songs_per_artist(self, artist_name: Optional[str] = None) -> list[dict[str, str | int]]:
         """Get the number of songs for each artist in the database or for a
         specific artist if the name is provided.
 
         Args:
-            artist_name (str, optional): The name of the artist to filter by. Defaults to None, which means all artists will be included.
+            artist_name (Optional[str], optional): The name of the artist to filter by. Defaults to None, which means all artists will be included.
 
         Returns:
             list[dict[str, str | int]]: A list of dictionaries with artist names as keys and the number of songs as values.
@@ -267,13 +270,13 @@ class ArtistTools(MCPToolset):
         values = list(filter(lambda x: x.astrological_sign == sign, qs))
         return ArtistSerializer(values, many=True).data
 
-    def get_by_age(self, min_age: int = None, max_age: int = None, genre: str = None) -> list[dict]:
+    def get_by_age(self, min_age: Optional[int] = None, max_age: Optional[int] = None, genre: Optional[str] = None) -> list[dict]:
         """Get artists by their age.
 
         Args:
-            min_age (int, optional): The minimum age of the artists to filter by. Defaults to None.
-            max_age (int, optional): The maximum age of the artists to filter by. Defaults to None.
-            genre (str, optional): The genre of the artists to filter by. Defaults to None.
+            min_age (Optional[int], optional): The minimum age of the artists to filter by. Defaults to None.
+            max_age (Optional[int], optional): The maximum age of the artists to filter by. Defaults to None.
+            genre (Optional[str], optional): The genre of the artists to filter by. Defaults to None.
 
         Returns:
             list[dict]: A list of artists that match the given age criteria.
@@ -295,17 +298,18 @@ class ArtistTools(MCPToolset):
 
         return ArtistSerializer(qs, many=True).data
 
-    def get_by_month(self, month: str) -> list[dict]:
+    def get_by_month(self, month_name: str) -> list[dict[str, Any]]:
         """Get artists by the month they were born.
 
         Args:
-            month (str): The month to filter by, in the format 'January', 'February', etc.
+            month_name (str): The month to filter by, in the format 'January', 'February', etc.
 
         Returns:
-            list[dict]: A list of artists that were born in the given month.
+            list[dict[str, Any]]: A list of artists that were born in the given month.
         """
+
         qs = Artist.objects.annotate(month=ExtractMonth('date_of_birth'))
-        qs1 = qs.filter(month=month)
+        qs1 = qs.filter(month=month_to_number(month_name))
         return ArtistSerializer(qs1, many=True).data
 
 

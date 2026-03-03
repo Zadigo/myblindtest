@@ -35,3 +35,13 @@ class TestUtils(TestCase):
             with self.subTest(item=item):
                 sign = utils.astrologic_sign(item)
                 self.assertEqual(sign, expected)
+
+    def test_month_to_text_util(self):
+        self.assertEqual(utils.month_to_text(1), 'Janvier')
+        self.assertEqual(utils.month_to_text(2), 'Février')
+
+    def test_month_to_number_util(self):
+        self.assertEqual(utils.month_to_number('Janvier'), 1)
+        self.assertEqual(utils.month_to_number('janvier'), 1)
+        self.assertEqual(utils.month_to_number('Février'), 2)
+        self.assertEqual(utils.month_to_number('février'), 2)
