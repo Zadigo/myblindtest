@@ -1,5 +1,12 @@
 from channels.testing import WebsocketCommunicator
 from django.test import override_settings
+from songs.tests.utils import WSMixin
+
+TEST_CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer'
+    }
+}
 
 
 @override_settings(CHANNEL_LAYERS=TEST_CHANNEL_LAYERS)

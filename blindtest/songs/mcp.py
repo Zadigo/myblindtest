@@ -1,7 +1,10 @@
+import base64
+import json
 from typing import Any, Optional
 
 from django.db.models import Count
 from django.db.models.functions.datetime import ExtractMonth
+import httpx
 from mcp.server.fastmcp import Context
 from mcp_server import MCPToolset, ModelQueryToolset
 from mcp_server import mcp_server as mcp
@@ -10,6 +13,8 @@ from songs import tasks
 from songs.api.serializers import ArtistSerializer, SongSerializer
 from songs.choices import MusicGenre
 from songs.models import Artist, Song
+from django.db.models import Q, Count
+from mcp.types import TextContent, ImageContent
 
 
 class SongQueryTool(ModelQueryToolset):
@@ -142,13 +147,13 @@ class SongTools(MCPToolset):
 
         return SongSerializer(qs, many=True).data
 
-    def get_by_difficulty(self, min_difficulty: int = None, max_difficulty: int = None, genre: str = None) -> list[dict]:
+    def get_by_difficulty(self, min_difficulty: Optional[int] = None, max_difficulty: Optional[int] = None, genre: Optional[str] = None) -> list[dict]:
         """Get songs by their difficulty level.
 
         Args:
-            min_difficulty (int, optional): The minimum difficulty level of the songs to filter by. Defaults to None.
-            max_difficulty (int, optional): The maximum difficulty level of the songs to filter by. Defaults to None.
-            genre (str, optional): The genre of the songs to filter by. Defaults to None.
+            min_difficulty (Optional[int], optional): The minimum difficulty level of the songs to filter by. Defaults to None.
+            max_difficulty (Optional[int], optional): The maximum difficulty level of the songs to filter by. Defaults to None.
+            genre (Optional[str], optional): The genre of the songs to filter by. Defaults to None.
 
         Returns:
             list[dict]: A list of songs that match the given difficulty level.
@@ -238,6 +243,44 @@ class ArtistTools(MCPToolset):
         """Get the total number of artists in the database."""
         return Artist.objects.count()
 
+    def get_artist(self, name: str) -> dict:
+        """Get an artist by their name.
+
+        Args:
+            name (str): The name of the artist to retrieve.
+
+        Returns:
+            dict: The serialized data of the artist if found, otherwise an empty dictionary.
+        """
+        content = None
+
+        try:
+            artist = Artist.objects.get(
+                Q(name__iexact=name) |
+                Q(birthname__iexact=name)
+            )
+        except Artist.DoesNotExist:
+            return {}
+        else:
+            artist_data = ArtistSerializer(artist).data
+
+            try:
+                with httpx.Client() as client:
+                    if artist.spotify_avatar is not None:
+                        image_content = client.get(artist.spotify_avatar)
+                        image_content.raise_for_status()
+            except:
+                pass
+            else:
+                content = base64.b64encode(
+                    image_content.content
+                ).decode('utf-8')
+
+            return [
+                TextContent(type='text', text=json.dumps(artist_data)),
+                ImageContent(type="image", data=content, mimeType='image/jpeg')
+            ]
+
     def get_songs_per_artist(self, artist_name: Optional[str] = None) -> list[dict[str, str | int]]:
         """Get the number of songs for each artist in the database or for a
         specific artist if the name is provided.
@@ -312,9 +355,33 @@ class ArtistTools(MCPToolset):
         qs1 = qs.filter(month=month_to_number(month_name))
         return ArtistSerializer(qs1, many=True).data
 
+    def get_by_is_group(self, name: Optional[str] = None, min_year: Optional[int] = None, max_year: Optional[int] = None) -> list[dict]:
+        """Get artists that are groups.
+
+        Args:
+            name (Optional[str], optional): The name of the group to filter by. Defaults to None, which means all groups will be included.
+            min_year (Optional[int], optional): The minimum founding year of the groups to filter by. Defaults to None.
+            max_year (Optional[int], optional): The maximum founding year of the groups to filter by Defaults to None.
+
+        Returns:
+            list[dict]: A list of artists that are groups and match the given criteria.
+        """
+        qs = Artist.objects.filter(is_group=True)
+
+        if name is not None:
+            qs = qs.filter(name__icontains=name)
+
+        if min_year is not None:
+            qs = qs.filter(founding_year__gte=min_year)
+
+        if max_year is not None:
+            qs = qs.filter(founding_year__lte=max_year)
+
+        return ArtistSerializer(qs, many=True).data
+
 
 @mcp.tool()
-async def get_all_main_genres(context: Context) -> str:
+async def get_all_main_genres(context: Context, *args, **kwargs) -> str:
     """Get all the main genres available in the system. The main
     genres are defined in the MusicGenre class and are used to classify
     artists and songs. A main genre is a high-level category that encompasses a wide 

@@ -333,3 +333,10 @@ GRAPHENE = {
 DJANGO_MCP_AUTHENTICATION_CLASSES = [
     'oauth2_provider.contrib.rest_framework.OAuth2Authentication'
 ]
+
+
+# Spotify API
+
+SPOTIFY_CLIENT_ID = env('SPOTIFY_CLIENT_ID')
+
+SPOTIFY_CLIENT_SECRET = env('SPOTIFY_CLIENT_SECRET')
