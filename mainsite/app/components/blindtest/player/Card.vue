@@ -1,5 +1,5 @@
 <template>
-  <volt-card class="h-auto min-h-[207px] min-w-[207px]">
+  <volt-card class="h-auto min-h-51.75 min-w-51.75">
     <template #content>
       <div v-if="player" ref="cardEl" class="text-center flex-row justify-center items-center w-full">
         <div v-if="isHovered" id="player-actions">
@@ -8,7 +8,7 @@
         </div>
 
         <div v-else>
-          <div class="font-bold text-5xl text-primary-100 rounded-xl p-2 dark:bg-primary-800">
+          <div ref="scoreEl" class="font-bold text-5xl text-primary-100 rounded-xl p-2 dark:bg-primary-800">
             {{ player.points }}
             <p class="text-sm">Points</p>
           </div>
@@ -46,4 +46,23 @@ const player = computed(() => currentSettings.value?.players[props.playerId])
  */
 
 const { consecutiveAnswers } = useConsecutiveAnswers(player)
+
+/**
+ * Other
+ */
+
+const scoreEl = useTemplateRef('scoreEl')
+
+const keyframes = [
+  { transform: 'scale(1)' },
+  { transform: 'scale(1.2)' },
+  { transform: 'scale(1)' }
+]
+
+const { play } = useAnimate(scoreEl, keyframes, {
+  duration: 200,
+  delay: 100
+})
+
+watch(() => player.value?.points, () => { play() })
 </script>

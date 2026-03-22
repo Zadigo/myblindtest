@@ -12,7 +12,7 @@
     <player-multiple-choices class="mt-3 z-20" />
 
     <!-- Modals -->
-    <player-modals-settings-modal v-model:show="showSettingsModal" :player="player" />
+    <lazy-player-modals-settings-modal v-model:show="showSettingsModal" :player="player" hydrate-on-visible />
   </div>
 </template>
 

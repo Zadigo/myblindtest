@@ -15,7 +15,7 @@
     </blindtest-layout>
 
     <!-- Modals -->
-    <blindtest-modals-active-game v-model:show="warnActiveGameModal" @proceed="() => stopGame(stopGameCallback)" />
+    <lazy-blindtest-modals-active-game v-model:show="warnActiveGameModal" hydrate-on-visible @proceed="() => stopGame(stopGameCallback)" />
   </section>
 </template>
 

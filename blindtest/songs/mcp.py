@@ -243,14 +243,14 @@ class ArtistTools(MCPToolset):
         """Get the total number of artists in the database."""
         return Artist.objects.count()
 
-    def get_artist(self, name: str) -> dict:
+    def get_artist(self, name: str) -> list[dict]:
         """Get an artist by their name.
 
         Args:
             name (str): The name of the artist to retrieve.
 
         Returns:
-            dict: The serialized data of the artist if found, otherwise an empty dictionary.
+            list[dict]: A list containing the serialized data of the artist and their Spotify avatar image if available.
         """
         content = None
 
@@ -260,7 +260,7 @@ class ArtistTools(MCPToolset):
                 Q(birthname__iexact=name)
             )
         except Artist.DoesNotExist:
-            return {}
+            return []
         else:
             artist_data = ArtistSerializer(artist).data
 

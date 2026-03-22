@@ -28,9 +28,9 @@
     <blindtest-action-dock />
 
     <!-- Modals -->
-    <blindtest-modals-devices-modal v-model="showDevices" />
-    <blindtest-modals-connection-url v-model:show="showConnectionUrl" />
-    <blindtest-randomizer-genre ref="randomizerEl" v-model:show="showWheel" :items="wheelDefaults" @completed="onComplete" />
+    <lazy-blindtest-modals-devices-modal v-model="showDevices" hydrate-on-visible />
+    <lazy-blindtest-modals-connection-url v-model:show="showConnectionUrl" hydrate-on-visible />
+    <lazy-blindtest-randomizer-genre ref="randomizerEl" v-model:show="showWheel" :items="wheelDefaults" hydrate-on-visible @completed="onComplete" />
   </section>
 </template>
 

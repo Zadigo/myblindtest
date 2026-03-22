@@ -63,6 +63,8 @@
 </template>
 
 <script setup lang="ts">
+preloadRouteComponents('/blindtest')
+
 /**
  * Session
  */
