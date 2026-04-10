@@ -39,7 +39,24 @@ export default defineNuxtConfig({
   },
 
   vite: {
-    plugins: [tailwind()]
+    plugins: [tailwind()],
+    optimizeDeps: {
+      include: [
+        'vuefire',
+        'dayjs', // CJS
+        'dayjs/plugin/calendar', // CJS
+        'dayjs/plugin/duration', // CJS
+        'dayjs/plugin/relativeTime', // CJS
+        'dayjs/plugin/timezone', // CJS
+        'dayjs/plugin/utc', // CJS
+        'primevue/config',
+        'primevue/toastservice',
+        'primevue/confirmationservice',
+        'primevue/styleclass',
+        'primevue/card',
+        'tailwind-merge',
+      ]
+    }
   },
 
   vuefire: {
