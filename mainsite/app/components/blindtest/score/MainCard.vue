@@ -1,6 +1,6 @@
 <template>
   <transition mode="out-in" enter-from-class="animate-zoomout opacity-0" enter-active-class="" enter-to-class="animate-zoomin opacity-100" leave-from-class="animate-zoomin opacity-100" leave-active-class="" leave-to-class="animate-zoomout opacity-0">
-    <volt-card v-if="player && isReady" class="self-center min-w-[300px]">
+    <volt-card v-if="player && isReady" class="self-center min-w-75">
       <template #content>
         <div class="p-5 text-center">
           <h1 class="text-8xl font-bold text-primary-100">

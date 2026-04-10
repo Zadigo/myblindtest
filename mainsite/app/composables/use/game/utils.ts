@@ -1,5 +1,3 @@
-import type { BlindtestPlayer, Empty } from '~/types'
-
 /**
  * A composable function to handle animations
  * @param name The name of the element to animate

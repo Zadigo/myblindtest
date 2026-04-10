@@ -48,12 +48,12 @@ export const usePlayerWebsocket = createSharedComposable(() => {
   const isStarted = ref(false)
   
   const goToGamePage = useDebounceFn(() => {
-    router.push(`/blindtest/player/game?id=${route.query.id}&player=${playerId.value}`)
+    router.push(`/blindtest/player/game?id=${route.query.id as string}&player=${playerId.value}`)
   }, 2000)
 
   watchOnce(isStarted, async (newVal) => {
     if (newVal) {
-      goToGamePage()
+      await goToGamePage()
     }
   })
 
@@ -128,7 +128,7 @@ export const usePlayerWebsocket = createSharedComposable(() => {
       }
 
       if (message.action === 'try_reconnection') {
-        goToGamePage()
+        await goToGamePage()
       }
 
       if (message.action === 'next_song_loaded') {

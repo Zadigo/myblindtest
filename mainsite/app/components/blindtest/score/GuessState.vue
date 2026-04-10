@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <!-- State -->
-    <div :class="cardTheme" class="w-[500px] rounded-xl px-5 pt-5 pb-10 text-center absolute top-0 left-1/2 transform -translate-x-1/2">
+    <div :class="cardTheme" class="w-125 rounded-xl px-5 pt-5 pb-10 text-center absolute top-0 left-1/2 transform -translate-x-1/2">
       <h1 :class="themeTitle" class="text-6xl font-bold uppercase">
         {{ textDisplay }}
       </h1>
@@ -9,11 +9,11 @@
 
     <!-- Image -->
     <div class="absolute top-35 left-1/2 transform -translate-x-1/2 w-200 h-200">
-      <img v-if="correctSong" :src="correctSong.artist.spotify_avatar" :alt="correctSong.artist.name" :class="imageTheme" />
+      <img v-if="correctSong" :src="correctSong.artist.spotify_avatar" :alt="correctSong.artist.name" :class="imageTheme">
     </div>
 
     <!-- Answer -->
-    <div class="absolute top-80 w-[500px] left-1/2 transform -translate-x-1/2 text-center">
+    <div class="absolute top-80 w-125 left-1/2 transform -translate-x-1/2 text-center">
       <h1 :class="textTheme" class="text-7xl font-bold">
         {{ correctSong?.name }}
       </h1>

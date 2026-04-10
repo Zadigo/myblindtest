@@ -8,7 +8,6 @@ import { useSound } from '@vueuse/sound'
 import { arrayUnion, doc, updateDoc } from 'firebase/firestore'
 import { useToast } from 'primevue/usetoast'
 import { useDocument, useFirestore } from 'vuefire'
-import type { MatchedPart } from '~/data/constants/websocket'
 import type { Undefineable, VueUseWsReturnType } from '~/types'
 
 
