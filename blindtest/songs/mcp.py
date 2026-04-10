@@ -1,8 +1,8 @@
 import base64
 import json
 from typing import Any, Optional
-
 from django.db.models import Count
+from django.db.models.functions import Lower
 from django.db.models.functions.datetime import ExtractMonth
 import httpx
 from mcp.server.fastmcp import Context
@@ -12,7 +12,7 @@ from songs.utils import month_to_number
 from songs import tasks
 from songs.api.serializers import ArtistSerializer, SongSerializer
 from songs.choices import MusicGenre
-from songs.models import Artist, Song
+from songs.models import Artist, IncompleteArtist, Song
 from django.db.models import Q, Count
 from mcp.types import TextContent, ImageContent
 
@@ -173,7 +173,8 @@ class SongTools(MCPToolset):
 
 class ArtistTools(MCPToolset):
     def create_artist(self, name: str, birthname: Optional[str] = None, date_of_birth: Optional[str] = None, spotify_id: Optional[str] = None, genre: Optional[str] = None, is_group: bool = False, wikipedia_page: Optional[str] = None) -> Artist:
-        """Create a new artist with the given name and details.
+        """Create a new artist with the given name and details. If the artist already exists, 
+        it will return the existing artist instead of creating a new one.
 
         Args:
             name (str): The name of the artist.
@@ -187,16 +188,19 @@ class ArtistTools(MCPToolset):
         Returns:
             Artist: The created artist object.
         """
-        artist = Artist.objects.create(
-            name=name,
-            birthname=birthname,
-            date_of_birth=date_of_birth,
-            spotify_id=spotify_id,
-            genre=genre,
-            is_group=is_group,
-            wikipedia_page=wikipedia_page
+        artist = Artist.objects.get_or_create(
+            defaults={
+                'birthname': birthname,
+                'date_of_birth': date_of_birth,
+                'spotify_id': spotify_id,
+                'genre': genre,
+                'is_group': is_group,
+                'wikipedia_page': wikipedia_page
+            },
+            name=Lower('name')
         )
-        return ArtistSerializer(artist).data
+        return ArtistSerializer(artist[0]).data
+
 
     def update_artist(self, name: str, birthname: Optional[str] = None, date_of_birth: Optional[str] = None, spotify_id: Optional[str] = None, genre: Optional[str] = None, is_group: Optional[bool] = None, wikipedia_page: Optional[str] = None) -> Artist:
         """Update an existing artist with the given name and details.
@@ -290,7 +294,7 @@ class ArtistTools(MCPToolset):
 
         Returns:
             list[dict[str, str | int]]: A list of dictionaries with artist names as keys and the number of songs as values.
-          """
+        """
         qs = Song.objects.select_related('artist')
 
         qs_values = qs.values('artist__name')
@@ -377,6 +381,10 @@ class ArtistTools(MCPToolset):
         if max_year is not None:
             qs = qs.filter(founding_year__lte=max_year)
 
+        return ArtistSerializer(qs, many=True).data
+    
+    def get_incomplete_artists(self):
+        qs = IncompleteArtist.objects.all()
         return ArtistSerializer(qs, many=True).data
 
 
