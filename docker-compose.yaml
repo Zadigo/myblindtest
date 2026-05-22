@@ -1,26 +1,21 @@
-networks:
-  blindtest:
-    driver: bridge
-
-volumes:
-    RedisData: {}
-
 services:
-  app:
+  blindtest:
     build: ./blindtest
-    command: daphne blindtest.asgi:application -b 0.0.0.0
-    # command: python manage.py runserver 0.0.0.0:8000
-    container_name: app_django
+    container_name: app_blindtest
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.blindtest.entrypoints=websecure
+      - traefik.http.routers.blindtest.rule=Host(`blindtest.fr`)
+      - traefik.http.routers.blindtest.tls=true
+      - traefik.http.routers.blindtest.tls.certresolver=production
+      - traefik.http.services.blindtest-service.loadbalancer.server.port=8000
     env_file:
       - ./docker/environment/django.env
-      - ./docker/environment/rabbitmq.env
-    depends_on:
-      - redis
-      - rabbitmq
-    ports:
-      - 8000:8000
+      - ./docker/environment/global.env
+      - ./docker/environment/redis.env
     volumes:
-      - ./blindtest:/app
+      - ./blindtest:/code
+      - ./blindtest/media:/code/media:rw
     networks:
       - blindtest
   
@@ -76,3 +71,9 @@ services:
     networks:
       - blindtest
 
+networks:
+  blindtest:
+    driver: bridge
+
+volumes:
+    RedisData: {}

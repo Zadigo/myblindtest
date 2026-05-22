@@ -1,0 +1,11 @@
+.env
+.env*
+.ipynb
+.ipynb_checkpoints
+.git
+.gitignore
+.md
+media/
+fixtures/
+staticfiles
+examples/
