@@ -6,7 +6,6 @@ readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "autobahn==22.4.2",
-    "autopep8>=2.3.2",
     "celery>=5.6.2",
     "certifi>=2026.2.25",
     "channels-redis>=4.3.0",
@@ -52,3 +51,22 @@ dependencies = [
     "webdriver-manager>=4.0.2",
     "whitenoise>=6.12.0",
 ]
+
+[dependency-groups]
+dev = [
+    "autopep8>=2.3.2",
+    "coverage>=7.14.0",
+    "pytest>=9.0.3",
+    "pytest-aio>=2.1.7",
+    "pytest-cov>=7.1.0",
+    "pytest-django>=4.12.0",
+]
+
+[tool.pyright]
+addopts = "--coverage --cov-report=html --cov-report=xml"
+typeCheckingMode = "off"
+reportMissingImports = true
+reportUntypedBaseClass = true
+
+[tool.pytest_env]
+env_files = [".env", ".env.test"]
