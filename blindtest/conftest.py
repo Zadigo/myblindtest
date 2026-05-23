@@ -20,24 +20,23 @@ def pytest_configure(config):
                 'django.contrib.contenttypes',
                 'django.contrib.sessions',
                 'django.contrib.messages',
+                'whitenoise.runserver_nostatic',
                 'django.contrib.staticfiles',
-                'django_extensions',
                 'corsheaders',
-                'drf_spectacular',
-                'import_export',
-                'storages',
-                'django_ckeditor_5',
                 'django_celery_beat',
+                'drf_spectacular',
+                'debug_toolbar',
+                'import_export',
+                'django_filters',
+                'django_extensions',
                 'rest_framework',
                 'rest_framework.authtoken',
+                'graphene_django',
                 'mcp_server',
                 'oauth2_provider',
                 'oauth_dcr',
-                'accounts',
-                'discounts',
-                'cart',
-                'orders',
-                'shipments'
+                'songs',
+                'tvshows',
             ],
             AUTH_USER_MODEL='auth.User',
             ROOT_URLCONF='blindtest.urls',
@@ -47,12 +46,12 @@ def pytest_configure(config):
                 'DEFAULT_AUTHENTICATION_CLASSES': [
                     'rest_framework_simplejwt.authentication.JWTAuthentication',
                     'rest_framework.authentication.TokenAuthentication',
-                ]  
+                ]
             },
             SIMPLE_JWT={
                 'AUTH_HEADER_TYPES': ['Token']
             },
-            IMAGEKIT_CACHEFILE_NAMER='imagekit.cachefiles.namers.hash',
+            # IMAGEKIT_CACHEFILE_NAMER='imagekit.cachefiles.namers.hash',
             GRAPHENE={
                 'SCHEMA': 'blindtest.schema.schema'
             },

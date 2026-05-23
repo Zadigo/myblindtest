@@ -12,26 +12,41 @@
             ],
             "envFile": "${workspaceFolder}/blindtest/.env",
             "console": "integratedTerminal",
-            "justMyCode": true
+            "justMyCode": true,
+            "presentation": {
+                "hidden": false,
+                "group": "Django",
+                "order": 1
+            }
         },
         {
             "type": "chrome",
             "request": "launch",
-            "name": "client: chrome",
+            "name": "Client: Mainsite",
             "url": "http://localhost:3000",
             "cwd": "${workspaceFolder}/mainsite",
-            "webRoot": "${workspaceFolder}/mainsite/app"
+            "webRoot": "${workspaceFolder}/mainsite/app",
+            "presentation": {
+                "hidden": false,
+                "group": "Nuxt",
+                "order": 1
+            }
         },
         {
             "type": "node",
             "request": "launch",
-            "name": "server: nuxt",
+            "name": "Server: Mainsite",
             "outputCapture": "std",
             "cwd": "${workspaceFolder}/mainsite",
             "program": "${workspaceFolder}/mainsite/node_modules/nuxt/bin/nuxt.mjs",
             "args": [
                 "dev"
             ],
+            "presentation": {
+                "hidden": false,
+                "group": "Nuxt",
+                "order": 1
+            }
         }    
     ],
     "explorer.fileNesting.enabled": true,
@@ -47,9 +62,14 @@
         {
             "name": "Fullstack: Nuxt",
             "configurations": [
-                "server: nuxt",
-                "client: chrome"
-            ]
+                "Server: Mainsite",
+                "Client: Mainsite"
+            ],
+            "presentation": {
+                "hidden": false,
+                "group": "Nuxt",
+                "order": 1
+            }
         }
     ]
 }
