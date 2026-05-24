@@ -1,5 +1,7 @@
 from django.conf import settings
 
+REDIS_URL = 'redis://@localhost:6379'
+
 
 def pytest_configure(config):
     if not settings.configured:
@@ -7,6 +9,7 @@ def pytest_configure(config):
             DEBUG=True,
             SECRET_KEY='aXDfw6xCDKIFRgz2yzpTgAqFBqVLgSeyOVGayj8KqcJAjG3O96dT7cQPMExxAteX',
             PY_UTILITIES_JWT_SECRET='zpDaqupaQR7SxrEcsoFYOkZQIdJPEim4Sz30zC5oBFGOZwY92FYvVeqqO3Z5Pw6P',
+            ASGI_APPLICATION='blindtest.asgi.application',
             DATABASES={
                 'default': {
                     'ENGINE': 'django.db.backends.sqlite3',
@@ -42,19 +45,28 @@ def pytest_configure(config):
             ROOT_URLCONF='blindtest.urls',
             DEFAULT_AUTO_FIELD='django.db.models.BigAutoField',
             REST_FRAMEWORK={
-                'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
                 'DEFAULT_AUTHENTICATION_CLASSES': [
                     'rest_framework_simplejwt.authentication.JWTAuthentication',
-                    'rest_framework.authentication.TokenAuthentication',
-                ]
+                    'rest_framework.authentication.SessionAuthentication',
+                    'rest_framework.authentication.TokenAuthentication'
+                ],
+                'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema'
             },
             SIMPLE_JWT={
                 'AUTH_HEADER_TYPES': ['Token']
             },
-            # IMAGEKIT_CACHEFILE_NAMER='imagekit.cachefiles.namers.hash',
             GRAPHENE={
                 'SCHEMA': 'blindtest.schema.schema'
             },
+            CHANNEL_LAYERS={
+                'default': {
+                    'BACKEND': 'channels_redis.core.RedisChannelLayer',
+                    'CONFIG': {
+                        'hosts': [REDIS_URL]
+                    }
+                }
+            },
             STATIC_URL='/static/',
-            CELERY_BROKER_URL='memory://localhost/'
+            CELERY_BROKER_URL='amqp://guest:guest@localhost:5672//',
+            CELERY_RESULT_BACKEND=REDIS_URL,
         )
