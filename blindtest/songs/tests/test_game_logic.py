@@ -318,3 +318,34 @@ class TestRandomChoiceAnswers(IsolatedAsyncioTestCase):
         choices = await self.instance.random_choice_answers(song_ids[-1])
         self.assertIsInstance(choices, list)
         self.assertGreater(len(choices), 0)
+
+
+class TestHandleGuess(IsolatedAsyncioTestCase):
+    async def test_handle_guess(self):
+        instance = GameLogicMixin()
+        instance.game_state.current_song = {
+            'id': 1,
+            'difficulty': 3
+        }
+        instance.game_state._players = {
+            '1': Player(id='1', name='Player 1', points=0),
+        }
+        message = await instance.handle_guess('1', True, False)
+        self.assertIsNotNone(message)
+        self.assertEqual(message['action'], 'guess_correct')
+        self.assertEqual(message['points'], 1)
+
+        await instance.handle_guess('1', False, False)
+        self.assertEqual(instance.game_state._players['1'].points, 1)
+
+    async def test_handle_guess_no_current_song(self):
+        instance = GameLogicMixin()
+        self.assertIsNone(await instance.handle_guess('1', True, False))
+
+    async def test_non_existent_player(self):
+        instance = GameLogicMixin()
+        instance.game_state.current_song = {
+            'id': 1,
+            'difficulty': 3
+        }
+        self.assertIsNone(await instance.handle_guess('non_existent_player', True, False))

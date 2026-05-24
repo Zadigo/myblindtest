@@ -292,7 +292,9 @@ class GameLogicMixin(BaseGameLogicMixin):
             'points': 0
         }
 
-        player: Player = self.game_state._players[player_id]
+        player = self.game_state._players[player_id]
+        if player.id is None:
+            return None
 
         if title_match or artist_match:
             result = await self.calculate_points(title_match, artist_match)
