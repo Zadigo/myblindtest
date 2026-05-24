@@ -12,7 +12,8 @@ from django.core import exceptions
 from django.core.cache import cache
 from django.db import models
 from songs.api import serializers
-from songs.logic.base_models import (GameSettings, GameState, Player,
+from songs.logic.models.settings import GameSettings
+from songs.logic.base_models import (GameState, Player,
                                      SongPossibilities)
 from songs.models import Song
 
@@ -62,29 +63,31 @@ class BaseGameLogicMixin[T: 'GameLogicMixin']:
         """Returns a tuple of (category, list of song IDs) contained
         with the given genre. This function does not shuffle the results.
         This function is particularly useful when wanting to select songs
-        by a specific genre category for multiple-choice answers.
+        by a specific genre category for multiple-choice answers::
 
-        >>> self.get_songs_by_category('Rock')
-        ... ('Rock', [1, 2, 3, 4, 5])
+            self.get_songs_by_category('Rock')
+            # Output ('Rock', [1, 2, 3, 4, 5])
         """
-        selected_category = None
+        parent_category = None
         selected_values = []
 
+        # Get the top level category that matches the genre
         for item, values in self.flat_genre_categories():
-            truth_array = map(lambda x: x.lower() == genre.lower(), values)
+            truth_array = list(
+                map(lambda x: x.lower() == genre.lower(), values))
 
             if any(truth_array):
-                selected_category = item
+                parent_category = item
                 selected_values = values
                 break
 
         if not selected_values:
-            return selected_category, []
+            return parent_category, []
 
         qs = Song.objects.filter(genre__in=selected_values)
         if not qs.exists():
-            return selected_category, []
-        return selected_category, list(qs.values_list('id', flat=True))
+            return parent_category, []
+        return parent_category, list(qs.values_list('id', flat=True))
 
     @database_sync_to_async
     def get_songs(self: T, temporary_genre: Optional[str] = None, exclude: List[int] = []) -> List[int]:
@@ -106,8 +109,8 @@ class BaseGameLogicMixin[T: 'GameLogicMixin']:
         qs = Song.objects.all()
 
         if self.game_settings.difficultyLevel != 'All':
-            value = self.difficulties.index(self.game_settings.difficulty)
-            qs = qs.filter(difficulty__gte=value)
+            index = self.difficulties.index(self.game_settings.difficultyLevel)
+            qs = qs.filter(difficulty__gte=index + 1)
 
         if self.game_settings.genreSelected != 'All':
             qs = qs.filter(genre__icontains=self.game_settings.genreSelected)
@@ -157,9 +160,11 @@ class BaseGameLogicMixin[T: 'GameLogicMixin']:
 
     @lru_cache(maxsize=128)
     async def random_choice_answers(self: T, current_song_id: int) -> list[dict[str, Union[str, int]]]:
-        """Returns a list of 4 songs including the current song ID"""
-        # songs = await self.get_songs(exclude=[current_song_id])
+        """Selects randomg songs within the same genre which allows us to create multiple choice answers for the current song. The current song is also included in the possibilities."""
         _, songs = await self.get_songs_by_category(self.game_state.current_song['genre'])
+
+        if not songs:
+            return []
 
         selected_ids = random.sample(
             songs or [],
@@ -226,8 +231,7 @@ class BaseGameLogicMixin[T: 'GameLogicMixin']:
         return errors
 
     async def calculate_loosers_loses_points(self: T, winner_id: str, title_match: bool = False, artist_match: bool = False):
-        """Calculates the points for the winner and then
-        deducts points from the losers"""
+        """Calculates the points for the winner and then deducts points from the losers"""
         winners_points = await self.calculate_points(title_match, artist_match)
 
         for player in self.game_state.players:

@@ -1,9 +1,13 @@
+import django
 from django.conf import settings
 
 REDIS_URL = 'redis://@localhost:6379'
 
+django.setup()
+
 
 def pytest_configure(config):
+
     if not settings.configured:
         settings.configure(
             DEBUG=True,

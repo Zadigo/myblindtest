@@ -38,46 +38,6 @@ class Player:
 
 
 @dataclasses.dataclass
-class GameSettings():
-    """Encapsulates the game settings
-    for the current bindtest. This is
-    voluntary duplicate of the firebase
-    structure from the frontend"""
-
-    pointLimit: int = None
-
-    difficultyLevel: str = 'All'
-    genreSelected: str = 'All'
-
-    numberOfRounds: int = None
-
-    pointValue: int = 1
-    songDifficultyBonus: bool = False
-    speedBonus: bool = False
-    # fuzzy_matcher = FuzzyMatcher()
-
-    connectionToken: str = None
-    soloMode: bool = False
-    adminPlays: bool = False
-    timeLimit: int = None
-    timeRange: List[int] = dataclasses.field(default_factory=list)
-
-    multipleChoiceAnswers: bool = False
-    numberOfChoices: int = 4
-
-    def config_from_dict(self, config: dict) -> list[str]:
-        """Configures the game settings from a dictionary."""
-        skipped_keys = []
-
-        for key, value in config.items():
-            if hasattr(self, key):
-                setattr(self, key, value)
-                continue
-            skipped_keys.append(key)
-        return skipped_keys
-
-
-@dataclasses.dataclass
 class GameState():
     """Initiates the game state for 
     the current blindtest"""
@@ -237,7 +197,6 @@ class ContentModel(pydantic.BaseModel):
     player_id: Optional[str] = None
     session_id: Optional[str] = None
     device_name: Optional[str] = None
-
 
 
 class ActionMessageModel(pydantic.BaseModel):

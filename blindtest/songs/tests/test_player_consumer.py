@@ -20,6 +20,7 @@ class TestPlayerConsumer(WSMixin):
 
         self.assertTrue(state)
 
+        # Idle connection response
         response = await instance.receive_json_from()
         self.assertEqual(response['action'], 'idle_connect')
         self.assertIn('player', response)
@@ -28,12 +29,18 @@ class TestPlayerConsumer(WSMixin):
         self.assertIn('id', player)
         self.assertIn('name', player)
 
+        # FIXME: The channel layer is timoutting here...
+        # Group message to waiting room
+        # response = await instance.receive_json_from()
+
         # Update player
         # FIXME: The channel layer is timoutting here...
-        # await instance.send_json_to({
-        #     'action': 'update_player',
-        #     'name': 'New Player Name'
-        # })
+        await instance.send_json_to({
+            'action': 'update_player',
+            'name': 'New Player Name'
+        })
         # response = await instance.receive_json_from()
+
+        # Submit answer
 
         await instance.disconnect()

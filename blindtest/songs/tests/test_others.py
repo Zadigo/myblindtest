@@ -1,5 +1,6 @@
 import unittest
 from songs.choices import MusicGenre
+from django.core.cache import cache
 
 
 class TestMusicGenre(unittest.TestCase):
@@ -8,6 +9,12 @@ class TestMusicGenre(unittest.TestCase):
         data = genre.read()
         self.assertIsInstance(data, dict)
         self.assertIn('African', data)
+
+    def test_read_is_none(self):
+        cache.delete('music_genres')
+        genre = MusicGenre()
+        genre.read()
+        self.assertIsNotNone(genre.data)
 
     def test_choices(self):
         choices = MusicGenre.choices()
