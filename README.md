@@ -14,6 +14,20 @@ Features
 * ⚡ Real-Time Gameplay: Utilizes WebSocket connections for smooth, responsive gameplay.
 * 🏆 Customizable Gameplay: Players can adjust settings such as difficulty and genre.
 
+## Global Architecture
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Mainsite
+    participant Django
+
+    User->>Mainsite: HTTP Request (SSR or Client)
+    Mainsite->>Django: API Request (if needed)
+    Django-->>Mainsite: API Response
+    Mainsite-->>User: Rendered Page or Client Response
+```
+
 ## Django - Models Overview
 
 ### Artist

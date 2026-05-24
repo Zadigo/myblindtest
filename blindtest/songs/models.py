@@ -14,7 +14,20 @@ from blindtest.validators import validate_difficulty, validate_year
 
 
 class Artist(models.Model):
-    """Model representing a musical artist or group"""
+    """Model representing a musical artist or a musical group
+    
+    Attributes:
+        name: The stage name of the artist or the name of the musical group
+        birthname: The birth name of the artist or the date of formation for a musical group
+        date_of_birth: The date of birth of the artist or the date of formation for a musical group
+        founding_year: The year of formation for a musical group
+        spotify_id: The Spotify ID for the given artist
+        genre: The global classification for the given artist
+        spotify_avatar: The URL for the Spotify avatar of the given artist
+        is_group: A boolean indicating if the artist is a musical group or not
+        wikipedia_page: The URL for the Wikipedia page of the given artist
+        created_on: The date when the artist was created in the database
+    """
 
     name = models.CharField(
         max_length=100,
@@ -111,7 +124,18 @@ class Artist(models.Model):
 
 
 class AbstractSong(models.Model):
-    """Abstract model representing a song"""
+    """Abstract model representing a song
+    
+    Attributes:
+        artist (ForeignKey): The artist who performed the song
+        name (CharField): The name of the song
+        genre (CharField): The global classification for the given song
+        featured_artists (CharField): The artists who are featured in the song
+        youtube_id (CharField): The YouTube video ID for the theme song
+        year (PositiveIntegerField): The year of release for the song
+        difficulty (IntegerField): The difficulty level for the song
+        created_on (DateField): The date when the song was created in the database
+    """
 
     artist = models.ForeignKey(
         Artist,

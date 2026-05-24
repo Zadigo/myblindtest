@@ -237,3 +237,10 @@ class ContentModel(pydantic.BaseModel):
     player_id: Optional[str] = None
     session_id: Optional[str] = None
     device_name: Optional[str] = None
+
+
+
+class ActionMessageModel(pydantic.BaseModel):
+    action: str
+    code: Optional[int] = None
+    connection_url: Optional[str] = None

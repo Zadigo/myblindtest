@@ -56,4 +56,5 @@ def pytest_configure(config):
                 'SCHEMA': 'blindtest.schema.schema'
             },
             STATIC_URL='/static/',
+            CELERY_BROKER_URL='memory://localhost/'
         )
