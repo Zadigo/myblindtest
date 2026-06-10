@@ -6,11 +6,11 @@
             "type": "debugpy",
             "request": "launch",
             "django": true,
-            "program": "${workspaceFolder}/blindtest/manage.py",
+            "program": "${workspaceFolder}/services/blindtest/manage.py",
             "args": [
                 "runserver"
             ],
-            "envFile": "${workspaceFolder}/blindtest/.env",
+            "envFile": "${workspaceFolder}/services/blindtest/.env",
             "console": "integratedTerminal",
             "justMyCode": true,
             "presentation": {
@@ -24,8 +24,8 @@
             "request": "launch",
             "name": "Client: Mainsite",
             "url": "http://localhost:3000",
-            "cwd": "${workspaceFolder}/mainsite",
-            "webRoot": "${workspaceFolder}/mainsite/app",
+            "cwd": "${workspaceFolder}/frontends/mainsite",
+            "webRoot": "${workspaceFolder}/frontends/mainsite/app",
             "presentation": {
                 "hidden": false,
                 "group": "Nuxt",
@@ -37,8 +37,8 @@
             "request": "launch",
             "name": "Server: Mainsite",
             "outputCapture": "std",
-            "cwd": "${workspaceFolder}/mainsite",
-            "program": "${workspaceFolder}/mainsite/node_modules/nuxt/bin/nuxt.mjs",
+            "cwd": "${workspaceFolder}/frontends/mainsite",
+            "program": "${workspaceFolder}/frontends/mainsite/node_modules/nuxt/bin/nuxt.mjs",
             "args": [
                 "dev"
             ],

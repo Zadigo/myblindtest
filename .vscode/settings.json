@@ -1,25 +1,38 @@
 {
-    "ansible.python.interpreterPath": "/usr/local/bin/python3",
-    "[typescript]": {
-        "editor.codeActionsOnSave": {
-            "source.removeUnused.ts": "always"
-        }   
-    },
     "[python]": {
         "editor.codeActionsOnSave": {
-            "source.unusedImports": "always",
-            "source.sortImports": "always"
+            "source.organizeImports": "explicit",
+            "source.unusedImports": "explicit"
         }
     },
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.autoTestDiscoverOnSaveEnabled": true,
     "python-envs.defaultEnvManager": "ms-python.python:venv",
-    "python.testing.unittestArgs": [
-        "-v",
-        "-s",
-        ".",
-        "-p",
-        "test_*.py"
-    ],
-    "python.testing.cwd": "${workspaceFolder}",
-    "python.testing.unittestEnabled": true,
-    "python.testing.pytestEnabled": false
+    "python.analysis.autoSearchPaths": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.oxc": "never"
+    },
+    "python-envs.pythonProjects": [
+        {
+            "path": "services/mycart",
+            "envManager": "ms-python.python:venv",
+            "packageManager": "ms-python.python:pip"
+        },
+        {
+            "path": "services/mysubscribers",
+            "envManager": "ms-python.python:venv",
+            "packageManager": "ms-python.python:pip"
+        },
+        {
+            "path": "services/addresses",
+            "envManager": "ms-python.python:venv",
+            "packageManager": "ms-python.python:pip"
+        },
+        {
+            "path": "services/shopapi",
+            "envManager": "ms-python.python:venv",
+            "packageManager": "ms-python.python:pip"
+        }
+    ]
 }
