@@ -1,4 +1,4 @@
-# Fullstack E-commerce Application Architecture
+# Fullstack Blindtest Application Architecture
 
 ## Requirements & Assumptions 🟠
 
@@ -68,23 +68,11 @@ Describes the overall structure of the system, including the main components and
 
 ```mermaid
 flowchart
-    A[Nuxt] --> B(Backend)
-    A --> Q(Firebase)
-    B --> C{Shop}
-    B --> K{Orders}
-    B --> N{Shipping}
-    K --> S(Database)
 
-    C --> F[Cache]
-    C --> E(Database) --> M(Amazon S3)
-    C --> L(Inventory)
-  
-    B --> |Payment| G{Gateway}
-  
-    G --> H[Stripe, Klarna, etc.]
-
-    N --> O(3rd party logistics providers)
-    N --> R(Database)
+A[Nuxt] <--> B(Django)
+A --> Q[(Firebase)]
+B --> C[(PostgreSQL)]
+B --> D[(Redis)]
 ```
 
 ## System Workflow 🔄
@@ -93,43 +81,44 @@ flowchart
 
 ```mermaid
 sequenceDiagram
-    User->>+Website: Browse products
-    Website->>+Shop: Fetch product data
-    Shop->>+Database: Query product information
-    Database-->>-Shop: Return product data
-    Shop-->>-Cache: Cache product data
-    Cache-->>Shop: Return cached product data
-    Shop->>Website: Display products
-    Website->>+User: View product details
 
-    User->>+Website: Add product to cart
-    Website->>+Shop: Update shopping cart
-    Shop->>+Database: Update cart information
-    Database-->>-Shop: Confirm cart update
-    Shop->>Website: Update cart display
-    Website->>+User: Proceed to checkout
+autonumber
 
-    User->>+Website: Enter payment information
-    Website->>+Shop: Process payment
-    Shop->>+Payment Gateway: Send payment details
-  
-    critical Payment processing
-        Payment Gateway->>+Stripe/Klarna: Process payment
-        Stripe/Klarna-->>-Payment Gateway: Payment confirmation  
-    option Payment successful
-        Payment Gateway->>-Orders: Create Order
-    option Shipping
-        Orders->>+Shipping: Arrange shipping
-        Shipping-->>-User: Shipping confirmation
-    end
-  
-    par Order Workflow
-        Stripe/Klarna-->>User: Payment processed
-        Payment Gateway-->>Shop: Confirm payment
-        Orders-->>Website: Update order status
-    end
+actor A as Alice
+actor P as Pauline
 
-    Website->>User: Display confirmation
+participant N@{type: "entity"} as Nuxt
+participant D@{type: "entity"} as Django
+participant F@{type: "database"} as Firebase
+participant PG@{type: "database"} as PostgreSQL
+
+A ->> N: Click create
+N ->> D: Create blindtest
+D <<->> ()PG: Create blindtest
+N <<-->> ()F: Save blindtest details
+
+par Websocket
+D <<->> ()N: Wait for players
+
+P ->> N: Join blindtest
+N ->> D: Join blindtest
+end
+
+D ->> N: Start blindtest
+D ->> N: Send question
+
+par Question
+loop Game
+N ->> A: Display question
+N ->> P: Display question
+
+A ->> N: Submit answer
+P ->> N: Submit answer
+N ->> D: Submit answer
+end
+end
+
+D -->> N: Display answer result
 ```
 
 ## Api Design 🛠️
