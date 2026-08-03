@@ -1,7 +1,8 @@
 from django.test import TestCase
-from blindtest.youtube_search.query import QueryDict, QueryList
-from blindtest.youtube_search.base import BaseSearch
 from faker import Faker
+
+from blindtest.youtube_search.base import BaseSearch
+from blindtest.youtube_search.query import QueryDict, QueryList
 
 fake_instance = Faker()
 

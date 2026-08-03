@@ -1,4 +1,5 @@
 from django.test import TestCase as DjangoTestCase
+
 from blindtest.api.spotify import ListPlaylists, Spotify
 
 
