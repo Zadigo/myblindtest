@@ -5,10 +5,20 @@ from import_export import fields
 from import_export.admin import ImportExportModelAdmin
 from import_export.resources import ModelResource
 from import_export.widgets import ForeignKeyWidget
+
 from songs import tasks
-from songs.models import (AfroSong, Artist, IncompleteArtist, LatinSong,
-                          PopArtist, PopSong, RapArtist, RapSong, RnBSong,
-                          Song)
+from songs.models import (
+    AfroSong,
+    Artist,
+    IncompleteArtist,
+    LatinSong,
+    PopArtist,
+    PopSong,
+    RapArtist,
+    RapSong,
+    RnBSong,
+    Song,
+)
 
 
 class ArtistForeignKeyWidget(ForeignKeyWidget):
@@ -18,7 +28,7 @@ class ArtistForeignKeyWidget(ForeignKeyWidget):
     def clean(self, value, row=None, **kwargs):
         try:
             artist = super().clean(value, row, **kwargs)
-        except:
+        except Exception:
             artist = Artist.objects.create(name=row['name'])
         return artist
 

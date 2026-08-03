@@ -5,7 +5,7 @@ from graphene_django.utils.testing import GraphQLTestCase
 from songs.tests.utils import RandomSong
 
 
-class TestGraphQlViews(GraphQLTestCase):
+class TestSongGraphQL(GraphQLTestCase):
     GRAPHQL_URL = '/graphql/'
 
     def setUp(self):

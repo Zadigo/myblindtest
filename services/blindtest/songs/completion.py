@@ -4,8 +4,8 @@ import pathlib
 import re
 import ssl
 import unicodedata
-import httpx
 
+import httpx
 import kagglehub
 import nltk
 import pandas
@@ -14,6 +14,7 @@ from bs4 import BeautifulSoup
 from bs4.element import Tag
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
+
 from songs.models import Artist
 
 HEADERS = {

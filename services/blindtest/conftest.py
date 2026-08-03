@@ -1,6 +1,6 @@
-from django.conf import settings
-
 import pathlib
+
+from django.conf import settings
 
 BASE_DIR = pathlib.Path(__file__).parent.resolve()
 

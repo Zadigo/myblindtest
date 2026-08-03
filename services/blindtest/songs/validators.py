@@ -1,10 +1,11 @@
 import re
-from django.utils import timezone
+
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
+from django.utils import timezone
 
 
-def validate_year(value):
+def validate_year(value: int):
     if value > 0:
         result = re.match(r'\d{4}', str(value))
         if not result:
@@ -15,12 +16,12 @@ def validate_year(value):
             raise ValidationError('Year is not valid')
 
 
-def validate_youtube(value):
+def validate_youtube(value: str):
     validator = RegexValidator(r'youtube\.com\/embed\/')
     validator(value)
 
 
-def validate_difficulty(value):
+def validate_difficulty(value: int):
     if value < 1 or value > 5:
         raise ValidationError(
             "Difficulty should be a between "
@@ -28,8 +29,8 @@ def validate_difficulty(value):
         )
 
 
-def validate_wikipedia_page(value):
-    if not 'wikipedia.org/wiki/' in value:
+def validate_wikipedia_page(value: str):
+    if 'wikipedia.org/wiki/' not in value:
         raise ValidationError(
             'Url is not a valid Wikipediage page'
         )
