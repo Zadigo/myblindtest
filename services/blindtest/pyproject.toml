@@ -29,7 +29,7 @@ dependencies = [
     "drf-spectacular>=0.29.0",
     "firebase-admin>=7.2.0",
     "graphene-django>=3.2.3",
-    "httpx>=0.28.1",
+    "httpx2>=2.9.1",
     "kagglehub>=1.0.0",
     "levenshtein>=0.27.3",
     "nltk>=3.9.3",
@@ -50,9 +50,9 @@ dependencies = [
 [dependency-groups]
 dev = [
     "autopep8>=2.3.2",
-    "coverage>=7.14.0",
+    "coverage>=7.13.4",
     "django-browser-reload>=1.21.0",
-    "django-debug-toolbar>=6.3.0",
+    "django-debug-toolbar>=7.0.0",
     "django-watchfiles>=1.4.0",
     "factory-boy>=3.3.3",
     "pytest>=9.0.3",
@@ -62,7 +62,8 @@ dev = [
     "pytest-datafiles>=3.0.1",
     "pytest-django>=4.12.0",
     "pytest-env>=1.6.0",
-    "pytest-playwright>=0.8.0",
+    "pytest-playwright>=0.7.2",
+    "pytest-reportlog>=1.0.0",
     "pytest-timeout>=2.4.0",
     "ruff>=0.15.16",
     "selenium>=4.44.0",
@@ -75,6 +76,7 @@ reportMissingImports = true
 reportUntypedBaseClass = true
 
 [tool.pytest]
+timeout="5000"
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
     "api: marks tests as api tests",
@@ -82,15 +84,28 @@ markers = [
     "unit: marks tests as unit tests",
 ]
 
-[tool.pytest.ini_options]
-
 [tool.pytest_env]
 env_files = [".env", ".env.test"]
 
-
 [tool.autopep8]
 max_line_length = 120
-# ignore = "E501,W6"  # or ["E501", "W6"]
 in-place = true
 recursive = true
 aggressive = 3
+
+[tool.coverage.run]
+omit = [
+    "manage.py",
+    "*/migrations/*",
+    "*/__init__.py",
+    "*/typings.py"
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+    "if __name__ == .__main__.:",
+]

@@ -1,13 +1,13 @@
-import django
 from django.conf import settings
+
+import pathlib
+
+BASE_DIR = pathlib.Path(__file__).parent.resolve()
 
 REDIS_URL = 'redis://@localhost:6379'
 
-django.setup()
-
 
 def pytest_configure(config):
-
     if not settings.configured:
         settings.configure(
             DEBUG=True,
@@ -70,6 +70,7 @@ def pytest_configure(config):
                     }
                 }
             },
+            MEDIA_PATH=BASE_DIR / 'media',
             STATIC_URL='/static/',
             CELERY_BROKER_URL='amqp://guest:guest@localhost:5672//',
             CELERY_RESULT_BACKEND=REDIS_URL,
