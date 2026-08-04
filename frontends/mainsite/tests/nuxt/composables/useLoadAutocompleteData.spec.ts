@@ -47,7 +47,7 @@ mockNuxtImport('$fetch', () => {
   })
 })
 
-describe.only('useLoadAutocompleteData', () => {
+describe('useLoadAutocompleteData', () => {
   let mockTemplate: ReturnType<typeof mount>
   let composable: ReturnType<typeof useLoadAutocompleteData>
 

@@ -59,6 +59,7 @@
     "@playwright/test": "^1.62.1",
     "@primevue/icons": "^5.0.0",
     "@tailwindcss/vite": "^4.3.3",
+    "@testing-library/vue": "^8.1.0",
     "@types/node": "^26.1.2",
     "@vitest/coverage-v8": "4.1.10",
     "@vitest/ui": "4.1.10",

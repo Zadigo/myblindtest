@@ -1,8 +1,9 @@
 import { describe, it, expect, vi } from 'vitest'
 import HomePage from '../../app/pages/index.vue'
 import GeneralSettings from '../../app/components/home/GeneralSettings.vue'
-import {  mountSuspended } from '@nuxt/test-utils/runtime'
-import type { SettingsApiResponse } from '../../app/types/index.ts'
+import {  mountSuspended, renderSuspended } from '@nuxt/test-utils/runtime'
+import type { SettingsApiResponse } from '../../app/types/index'
+// import { flushPromises, mount } from '@vue/test-utils'
 
 const t = vi.fn((key: string) => key)
 
@@ -33,9 +34,33 @@ describe('Home Page', () => {
         }
       }
     })
-    // console.log(component.html())
 
     const generalSettings = component.findComponent(GeneralSettings)
     expect(generalSettings.exists()).toBe(true)
+
+
+    // const resetButton = component
   })
+
+  it('should contain required buttons', async () => {
+    const { findByText } = await renderSuspended(HomePage)
+
+    const buttons = ['Reset', 'Start']
+    buttons.forEach(item => {
+      const resetBtn = findByText(item)
+      expect(resetBtn).toBeDefined()
+    })
+  })
+
+  // it('should toggle dark mode', async () => {
+  //   const component = await mountSuspended(HomePage)
+  //   const toggleEl = component.find('#dark-mode')
+
+  //   expect(toggleEl).toBeDefined()
+  //   toggleEl.trigger('click')
+
+  //   await nextTick()
+
+  //   expect(toggleEl.attributes('checked')).toBeDefined()
+  // })
 })
