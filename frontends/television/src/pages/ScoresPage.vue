@@ -17,7 +17,7 @@
 import { useSound } from '@vueuse/sound'
 import { collection, doc } from 'firebase/firestore'
 import { useDocument, useFirestore } from 'vuefire'
-import type { CacheSession } from '@/types'
+import type { CacheSession, Team } from '@/types'
 
 /**
  * Timer
@@ -39,11 +39,38 @@ const { showAnswer, correctAnswerTeamId } = storeToRefs(gameStore)
 const { sessionId } = useSession()
 
 const fireStore = useFirestore()
-const docRef = doc(collection(fireStore, 'blindtests'), sessionId.value)
-const sessionData = useDocument<CacheSession>(docRef)
 
-const firstTeam = computed(() => sessionData.value?.teams[0])
-const secondTeam = computed(() => sessionData.value?.teams[1])
+const defaultTeam: Team = {
+  color: '#000000',
+  name: 'Team',
+  score: 0,
+  id: 'default',
+  players: [],
+}
+
+// const docRef = doc(collection(fireStore, 'blindtests'), sessionId.value)
+let docRef: ReturnType<typeof doc> | undefined = undefined
+let sessionData: ReturnType<typeof useDocument<CacheSession>> | undefined = undefined
+
+if (isDefined(sessionId) && sessionId.value !== '') {
+  docRef = doc(collection(fireStore, 'blindtests'), sessionId.value)
+  sessionData = useDocument<CacheSession>(docRef)
+}
+
+const firstTeam = computed(() => {
+  if (isDefined(sessionData) && isDefined(sessionData.value)) {
+    return sessionData.value.teams[0]
+  } else {
+    return defaultTeam
+  }
+})
+const secondTeam = computed(() => {
+  if (isDefined(sessionData) && isDefined(sessionData.value)) {
+    return sessionData.value.teams[1]
+  } else {
+    return defaultTeam
+  }
+})
 
 /**
  * Sound effects
