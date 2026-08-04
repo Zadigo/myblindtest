@@ -1,11 +1,11 @@
-import PointValues from '../../../app/components/home/PointValues.vue'
+import PointValues from '../../../../app/components/home/PointValues.vue'
 import { describe, it, expect, vi } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import type { SettingsApiResponse } from '~/types'
-import { cachedSession } from '../../__fixtures__'
+import { cachedSession } from '../../../__fixtures__/index.ts'
 
 vi.mock('../../../app/composables/use/utils', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../../../app/composables/use/utils')>()
+  const actual = await importOriginal<typeof import('../../../../app/composables/use/utils.ts')>()
   return {
     ...actual,
     useLoadAutocompleteData: vi.fn().mockReturnValue({
@@ -16,7 +16,7 @@ vi.mock('../../../app/composables/use/utils', async (importOriginal) => {
 })
 
 vi.mock('../../../app/composables/use/session', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../../../app/composables/use/session')>()
+  const actual = await importOriginal<typeof import('../../../../app/composables/use/session.ts')>()
   return {
     ...actual,
     useSession: vi.fn(() => {

@@ -1,4 +1,4 @@
-import JokerSettings from '../../../app/components/home/JokerSettings.vue'
+import JokerSettings from '../../../../app/components/home/JokerSettings.vue'
 import { describe, it, expect, vi } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 

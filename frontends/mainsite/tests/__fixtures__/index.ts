@@ -1,4 +1,5 @@
-import type { CacheSession } from '../../app/types'
+import type { CacheSession, BlindtestPlayer } from '../../app/types'
+import { faker } from '@faker-js/faker'
 
 export const cachedSession: CacheSession = {
   songsPlayed: [],
@@ -22,3 +23,26 @@ export const cachedSession: CacheSession = {
     pointLimit: 0
   }
 }
+
+export const playersFixture: BlindtestPlayer[] = [
+  {
+    id: faker.string.uuid(),
+    name: faker.person.firstName(),
+    color: faker.color.rgb(),
+    points: faker.number.int(),
+    team: null,
+    correctAnswers: [],
+    position: faker.number.int(),
+    speciality: null,
+  },
+  {
+    id: faker.string.uuid(),
+    name: faker.person.firstName(),
+    color: faker.color.rgb(),
+    points: faker.number.int(),
+    team: null,
+    correctAnswers: [],
+    position: faker.number.int(),
+    speciality: null,
+  }
+]

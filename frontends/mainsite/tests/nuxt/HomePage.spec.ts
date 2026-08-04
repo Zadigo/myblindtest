@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import HomePage from '../../app/pages/index.vue'
 import GeneralSettings from '../../app/components/home/GeneralSettings.vue'
 import {  mountSuspended } from '@nuxt/test-utils/runtime'
-import type { SettingsApiResponse } from '../../app/types'
+import type { SettingsApiResponse } from '../../app/types/index.ts'
 
 const t = vi.fn((key: string) => key)
 
@@ -14,7 +14,7 @@ vi.mock('i18n', () => ({
 }))
 
 vi.mock('../../app/composables/use/utils', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../../app/composables/use/utils')>()
+  const actual = await importOriginal<typeof import('../../app/composables/use/utils.ts')>()
   return {
     ...actual,
     useLoadAutocompleteData: vi.fn().mockReturnValue({

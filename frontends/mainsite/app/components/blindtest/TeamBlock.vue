@@ -23,7 +23,7 @@
     </transition>
 
     <!-- Fireworks -->
-    <base-fireworks v-show="gameStarted && hasConsecutiveAnswers" />
+    <!-- <base-fireworks v-show="gameStarted && hasConsecutiveAnswers" /> -->
   </div>
 </template>
 
@@ -50,7 +50,7 @@ const teamScore = computed(() => isDefined(team) ? team.value.score : 0)
  * Consecutive answers
  */
 
-const { consecutiveAnswers, hasConsecutiveAnswers } = useConsecutiveAnswers(team, 2)
+const { consecutiveAnswers, hasConsecutiveAnswers } = useConsecutiveAnswers(team)
 
 /**
  * Animations
