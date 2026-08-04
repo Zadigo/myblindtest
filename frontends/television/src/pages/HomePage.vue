@@ -19,7 +19,7 @@
           </div>
 
           <div class="w-auto">
-            <volt-button :disabled="code === '' || code === null" variant="secondary" class="self-end" size="lg" @click="goToScores">
+            <volt-button id="action-connect" :disabled="code === '' || code === null" variant="secondary" class="self-end" size="lg" @click="goToScores">
               Se connecter
             </volt-button>
           </div>

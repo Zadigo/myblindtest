@@ -74,7 +74,7 @@ export default mergeConfig(
           ],
           test: {
             name: 'unit',
-            include: [ 'unit/**/*.{spec,test}.ts' ],
+            include: ['unit/**/*.{spec,test}.ts'],
             alias: {
               '@': path.resolve(__dirname, 'src')
             },
