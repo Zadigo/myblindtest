@@ -18,15 +18,17 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach((to, _from, next) => {
+router.beforeEach((to, _from) => {
   if (to.name === 'scores') {
     const { sessionId } = useSession()
+
     if (!isDefined(sessionId)) {
-      next({ name: 'home' })
-      return
+      // next({ name: 'home' })
+      return '/'
     }
   }
-  next()
+  // next()
+  return
 })
 
 export default router
