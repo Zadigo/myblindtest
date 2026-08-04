@@ -1,5 +1,30 @@
 import type { CacheSession } from '~/types'
 
+export const MATCHED_PART = [
+  'Artist',
+  'Title',
+  'Both'
+] as const
+
+export const DIFFICULTY_LEVELS = [
+  'All',
+  'Easy',
+  'Medium',
+  'Semi-Pro',
+  'Difficult',
+  'Expert'
+] as const
+
+export const SONG_GENRES = [
+  'All',
+  'Pop',
+  'Electro',
+  'Rock',
+  'Rhythm and blues',
+  'Rap',
+  'Classical'
+] as const
+
 export const defaultCacheOptions: Readonly<CacheSession> = {
   songsPlayed: [],
   currentStep: 0,

@@ -2,6 +2,7 @@ import { promiseTimeout } from '@vueuse/core'
 import { addDoc, collection, deleteDoc, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
 import { useDocument, useFirestore } from 'vuefire'
 import type { CacheSession, CustomLocationQuery, Empty, Nullable } from '~/types'
+import { defaultCacheOptions } from '~/constants'
 
 
 export function useCreateSession() {

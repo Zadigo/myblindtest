@@ -42,6 +42,10 @@ export default defineConfig({
           tags: [
             {
               name: 'nuxt',
+            },
+            {
+              name: 'composable',
+              description: 'Tests for composables'
             }
           ]
         }

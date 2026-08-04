@@ -12,8 +12,6 @@ export const useGameCountdown = createGlobalState((callback?: () => void) => {
   const { currentSettings } = useSession()
   const _timerValue = toValue(currentSettings.value?.settings.timeLimit)
 
-  console.log('time value', _timerValue)
-
   /**
    * Countdown timer
    */

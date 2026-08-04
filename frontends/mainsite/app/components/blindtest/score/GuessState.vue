@@ -14,13 +14,13 @@
 
     <!-- Answer -->
     <div class="absolute top-80 w-125 left-1/2 transform -translate-x-1/2 text-center">
-      <h1 :class="textTheme" class="text-7xl font-bold">
+      <h2 :class="textTheme" class="text-7xl font-bold">
         {{ correctSong?.name }}
-      </h1>
-
-      <h2 :class="textTheme" class="text-3xl">
-        {{ correctSong?.artist.name }}
       </h2>
+
+      <h3 :class="textTheme" class="text-3xl">
+        {{ correctSong?.artist.name }}
+      </h3>
     </div>
   </div>
 </template>
@@ -74,6 +74,16 @@ const themeTitle = computed(() => {
 })
 
 const textDisplay = computed(() => {
-  return props.isCorrectGuess ? 'Good answer!' : props.isIncorrectGuess ? 'Wrong Answer!' : 'No answers given'
+  if (props.isCorrectGuess && props.isIncorrectGuess) {
+    return 'No answers given'
+  }
+
+  if (props.isCorrectGuess) {
+    return 'Good answer!'
+  }
+
+  if (props.isIncorrectGuess) {
+    return 'Wrong Answer!'
+  }
 })
 </script>

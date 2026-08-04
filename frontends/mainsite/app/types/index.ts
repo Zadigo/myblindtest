@@ -1,3 +1,5 @@
+import type { MATCHED_PART, DIFFICULTY_LEVELS, SONG_GENRES  } from '~/constants'
+
 export type * from './create'
 export type * from './game'
 export type * from './songs'
@@ -36,3 +38,13 @@ export interface _DatabaseItem {
 }
 
 export type CustomLocationQuery = Partial<{ id: string, player: string }>
+
+/**
+ * Constants
+ */
+
+export type MatchedPart = (typeof MATCHED_PART)[ number ]
+
+export type DifficultyLevels = (typeof DIFFICULTY_LEVELS)[ number ]
+
+export type SongGenres = (typeof SONG_GENRES)[ number ]

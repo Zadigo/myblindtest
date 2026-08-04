@@ -7,7 +7,7 @@
       </div>
     </div>
 
-    <reconnect-button :player-id="playerId" />
+    <blindtest-player-reconnect-button :player-id="playerId" />
   </div>
 </template>
 

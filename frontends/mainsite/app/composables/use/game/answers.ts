@@ -8,7 +8,7 @@ import type { BlindtestPlayer, Empty } from '~/types'
  * @param callback Optional callback to execute when the player has enough consecutive answers
  * @param minConsecutive Minimum number of consecutive answers required to trigger the callback
  */
-export function useConsecutiveAnswers(player: ComputedRef<Empty<BlindtestPlayer>> | Ref<Empty<BlindtestPlayer>>, callback?: () => void, minConsecutive = 3) {
+export function useConsecutiveAnswers(player: Ref<Empty<BlindtestPlayer>>, callback?: () => void, minConsecutive = 3) {
   const songsStore = useSongs()
   const { correctAnswers } = storeToRefs(songsStore)
 
@@ -25,7 +25,7 @@ export function useConsecutiveAnswers(player: ComputedRef<Empty<BlindtestPlayer>
     for (let i = correctAnswers.value.length - 1; i >= 0; i--) {
       const answer = correctAnswers.value[i]
 
-      if (answer && (answer.playerId === player.value.id)) {
+      if (answer && (answer.playerId === toValue(player).id)) {
         count++
       } else {
         break

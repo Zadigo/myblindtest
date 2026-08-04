@@ -1,5 +1,4 @@
-import type { DifficultyLevels, MatchedPart, SongGenres } from '@/data/constants'
-import type { Arrayable, Nullable, Song } from '.'
+import type { Arrayable, Nullable, Song, MatchedPart, DifficultyLevels, SongGenres } from '.'
 
 export type BlindtestPlayer = {
   id: string
