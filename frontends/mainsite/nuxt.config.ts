@@ -83,6 +83,8 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    primeVueLicenseKey: process.env.NUXT_PRIME_VUE_LICENSE_KEY,
+    
     public: {
       apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL,
       wsBaseUrl: process.env.NUXT_PUBLIC_WS_BASE_URL,
@@ -121,12 +123,12 @@ export default defineNuxtConfig({
     ]
   },
 
-  // eslint: {
-  //   config: {
-  //     stylistic: {
-  //       commaDangle: 'never',
-  //       braceStyle: '1tbs'
-  //     }
-  //   }
-  // }
+  eslint: {
+    config: {
+      stylistic: {
+        commaDangle: 'never',
+        braceStyle: '1tbs'
+      }
+    }
+  }
 })

@@ -5,6 +5,8 @@
         {{ $t('General settings') }}
       </h3>
     </template>
+
+    {{ currentSettings }}
     
     <template v-if="currentSettings" #content>
       <volt-input-label :label="$t('Number of rounds')">
@@ -57,5 +59,4 @@
 <script setup lang="ts">
 const { genres, autocomplete } = useLoadAutocompleteData(true)
 const { currentSettings } = useSession()
-console.log(currentSettings.value)
 </script>

@@ -4,8 +4,11 @@ import ConfirmationService from 'primevue/confirmationservice'
 import StyleClass from 'primevue/styleclass'
 
 export default defineNuxtPlugin((nuxtApp) => {
+  const config = useRuntimeConfig()
+
   nuxtApp.vueApp.use(PrimeVue, {
-    unstyled: true
+    unstyled: true,
+    licence: config.primeVueLicenseKey
   })
 
   nuxtApp.vueApp.use(ToastService)

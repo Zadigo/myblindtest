@@ -1,5 +1,7 @@
 export default defineI18nConfig(() => ({
   strategy: 'prefix_except_default',
+  locale: 'fr',
+  fallbackLocale: 'fr',
   numberFormats: {
     fr: {
       currency: {
