@@ -83,9 +83,9 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    primeVueLicenseKey: process.env.NUXT_PRIME_VUE_LICENSE_KEY,
     
     public: {
+      primeVueLicenseKey: process.env.NUXT_PRIME_VUE_LICENSE_KEY,
       apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL,
       wsBaseUrl: process.env.NUXT_PUBLIC_WS_BASE_URL,
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000'
