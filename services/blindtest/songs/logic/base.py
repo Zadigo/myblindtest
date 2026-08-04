@@ -11,10 +11,10 @@ from django.conf import settings
 from django.core import exceptions
 from django.core.cache import cache
 from django.db import models
+
 from songs.api import serializers
+from songs.logic.base_models import GameState, Player, SongPossibilities
 from songs.logic.models.settings import GameSettings
-from songs.logic.base_models import (GameState, Player,
-                                     SongPossibilities)
 from songs.models import Song
 
 

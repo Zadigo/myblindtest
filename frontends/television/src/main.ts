@@ -40,7 +40,7 @@ const axiosManager = createVueAxiosManager({
 app.use(createPinia())
 app.use(ToastService)
 app.use(installPlugins())
-app.use(PrimeVue, { unstyled: true })
+app.use(PrimeVue, { unstyled: true, licenseKey: import.meta.env.VITE_PRIME_VUE_LICENSE_KEY })
 app.use(router)
 app.use(head)
 app.use(axiosManager)
