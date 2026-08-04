@@ -19,7 +19,7 @@ vi.mock('pinia', async (originalImport) => {
   }
 })
 
-describe.only('useConsecutiveAnswers', () => {
+describe('useConsecutiveAnswers', () => {
   const player = computed(() => staticPlayerFixture)
   const simpleCallbackSpy = vi.fn()
 
