@@ -1,4 +1,4 @@
-import type { Arrayable } from '.'
+import type { Arrayable } from './utils'
 
 export interface StatisticsData {
   labels: Arrayable<string | number>

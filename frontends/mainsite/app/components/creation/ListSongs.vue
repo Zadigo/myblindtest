@@ -86,7 +86,6 @@
 
 <script setup lang="ts">
 import { useToast } from 'primevue/usetoast'
-import type { ArtistSong, BaseApiResponse } from '~/types'
 
 const toast = useToast()
 

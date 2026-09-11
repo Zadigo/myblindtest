@@ -20,3 +20,14 @@ export interface NewSong {
 }
 
 export type CopiedCreateData = Omit<NewSong, 'featured_artists'>
+
+export interface SongCreationApiResponse {
+  errors: string[]
+  items: Song[]
+}
+
+export interface SearchedGenreApiResponse {
+  category: string
+  items: { label: string }[]
+}
+  

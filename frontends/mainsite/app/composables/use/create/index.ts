@@ -1,17 +1,7 @@
-import type { NewSong, Song } from '~/types'
 import { useToast } from 'primevue/usetoast'
+import type { SongCreationApiResponse } from '#shared/types'
 
 export * from './utils'
-
-interface SongCreationApiResponse {
-  errors: string[]
-  items: Song[]
-}
-
-export interface SearchedGenreApiResponse {
-  category: string
-  items: { label: string }[]
-}
 
 /**
  * Composable for editing a song

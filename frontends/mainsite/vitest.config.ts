@@ -3,7 +3,7 @@ import { defineVitestProject } from '@nuxt/test-utils/config'
 
 export default defineConfig({
   test: {
-    setupFiles: [ './tests/setup.ts' ],
+    setupFiles: ['./tests/setup.ts'],
     exclude: [
       'node_modules',
       '.nuxt', 
@@ -22,19 +22,6 @@ export default defineConfig({
     projects: [
       await defineVitestProject({
         test: {
-          name: 'unit',
-          include: [ 'tests/unit/**/*.{test,spec}.ts' ],
-          environment: 'node',
-          testTimeout: 20000,
-          tags: [
-            {
-              name: 'unit',
-            }
-          ]
-        }
-      }),
-      await defineVitestProject({
-        test: {
           name: 'nuxt',
           include: [ 'tests/nuxt/**/*.{test,spec}.ts' ],
           environment: 'nuxt',
@@ -46,6 +33,14 @@ export default defineConfig({
             {
               name: 'composable',
               description: 'Tests for composables'
+            },
+            {
+              name: 'frontend',
+              description: 'Tests for frontend components'
+            },
+            {
+              name: 'server',
+              description: 'Tests for server-side components'
             }
           ]
         }
@@ -53,7 +48,7 @@ export default defineConfig({
       await defineVitestProject({
         test: {
           name: 'integration',
-          include: [ 'tests/integration/**/*.{test,spec}.ts' ],
+          include: ['tests/integration/**/*.{test,spec}.ts'],
           environment: 'node',
           testTimeout: 20000,
           tags: [
