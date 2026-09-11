@@ -57,9 +57,8 @@ export const useEditSong = createSharedComposable(() => {
 
 
   async function _save() {
-    const responseData = await $fetch<SongCreationApiResponse>('/api/v1/songs/create', {
-      method: 'post',
-      baseURL: useRuntimeConfig().public.apiBaseUrl,
+    const responseData = await $fetch<SongCreationApiResponse>('/api/songs/create', {
+      method: 'POST',
       body: cleanedData.value
     })
 

@@ -26,8 +26,6 @@
 </template>
 
 <script setup lang="ts">
-import type { Nullable, Song } from '~/types'
-
 const props = defineProps<{ 
   correctSong: Nullable<Song>
   isCorrectGuess: boolean

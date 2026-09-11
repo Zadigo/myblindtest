@@ -86,12 +86,9 @@
 
 <script setup lang="ts">
 import { useToast } from 'primevue/usetoast'
+import type { ApiResponse } from '#shared/types'
 
 const toast = useToast()
-
-interface ApiResponse extends BaseApiResponse<ArtistSong> {
-  count: number
-}
 
 const emit = defineEmits({
   back() {
@@ -119,7 +116,7 @@ const apiResult = ref<ApiResponse>()
  * Return all the songs in the database
  * @param offset The next offset page to get
  */
-apiResult.value = await $fetch<ApiResponse>('/api/v1/songs/by-artists', {
+apiResult.value = await $fetch<ApiResponse>('/api/songs/by-artist', {
   method: 'GET',
   baseURL: useRuntimeConfig().public.apiBaseUrl,
   query: searchParam
@@ -130,9 +127,8 @@ async function getPrevious() {
   if (apiResult.value) {
     searchParam.offset = apiResult.value.previous
 
-    apiResult.value = await $fetch<ApiResponse>('/api/v1/songs/by-artists', {
+    apiResult.value = await $fetch<ApiResponse>('/api/songs/by-artist', {
       method: 'GET',
-      baseURL: useRuntimeConfig().public.apiBaseUrl,
       query: searchParam
     })
   }
@@ -143,9 +139,8 @@ async function getNextPage() {
   if (apiResult.value) {
     searchParam.offset = apiResult.value.next
 
-    apiResult.value = await $fetch<ApiResponse>('/api/v1/songs/by-artists', {
+    apiResult.value = await $fetch<ApiResponse>('/api/songs/by-artist', {
       method: 'GET',
-      baseURL: useRuntimeConfig().public.apiBaseUrl,
       query: searchParam
     })  
   }
@@ -176,9 +171,8 @@ watch(debouncedSearch, async (newSearch) => {
   searchParam.q = newSearch
   
   try {
-    apiResult.value = await $fetch<ApiResponse>('/api/v1/songs/by-artists', {
+    apiResult.value = await $fetch<ApiResponse>('/api/songs/by-artist', {
       method: 'get',
-      baseURL: useRuntimeConfig().public.apiBaseUrl,
       query: searchParam
     })
   } catch {

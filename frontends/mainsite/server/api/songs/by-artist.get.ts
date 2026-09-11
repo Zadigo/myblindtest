@@ -1,3 +1,5 @@
+import { ApiResponse } from "#shared/types"
+
 export default defineEventHandler(async (event) => {
   try {
     const searchParam = getQuery(event)

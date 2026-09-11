@@ -26,21 +26,11 @@
 
 <script lang="ts" setup>
 import type { ChartData, ChartOptions } from 'chart.js'
-import type { StatisticsApiResponse } from '~/types'
 
-const data = ref<StatisticsApiResponse>()
-
-const { load } = useMemoize(async () => {
-  const responseData = await $fetch<StatisticsApiResponse>('/api/v1/songs/statistics', {
-    method: 'get',
-    baseURL: useRuntimeConfig().public.apiBaseUrl
-  })
-
-  return responseData
-})
-
-onMounted(async () => {
-  data.value = await load()
+const { data } = useAsyncData('statistics', () => $fetch<StatisticsApiResponse>('/api/songs/statistics', {
+  method: 'GET'
+}), {
+  default: () => ({ distribution_by_genre: { labels: [], data: [] } } as StatisticsApiResponse)
 })
 
 

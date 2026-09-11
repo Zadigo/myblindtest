@@ -1,5 +1,3 @@
-import type { GenreDistribution, SettingsApiResponse } from '~/types'
-
 /**
  * Global state used to share UI state across components in the application
  * such as modals visibility and other global flags
@@ -38,20 +36,10 @@ export const useGlobalState = createGlobalState(() => {
  * @param fromCache Whether to load data from cache or fetch from API
  */
 export const useLoadAutocompleteData = createSharedComposable((_fromCache = false) => {
-  const autocomplete = ref<SettingsApiResponse | undefined>()
-
-  // TODO: Memoize does not work properly
-  const { load } = useMemoize(async (path: string) => {
-    try {
-      return await $fetch<SettingsApiResponse>(path, { baseURL: useRuntimeConfig().public.apiBaseUrl })
-    } catch (error) {
-      console.error('Failed to load autocomplete data:', error)
-      return undefined
-    }
-  })
-
-  tryOnMounted(async () => { 
-    autocomplete.value = await load('/api/v1/songs/settings')
+  const { data: autocomplete } = useAsyncData('autocomplete', () => $fetch<SettingsApiResponse>('/api/songs/settings', {
+    method: 'GET'
+  }), {
+    default: () => ({ period: { minimum: 0, maximum: 100 }, count_by_genre: [] } as SettingsApiResponse)
   })
 
   const minimumPeriod = computed(() => autocomplete.value?.period.minimum || 0)

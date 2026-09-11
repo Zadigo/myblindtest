@@ -32,9 +32,6 @@
 </template>
 
 <script lang="ts" setup>
-import type { SearchedGenreApiResponse } from '@/composables'
-import type { Artist } from '~/types'
-
 const defaultProps = withDefaults(defineProps<{ index?: number }>(), {
   index: 0
 })

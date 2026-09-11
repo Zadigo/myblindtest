@@ -26,8 +26,6 @@
 </template>
 
 <script setup lang="ts">
-import type { BlindtestPlayer, Undefineable } from '~/types'
-
 defineProps<{
   player: Undefineable<BlindtestPlayer>
   isReady: boolean

@@ -11,6 +11,10 @@ export interface BaseApiResponse<T> {
   results: T[]
 }
 
+export interface ApiResponse extends BaseApiResponse<ArtistSong> {
+  count: number
+}
+
 export interface _DatabaseItem {
   id: number
   created_on: string

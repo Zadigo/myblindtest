@@ -1,4 +1,4 @@
-import type { _DatabaseItem, Nullable } from "."
+import type { _DatabaseItem } from "."
 
 export type GlobalSongGenres = 'pop' 
   | 'rock' 

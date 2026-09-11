@@ -1,5 +1,3 @@
-import type { Arrayable } from './utils'
-
 export interface StatisticsData {
   labels: Arrayable<string | number>
   data: Arrayable<number>

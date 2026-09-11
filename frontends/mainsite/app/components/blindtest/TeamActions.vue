@@ -37,8 +37,6 @@
 </template>
 
 <script setup lang="ts">
-import type { Team, Undefineable } from '~/types'
-
 const { sendCorrectAnswer } = useAdminWebsocket()
 const matchedElement = ref<MatchedPart>('Both')
 
