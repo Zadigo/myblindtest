@@ -24,7 +24,7 @@ export function useCreateSession() {
  * can be considered as a game instance where players can join and participate
  * in a blindtest
  */
-export async function useSessionComposable() {
+export const useSessionComposable = createGlobalState(async () => {
   const { data } = await useAsyncData('session', () => $fetch<CacheSession>('/api/session', { method: 'GET' }))
 
   const previousSettings = ref<CacheSession>()
@@ -74,7 +74,7 @@ export async function useSessionComposable() {
     reset,
     hasExistingSession
   }
-}
+})
 
 /**
  * This composable is used to manage the player session state

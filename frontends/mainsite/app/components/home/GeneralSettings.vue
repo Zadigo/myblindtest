@@ -9,7 +9,7 @@
     <template v-if="currentSettings" #content>
       {{ currentSettings.settings }}
       <volt-input-label :label="$t('Number of rounds')">
-        <volt-input-number v-model="currentSettings.settings.rounds" :min="0" :max="100" class="w-full" />
+        <volt-input-number v-model.number="currentSettings.settings.rounds" :min="0" :max="100" class="w-full" />
       </volt-input-label>
 
       <div class="space-y-3">

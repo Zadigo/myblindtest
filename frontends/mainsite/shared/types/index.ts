@@ -26,8 +26,15 @@ export type CustomLocationQuery = Partial<{ id: string, player: string }>
  * Constants
  */
 
-export type MatchedPart = (typeof MATCHED_PART)[ number ]
+export type MatchedPart = (typeof MATCHED_PART)[number]
 
-export type DifficultyLevels = (typeof DIFFICULTY_LEVELS)[ number ]
+export type DifficultyLevels = (typeof DIFFICULTY_LEVELS)[number]
 
-export type SongGenres = (typeof SONG_GENRES)[ number ]
+export type SongGenres = (typeof SONG_GENRES)[number]
+
+export type SongSearchParams = {
+  q: string,
+  limit: number
+  offset: number
+  v: 'c' | 'l'
+}

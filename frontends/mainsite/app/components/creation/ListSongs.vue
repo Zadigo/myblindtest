@@ -86,7 +86,7 @@
 
 <script setup lang="ts">
 import { useToast } from 'primevue/usetoast'
-import type { ApiResponse } from '#shared/types'
+import type { ApiResponse, SongSearchParams } from '#shared/types'
 
 const toast = useToast()
 
@@ -98,29 +98,28 @@ const emit = defineEmits({
 
 const searchParam = useUrlSearchParams('history', {
   initialValue: {
-    q: null,
+    q: '',
     limit: 100,
     offset: 0,
     v: 'l'
-  } as {
-    q: string | null
-    limit: number
-    offset: number
-    v: 'l' | 'c'
-  }
+  } as SongSearchParams
 })
 
-const apiResult = ref<ApiResponse>()
+// const apiResult = ref<ApiResponse>()
 
 /**
  * Return all the songs in the database
  * @param offset The next offset page to get
  */
-apiResult.value = await $fetch<ApiResponse>('/api/songs/by-artist', {
+// apiResult.value = await $fetch<ApiResponse>('/api/songs/by-artist', {
+//   method: 'GET',
+//   baseURL: useRuntimeConfig().public.apiBaseUrl,
+//   query: searchParam
+// })
+const { data: apiResult } = useAsyncData('songs-by-artist', () => $fetch<ApiResponse>('/api/songs/by-artist', {
   method: 'GET',
-  baseURL: useRuntimeConfig().public.apiBaseUrl,
   query: searchParam
-})
+}))
 
 // Get the previous page
 async function getPrevious() {
