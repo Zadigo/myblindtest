@@ -4,8 +4,6 @@ import random
 from functools import cached_property, lru_cache
 from typing import List, Optional, Union
 
-# import firebase_admin
-# from firebase_admin import firestore, credentials
 from channels.db import database_sync_to_async
 from django.conf import settings
 from django.core import exceptions

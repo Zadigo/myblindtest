@@ -1,10 +1,8 @@
-from typing import Any, Union
 
-import pyotp
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from django.utils.crypto import get_random_string
+
 from songs.consumers.admin import ChannelEventsMixin
-from songs.utils import create_token
 
 
 class TelevisionConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):

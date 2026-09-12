@@ -1,12 +1,11 @@
+import dataclasses
 from typing import Any, Union
 
-import pyotp
-import dataclasses
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from django.utils.crypto import get_random_string
-from songs.logic.base import Player
+
 from songs.consumers.admin import ChannelEventsMixin
-from songs.utils import create_token
+from songs.logic.base import Player
 
 
 class PlayerConsumer(ChannelEventsMixin, AsyncJsonWebsocketConsumer):

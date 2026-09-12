@@ -1,7 +1,87 @@
 import dataclasses
-from typing import List
+from typing import List, Literal
+from warnings import deprecated
+
+from pydantic import BaseModel, Field, field_validator
+
+type TypeDifficultyLevel = Literal['Easy', 'Medium', 'Hard', 'All']
+
+class GammeSettingsModel(BaseModel):
+    pointLimit: int = Field(
+        default=None
+    )
+    difficultyLevel: TypeDifficultyLevel = Field(
+        default='All'
+    )
+    genreSelected: str = Field(
+        default='All'
+    )
+    numberOfRounds: int | None = Field(
+        default=None
+    )
+    pointValue: int = Field(
+        default=0,
+        ge=0
+    )
+    songDifficultyBonus: bool = Field(
+        default=False
+    )
+    speedBonus: bool = Field(
+        default=False
+    )
+    connectionToken: str | None = Field(
+        default=None
+    )
+    soloMode: bool = Field(
+        default=False
+    )
+    adminPlays: bool = Field(
+        default=False
+    )
+    timeLimit: int | None = Field(
+        default=None
+    )
+    timeRange: List[int] = Field(
+        default_factory=list
+    )
+    multipleChoiceAnswers: bool = Field(
+        default=False
+    )
+    numberOfChoices: int = Field(
+        default=4,
+        ge=2
+    )
+
+    @field_validator('pointLimit')
+    @classmethod
+    def validate_point_limit(cls, value):
+        if value is not None and value < 0:
+            raise ValueError('pointLimit must be a positive integer or None')
+        return value
+
+    @field_validator('numberOfRounds')
+    @classmethod
+    def validate_number_of_rounds(cls, value):
+        if value is not None and value < 0:
+            raise ValueError('numberOfRounds must be a positive integer or None')
+        return value
+    
+    @field_validator('pointValue')
+    @classmethod
+    def validate_point_value(cls, value):
+        if value < 0:
+            raise ValueError('pointValue must be a positive integer')
+        return value
+
+    @field_validator('timeLimit')
+    @classmethod
+    def validate_time_limit(cls, value):
+        if value is not None and value < 0:
+            raise ValueError('timeLimit must be a positive integer or None')
+        return value
 
 
+@deprecated('Use GameSettingsModel')
 @dataclasses.dataclass
 class GameSettings():
     """Encapsulates the game settings

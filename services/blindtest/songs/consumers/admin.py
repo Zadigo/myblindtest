@@ -2,10 +2,10 @@ import dataclasses
 from typing import Any
 
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
-# from songs.logic.base_models import ContentModel
-from songs.logic.base import GameLogicMixin
 
 from blindtest.typings import GameActions, TypeContent
+from songs.logic.base import GameLogicMixin
+from songs.logic.models.settings import GammeSettingsModel
 
 
 class ChannelEventsMixin:
@@ -19,7 +19,7 @@ class ChannelEventsMixin:
     session_id: str = ''
 
     device_name: str = 'unknown_device'
-    device_id: str = f'unknown_device_id'
+    device_id: str = 'unknown_device_id'
 
     @property
     def indexed_diffusion_group_name(self):
@@ -228,6 +228,13 @@ class AdminConsumer(GameLogicMixin, ChannelEventsMixin, AsyncJsonWebsocketConsum
 
             await self.next_song(temporary_genre=temporary_genre)
         elif action == GameActions.GAME_SETTINGS.value:
+            try:
+                _settings  = GammeSettingsModel(**content.get('settings', {}))
+                print(_settings)
+            except Exception as e:
+                await self.send_error(f'Invalid settings: {e}')
+                return
+
             settings: dict[str, Any] = content.get('settings', {})
 
             if settings is None:
