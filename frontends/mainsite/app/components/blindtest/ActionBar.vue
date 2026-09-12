@@ -103,6 +103,6 @@ const items: MenuItem = ref([
  * Session copy
  */
 
-const { sessionId } = useSession()
+const { sessionId } = await useSessionComposable()
 const { copy } = useClipboard({ source: sessionId })
 </script>

@@ -36,5 +36,5 @@
 </template>
 
 <script setup lang="ts">
-const { currentSettings } = useSession()
+const { data: currentSettings } = useNuxtData<CacheSession>('session')
 </script>

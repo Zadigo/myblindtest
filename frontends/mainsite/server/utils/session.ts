@@ -1,9 +1,30 @@
 import type { H3Event } from 'h3'
 import { useFirebaseAdmin } from '#shared/server_firebase'
 import { SESSION_COOKIE_NAME } from '#shared/session_constants'
-import type { SessionData } from '#shared/types/session'
+import type { CacheSession } from '#shared/types/session'
 
-const DEFAULT_SESSION_DATA: SessionData = {}
+const DEFAULT_SESSION_DATA: CacheSession = {
+  availableAnswers: [],
+  currentStep: 0,
+  players: {},
+  playerAnswers: [],
+  pendingScoresUpdate: {},
+  settings: {
+    rounds: 0,
+    timeLimit: 0,
+    pointValue: 0,
+    songDifficultyBonus: false,
+    speedBonus: false,
+    soloMode: false,
+    adminPlays: false,
+    difficultyLevel: 'Easy',
+    genreSelected: 'Pop',
+    timeRange: [0, 0],
+    multipleChoiceAnswers: false,
+    pointLimit: 0
+  },
+  songsPlayed: []
+}
 
 /**
  * Resolves the current session document, creating one and setting the
@@ -21,7 +42,7 @@ export async function getOrCreateSession(event: H3Event) {
     const snapshot = await docRef.get()
 
     if (snapshot.exists) {
-      return { sessionId: existingId, docRef, data: snapshot.data() as SessionData }
+      return { sessionId: existingId, docRef, data: snapshot.data() as CacheSession }
     }
     // Cookie is stale (doc deleted/expired) → fall through and recreate below.
   }

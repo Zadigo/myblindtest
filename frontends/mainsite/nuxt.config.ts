@@ -83,12 +83,15 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    
+    firebaseProjectId: process.env.NUXT_FIREBASE_PROJECT_ID,
+    firebaseClientEmail: process.env.NUXT_FIREBASE_CLIENT_EMAIL,
+    firebasePrivateKey: process.env.NUXT_FIREBASE_PRIVATE_KEY,
+
     public: {
       primeVueLicenseKey: process.env.NUXT_PRIME_VUE_LICENSE_KEY,
       apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL,
       wsBaseUrl: process.env.NUXT_PUBLIC_WS_BASE_URL,
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL
     }
   },
 
@@ -97,7 +100,7 @@ export default defineNuxtConfig({
   ],
 
   i18n: {
-    baseUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+    baseUrl: process.env.NUXT_PUBLIC_SITE_URL,
     langDir: './locales',
     defaultLocale: 'fr',
     vueI18n: './i18n.config.ts',

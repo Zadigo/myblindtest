@@ -92,7 +92,8 @@ const multiChoiceActionDockItems = computed(() => {
   return baseItems
 })
 
-const { currentSettings } = useSession()
+// const { currentSettings } = await useSessionComposable()
+const currentSettings = useNuxtData<CacheSession>('session')
 
 const items = computedAsync(() => {
   if (isDefined(currentSettings)) {

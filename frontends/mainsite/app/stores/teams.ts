@@ -2,7 +2,8 @@
  * Store used to manage teams within the blindtest session
  */
 export const useTeamsStore = defineStore('teams', () => {
-  const { currentSettings } = useSession()
+  // const { currentSettings } = useSessionComposable()
+  const currentSettings = useNuxtData<CacheSession>('session')
 
   const teams = computed(() =>  currentSettings && isDefined(currentSettings) ? currentSettings.value.teams : [])
   const teamOne = computed(() => teams.value[0])

@@ -37,7 +37,8 @@ const isHovered = useElementHover(cardEl)
  * Player
  */
 
-const { currentSettings } = useSession()
+// const { currentSettings } = await useSessionComposable()
+const currentSettings = useNuxtData<CacheSession>('session')
 
 const player = computed(() => currentSettings.value?.players[props.playerId])
 

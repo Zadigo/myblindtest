@@ -9,7 +9,8 @@ import { useSound } from '@vueuse/sound'
 export const useGameCountdown = createGlobalState((callback?: () => void) => {
   const { gameStarted } = useAdminWebsocket()
 
-  const { currentSettings } = useSession()
+  // const { currentSettings } = useSessionComposable()
+  const currentSettings = useNuxtData<CacheSession>('session')
   const _timerValue = toValue(currentSettings.value?.settings.timeLimit)
 
   /**

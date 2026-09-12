@@ -1,13 +1,9 @@
 import { createErrorTemplate } from '#shared/errors'
 
-type SessionResponse = {
-  sessionId: string
-}
-
 export default defineEventHandler(async (event) => {
   try {
     const { docRef } = await getOrCreateSession(event)
-    return { sessionId: docRef.id } as SessionResponse
+    return { sessionId: docRef.id } as SessionApiResponse
   } catch (error) {
     console.error('Error creating session:', error)
     const template = createErrorTemplate(error)

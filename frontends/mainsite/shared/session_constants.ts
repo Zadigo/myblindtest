@@ -8,4 +8,4 @@
  * In this case, the collection name is set to 'test_sessions' for testing purposes.
  * In a production environment, it is advisable to use a more appropriate name that reflects the purpose of the collection.
  */
-export const SESSION_COOKIE_NAME = 'test_sessions'
+export const SESSION_COOKIE_NAME = 'blindtests'

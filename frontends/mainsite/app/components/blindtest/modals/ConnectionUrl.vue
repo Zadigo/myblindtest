@@ -30,7 +30,8 @@ const { showConnectionUrl } = useGlobalState()
  */
 
 const { locale } = useI18n()
-const { sessionId } = useSession()
+const { sessionId } = await useSessionComposable()
+
 
 const config = useRuntimeConfig()
 const url = ref(`${config.public.siteUrl}/${locale.value}/blindtest/player?game=${sessionId?.value}`)

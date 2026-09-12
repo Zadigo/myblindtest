@@ -8,7 +8,6 @@ import { useSound } from '@vueuse/sound'
 import { arrayUnion, doc, updateDoc } from 'firebase/firestore'
 import { useToast } from 'primevue/usetoast'
 import { useDocument, useFirestore } from 'vuefire'
-import type { Undefineable, VueUseWsReturnType } from '~/types'
 
 
 /**
@@ -16,7 +15,7 @@ import type { Undefineable, VueUseWsReturnType } from '~/types'
  */
 export const useAdminWebsocket = createSharedComposable(() => {
   const toast = useToast()
-  const { sessionId, currentSettings } = useSession()
+  const { sessionId, currentSettings } = useSessionComposable()
 
   /**
    * Message
@@ -286,7 +285,8 @@ export function useGameActions(wsObject: VueUseWsReturnType, gameStarted: Ref<bo
  * @param wsObject The websocket object
  */
 export function useMultiChoiceGameActions(wsObject: VueUseWsReturnType) {
-  const {  currentSettings } = useSession()
+  // const { currentSettings } = useSessionComposable()
+  const currentSettings = useNuxtData<CacheSession>('session')
   const { isActive, remaining } = useCountdown(3, { immediate: false })
 
   const { stringify } = useWebsocketMessage()

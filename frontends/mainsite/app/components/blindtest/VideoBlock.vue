@@ -82,7 +82,7 @@ watch(currentSong, () => {
  * Settings
  */
 
-const { currentSettings } = useSession()
+const { currentSettings } = await useSessionComposable()
 
 /**
  * Countdown

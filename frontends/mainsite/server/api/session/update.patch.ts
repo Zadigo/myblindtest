@@ -2,14 +2,9 @@ import { createErrorTemplate } from '#shared/errors'
 
 export default defineEventHandler(async (event) => {
   try {
+    const body = await readBody<CacheSession>(event)
     const { docRef } = await getOrCreateSession(event)
-    await docRef.update({
-      language: {
-        choice: 'en',
-        selected: true
-      },
-      updatedAt: new Date()
-    })
+    await docRef.update({...body, updatedAt: new Date()})
 
     return {
       state: 'Session updated successfully',

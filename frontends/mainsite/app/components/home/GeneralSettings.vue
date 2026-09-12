@@ -7,13 +7,14 @@
     </template>
     
     <template v-if="currentSettings" #content>
+      {{ currentSettings.settings }}
       <volt-input-label :label="$t('Number of rounds')">
         <volt-input-number v-model="currentSettings.settings.rounds" :min="0" :max="100" class="w-full" />
       </volt-input-label>
 
-      <div classs="space-y-3">
+      <div class="space-y-3">
         <volt-input-label :label="$t('Game difficulty')">
-          <volt-select v-model="currentSettings.settings.difficultyLevel" :options="difficultyLevels.map(x => ({ name: x }))" class="w-4/6" option-label="name" option-value="name" />
+          <volt-select v-model="currentSettings.settings.difficultyLevel" :options="DIFFICULTY_LEVELS.map(x => ({ name: x }))" class="w-4/6" option-label="name" option-value="name" />
         </volt-input-label>
 
         <volt-input-label :label="$t('Genre')">
@@ -44,7 +45,6 @@
     </template>
 
     <template v-else #content>
-      {{ currentSettings }}
       <div class="space-y-2">
         <volt-skeleton height="100px" />
         <volt-skeleton height="100px" />
@@ -56,5 +56,6 @@
 
 <script setup lang="ts">
 const { genres, autocomplete } = useLoadAutocompleteData(true)
-const { currentSettings } = useSession()
+// const { data: currentSettings } = useNuxtData<CacheSession>('session')
+const { currentSettings } = await useSessionComposable()
 </script>

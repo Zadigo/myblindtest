@@ -56,7 +56,7 @@
 
       <div class="space-y-2">
         <home-point-values />
-        <home-joker-settings />
+        <home-joker-settings v-if="enabled" />
       </div>
     </div>
   </section>
@@ -68,7 +68,7 @@ preloadRouteComponents('/blindtest')
 /**
  * Session
  */
-const { sessionId, hasExistingSession, reset } = useSession()
+const { sessionId, hasExistingSession, reset } = await useSessionComposable()
 
 /**
  * Dark mode
@@ -101,4 +101,6 @@ useHead({
     },
   ],
 })
+
+const { enabled } = usePreviewMode()
 </script>
