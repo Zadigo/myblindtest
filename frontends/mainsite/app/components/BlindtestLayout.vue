@@ -45,7 +45,7 @@ const { currentSong } = storeToRefs(songsStore)
  * Websocket
  */
 
-const { isConnected, gameStarted, wsObject } = useAdminWebsocket()
+const { isConnected, gameStarted, wsObject } = await useAdminWebsocket()
 
 provide<boolean>('isConnected', isConnected.value)
 provide<boolean>('gameStarted', gameStarted.value)

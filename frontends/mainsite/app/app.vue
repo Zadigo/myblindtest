@@ -11,8 +11,7 @@ useDarkMode()
  * Session
  */
 
-const { create } = useCreateSession()
-await create()
+useCreateSession()
 
 useHTMLLangAttribute()
 

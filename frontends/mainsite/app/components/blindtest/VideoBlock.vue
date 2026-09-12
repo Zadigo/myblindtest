@@ -61,7 +61,7 @@
 <script setup lang="ts">
 import { useSound } from '@vueuse/sound'
 
-const { gameStarted } = useAdminWebsocket()
+const { gameStarted } = await useAdminWebsocket()
 
 /**
  * Song
@@ -82,7 +82,8 @@ watch(currentSong, () => {
  * Settings
  */
 
-const { currentSettings } = await useSessionComposable()
+// const { currentSettings } = await useSessionComposable()
+const { data: currentSettings } = useNuxtData('session')
 
 /**
  * Countdown

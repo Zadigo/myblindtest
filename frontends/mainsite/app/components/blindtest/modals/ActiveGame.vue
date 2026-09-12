@@ -9,7 +9,7 @@
         Cancel
       </volt-button>
 
-      <volt-button severity="danger" @click="emit('proceed')">
+      <volt-button severity="danger" @click="$emit('proceed')">
         Proceed
       </volt-button>
     </div>
@@ -17,5 +17,6 @@
 </template>
 
 <script setup lang="ts">
+defineEmits<{'proceed': []}>()
 const show = defineModel<boolean>('show')
 </script>

@@ -13,9 +13,9 @@ import { useDocument, useFirestore } from 'vuefire'
 /**
  * Websocket for individual game (admin)
  */
-export const useAdminWebsocket = createSharedComposable(() => {
+export const useAdminWebsocket = createSharedComposable(async () => {
   const toast = useToast()
-  const { sessionId, currentSettings } = useSessionComposable()
+  const { sessionId, currentSettings } = await useSessionComposable()
 
   /**
    * Message
@@ -286,7 +286,7 @@ export function useGameActions(wsObject: VueUseWsReturnType, gameStarted: Ref<bo
  */
 export function useMultiChoiceGameActions(wsObject: VueUseWsReturnType) {
   // const { currentSettings } = useSessionComposable()
-  const currentSettings = useNuxtData<CacheSession>('session')
+  const { data: currentSettings } = useNuxtData<CacheSession>('session')
   const { isActive, remaining } = useCountdown(3, { immediate: false })
 
   const { stringify } = useWebsocketMessage()

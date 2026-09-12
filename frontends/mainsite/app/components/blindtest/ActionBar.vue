@@ -7,8 +7,8 @@
           {{ $t('Home') }}
         </volt-secondary-button>
       </nuxt-link-locale>
-
-      <volt-dropdown id="settings" :items="items">
+      
+      <volt-dropdown id="settings" :items="dropItems">
         <template #default="{ attrs }">
           <volt-secondary-button @click="attrs.toggle">
             <icon name="lucide:cog" />
@@ -59,7 +59,7 @@ const { toggleShowConnectionUrl } = useGlobalState()
  * State
  */
 
-const { isConnected, wsObject, gameStarted } = useAdminWebsocket()
+const { isConnected, wsObject, gameStarted } = await useAdminWebsocket()
 const { stopGame } = useGameActions(wsObject, gameStarted)
 
 /**
@@ -69,7 +69,7 @@ const { stopGame } = useGameActions(wsObject, gameStarted)
 const { isDark, toggleDark } = useDarkMode()
 const { t } = useI18n()
 
-const items: MenuItem = ref([
+const dropItems = computed(() => [
   {
     label: t('Options'),
     items: [
@@ -97,7 +97,9 @@ const items: MenuItem = ref([
       }
     ]
   }
-])
+] as MenuItem[])
+
+console.log(dropItems.value)
 
 /**
  * Session copy

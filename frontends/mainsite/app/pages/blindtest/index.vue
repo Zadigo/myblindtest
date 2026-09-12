@@ -28,7 +28,7 @@ definePageMeta({
  * Websocket
  */
 
-const { wsObject, players } = useAdminWebsocket()
+const { wsObject, players } = await useAdminWebsocket()
 wsObject.open()
 
 const warnActiveGameModal = ref(false)

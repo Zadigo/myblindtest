@@ -30,7 +30,7 @@ const { showWheel } = useWheelRandomizer()
  * Websocket
  */
 
-const { wsObject, gameStarted } = useAdminWebsocket()
+const { wsObject, gameStarted } = await useAdminWebsocket()
 const { startGame, pauseGame, sendIncorrectAnswer } = useGameActions(wsObject, gameStarted)
 
 /**
@@ -93,7 +93,7 @@ const multiChoiceActionDockItems = computed(() => {
 })
 
 // const { currentSettings } = await useSessionComposable()
-const currentSettings = useNuxtData<CacheSession>('session')
+const { data: currentSettings } = useNuxtData<CacheSession>('session')
 
 const items = computedAsync(() => {
   if (isDefined(currentSettings)) {
