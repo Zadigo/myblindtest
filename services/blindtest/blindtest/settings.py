@@ -44,11 +44,12 @@ INSTALLED_APPS = [
     'import_export',
     'django_filters',
     'django_extensions',
+    'django_browser_reload',
 
     'rest_framework',
     'rest_framework.authtoken',
     'graphene_django',
-    'mcp_server',
+    # 'mcp_server',
     'oauth2_provider',
     'oauth_dcr',
 
@@ -66,7 +67,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware'
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django_browser_reload.middleware.BrowserReloadMiddleware'
 ]
 
 ROOT_URLCONF = 'blindtest.urls'

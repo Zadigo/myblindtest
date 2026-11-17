@@ -17,6 +17,10 @@ urlpatterns = [
         name='graphql'
     ),
     path(
+        '__reload__/', 
+        include("django_browser_reload.urls")
+    ),
+    path(
         '__debug__/',
         include('debug_toolbar.urls')
     ),
@@ -53,10 +57,10 @@ urlpatterns = [
         oauth_dcr_views.DynamicClientRegistrationView.as_view(),
         name='oauth2_dcr'
     ),
-    path(
-        'agents/',
-        include(('mcp_server.urls', 'mcp_server'), namespace='mcp_server')
-    ),
+    # path(
+    #     'agents/',
+    #     include(('mcp_server.urls', 'mcp_server'), namespace='mcp_server')
+    # ),
     re_path(
         r'^$',
         HomePage.as_view(),

@@ -39,7 +39,7 @@ def pytest_configure(config):
                 'rest_framework',
                 'rest_framework.authtoken',
                 'graphene_django',
-                'mcp_server',
+                # 'mcp_server',
                 'oauth2_provider',
                 'oauth_dcr',
                 'songs',

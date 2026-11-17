@@ -51,7 +51,7 @@
                     {% elif field.name == "is_group" %}
                         {{ field }}
                     {% else %}
-                        <input type="{{ field.field.widget.input_type }}" value="{{  }}" id="{{ field.name }}" name="{{ field.name }}" placeholder="{{ field.label }}" {% for attr, value in field.field.widget.attrs.items %} {{ attr }}="{{ value }}" {% endfor %} class="bg-primary-50 p-3 ring rounded-lg w-full">
+                        <input type="{{ field.field.widget.input_type }}" id="{{ field.name }}" name="{{ field.name }}" placeholder="{{ field.label }}" {% for attr, value in field.field.widget.attrs.items %} {{ attr }}="{{ value }}" {% endfor %} class="bg-primary-50 p-3 ring rounded-lg w-full">
                     {% endif %}
                 {% endfor %}
 
