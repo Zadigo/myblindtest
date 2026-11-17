@@ -1,9 +1,9 @@
 import dataclasses
 from typing import Any
 
+from blindtest.typings import GameActions, TypeContent
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
-from blindtest.typings import GameActions, TypeContent
 from songs.logic.base import GameLogicMixin
 from songs.logic.models.settings import GammeSettingsModel
 

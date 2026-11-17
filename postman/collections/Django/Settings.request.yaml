@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{django}}songs/settings"
+method: GET
+order: 5000

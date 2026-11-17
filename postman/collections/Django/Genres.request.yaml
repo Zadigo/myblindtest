@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{django}}songs/genres"
+method: GET
+order: 4000

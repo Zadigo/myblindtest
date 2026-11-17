@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     # 'mcp_server',
     'oauth2_provider',
     'oauth_dcr',
+    'huey.contrib.djhuey',
 
     'songs',
     'tvshows',
@@ -291,12 +292,32 @@ INTERNAL_IPS = ['127.0.0.1']
 # Channels
 # https://channels.readthedocs.io/en/latest/topics/channel_layers.html
 
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             'hosts': [REDIS_URL]
+#         }
+#     }
+# }
+
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            'hosts': [REDIS_URL]
-        }
+        'hosts': [
+            {
+                'host': REDIS_HOST,
+                'port': 6379,
+                'password': REDIS_PASSWORD,
+                'db': 0,
+                # 'socket_timeout': None,
+                'socket_connect_timeout': 5,
+                'socket_keepalive': True,
+                'health_check_interval': 30,
+                'retry_on_timeout': True,
+                'retry_on_error': [ConnectionError, TimeoutError],
+            }
+        ]
     }
 }
 
@@ -338,3 +359,26 @@ DJANGO_MCP_AUTHENTICATION_CLASSES = [
 SPOTIFY_CLIENT_ID = env('SPOTIFY_CLIENT_ID')
 
 SPOTIFY_CLIENT_SECRET = env('SPOTIFY_CLIENT_SECRET')
+
+
+# Huey
+# https://huey.readthedocs.io/en/latest/contrib.html
+
+HUEY = {
+    'huey_class': 'huey.RedisHuey',
+    'name': 'prosite',
+    'immediate': env.bool('HUEY_ALWAYS_EAGER', False),
+    'immediate_use_memory': False,
+    'connection': {
+        'url': REDIS_URL,
+    },
+    'consumer': {
+        'workers': 4,
+    },
+}
+
+TASKS = {
+    'default': {
+        'BACKEND': 'huey.contrib.djhuey.tasks_backend.HueyBackend',
+    }
+}

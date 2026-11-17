@@ -1,0 +1,7 @@
+$kind: websocket-request
+description: ""
+url: "{{wsDjango}}single-player/aBc123/connect"
+headers:
+  Origin: http://127.0.0.1:8000
+settings: {}
+order: 7000

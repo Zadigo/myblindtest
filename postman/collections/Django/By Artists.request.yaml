@@ -1,0 +1,33 @@
+$kind: http-request
+url: "{{django}}songs/by-artists?limit=1&offset=0"
+method: GET
+queryParams:
+  - key: limit
+    value: "1"
+    disabled: false
+    description: ""
+    $type: |-
+      {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "integer",
+            "default": "1"
+          }
+        }
+      }
+  - key: offset
+    value: "0"
+    disabled: false
+    description: ""
+    $type: |-
+      {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "integer",
+            "default": "0"
+          }
+        }
+      }
+order: 3000

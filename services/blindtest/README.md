@@ -30,3 +30,11 @@ sequenceDiagram
     T->>D: Send player actions (e.g., answer submission)
     D->>T: Broadcast updates to all connected clients
 ```
+
+## Commands
+
+```Shell
+# Start huey
+
+uv run python manage.py run_huey
+```

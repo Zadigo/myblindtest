@@ -275,7 +275,7 @@ class GameLogicMixin(BaseGameLogicMixin):
         #     snapshop.to_dict()
 
         self.pin_code = random.randint(1000, 9999)
-        self.pending_devices: List[str] = []
+        self.pending_devices: list[str] = []
 
         self.game_settings = GameSettings()
         self.game_state = GameState()

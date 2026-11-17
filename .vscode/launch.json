@@ -20,6 +20,20 @@
             }
         },
         {
+            "name": "Django: Huey",
+            "type": "debugpy",
+            "request": "launch",
+            "django": true,
+            "program": "${workspaceFolder}/services/blindtest/manage.py",
+            "args": ["run_huey"],
+            "envFile": "${workspaceFolder}/services/blindtest/.env",
+            "presentation": {
+                "hidden": false,
+                "group": "Django",
+                "order": 2
+            }
+        },
+        {
             "type": "chrome",
             "request": "launch",
             "name": "Client: Mainsite",
@@ -60,6 +74,18 @@
     },
     "compounds": [
         {
+            "name": "Fullstack: Django",
+            "configurations": [
+                "Django: Blindtest",
+                "Django: Huey"
+            ],
+            "presentation": {
+                "hidden": false,
+                "group": "Django",
+                "order": 3
+            }
+        },
+        {  
             "name": "Fullstack: Nuxt",
             "configurations": [
                 "Server: Mainsite",
