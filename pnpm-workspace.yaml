@@ -53,3 +53,14 @@ minimumReleaseAgeExclude:
   - oxfmt@0.62.0
   - oxlint@1.77.0
   - unhead@3.3.0
+permissions:
+  '@unhead/vue':
+    skills: true
+skills:
+  dirs:
+    - .agent/skills
+    - .agents/skills
+    - .claude/skills
+    - .cursor/skills
+    - .gemini/skills
+    - .github/skills
